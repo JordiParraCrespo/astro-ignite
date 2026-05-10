@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="astro-ignite">
+  <rect width="32" height="32" rx="6" fill="#0a0a0a"/>
+  <text x="6.5" y="22" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="18" font-weight="500" fill="#fafafa">&gt;</text>
+  <rect x="18.5" y="13.5" width="8" height="3" fill="#fafafa"/>
+</svg>

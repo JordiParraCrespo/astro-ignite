@@ -1,0 +1,67 @@
+# Generated / vendored
+node_modules
+dist
+.astro
+.output
+.cache
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+bun.lockb
+skills-lock.json
+
+# Astro types
+**/.astro/**
+
+# Documentation files with embedded code fragments that confuse prettier-plugin-astro
+plan.md
+
+# Templates' *.md guides (copied across templates, all share the same TS-fragment issue)
+packages/templates/*/BENCHMARKS.md
+packages/templates/*/OG.md
+packages/templates/*/ANALYTICS.md
+packages/templates/*/FONTS.md
+packages/templates/*/IMAGES.md
+packages/templates/*/LEGAL.md
+packages/templates/*/README.md
+
+# Same guides scaffolded into apps/* (landing was scaffolded from starter)
+apps/*/BENCHMARKS.md
+apps/*/OG.md
+apps/*/ANALYTICS.md
+apps/*/FONTS.md
+apps/*/IMAGES.md
+apps/*/LEGAL.md
+apps/*/README.md
+
+# Markdown content collections (their own markdown style)
+packages/templates/*/src/content/blog/**
+packages/templates/*/src/content/legal/**
+packages/templates/*/src/content/projects/**
+packages/templates/*/src/content/docs/**
+apps/*/src/content/blog/**
+apps/*/src/content/legal/**
+apps/*/src/content/projects/**
+apps/*/src/content/docs/**
+
+# Components with inline <script> blocks prettier-plugin-astro can't reliably parse
+packages/templates/*/src/components/Analytics.astro
+packages/templates/*/src/components/CookieBanner.astro
+packages/templates/*/src/components/ThemeToggle.astro
+packages/templates/*/src/components/Nav.astro
+packages/templates/*/src/components/LocaleSwitcher.astro
+packages/templates/*/src/layouts/BaseLayout.astro
+apps/*/src/components/Analytics.astro
+apps/*/src/components/CookieBanner.astro
+apps/*/src/components/ThemeToggle.astro
+apps/*/src/components/Nav.astro
+apps/*/src/components/LocaleSwitcher.astro
+apps/*/src/components/docs/SidebarNav.astro
+apps/*/src/components/docs/OnThisPage.astro
+apps/*/src/components/docs/CodeBlock.astro
+apps/*/src/layouts/BaseLayout.astro
+apps/*/src/layouts/MarketingLayout.astro
+apps/*/src/layouts/DocsLayout.astro
+
+# Auto-generated test artifacts
+apps/playground/**

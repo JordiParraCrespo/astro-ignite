@@ -1,0 +1,132 @@
+---
+/**
+ * BaseLayout — universal chrome and head for every page.
+ *
+ * - Anti-flash theme script (must run BEFORE CSS to avoid FOUC)
+ * - Fonts (display preloaded, mono not — display is LCP-critical)
+ * - Hero image preload (page passes `preloadImages` for LCP optimization)
+ * - <SEO> + <JsonLd> with siteSchemas auto-merged
+ * - <Nav>, <main id="main">, <Footer>, <CookieBanner>, <Analytics>
+ * - Skip-link as first focusable element for a11y
+ *
+ * Specialized layouts (ArticleLayout, ProjectLayout, LegalLayout) wrap this.
+ */
+
+import { Font } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import type { Thing } from 'schema-dts';
+
+import '@/styles/global.css';
+import { siteConfig } from '@/config/site';
+import { siteSchemas } from '@/lib/jsonld';
+import { useTranslations } from '@/i18n';
+
+import SEO from '@/components/seo/SEO.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
+import Nav from '@/components/Nav.astro';
+import Footer from '@/components/Footer.astro';
+import CookieBanner from '@/components/CookieBanner.astro';
+import Analytics from '@/components/Analytics.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: ImageMetadata | string;
+  imageAlt?: string;
+  noindex?: boolean;
+  type?: 'website' | 'article' | 'profile';
+  alternates?: Array<{ lang: string; href: string }>;
+  schemas?: Thing[];
+  preloadImages?: ImageMetadata[];
+}
+
+const {
+  title,
+  description,
+  image,
+  imageAlt,
+  noindex = false,
+  type = 'website',
+  alternates,
+  schemas = [],
+  preloadImages = [],
+} = Astro.props;
+
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
+const allSchemas = [...siteSchemas(locale), ...schemas];
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content={siteConfig.themeColor} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- RSS auto-discovery -->
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`${siteConfig.name[locale] ?? siteConfig.name[siteConfig.defaultLocale]} — RSS`}
+      href={locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/rss.xml`}
+    />
+
+    <!--
+      Anti-flash theme script. Must run BEFORE any CSS so the browser paints
+      the correct theme on first paint. is:inline keeps Astro from bundling.
+
+      Dark is the default at :root (no class). Light mode is the explicit
+      .light class — applied when the user picked light or follows system
+      preference and system is light.
+    -->
+    <script is:inline>
+      (() => {
+        const stored = localStorage.getItem('theme');
+        const isLight =
+          stored === 'light' ||
+          (!stored && !matchMedia('(prefers-color-scheme: dark)').matches);
+        if (isLight) document.documentElement.classList.add('light');
+        document.documentElement.dataset.theme = stored ?? 'system';
+      })();
+    </script>
+
+    <!-- Fonts: preload display (LCP-critical), defer mono (below the fold) -->
+    <Font cssVariable="--font-display" preload />
+    <Font cssVariable="--font-mono" />
+
+    <!-- Hero image preload — pages with above-the-fold imagery pass these -->
+    {
+      preloadImages.map((img) => (
+        <link rel="preload" as="image" href={img.src} fetchpriority="high" />
+      ))
+    }
+
+    <SEO
+      title={title}
+      description={description}
+      image={image}
+      imageAlt={imageAlt}
+      noindex={noindex}
+      type={type}
+      alternates={alternates}
+      locale={locale}
+    />
+
+    <JsonLd schemas={allSchemas} />
+
+    <Analytics />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">{t('nav.skipToContent')}</a>
+    <Nav />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <CookieBanner />
+  </body>
+</html>

@@ -1,0 +1,39 @@
+---
+title: Introduction
+description: What astro-ignite is, why it exists, and what it gives you out of the box.
+lastUpdated: 2026-05-10
+tags: [getting-started]
+---
+
+import Callout from '@/components/docs/Callout.astro';
+
+**astro-ignite** is a shadcn-style CLI for bootstrapping production-grade Astro sites. You answer five prompts and you get a finished site with SEO, i18n, performance, legal, and email pre-wired.
+
+## Why bother
+
+Most Astro starters land at one of two extremes: a minimal `hello world` you assemble yourself, or an opinionated framework that hides decisions behind abstractions. astro-ignite picks a different point — opinionated defaults you fully own.
+
+You get:
+
+- **Lighthouse 100s on mobile** out of the box, CI-enforced
+- **Native i18n** with one code path for monolingual and multilingual sites
+- **Typed Schema.org JSON-LD** built from `schema-dts`
+- **A working contact form** with Astro Actions, Zod, and your choice of Resend or SMTP
+- **Cookie banner + legal templates** that don't pretend to be legal advice
+- **Self-hosted Geist Sans + Mono** with zero CLS on swap
+- **Pure-Astro components** — no React/Vue/Svelte runtime weighing down the page
+
+<Callout variant="note" title="Pre-1.0">
+  The API and template shape may shift between minor versions. See the ROADMAP for what's stable and
+  what's not.
+</Callout>
+
+## What it isn't
+
+astro-ignite is not a framework. There is no runtime npm package called `astro-ignite`. After scaffolding, you own the code and can edit anything. Eject is free because there's nothing to eject.
+
+It's also not a CMS, an auth system, or an e-commerce starter. It's a site bootstrap.
+
+## Where to next
+
+If you want to read about the philosophy, head to **The five prompts**. If you want to see code, jump straight to **Quick start**.

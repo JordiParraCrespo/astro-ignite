@@ -1,0 +1,119 @@
+{
+  "nav": {
+    "home": "Home",
+    "blog": "Blog",
+    "projects": "Projects",
+    "about": "About",
+    "contact": "Contact",
+    "menu": "Menu",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "skipToContent": "Skip to main content"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "builtWith": "Built with astro-ignite.",
+    "rss": "RSS feed",
+    "legal": "Legal",
+    "social": "Social"
+  },
+  "theme": {
+    "label": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "locale": {
+    "label": "Language",
+    "switch": "Switch language"
+  },
+  "seo": {
+    "home": {
+      "title": "Home",
+      "description": "Bootstrap a production-grade Astro site with top-tier SEO and performance defaults."
+    },
+    "about": {
+      "title": "About",
+      "description": "Learn more about us — what we do, why, and how to get in touch."
+    },
+    "contact": {
+      "title": "Contact",
+      "description": "Get in touch — we'd love to hear from you."
+    },
+    "blog": {
+      "title": "Blog",
+      "description": "Articles, notes, and updates."
+    },
+    "projects": {
+      "title": "Projects",
+      "description": "A collection of work, case studies, and experiments."
+    },
+    "404": {
+      "title": "Page not found",
+      "description": "The page you were looking for doesn't exist."
+    }
+  },
+  "blog": {
+    "byAuthor": "by",
+    "publishedOn": "Published on",
+    "updatedOn": "Updated on",
+    "readMore": "Read more",
+    "readingTime": "{minutes} min read",
+    "morePosts": "More posts",
+    "backToBlog": "Back to blog",
+    "noPosts": "No posts yet."
+  },
+  "projects": {
+    "viewProject": "View project",
+    "viewLive": "View live",
+    "viewRepo": "View repo",
+    "viewDemo": "View demo",
+    "viewCaseStudy": "Read case study",
+    "techStack": "Tech stack",
+    "role": "Role",
+    "client": "Client",
+    "status": {
+      "shipped": "Shipped",
+      "in-progress": "In progress",
+      "archived": "Archived"
+    },
+    "backToProjects": "Back to projects",
+    "noProjects": "No projects yet."
+  },
+  "contact": {
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send message",
+    "sending": "Sending…",
+    "success": "Thanks — we'll get back to you soon.",
+    "error": "Something went wrong. Please try again or email us directly.",
+    "validation": {
+      "nameRequired": "Please enter your name.",
+      "emailInvalid": "Please enter a valid email address.",
+      "messageTooShort": "Please write at least 10 characters."
+    }
+  },
+  "cookies": {
+    "banner": {
+      "title": "Cookie preferences",
+      "description": "We use minimal storage to remember your preferences. Analytics is disabled until you accept.",
+      "accept": "Accept",
+      "decline": "Decline",
+      "policyLink": "Read our cookie policy"
+    }
+  },
+  "legal": {
+    "lastUpdated": "Last updated",
+    "version": "Version",
+    "tableOfContents": "Table of contents",
+    "templateNotice": "This is a template document. Review with legal counsel before publishing."
+  },
+  "errors": {
+    "404": {
+      "heading": "Page not found",
+      "body": "The page you were looking for doesn't exist or has been moved.",
+      "back": "Back to home"
+    }
+  }
+}

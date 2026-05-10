@@ -1,0 +1,19 @@
+---
+import type { Thing } from 'schema-dts';
+
+interface Props {
+  schemas: Thing[];
+}
+
+const { schemas } = Astro.props;
+
+const graph = {
+  '@context': 'https://schema.org',
+  '@graph': schemas,
+};
+
+// JSON.stringify with no indentation — small payload. Already inline in <head>.
+const jsonLd = JSON.stringify(graph);
+---
+
+{schemas.length > 0 && <script type="application/ld+json" is:inline set:html={jsonLd} />}

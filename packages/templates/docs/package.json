@@ -1,0 +1,31 @@
+{
+  "name": "@astro-ignite/template-docs",
+  "version": "0.0.0",
+  "private": true,
+  "description": "astro-ignite docs template — 3-column documentation site with sidebar nav, on-this-page TOC, MDX content. Develops as a real Astro project; baked into the CLI at build time.",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "typecheck": "astro check",
+    "lint": "eslint src",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^4.0.3",
+    "@astrojs/sitemap": "^3.2.1",
+    "@tailwindcss/vite": "^4.0.0-beta.8",
+    "astro": "^5.1.0",
+    "schema-dts": "^1.1.5",
+    "sharp": "^0.33.5",
+    "tailwindcss": "^4.0.0-beta.8",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  }
+}

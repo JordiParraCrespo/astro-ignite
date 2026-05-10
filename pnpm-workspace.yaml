@@ -1,0 +1,4 @@
+packages:
+  - 'packages/create-astro-ignite'
+  - 'packages/templates/*'
+  - 'apps/*'

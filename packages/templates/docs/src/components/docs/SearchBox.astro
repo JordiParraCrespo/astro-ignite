@@ -1,0 +1,61 @@
+---
+/**
+ * Search box — placeholder for now.
+ *
+ * v1 ships an inert ⌘K affordance. Pagefind integration arrives in 0.4
+ * (per ROADMAP.md) and will replace the click handler with a real search
+ * dialog. The visual shape is finalized so the upgrade is cosmetic.
+ */
+---
+
+<button type="button" class="search-box" aria-label="Search docs (coming soon)" disabled>
+  <span class="search-icon mono" aria-hidden="true">⌕</span>
+  <span class="search-label mono">Search docs</span>
+  <span class="search-kbd mono"><kbd>⌘</kbd><kbd>K</kbd></span>
+</button>
+
+<style>
+  .search-box {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    padding: 7px 10px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    color: var(--color-fg-subtle);
+    cursor: not-allowed;
+    font-family: inherit;
+    font-size: 12px;
+    line-height: 1;
+    text-align: left;
+    appearance: none;
+    transition: border-color 0.12s var(--ease-out-soft);
+  }
+  .search-box:hover {
+    border-color: var(--color-border-strong);
+  }
+  .search-icon {
+    font-size: 11px;
+  }
+  .search-label {
+    font-size: 12px;
+  }
+  .search-kbd {
+    margin-left: auto;
+    display: inline-flex;
+    gap: 2px;
+  }
+  .search-kbd kbd {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1;
+    padding: 2px 5px;
+    border: 1px solid var(--color-border);
+    border-bottom-width: 2px;
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-2);
+    color: var(--color-fg-muted);
+  }
+</style>

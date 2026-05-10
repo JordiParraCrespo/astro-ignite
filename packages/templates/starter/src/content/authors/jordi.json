@@ -1,0 +1,9 @@
+{
+  "name": "Jordi Parra",
+  "bio": {
+    "en": "Placeholder author bio. Replace with your own — supports a couple of sentences. Used on post pages and as Person JSON-LD.",
+    "es": "Bio de autor de marcador de posición. Reemplázala con la tuya — admite un par de frases. Se usa en las páginas de posts y como JSON-LD Person."
+  },
+  "image": "./_assets/jordi.svg",
+  "social": {}
+}

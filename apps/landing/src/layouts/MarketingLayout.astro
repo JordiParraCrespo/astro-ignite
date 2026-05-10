@@ -1,0 +1,97 @@
+---
+/**
+ * MarketingLayout — bare chrome for landing-style pages.
+ *
+ * Pages using this layout supply their OWN nav + footer (the marketing
+ * landing has its own design that wraps the whole page). MarketingLayout
+ * provides only what every page needs: head, anti-flash theme, fonts, SEO,
+ * JsonLd, cookie banner, analytics, skip-link.
+ *
+ * Sister to `BaseLayout.astro` (which includes the starter's Nav/Footer).
+ * If you need full chrome, use BaseLayout. If you need just the head + slot,
+ * use this.
+ */
+
+import { Font } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import type { Thing } from 'schema-dts';
+
+import '@/styles/global.css';
+import { siteConfig } from '@/config/site';
+import { siteSchemas } from '@/lib/jsonld';
+import SEO from '@/components/seo/SEO.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
+import CookieBanner from '@/components/CookieBanner.astro';
+import Analytics from '@/components/Analytics.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: ImageMetadata | string;
+  imageAlt?: string;
+  noindex?: boolean;
+  type?: 'website' | 'article' | 'profile';
+  schemas?: Thing[];
+}
+
+const {
+  title,
+  description,
+  image,
+  imageAlt,
+  noindex = false,
+  type = 'website',
+  schemas = [],
+} = Astro.props;
+
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const allSchemas = [...siteSchemas(locale), ...schemas];
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content={siteConfig.themeColor} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!--
+      Anti-flash theme script. Must run BEFORE any CSS so the browser paints
+      the correct theme on first paint. is:inline keeps Astro from bundling.
+      Default is dark (the design's posture); .light is added when the user
+      explicitly picked light OR follows system pref and system is light.
+    -->
+    <script is:inline>
+      (() => {
+        const stored = localStorage.getItem('theme');
+        const isLight =
+          stored === 'light' || (!stored && !matchMedia('(prefers-color-scheme: dark)').matches);
+        if (isLight) document.documentElement.classList.add('light');
+        document.documentElement.dataset.theme = stored ?? 'system';
+      })();
+    </script>
+
+    <Font cssVariable="--font-display" preload />
+    <Font cssVariable="--font-mono" />
+
+    <SEO
+      title={title}
+      description={description}
+      image={image}
+      imageAlt={imageAlt}
+      noindex={noindex}
+      type={type}
+      locale={locale}
+    />
+    <JsonLd schemas={allSchemas} />
+    <Analytics />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to main content</a>
+    <slot />
+    <CookieBanner />
+  </body>
+</html>

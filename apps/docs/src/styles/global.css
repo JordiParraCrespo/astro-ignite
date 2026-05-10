@@ -1,0 +1,394 @@
+@import 'tailwindcss';
+
+/* =============================================================================
+ * Design tokens — Zinc-scale, dark-first, no accent.
+ *
+ * Sourced from the Claude Design handoff (`/tmp/claude-design/.../tokens.css`).
+ * Naming follows shadcn convention: --bg, --fg, --primary, --ring, etc.
+ *
+ * The system has NO accent color. The interactive color is the inversion of
+ * the neutrals: white-on-near-black in dark mode, near-black-on-white in
+ * light. Status colors (success/warning/danger) are functional only — for
+ * form validation, alerts, etc. Don't use them as decoration.
+ * ============================================================================= */
+
+@theme {
+  /* Zinc scale — single source of truth, theme-invariant. */
+  --color-zinc-50: #fafafa;
+  --color-zinc-100: #f4f4f5;
+  --color-zinc-200: #e4e4e7;
+  --color-zinc-300: #d4d4d8;
+  --color-zinc-400: #a1a1aa;
+  --color-zinc-500: #71717a;
+  --color-zinc-600: #52525b;
+  --color-zinc-700: #3f3f46;
+  --color-zinc-800: #27272a;
+  --color-zinc-900: #18181b;
+  --color-zinc-950: #0a0a0a;
+
+  /* Functional tokens — DARK is the default in this design.
+     Light values land in the .light selector below. */
+  --color-bg: var(--color-zinc-950);
+  --color-surface: var(--color-zinc-950);
+  --color-surface-2: var(--color-zinc-900);
+  --color-fg: var(--color-zinc-50);
+  --color-fg-muted: var(--color-zinc-400);
+  --color-fg-subtle: var(--color-zinc-500);
+  --color-border: var(--color-zinc-800);
+  --color-border-strong: var(--color-zinc-700);
+  --color-primary: var(--color-zinc-50);
+  --color-primary-fg: var(--color-zinc-900);
+  --color-ring: var(--color-zinc-300);
+
+  /* Status (functional only — form validation, alerts) */
+  --color-success: oklch(70% 0.15 145);
+  --color-warning: oklch(78% 0.16 75);
+  --color-danger: oklch(70% 0.2 28);
+
+  /* Typography */
+  --font-display: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Radius — restrained shadcn defaults */
+  --radius-sm: 4px;
+  --radius: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+
+  /* Shadows — barely-there (dark default) */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.4);
+  --shadow:
+    0 1px 3px 0 rgb(0 0 0 / 0.5), 0 1px 2px -1px rgb(0 0 0 / 0.4);
+
+  /* Containers */
+  --container-prose: 65ch;
+  --container-narrow: 42rem;
+
+  /* Motion */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Light mode — applied when .light class is on <html>.
+   Inverts the dark defaults for the same set of tokens. */
+.light {
+  --color-bg: var(--color-zinc-50);
+  --color-surface: #ffffff;
+  --color-surface-2: var(--color-zinc-100);
+  --color-fg: var(--color-zinc-950);
+  --color-fg-muted: var(--color-zinc-500);
+  --color-fg-subtle: var(--color-zinc-400);
+  --color-border: var(--color-zinc-200);
+  --color-border-strong: var(--color-zinc-300);
+  --color-primary: var(--color-zinc-900);
+  --color-primary-fg: var(--color-zinc-50);
+  --color-ring: var(--color-zinc-900);
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow:
+    0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+}
+
+/*
+ * Tailwind dark variant — the design is dark-first so by default <html> has
+ * NO class and the tokens above apply. Adding .light flips to docs theme.
+ * Adding .dark on top of .light returns to dark (rare but supported).
+ */
+@variant dark (&:where(:not(.light), :not(.light) *));
+
+/* =============================================================================
+ * Base layer — minimal global resets and defaults
+ * ============================================================================= */
+
+@layer base {
+  html {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-display);
+    font-feature-settings:
+      'cv11',
+      'ss03',
+      'ss01';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    min-height: 100dvh;
+    margin: 0;
+  }
+
+  ::selection {
+    background: var(--color-primary);
+    color: var(--color-primary-fg);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+
+  code,
+  pre {
+    font-family: var(--font-mono);
+    font-feature-settings:
+      'zero',
+      'ss01';
+  }
+
+  /* Skip link — visually hidden until focused, jumps to <main id="main"> */
+  .skip-link {
+    position: absolute;
+    top: -100px;
+    left: 0;
+    z-index: 100;
+    padding: 0.75rem 1.25rem;
+    background: var(--color-fg);
+    color: var(--color-bg);
+    text-decoration: none;
+    font-weight: 500;
+    transition: top 0.2s var(--ease-out-soft);
+  }
+
+  .skip-link:focus {
+    top: 0;
+  }
+}
+
+/* =============================================================================
+ * Primitive utilities — used both by component CSS and as opt-in classes
+ * ============================================================================= */
+
+/* Hairlines — formalized 1px dividers using the border token */
+.hairline {
+  background: var(--color-border);
+  height: 1px;
+  width: 100%;
+}
+.vhairline {
+  background: var(--color-border);
+  width: 1px;
+  height: 100%;
+}
+
+/* Mono helper — apply Geist Mono with the right OpenType features */
+.mono {
+  font-family: var(--font-mono);
+  font-feature-settings:
+    'zero',
+    'ss01';
+}
+
+/* Caret blink — used by the brand mark and terminal blocks */
+@keyframes ig-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+.caret {
+  animation: ig-blink 1s step-end infinite;
+}
+
+/* =============================================================================
+ * Primitive component classes — proper Astro components ship in 0.2
+ * (Button, Badge, Card, Input). The CSS lives here so users can reach for the
+ * classes directly today, and the components in 0.2 will just consume them.
+ * Specs follow the Claude Design tokens.css verbatim.
+ * ============================================================================= */
+
+/* Button — 36 / 30 / 44 px heights, 6 px radius, font 14 / 500 / -0.005em. */
+.btn {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition:
+    background 0.12s ease,
+    border-color 0.12s ease,
+    color 0.12s ease,
+    opacity 0.12s ease;
+  white-space: nowrap;
+  user-select: none;
+  letter-spacing: -0.005em;
+  text-decoration: none;
+}
+.btn:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+}
+.btn-primary {
+  background: var(--color-primary);
+  color: var(--color-primary-fg);
+}
+.btn-primary:hover {
+  background: var(--color-zinc-200);
+}
+.light .btn-primary:hover {
+  background: var(--color-zinc-800);
+}
+.btn-secondary {
+  background: var(--color-surface-2);
+  color: var(--color-fg);
+  border-color: var(--color-border);
+}
+.btn-secondary:hover {
+  background: var(--color-zinc-800);
+}
+.light .btn-secondary:hover {
+  background: var(--color-zinc-200);
+}
+.btn-outline {
+  background: transparent;
+  color: var(--color-fg);
+  border-color: var(--color-border-strong);
+}
+.btn-outline:hover {
+  background: var(--color-surface-2);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--color-fg);
+}
+.btn-ghost:hover {
+  background: var(--color-surface-2);
+}
+.btn-link {
+  background: transparent;
+  color: var(--color-fg);
+  padding: 0;
+  height: auto;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.btn-sm {
+  height: 30px;
+  padding: 0 10px;
+  font-size: 13px;
+  border-radius: var(--radius-sm);
+}
+.btn-lg {
+  height: 44px;
+  padding: 0 18px;
+  font-size: 15px;
+  border-radius: var(--radius-md);
+}
+.btn-icon {
+  width: 36px;
+  padding: 0;
+}
+
+/* Badge — pill, 12 / 500. */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+  color: var(--color-fg);
+  letter-spacing: -0.005em;
+}
+.badge-solid {
+  background: var(--color-primary);
+  color: var(--color-primary-fg);
+  border-color: transparent;
+}
+.badge-outline {
+  background: transparent;
+}
+.badge-mono {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 3px 7px;
+}
+.badge-dot::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+/* Input — 36 px, 6 px radius, focus = 1 px ring. */
+.input {
+  font-family: var(--font-display);
+  font-size: 14px;
+  height: 36px;
+  width: 100%;
+  padding: 0 12px;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  color: var(--color-fg);
+  transition:
+    border-color 0.12s,
+    box-shadow 0.12s;
+}
+.input::placeholder {
+  color: var(--color-fg-subtle);
+}
+.input:focus {
+  outline: none;
+  border-color: var(--color-ring);
+  box-shadow: 0 0 0 1px var(--color-ring);
+}
+
+/* Card — 10 px radius, --surface bg, --border 1 px, padding 20. */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+}
+
+/* Kbd — Geist Mono, 11 px, raised look (border-bottom 2 px). */
+.kbd {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1;
+  padding: 3px 6px;
+  border: 1px solid var(--color-border);
+  border-bottom-width: 2px;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-2);
+  color: var(--color-fg-muted);
+  display: inline-flex;
+  align-items: center;
+}
+
+/* =============================================================================
+ * Reduced motion preference
+ * ============================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .caret {
+    animation: none;
+    opacity: 1;
+  }
+}

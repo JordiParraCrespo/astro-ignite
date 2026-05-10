@@ -1,0 +1,45 @@
+name: Lighthouse
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+concurrency:
+  group: lighthouse-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lighthouse:
+    name: Lighthouse CI (mobile)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build CLI
+        run: pnpm --filter create-astro-ignite build
+
+      - name: Scaffold playground
+        run: |
+          rm -rf apps/playground
+          mkdir -p apps/playground
+          node packages/create-astro-ignite/dist/index.js apps/playground --yes --no-git
+
+      - name: Build playground
+        run: pnpm --filter playground build
+
+      - name: Run Lighthouse CI
+        run: |
+          npm install -g @lhci/cli@0.14.x
+          cd apps/playground
+          lhci autorun --config=../../.lighthouserc.json
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}

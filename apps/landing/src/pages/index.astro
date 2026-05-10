@@ -1,0 +1,1277 @@
+---
+/**
+ * astro-ignite landing page — port of the Claude Design Landing.html handoff.
+ *
+ * Sections (top to bottom):
+ *   1. Sticky nav with brand + version pill + nav links + CTAs
+ *   2. Hero: split layout — copy + command on the left, terminal preview on the right
+ *   3. Meta strip — Lighthouse / Bundle / LCP / CLS / Astro 5 / Tailwind v4 / MIT
+ *   4. Features — 9-up grid built only from system tokens
+ *   5. Templates — Starter + Docs cards, each with mini-preview
+ *   6. CTA — centered "Stop yak-shaving the first 30%" with command + buttons
+ *   7. Footer — brand + 3 columns of links
+ *
+ * Pure Astro. No React. Above-the-fold uses scoped <style>; below-the-fold
+ * is also scoped here because the whole page is one component (deviation from
+ * the layered-CSS rule is fine for a single-route site — no Tailwind weight
+ * to worry about).
+ */
+
+import MarketingLayout from '@/layouts/MarketingLayout.astro';
+import Brand from '@/components/Brand.astro';
+import ThemeToggle from '@/components/ThemeToggle.astro';
+import { siteConfig } from '@/config/site';
+
+const FEATURES = [
+  {
+    num: '01',
+    tag: 'perf',
+    title: 'Lighthouse 100s',
+    body: 'Mobile and desktop. CI budgets fail the build before regressions ship.',
+  },
+  {
+    num: '02',
+    tag: 'core',
+    title: 'Astro 5 + i18n',
+    body: 'Native i18n, content collections, and Astro Actions. Strict Zod schemas.',
+  },
+  {
+    num: '03',
+    tag: 'css',
+    title: 'Tailwind v4',
+    body: 'Layered CSS strategy. Scoped above-the-fold + critical-CSS extraction.',
+  },
+  {
+    num: '04',
+    tag: 'seo',
+    title: 'Typed JSON-LD',
+    body: 'Schema.org via schema-dts. Compile-time errors instead of stale snippets.',
+  },
+  {
+    num: '05',
+    tag: 'media',
+    title: 'Image pipeline',
+    body: 'AVIF + WebP, responsive srcset, LQIP placeholders, zero CLS.',
+  },
+  {
+    num: '06',
+    tag: 'type',
+    title: 'Self-hosted fonts',
+    body: 'Geist Sans + Mono via astro:fonts. Subsetted, preloaded, zero CLS.',
+  },
+  {
+    num: '07',
+    tag: 'ux',
+    title: 'Tri-state dark mode',
+    body: 'Light / dark / system, with anti-flash inline script. No FOUC.',
+  },
+  {
+    num: '08',
+    tag: 'email',
+    title: 'Working contact form',
+    body: 'Astro Actions + Zod validation + Resend or SMTP. Wired, not a stub.',
+  },
+  {
+    num: '09',
+    tag: 'legal',
+    title: 'Cookies + legal',
+    body: 'Banner, privacy, terms, and cookies templates. i18n-aware.',
+  },
+];
+
+const ghUrl = siteConfig.social.github ?? 'https://github.com/JordiParraCrespo/astro-ignite';
+---
+
+<MarketingLayout
+  title="astro-ignite — production-grade Astro sites in five prompts"
+  description={siteConfig.description.en!}
+>
+  <nav class="nav">
+    <div class="page nav-inner">
+      <Brand href="/" variant="lockup" size={0.27} />
+      <span class="pill mono"><span class="dot" aria-hidden="true"></span>v0.1.0 · pre-1.0</span>
+      <div class="nav-links">
+        <a href="/docs">Docs</a>
+        <a href="#templates">Templates</a>
+        <a href="https://github.com/JordiParraCrespo/astro-ignite/blob/main/plan.md" rel="noopener"
+          >Plan</a
+        >
+        <a href="https://github.com/JordiParraCrespo/astro-ignite/releases" rel="noopener"
+          >Changelog</a
+        >
+        <a href={ghUrl} rel="noopener">GitHub ↗</a>
+      </div>
+      <div class="nav-cta">
+        <ThemeToggle />
+        <a class="btn btn-ghost btn-sm" href="/docs">Read the docs</a>
+        <a class="btn btn-primary btn-sm" href="#install">Get started</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <header class="hero">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="page hero-inner">
+        <div class="hero-split">
+          <div class="hero-copy">
+            <span class="pill"><span class="mono">npm create astro-ignite@latest</span></span>
+            <h1>
+              <span class="muted">Astro sites,</span> in five prompts.
+            </h1>
+            <p class="hero-lede">
+              SEO, i18n, perf, legal, and email — pre-wired with sane defaults you actually own. No
+              runtime dependency. No lock-in. <span class="emph">Just code.</span>
+            </p>
+
+            <div class="cmd" id="install">
+              <span
+                ><span class="cmd-prompt">$</span><span class="cmd-text mono"
+                  >npm create astro-ignite@latest my-site</span
+                ></span
+              >
+              <button
+                class="cmd-copy"
+                type="button"
+                data-copy="npm create astro-ignite@latest my-site">copy</button
+              >
+            </div>
+
+            <div class="hero-cta">
+              <a class="btn btn-primary btn-lg" href="/docs/quick-start">Get started</a>
+              <a
+                class="btn btn-outline btn-lg"
+                href="https://github.com/JordiParraCrespo/astro-ignite/blob/main/plan.md"
+                rel="noopener">Read the plan</a
+              >
+              <span class="mono hero-meta">MIT · Astro 5 · Tailwind v4</span>
+            </div>
+          </div>
+
+          <div class="term" aria-label="Scaffold flow preview">
+            <div class="term-bar">
+              <span class="term-dot" aria-hidden="true"></span>
+              <span class="term-dot" aria-hidden="true"></span>
+              <span class="term-dot" aria-hidden="true"></span>
+              <span class="term-path mono">~/code</span>
+              <span class="term-shell mono">zsh</span>
+            </div>
+            <div class="term-body mono">
+              <span class="t-muted">$</span> npm create astro-ignite my-site<br /><br />
+              <span class="t-muted">^</span>&nbsp; <span class="t-strong">astro-ignite</span>
+              <span class="t-subtle">v0.1.0</span><br />
+              <span class="t-subtle">│</span><br />
+              <span class="t-subtle">◇</span>&nbsp; Template? <span class="t-muted">starter</span
+              ><br />
+              <span class="t-subtle">◇</span>&nbsp; Project name? <span class="t-muted"
+                >./my-site</span
+              ><br />
+              <span class="t-subtle">◇</span>&nbsp; Languages? <span class="t-muted"
+                >en, es, ja</span
+              ><br />
+              <span class="t-subtle">◇</span>&nbsp; Email? <span class="t-muted">Resend</span><br />
+              ◆&nbsp; Install deps?<br />
+              <span class="t-subtle">│</span>&nbsp; <span class="t-pick">● Yes</span>&nbsp;<span
+                class="t-muted">○ No ○ pnpm ○ bun</span
+              ><br />
+              <span class="t-subtle">└</span>&nbsp; <span class="caret"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="page">
+      <div class="meta-strip mono">
+        <div class="meta-item">
+          <span>Lighthouse</span><span class="meta-value">100 / 100 / 100 / 100</span>
+        </div>
+        <div class="meta-item"><span>Bundle</span><span class="meta-value">17.4 kB</span></div>
+        <div class="meta-item"><span>LCP</span><span class="meta-value">0.4 s</span></div>
+        <div class="meta-item"><span>CLS</span><span class="meta-value">0.00</span></div>
+        <div class="meta-item meta-spacer"><span>Astro 5</span></div>
+        <div class="meta-item"><span>Tailwind v4</span></div>
+        <div class="meta-item"><span>MIT</span></div>
+      </div>
+    </div>
+
+    <section class="features-section">
+      <div class="page">
+        <div class="section-head">
+          <div class="section-lead">
+            <span class="eyebrow mono">What you get</span>
+            <h2>Twenty things you'd otherwise build at 11pm.</h2>
+          </div>
+          <p class="section-meta mono">
+            You own every line. No runtime dependency on this tool — eject is free, because there's
+            nothing to eject.
+          </p>
+        </div>
+
+        <div class="features">
+          {
+            FEATURES.map((f) => (
+              <div class="feat">
+                <div class="feat-head">
+                  <span class="feat-num mono">{f.num}</span>
+                  <span class="feat-tag mono">{f.tag}</span>
+                </div>
+                <h3>{f.title}</h3>
+                <p>{f.body}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="templates-section" id="templates">
+      <div class="page">
+        <div class="section-head">
+          <div class="section-lead">
+            <span class="eyebrow mono">Templates</span>
+            <h2>Two ways to start. Both ship to a 100.</h2>
+            <p>
+              Pick a template at the prompt, or pass <span class="mono inline-code">--template</span
+              >. More are on the way.
+            </p>
+          </div>
+          <p class="section-meta mono">
+            Each template is a full Astro project — not a fragment. Read the source, fork it, ignore
+            us.
+          </p>
+        </div>
+
+        <div class="tpls">
+          <article class="tpl">
+            <div class="tpl-preview">
+              <div class="pv-starter">
+                <div class="pv-nav">
+                  <span class="pv-glyph mono">&gt;_</span>
+                  <span>my-site</span>
+                  <span class="pv-nav-links">Home · About · Blog</span>
+                </div>
+                <div class="pv-bottom">
+                  <div class="pv-h">Ship faster. <span class="pv-h-muted">Ship better.</span></div>
+                  <div class="pv-sub">
+                    A clean marketing-first starter with blog, contact, and i18n already wired.
+                  </div>
+                  <div class="pv-cta">
+                    <span class="pv-b1">Get started</span>
+                    <span class="pv-b2">Read docs</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tpl-body">
+              <div class="tpl-row">
+                <h3>Starter</h3>
+                <span class="tpl-meta mono">default</span>
+              </div>
+              <p class="tpl-desc">
+                Marketing-first base. Hero, features, blog, contact form, and legal pages.
+                Everything from the feature grid above, none of the fluff.
+              </p>
+              <div class="tpl-tags">
+                <span class="tag-chip mono">marketing</span>
+                <span class="tag-chip mono">blog</span>
+                <span class="tag-chip mono">i18n</span>
+                <span class="tag-chip mono">resend</span>
+                <span class="tag-chip mono">plausible</span>
+              </div>
+            </div>
+            <div class="tpl-foot">
+              <span class="tpl-install mono"
+                ><span class="tpl-flag">$</span> npm create astro-ignite my-site <span
+                  class="tpl-flag">--template</span
+                > starter</span
+              >
+              <a class="btn btn-outline btn-sm" href="/docs">Preview ↗</a>
+            </div>
+          </article>
+
+          <article class="tpl">
+            <div class="tpl-preview">
+              <div class="pv-docs">
+                <div class="pv-side">
+                  <div class="pv-side-title mono">Start</div>
+                  <div class="pv-it">Intro</div>
+                  <div class="pv-it pv-it-on">Five prompts</div>
+                  <div class="pv-it">Eject</div>
+                  <div class="pv-side-title pv-side-title-spaced mono">Refs</div>
+                  <div class="pv-it">CLI flags</div>
+                  <div class="pv-it">Schema</div>
+                </div>
+                <div class="pv-main">
+                  <div class="pv-crumb mono">Start / Five prompts</div>
+                  <div class="pv-h-doc">The five prompts</div>
+                  <div class="pv-p">
+                    Five questions, then a finished site. Everything else lives in code you own.
+                  </div>
+                  <div class="pv-code mono">$ npm create astro-ignite my-site</div>
+                </div>
+                <div class="pv-toc">
+                  <div class="pv-tt mono">On page</div>
+                  <div class="pv-li pv-li-on">Project name</div>
+                  <div class="pv-li">Languages</div>
+                  <div class="pv-li">Email</div>
+                  <div class="pv-li">Analytics</div>
+                </div>
+              </div>
+            </div>
+            <div class="tpl-body">
+              <div class="tpl-row">
+                <h3>Docs</h3>
+                <span class="tpl-meta mono">starlight-style</span>
+              </div>
+              <p class="tpl-desc">
+                Three-column documentation site with sidebar nav, MDX components, on-this-page TOC,
+                breadcrumbs, and bilingual seed content.
+              </p>
+              <div class="tpl-tags">
+                <span class="tag-chip mono">docs</span>
+                <span class="tag-chip mono">mdx</span>
+                <span class="tag-chip mono">i18n</span>
+                <span class="tag-chip mono">callouts</span>
+                <span class="tag-chip mono">code-copy</span>
+              </div>
+            </div>
+            <div class="tpl-foot">
+              <span class="tpl-install mono"
+                ><span class="tpl-flag">$</span> npm create astro-ignite my-docs <span
+                  class="tpl-flag">--template</span
+                > docs</span
+              >
+              <a class="btn btn-outline btn-sm" href="/docs">Preview ↗</a>
+            </div>
+          </article>
+        </div>
+
+        <div class="tpls-foot">
+          <span class="mono tpls-coming"
+            >More templates in progress: <span class="emph">portfolio</span>, <span class="emph"
+              >commerce</span
+            >, <span class="emph">changelog</span>.</span
+          >
+          <a class="btn btn-ghost btn-sm" href={ghUrl + '/blob/main/ROADMAP.md'} rel="noopener"
+            >Browse all →</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="page">
+        <div class="cta-box">
+          <span class="pill"
+            ><span class="dot" aria-hidden="true"></span><span class="mono"
+              >ready in 90 seconds</span
+            ></span
+          >
+          <h2>Stop yak-shaving the <span class="muted">first 30%</span>.</h2>
+          <p>
+            Five prompts, one install, a finished Astro site you own outright. Eject any time —
+            there's nothing to eject from.
+          </p>
+          <div class="cmd">
+            <span
+              ><span class="cmd-prompt">$</span><span class="cmd-text mono"
+                >npm create astro-ignite@latest</span
+              ></span
+            >
+            <button class="cmd-copy" type="button" data-copy="npm create astro-ignite@latest"
+              >copy</button
+            >
+          </div>
+          <div class="cta-actions">
+            <a class="btn btn-primary btn-lg" href="/docs/quick-start">Get started</a>
+            <a class="btn btn-outline btn-lg" href={ghUrl} rel="noopener">Star on GitHub ★</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="page footer-grid">
+      <div class="footer-brand">
+        <Brand variant="lockup" size={0.25} />
+        <p class="footer-lede mono">Production-grade Astro sites in five prompts. MIT · pre-1.0.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <span class="footer-head">Product</span>
+          <a href="#templates">Templates</a>
+          <a href="/docs">Docs</a>
+          <a
+            href="https://github.com/JordiParraCrespo/astro-ignite/blob/main/plan.md"
+            rel="noopener">Plan</a
+          >
+          <a href="https://github.com/JordiParraCrespo/astro-ignite/releases" rel="noopener"
+            >Changelog</a
+          >
+        </div>
+        <div class="footer-col">
+          <span class="footer-head">Resources</span>
+          <a href={ghUrl} rel="noopener">GitHub</a>
+          <a href={ghUrl + '/issues'} rel="noopener">Issues</a>
+          <a href={ghUrl + '/discussions'} rel="noopener">Discussions</a>
+          <a href="https://www.npmjs.com/package/create-astro-ignite" rel="noopener">npm</a>
+        </div>
+        <div class="footer-col">
+          <span class="footer-head">Legal</span>
+          <a href={ghUrl + '/blob/main/LICENSE'} rel="noopener">License</a>
+          <a href="/docs/legal/privacy">Privacy</a>
+          <a href="/docs/legal/cookies">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Copy-to-clipboard for the .cmd-copy buttons.
+    document.querySelectorAll<HTMLButtonElement>('.cmd-copy').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const text = btn.dataset.copy;
+        if (!text || !navigator.clipboard) return;
+        try {
+          await navigator.clipboard.writeText(text);
+          const original = btn.textContent;
+          btn.textContent = 'copied';
+          setTimeout(() => {
+            btn.textContent = original;
+          }, 1200);
+        } catch {
+          /* permissions denied — silent */
+        }
+      });
+    });
+  </script>
+</MarketingLayout>
+
+<style>
+  /* =============================================================================
+   * Layout primitives
+   * ============================================================================= */
+  .page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+  @media (max-width: 720px) {
+    .page {
+      padding: 0 24px;
+    }
+  }
+
+  .muted {
+    color: var(--color-fg-muted);
+  }
+  .emph {
+    color: var(--color-fg);
+  }
+  .inline-code {
+    font-size: 14px;
+    color: var(--color-fg);
+  }
+
+  /* =============================================================================
+   * Pill (badge variant for the landing — outline style)
+   * ============================================================================= */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px 5px 8px;
+    font-size: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-surface-2);
+    color: var(--color-fg);
+  }
+  .pill .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 99px;
+    background: var(--color-fg);
+  }
+  .pill .mono {
+    font-size: 11px;
+    color: var(--color-fg-muted);
+  }
+
+  /* =============================================================================
+   * Nav
+   * ============================================================================= */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in oklab, var(--color-bg) 72%, transparent);
+    backdrop-filter: saturate(140%) blur(14px);
+    -webkit-backdrop-filter: saturate(140%) blur(14px);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    height: 60px;
+  }
+  .nav-links {
+    display: flex;
+    gap: 22px;
+    margin-left: auto;
+    font-size: 13px;
+    color: var(--color-fg-muted);
+  }
+  .nav-links a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.12s var(--ease-out-soft);
+  }
+  .nav-links a:hover {
+    color: var(--color-fg);
+  }
+  .nav-cta {
+    display: flex;
+    gap: 8px;
+  }
+  @media (max-width: 760px) {
+    .nav-links {
+      display: none;
+    }
+  }
+
+  /* =============================================================================
+   * Hero
+   * ============================================================================= */
+  .hero {
+    padding: 80px 0 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image:
+      linear-gradient(to right, var(--color-surface-2) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--color-surface-2) 1px, transparent 1px);
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 30%, transparent 80%);
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 30%, transparent 80%);
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+  }
+  .hero-split {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 56px;
+    align-items: center;
+  }
+  @media (max-width: 920px) {
+    .hero-split {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+  }
+  .hero-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .hero h1 {
+    /* Max 80 (down from 96) — at 96 "Production-grade" hyphen-wraps in the
+       split layout's left column on common laptop widths. */
+    font-size: clamp(40px, 5.6vw, 80px);
+    font-weight: 500;
+    letter-spacing: -0.05em;
+    line-height: 0.95;
+    margin: 0;
+    text-wrap: balance;
+    /* Browser auto-hyphenation breaks "Production-grade" awkwardly on narrow
+       columns. Disable. */
+    hyphens: none;
+    word-break: normal;
+    overflow-wrap: normal;
+  }
+  .hero-lede {
+    margin: 0;
+    font-size: clamp(16px, 1.4vw, 19px);
+    line-height: 1.55;
+    color: var(--color-fg-muted);
+    max-width: 60ch;
+    text-wrap: pretty;
+  }
+  .hero-cta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .hero-meta {
+    font-size: 12px;
+    color: var(--color-fg-muted);
+  }
+
+  /* =============================================================================
+   * Command line
+   * ============================================================================= */
+  .cmd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 10px 10px 16px;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    background: var(--color-surface-2);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    width: fit-content;
+    max-width: 100%;
+  }
+  .cmd-prompt {
+    color: var(--color-fg-muted);
+    margin-right: 6px;
+  }
+  .cmd-text {
+    color: var(--color-fg);
+  }
+  .cmd-copy {
+    appearance: none;
+    background: transparent;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-fg-muted);
+    border: 1px solid var(--color-border);
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition:
+      color 0.12s,
+      border-color 0.12s;
+  }
+  .cmd-copy:hover {
+    color: var(--color-fg);
+    border-color: var(--color-border-strong);
+  }
+
+  /* =============================================================================
+   * Terminal preview
+   * ============================================================================= */
+  /* Terminal block stays dark regardless of theme — terminals look right
+     dark even on a light page (like a code block). Direct zinc hex refs
+     make these rules theme-invariant. */
+  .term {
+    border: 1px solid #27272a;
+    border-radius: 12px;
+    background: #000;
+    overflow: hidden;
+    box-shadow:
+      0 30px 60px -20px rgba(0, 0, 0, 0.8),
+      0 0 0 1px #27272a;
+  }
+  .term-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    border-bottom: 1px solid #27272a;
+    background: #18181b;
+  }
+  .term-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 99px;
+    background: #3f3f46;
+  }
+  .term-path {
+    font-size: 11px;
+    color: #71717a;
+    margin-left: 8px;
+  }
+  .term-shell {
+    font-size: 11px;
+    color: #52525b;
+    margin-left: auto;
+  }
+  .term-body {
+    padding: 18px 16px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #f4f4f5;
+  }
+  .t-muted {
+    color: #71717a;
+  }
+  .t-subtle {
+    color: #52525b;
+  }
+  .t-strong {
+    font-weight: 500;
+    color: #fafafa;
+  }
+  .t-pick {
+    display: inline-block;
+    padding: 1px 8px;
+    background: #fafafa;
+    color: #000;
+    border-radius: 3px;
+  }
+  .caret {
+    display: inline-block;
+    width: 8px;
+    height: 14px;
+    background: #fafafa;
+    vertical-align: -2px;
+  }
+
+  /* =============================================================================
+   * Meta strip
+   * ============================================================================= */
+  .meta-strip {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    flex-wrap: wrap;
+    padding: 18px 0;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    font-size: 12px;
+    color: var(--color-fg-muted);
+  }
+  .meta-item {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .meta-value {
+    color: var(--color-fg);
+    font-size: 14px;
+  }
+  .meta-spacer {
+    margin-left: auto;
+  }
+  @media (max-width: 720px) {
+    .meta-spacer {
+      margin-left: 0;
+    }
+  }
+
+  /* =============================================================================
+   * Section heads
+   * ============================================================================= */
+  section {
+    padding: 96px 0;
+  }
+  @media (max-width: 720px) {
+    section {
+      padding: 64px 0;
+    }
+  }
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+  .section-lead {
+    max-width: 32ch;
+  }
+  .section-lead p {
+    margin-top: 12px;
+    color: var(--color-fg-muted);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  .section-lead h2 {
+    font-size: clamp(32px, 4.4vw, 56px);
+    font-weight: 500;
+    letter-spacing: -0.045em;
+    line-height: 1.05;
+    margin: 0;
+    text-wrap: balance;
+    margin-top: 12px;
+  }
+  .section-meta {
+    font-size: 12px;
+    color: var(--color-fg-muted);
+    max-width: 30ch;
+    text-align: right;
+    line-height: 1.6;
+    margin: 0;
+  }
+  .eyebrow {
+    font-size: 11px;
+    color: var(--color-fg-muted);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  @media (max-width: 720px) {
+    .section-head {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .section-meta {
+      text-align: left;
+    }
+  }
+
+  /* =============================================================================
+   * Features grid (9-up)
+   * ============================================================================= */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  @media (max-width: 920px) {
+    .features {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 560px) {
+    .features {
+      grid-template-columns: 1fr;
+    }
+  }
+  .feat {
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-right: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-bg);
+  }
+  .features .feat:nth-child(3n) {
+    border-right: none;
+  }
+  .features .feat:nth-last-child(-n + 3) {
+    border-bottom: none;
+  }
+  @media (max-width: 920px) {
+    .features .feat {
+      border-right: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .features .feat:nth-child(2n) {
+      border-right: none;
+    }
+    .features .feat:nth-last-child(-n + 2) {
+      border-bottom: none;
+    }
+  }
+  @media (max-width: 560px) {
+    .features .feat {
+      border-right: none;
+    }
+    .features .feat:not(:last-child) {
+      border-bottom: 1px solid var(--color-border);
+    }
+  }
+  .feat-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .feat-num {
+    font-size: 10px;
+    color: var(--color-fg-muted);
+    border: 1px solid var(--color-border);
+    border-radius: 3px;
+    padding: 2px 5px;
+  }
+  .feat-tag {
+    font-size: 10px;
+    color: var(--color-fg-subtle);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .feat h3 {
+    margin: 4px 0 0;
+    font-size: 19px;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    color: var(--color-fg);
+  }
+  .feat p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--color-fg-muted);
+  }
+
+  /* =============================================================================
+   * Templates section
+   * ============================================================================= */
+  .templates-section {
+    padding-top: 0;
+  }
+  .tpls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 820px) {
+    .tpls {
+      grid-template-columns: 1fr;
+    }
+  }
+  .tpl {
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    background: var(--color-bg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.15s var(--ease-out-soft);
+  }
+  .tpl:hover {
+    border-color: var(--color-border-strong);
+  }
+  /* Template preview area is theme-invariant — each preview shows what its
+     template renders (starter is dark, docs is light). Don't flip the bg. */
+  .tpl-preview {
+    aspect-ratio: 16 / 9;
+    background: #18181b;
+    border-bottom: 1px solid var(--color-border);
+    position: relative;
+    overflow: hidden;
+  }
+  .tpl-body {
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .tpl-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .tpl-row h3 {
+    margin: 0;
+    font-size: 19px;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    color: var(--color-fg);
+  }
+  .tpl-meta {
+    font-size: 11px;
+    color: var(--color-fg-muted);
+  }
+  .tpl-desc {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--color-fg-muted);
+  }
+  .tpl-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .tag-chip {
+    font-size: 11px;
+    padding: 3px 7px;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    color: var(--color-fg-muted);
+  }
+  .tpl-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    border-top: 1px solid var(--color-border);
+    background: var(--color-surface-2);
+    gap: 12px;
+  }
+  .tpl-install {
+    font-size: 12px;
+    color: var(--color-fg);
+    overflow-x: auto;
+    white-space: nowrap;
+    flex: 1;
+    min-width: 0;
+  }
+  .tpl-flag {
+    color: var(--color-fg-muted);
+  }
+  .tpls-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .tpls-coming {
+    font-size: 12px;
+    color: var(--color-fg-muted);
+  }
+
+  /* Starter template preview — invariant. The preview shows what the dark
+     starter looks like; flipping it with the page would misrepresent the
+     template. Direct zinc hex refs throughout. */
+  .pv-starter {
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
+  }
+  .pv-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: #71717a;
+  }
+  .pv-glyph {
+    color: #fafafa;
+    font-size: 11px;
+  }
+  .pv-nav-links {
+    margin-left: auto;
+    color: #52525b;
+  }
+  .pv-bottom {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .pv-h {
+    font-size: clamp(20px, 2.6vw, 32px);
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: #fafafa;
+  }
+  .pv-h-muted {
+    color: #71717a;
+  }
+  .pv-sub {
+    font-size: 11px;
+    color: #71717a;
+    max-width: 36ch;
+  }
+  .pv-cta {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .pv-b1 {
+    background: #fafafa;
+    color: #000;
+    font-size: 10px;
+    padding: 5px 9px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+  .pv-b2 {
+    border: 1px solid #3f3f46;
+    color: #e4e4e7;
+    font-size: 10px;
+    padding: 5px 9px;
+    border-radius: 4px;
+  }
+
+  /* Docs template preview (light) */
+  .pv-docs {
+    display: grid;
+    grid-template-columns: 90px 1fr 70px;
+    height: 100%;
+    background: #fafafa;
+    color: #18181b;
+  }
+  .pv-side {
+    padding: 16px 12px;
+    border-right: 1px solid #e4e4e7;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .pv-side-title {
+    font-size: 10px;
+    color: #71717a;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .pv-side-title-spaced {
+    margin-top: 6px;
+  }
+  .pv-it {
+    font-size: 10px;
+    color: #71717a;
+    padding: 3px 6px;
+    border-radius: 3px;
+  }
+  .pv-it-on {
+    background: #f4f4f5;
+    color: #18181b;
+  }
+  .pv-main {
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .pv-crumb {
+    font-size: 9px;
+    color: #71717a;
+  }
+  .pv-h-doc {
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    margin: 2px 0;
+    color: #18181b;
+  }
+  .pv-p {
+    font-size: 10px;
+    color: #52525b;
+    line-height: 1.5;
+  }
+  .pv-code {
+    font-size: 10px;
+    padding: 8px 10px;
+    background: #f4f4f5;
+    border: 1px solid #e4e4e7;
+    border-radius: 6px;
+    color: #18181b;
+    margin-top: auto;
+  }
+  .pv-toc {
+    padding: 16px 12px;
+    border-left: 1px solid #e4e4e7;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .pv-tt {
+    font-size: 9px;
+    color: #71717a;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .pv-li {
+    font-size: 10px;
+    color: #71717a;
+    padding-left: 6px;
+    border-left: 2px solid transparent;
+  }
+  .pv-li-on {
+    color: #18181b;
+    border-left-color: #18181b;
+    font-weight: 500;
+  }
+
+  /* =============================================================================
+   * CTA box
+   * ============================================================================= */
+  .cta-section {
+    padding-top: 0;
+  }
+  .cta-box {
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    padding: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: center;
+    text-align: center;
+    background: radial-gradient(
+      ellipse 60% 100% at 50% 0%,
+      var(--color-surface-2) 0%,
+      var(--color-bg) 70%
+    );
+  }
+  .cta-box h2 {
+    font-size: clamp(32px, 4.4vw, 56px);
+    font-weight: 500;
+    letter-spacing: -0.045em;
+    line-height: 1.05;
+    margin: 0;
+    max-width: 18ch;
+    text-wrap: balance;
+  }
+  .cta-box p {
+    margin: 0;
+    max-width: 52ch;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--color-fg-muted);
+  }
+  .cta-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* =============================================================================
+   * Footer
+   * ============================================================================= */
+  footer {
+    border-top: 1px solid var(--color-border);
+    padding: 40px 0 56px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-fg-muted);
+  }
+  .footer-grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .footer-grid a {
+    color: var(--color-fg-muted);
+    text-decoration: none;
+    transition: color 0.12s var(--ease-out-soft);
+  }
+  .footer-grid a:hover {
+    color: var(--color-fg);
+  }
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 36ch;
+  }
+  .footer-lede {
+    margin: 0;
+    font-size: 12px;
+    color: var(--color-fg-muted);
+  }
+  .footer-cols {
+    display: flex;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+  .footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .footer-head {
+    color: var(--color-fg);
+    margin-bottom: 4px;
+  }
+</style>

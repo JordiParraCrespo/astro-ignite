@@ -1,0 +1,39 @@
+---
+/**
+ * Above-the-fold hero image — eager, fetchpriority high, sync decode.
+ *
+ * NO blur placeholder (it would delay the visible LCP element).
+ * NO lazy loading (defeats the purpose).
+ *
+ * Pair this with `preloadImages={[heroImage]}` on BaseLayout so the browser
+ * starts the request during HTML parsing.
+ */
+
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  width: number;
+  height: number;
+  sizes?: string;
+  class?: string;
+}
+
+const { src, alt, width, height, sizes = '100vw', class: className } = Astro.props;
+---
+
+<Picture
+  src={src}
+  alt={alt}
+  width={width}
+  height={height}
+  sizes={sizes}
+  loading="eager"
+  decoding="sync"
+  fetchpriority="high"
+  formats={['avif', 'webp']}
+  quality={85}
+  class={className}
+/>

@@ -1,0 +1,48 @@
+---
+title: Inicio rápido
+description: Crea un sitio nuevo con astro-ignite en menos de un minuto.
+lastUpdated: 2026-05-10
+tags: [empezar]
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
+
+## Requisitos
+
+- Node 20.11+ o 22 LTS
+- Un gestor de paquetes — pnpm (recomendado), npm, yarn o bun
+
+## Crear un sitio nuevo
+
+<CodeBlock filename="terminal" language="bash">
+  {`npm create astro-ignite@latest mi-sitio`}
+</CodeBlock>
+
+Se te harán seis preguntas. Acepta los valores por defecto o cámbialos; el flujo dura unos quince segundos.
+
+## Ejecutarlo
+
+<CodeBlock filename="terminal" language="bash">
+  {`cd mi-sitio
+pnpm install
+pnpm dev`}
+</CodeBlock>
+
+Abre la URL que aparece en tu terminal. Verás un sitio funcional con un hero estilizado, un blog con dos entradas de ejemplo, una sección de proyectos, una página "acerca de", un formulario de contacto operativo (registra en consola en dev), páginas legales, un banner de cookies y un selector de modo oscuro.
+
+<Callout variant="tip" title="Sin necesidad de registrarse">
+  En desarrollo, las variables de entorno faltantes muestran logs en consola — `pnpm dev` produce un
+  flujo completo sin necesidad de crear cuentas. Configura `RESEND_API_KEY` y
+  `PUBLIC_PLAUSIBLE_DOMAIN` solo cuando vayas a producción.
+</Callout>
+
+## Qué editar primero
+
+1. **Colores y tokens** en `src/styles/global.css` (bloque `@theme`)
+2. **Identidad del sitio** en `src/config/site.ts` — nombre, URL, organización, redes
+3. **Imagen OG** en `public/og/og-default.png` (se incluye un placeholder)
+4. **Páginas legales** en `src/content/legal/{locale}/*.mdx` — los placeholders necesitan ser revisados, luego **revísalos con un abogado antes de publicar**
+5. **Bio de autor** en `src/content/authors/jordi.json`
+
+El resto puede crecer contigo con el tiempo.

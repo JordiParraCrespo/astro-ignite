@@ -1,0 +1,11 @@
+---
+/**
+ * Root path → redirects to the configured home doc.
+ * Configure `siteConfig.homePath` in `src/config/site.ts`.
+ */
+
+import { siteConfig } from '@/config/site';
+
+const target = siteConfig.homePath;
+return Astro.redirect(target);
+---

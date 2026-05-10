@@ -1,0 +1,59 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/Hero.astro';
+import FeatureGrid from '@/components/FeatureGrid.astro';
+import { useTranslations } from '@/i18n';
+import { siteConfig } from '@/config/site';
+
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
+
+const features = [
+  {
+    title: 'Lighthouse 100s on mobile',
+    description:
+      'Layered CSS with above-the-fold scoped styles, Tailwind below the fold, and Beasties critical-CSS extraction. CI-enforced.',
+    icon: '🚀',
+  },
+  {
+    title: 'Typed Schema.org JSON-LD',
+    description:
+      'schema-dts builders compose into a single @graph. Catch malformed structured data at build, not in Search Console.',
+    icon: '🔗',
+  },
+  {
+    title: 'Native i18n',
+    description:
+      'Astro 5 i18n routing with one code path for monolingual and multilingual sites. Hreflang auto-computed.',
+    icon: '🌍',
+  },
+  {
+    title: 'Working contact form',
+    description:
+      'Astro Actions + Zod validation + honeypot + your choice of Resend or SMTP. Dev mode logs to console.',
+    icon: '✉️',
+  },
+  {
+    title: 'Cookie banner + legal templates',
+    description:
+      'Privacy, terms, cookies — translated, with a "review with counsel" disclaimer baked in.',
+    icon: '📜',
+  },
+  {
+    title: 'You own the code',
+    description: "No runtime dependency. Edit anything. Forever. Five prompts, then it's yours.",
+    icon: '🧰',
+  },
+];
+---
+
+<BaseLayout title={t('seo.home.title')} description={t('seo.home.description')}>
+  <Hero
+    eyebrow="Pre-1.0 — bootstrapped with astro-ignite"
+    title={siteConfig.name[locale] ?? siteConfig.name[siteConfig.defaultLocale]!}
+    description={t('seo.home.description')}
+    primaryCta={{ label: 'Read the blog', href: '/blog' }}
+    secondaryCta={{ label: 'See projects', href: '/projects' }}
+  />
+  <FeatureGrid heading="What ships out of the box" features={features} />
+</BaseLayout>

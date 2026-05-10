@@ -1,0 +1,1486 @@
+---
+/**
+ * Design canvas — visual reference for the astro-ignite identity.
+ *
+ * Direct port of the Claude Design handoff `index.html`. Renders six sections:
+ *   1. Brand — cursor `>_` mark + wordmark + scale
+ *   2. Color — Zinc scale + dark/light functional token cards
+ *   3. Typography — Geist Sans scale + Geist Mono spec
+ *   4. Components — Buttons, Badges, Inputs, Cards, Terminal
+ *   5. Marketing — Hero + Features grid
+ *   6. Docs — preview tile
+ *
+ * Pure Astro — no React. Each section is its own `<section>` so the page is
+ * deep-linkable (anchors match section ids).
+ */
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Brand from '@/components/Brand.astro';
+
+const ZINC = [
+  ['50', '#fafafa'],
+  ['100', '#f4f4f5'],
+  ['200', '#e4e4e7'],
+  ['300', '#d4d4d8'],
+  ['400', '#a1a1aa'],
+  ['500', '#71717a'],
+  ['600', '#52525b'],
+  ['700', '#3f3f46'],
+  ['800', '#27272a'],
+  ['900', '#18181b'],
+  ['950', '#0a0a0a'],
+] as const;
+
+const TYPE_SCALE = [
+  { name: 'Display', size: 72, lh: 1.0, weight: 500, tracking: '-0.05em', sample: 'Ship faster.' },
+  {
+    name: 'Heading 1',
+    size: 48,
+    lh: 1.05,
+    weight: 500,
+    tracking: '-0.045em',
+    sample: 'Production-grade defaults',
+  },
+  {
+    name: 'Heading 2',
+    size: 32,
+    lh: 1.15,
+    weight: 500,
+    tracking: '-0.035em',
+    sample: 'What you get',
+  },
+  {
+    name: 'Heading 3',
+    size: 22,
+    lh: 1.25,
+    weight: 500,
+    tracking: '-0.02em',
+    sample: 'Lighthouse 100s on mobile',
+  },
+  {
+    name: 'Body',
+    size: 16,
+    lh: 1.55,
+    weight: 400,
+    tracking: '-0.005em',
+    sample:
+      'You answer five prompts. You get a finished site with SEO, i18n, perf, legal, and email pre-wired.',
+  },
+  {
+    name: 'Body small',
+    size: 14,
+    lh: 1.55,
+    weight: 400,
+    tracking: '0',
+    sample: 'CI-enforced budgets keep mobile Lighthouse at 100 across runs.',
+  },
+  {
+    name: 'Caption',
+    size: 12,
+    lh: 1.45,
+    weight: 400,
+    tracking: '0.005em',
+    sample: 'updated 14 hours ago · main · 6f4ac21',
+  },
+];
+
+const FUNCTIONAL_TOKENS = {
+  dark: [
+    ['bg', '#0a0a0a', 'page'],
+    ['fg', '#fafafa', 'body text'],
+    ['surface-2', '#27272a', 'subtle bg'],
+    ['fg-muted', '#a1a1aa', 'secondary text'],
+    ['border', '#27272a', 'hairlines'],
+    ['border-strong', '#3f3f46', 'inputs / cards'],
+    ['primary', '#fafafa', 'action / cta'],
+    ['primary-fg', '#18181b', 'on-primary'],
+    ['ring', '#d4d4d8', 'focus'],
+  ],
+  light: [
+    ['bg', '#fafafa', 'page'],
+    ['fg', '#0a0a0a', 'body text'],
+    ['surface-2', '#f4f4f5', 'subtle bg'],
+    ['fg-muted', '#71717a', 'secondary text'],
+    ['border', '#e4e4e7', 'hairlines'],
+    ['border-strong', '#d4d4d8', 'inputs / cards'],
+    ['primary', '#18181b', 'action / cta'],
+    ['primary-fg', '#fafafa', 'on-primary'],
+    ['ring', '#18181b', 'focus'],
+  ],
+};
+
+const FEATURES = [
+  {
+    kbd: '01',
+    title: 'Lighthouse 100s',
+    body: 'Mobile and desktop. CI budgets fail the build before regressions ship.',
+    tag: 'perf',
+  },
+  {
+    kbd: '02',
+    title: 'Astro 5 + i18n',
+    body: 'Native i18n, content collections, and Astro Actions. Strict Zod schemas.',
+    tag: 'core',
+  },
+  {
+    kbd: '03',
+    title: 'Tailwind v4',
+    body: 'Layered CSS strategy. Scoped above-the-fold + critical-CSS extraction.',
+    tag: 'css',
+  },
+  {
+    kbd: '04',
+    title: 'Typed JSON-LD',
+    body: 'Schema.org via schema-dts. Compile-time errors instead of stale snippets.',
+    tag: 'seo',
+  },
+  {
+    kbd: '05',
+    title: 'Image pipeline',
+    body: 'AVIF + WebP, responsive srcset, LQIP placeholders, zero CLS.',
+    tag: 'media',
+  },
+  {
+    kbd: '06',
+    title: 'Self-hosted fonts',
+    body: 'Geist Sans + Mono via astro:fonts. Subsetted, preloaded, zero CLS.',
+    tag: 'type',
+  },
+  {
+    kbd: '07',
+    title: 'Tri-state dark mode',
+    body: 'Light / dark / system, with anti-flash inline script. No FOUC.',
+    tag: 'ux',
+  },
+  {
+    kbd: '08',
+    title: 'Working contact form',
+    body: 'Astro Actions + Zod validation + Resend or SMTP. Wired, not a stub.',
+    tag: 'email',
+  },
+  {
+    kbd: '09',
+    title: 'Cookies + legal',
+    body: 'Banner, privacy, terms, and cookies templates. i18n-aware.',
+    tag: 'legal',
+  },
+];
+
+const SECTIONS = [
+  { id: 'brand', label: 'Brand' },
+  { id: 'color', label: 'Color' },
+  { id: 'type', label: 'Type' },
+  { id: 'ui', label: 'Components' },
+  { id: 'site', label: 'Marketing' },
+  { id: 'docs-tile', label: 'Docs' },
+];
+---
+
+<BaseLayout
+  title="Design system"
+  description="Visual identity reference for astro-ignite — Zinc tokens, Geist typography, cursor mark, primitive components."
+>
+  <header class="canvas-header">
+    <div class="canvas-meta mono">design / canvas · v0.1</div>
+    <h1>astro-ignite — design system</h1>
+    <p class="canvas-lede">
+      Pure shadcn monochrome. Dark-first. Geist Sans/Mono. No accent color — interactive states are
+      the inversion of the neutrals. This page is the canonical visual reference; every component in
+      the template renders against these tokens.
+    </p>
+    <nav class="canvas-toc mono" aria-label="Sections">
+      {SECTIONS.map((s) => <a href={`#${s.id}`}>{s.label}</a>)}
+    </nav>
+  </header>
+
+  <!-- ============================================================
+       1. Brand
+       ============================================================ -->
+  <section id="brand" class="canvas-section">
+    <div class="section-head">
+      <h2>Brand</h2>
+      <p class="section-sub">Mark A — cursor `&gt;_`. Locked across the system.</p>
+    </div>
+
+    <div class="brand-grid">
+      <div class="card brand-card">
+        <div class="brand-frame">
+          <Brand variant="lockup" size={1} />
+        </div>
+        <div class="brand-meta mono">
+          <span>Geist Mono · 56 + Geist Sans · 40</span>
+          <span>lockup</span>
+        </div>
+      </div>
+
+      <div class="card brand-card">
+        <div class="brand-frame brand-frame-tight">
+          <Brand variant="mark" size={1.4} />
+        </div>
+        <div class="brand-meta mono">
+          <span>Geist Mono · 78</span>
+          <span>mark only</span>
+        </div>
+      </div>
+
+      <div class="card brand-card brand-card-scale">
+        <div class="brand-meta mono">
+          <span>Scale</span>
+          <span>32 → 96</span>
+        </div>
+        <div class="hairline"></div>
+        <div class="brand-scale">
+          <Brand variant="lockup" size={0.32} />
+          <Brand variant="lockup" size={0.55} />
+          <Brand variant="lockup" size={0.85} />
+        </div>
+      </div>
+
+      <div class="card brand-card brand-card-wide">
+        <div class="brand-meta mono">
+          <span>Wordmark · lockup</span>
+          <span>always lowercase</span>
+        </div>
+        <div class="hairline"></div>
+        <div class="brand-wordmark">
+          <div class="brand-display">astro-ignite</div>
+          <div class="brand-wordmark-sub mono">
+            shadcn-style CLI for production-grade Astro sites with top-tier SEO and performance
+            defaults.
+          </div>
+        </div>
+        <div class="hairline"></div>
+        <div class="brand-meta mono">
+          <span>Geist Sans · 500 · -0.05em</span>
+          <span>display</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       2. Color
+       ============================================================ -->
+  <section id="color" class="canvas-section">
+    <div class="section-head">
+      <h2>Color</h2>
+      <p class="section-sub">Single-hue Zinc scale + functional tokens. No accent.</p>
+    </div>
+
+    <div class="card color-card-wide">
+      <div class="section-head section-head-row">
+        <div>
+          <div class="section-title">Zinc</div>
+          <div class="section-sub mono">--color-zinc-50 → --color-zinc-950 · 11 stops</div>
+        </div>
+        <span class="badge badge-mono">single hue</span>
+      </div>
+      <div class="hairline"></div>
+      <div class="zinc-scale">
+        {
+          ZINC.map(([name, hex]) => (
+            <div class="zinc-swatch">
+              <div class="zinc-chip" style={`background:${hex}`} />
+              <div class="zinc-meta mono">
+                <span class="zinc-name">{name}</span>
+                <span>{hex}</span>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="color-grid">
+      {
+        (['dark', 'light'] as const).map((mode) => (
+          <div class={`card token-card token-card-${mode}`}>
+            <div class="section-head section-head-row">
+              <div>
+                <div class="section-title">
+                  {mode === 'dark' ? 'Dark · default' : 'Light · docs'}
+                </div>
+                <div class="section-sub mono">Functional tokens</div>
+              </div>
+              <span class={`badge badge-mono ${mode === 'dark' ? 'badge-solid' : 'badge-outline'}`}>
+                {mode === 'dark' ? '◐ dark' : '◑ light'}
+              </span>
+            </div>
+            <div class="hairline" />
+            <div class="token-grid">
+              {FUNCTIONAL_TOKENS[mode].map(([name, hex, role]) => (
+                <div class="token-row">
+                  <div class="token-chip" style={`background:${hex}`} />
+                  <div class="token-text">
+                    <div class="mono token-name">--color-{name}</div>
+                    <div class="mono token-role">
+                      {hex} · {role}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- ============================================================
+       3. Typography
+       ============================================================ -->
+  <section id="type" class="canvas-section">
+    <div class="section-head">
+      <h2>Typography</h2>
+      <p class="section-sub">
+        Geist Sans for everything human · Geist Mono for everything machine.
+      </p>
+    </div>
+
+    <div class="type-grid">
+      <div class="card type-card">
+        <div class="section-head section-head-row">
+          <div>
+            <div class="section-title">Geist Sans</div>
+            <div class="section-sub mono">400 / 500 · variable · -0.05 → 0.005em tracking</div>
+          </div>
+          <span class="badge badge-mono">type scale</span>
+        </div>
+        <div class="hairline"></div>
+        <div class="type-scale">
+          {
+            TYPE_SCALE.map((s) => (
+              <div class="type-row">
+                <div class="type-meta mono">
+                  <span class="type-name">{s.name}</span>
+                  <span>
+                    {s.size}/{Math.round(s.size * s.lh)} · {s.weight}
+                  </span>
+                </div>
+                <div
+                  class="type-sample"
+                  style={`font-size:${s.size}px;line-height:${s.lh};font-weight:${s.weight};letter-spacing:${s.tracking}`}
+                >
+                  {s.sample}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="card type-card">
+        <div class="section-head section-head-row">
+          <div>
+            <div class="section-title">Geist Mono</div>
+            <div class="section-sub mono">Code · paths · numerics · UI labels</div>
+          </div>
+          <span class="badge badge-mono">monospace</span>
+        </div>
+        <div class="hairline"></div>
+
+        <div class="mono-glyphs mono">
+          0 1 2 3 4 5 6 7 8 9<br />
+          a b c d e f g · A B C D E F G<br />
+          {`{ } [ ] ( ) < > / \\ | & * ^ ~`}
+        </div>
+
+        <div class="hairline"></div>
+
+        <div class="mono-grid">
+          <div class="mono-pane">
+            <div class="mono-pane-label mono">Code</div>
+            <pre
+              class="mono mono-pane-code">{`const config = defineConfig({
+  i18n: { defaultLocale: 'en' },
+  experimental: { actions: true },
+})`}</pre>
+          </div>
+          <div class="mono-pane">
+            <div class="mono-pane-label mono">UI / numerics</div>
+            <div class="mono mono-pane-stats">
+              <div>v0.4.2 · MIT · pre-1.0</div>
+              <div class="muted">Performance · 100 / 100 / 100 / 100</div>
+              <div class="muted">SEO · 100 / 100 / 100 / 100</div>
+              <div class="muted">17.4 kB gzip · 0.4s LCP · 0.00 CLS</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mono-features">
+          <span class="mono mono-features-label">features</span>
+          <span class="kbd">cv11</span>
+          <span class="kbd">ss03</span>
+          <span class="kbd">zero</span>
+          <span class="mono mono-features-tail">opentype</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       4. Components
+       ============================================================ -->
+  <section id="ui" class="canvas-section">
+    <div class="section-head">
+      <h2>Components</h2>
+      <p class="section-sub">Quiet · 36 px default · 6 px radius.</p>
+    </div>
+
+    <div class="ui-grid">
+      <div class="card">
+        <div class="section-head section-head-row">
+          <div>
+            <div class="section-title">Buttons</div>
+            <div class="section-sub mono">5 variants · 3 sizes · icon</div>
+          </div>
+          <span class="badge badge-mono">component</span>
+        </div>
+        <div class="hairline"></div>
+
+        <div class="ui-row">
+          <span class="ui-row-label mono">variant</span>
+          <button class="btn btn-primary">Get started</button>
+          <button class="btn btn-secondary">Read docs</button>
+          <button class="btn btn-outline">Cancel</button>
+          <button class="btn btn-ghost">Skip</button>
+          <button class="btn btn-link">Learn more →</button>
+        </div>
+
+        <div class="ui-row">
+          <span class="ui-row-label mono">size</span>
+          <button class="btn btn-primary btn-sm">Small</button>
+          <button class="btn btn-primary">Default</button>
+          <button class="btn btn-primary btn-lg">Large</button>
+          <button class="btn btn-secondary btn-icon" aria-label="Command">⌘</button>
+        </div>
+
+        <div class="ui-row">
+          <span class="ui-row-label mono">state</span>
+          <button class="btn btn-primary">Focus</button>
+          <button class="btn btn-primary" disabled style="opacity:.5;cursor:not-allowed;"
+            >Disabled</button
+          >
+          <button class="btn btn-secondary">
+            <span class="ui-spinner" aria-hidden="true"></span>
+            Installing
+          </button>
+        </div>
+
+        <div class="hairline"></div>
+        <div class="mono ui-meta">36 / 30 / 44 px heights · radius 6 · weight 500 · -0.005em</div>
+      </div>
+
+      <div class="card">
+        <div class="section-head section-head-row">
+          <div>
+            <div class="section-title">Badges + form</div>
+            <div class="section-sub mono">status · meta · form</div>
+          </div>
+          <span class="badge badge-mono">component</span>
+        </div>
+        <div class="hairline"></div>
+
+        <div class="ui-row">
+          <span class="ui-row-label mono">badge</span>
+          <span class="badge">Default</span>
+          <span class="badge badge-solid">Pre-1.0</span>
+          <span class="badge badge-outline">Outline</span>
+          <span class="badge badge-mono">v0.4.2</span>
+          <span class="badge"
+            ><span class="badge-dot" style="color:var(--color-fg)"></span>active</span
+          >
+          <span class="badge" style="color:var(--color-fg-muted)"
+            ><span class="badge-dot"></span>idle</span
+          >
+        </div>
+
+        <div class="ui-row">
+          <span class="ui-row-label mono">kbd</span>
+          <span class="kbd">⌘</span>
+          <span class="kbd">K</span>
+          <span class="mono ui-row-aside">then</span>
+          <span class="kbd">↵</span>
+          <span class="mono ui-row-aside">to confirm</span>
+        </div>
+
+        <div class="ui-field">
+          <label class="mono ui-field-label" for="canvas-name">project name</label>
+          <input class="input" id="canvas-name" value="my-site" />
+          <div class="mono ui-field-hint">will create ./my-site/</div>
+        </div>
+
+        <div class="ui-field">
+          <label class="mono ui-field-label">email provider</label>
+          <div class="ui-segment">
+            <button class="btn btn-primary btn-sm">Resend</button>
+            <button class="btn btn-outline btn-sm">SMTP</button>
+            <button class="btn btn-outline btn-sm">None</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-head section-head-row">
+          <div>
+            <div class="section-title">Cards</div>
+            <div class="section-sub mono">feature · stat</div>
+          </div>
+          <span class="badge badge-mono">component</span>
+        </div>
+        <div class="hairline"></div>
+
+        <div class="card-grid">
+          <div class="card sub-card">
+            <div class="sub-card-head">
+              <div class="sub-card-icon mono">★</div>
+              <div class="sub-card-title">Lighthouse 100s</div>
+            </div>
+            <div class="sub-card-body">
+              Mobile and desktop, CI-enforced. Budgets fail the build before regressions ship.
+            </div>
+            <div class="sub-card-tags">
+              <span class="badge badge-mono">CI</span>
+              <span class="badge badge-mono">budgets</span>
+            </div>
+          </div>
+
+          <div class="card sub-card">
+            <div class="mono sub-card-eyebrow">bundle · gzip</div>
+            <div class="stat">
+              <span class="stat-value">17.4</span>
+              <span class="stat-unit mono">kB</span>
+            </div>
+            <div class="stat-trend">
+              <span class="mono">↓ 2.1</span>
+              <span class="mono muted">vs last week</span>
+            </div>
+            <div class="stat-bars">
+              {
+                [18, 22, 19, 21, 24, 22, 20, 19, 21, 18, 17.4].map((h, i) => (
+                  <span
+                    class:list={['stat-bar', i === 10 && 'is-active']}
+                    style={`height:${h * 1.1}px`}
+                  />
+                ))
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-head section-head-row">
+          <div>
+            <div class="section-title">Terminal</div>
+            <div class="section-sub mono">scaffold flow · 6 prompts</div>
+          </div>
+          <span class="badge badge-mono">prompt-ui</span>
+        </div>
+
+        <div class="terminal">
+          <div class="terminal-bar">
+            <span class="terminal-dot"></span>
+            <span class="terminal-dot"></span>
+            <span class="terminal-dot"></span>
+            <span class="terminal-path mono">~/code</span>
+            <span class="terminal-shell mono">zsh</span>
+          </div>
+          <pre
+            class="terminal-body mono">
+<span style="color:var(--color-fg-muted)">$</span> npm create astro-ignite@latest my-site
+
+<span class="t-fg">^</span>  <span class="t-fg-strong">astro-ignite</span>  <span class="t-muted">v0.1.0</span>
+<span class="t-subtle">│</span>
+<span class="t-subtle">◇</span>  Template?     <span class="t-muted">starter</span>
+<span class="t-subtle">◇</span>  Project name? <span class="t-muted">./my-site</span>
+<span class="t-subtle">◇</span>  Languages?    <span class="t-muted">en, es</span>
+<span class="t-subtle">◇</span>  Email?        <span class="t-muted">Resend</span>
+<span class="t-fg">◆</span>  Install deps? <span class="t-pill">● Yes</span> <span class="t-muted">○ No  ○ pnpm  ○ bun</span>
+<span class="t-subtle">└</span>  <span class="t-cursor caret" />
+          </pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       5. Marketing — Hero + Features
+       ============================================================ -->
+  <section id="site" class="canvas-section">
+    <div class="section-head">
+      <h2>Marketing</h2>
+      <p class="section-sub">Sample sections built from the system above.</p>
+    </div>
+
+    <!-- Hero -->
+    <div class="card hero-tile">
+      <div class="hero-nav">
+        <Brand variant="lockup" size={0.28} />
+        <span class="badge badge-mono">v0.1.0 · pre-1.0</span>
+        <div class="hero-nav-links mono">
+          <span>Docs</span>
+          <span>Plan</span>
+          <span>GitHub ↗</span>
+        </div>
+      </div>
+      <div class="hero-body">
+        <span class="badge badge-mono hero-badge">
+          <span class="badge-dot" style="color:var(--color-fg)"></span>
+          npm create astro-ignite@latest
+        </span>
+        <h3 class="hero-headline">
+          Production-grade<br />
+          <span class="muted">Astro sites,</span> in five prompts.
+        </h3>
+        <p class="hero-lede">
+          SEO, i18n, perf, legal, and email — pre-wired with sane defaults you actually own. No
+          runtime dependency, no lock-in. <span class="emph">Just code.</span>
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary btn-lg">Get started</button>
+          <button class="btn btn-outline btn-lg">Read the plan</button>
+          <span class="mono hero-meta">MIT · Astro 5 · Tailwind v4</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div class="card features-tile">
+      <div class="features-head">
+        <div>
+          <span class="mono features-eyebrow">What you get</span>
+          <h3 class="features-title">Twenty things you'd otherwise build at 11pm.</h3>
+        </div>
+        <p class="mono features-aside">
+          You own every line. No runtime dependency on this tool — eject is free, because there's
+          nothing to eject.
+        </p>
+      </div>
+      <div class="features-grid">
+        {
+          FEATURES.map((f, i) => (
+            <div class:list={['features-cell', i % 3 !== 2 && 'has-right', i < 6 && 'has-bottom']}>
+              <div class="features-cell-head">
+                <span class="mono features-kbd">{f.kbd}</span>
+                <span class="mono features-tag">{f.tag}</span>
+              </div>
+              <div class="features-cell-title">{f.title}</div>
+              <div class="features-cell-body">{f.body}</div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       6. Docs tile (link out — the docs site IS this)
+       ============================================================ -->
+  <section id="docs-tile" class="canvas-section">
+    <div class="section-head">
+      <h2>Docs</h2>
+      <p class="section-sub">
+        You're already in the docs site — every page renders against this same system. The 3-column
+        layout, breadcrumbs, on-this-page TOC, callouts, and code blocks are all built from the
+        primitives above.
+      </p>
+    </div>
+    <div class="card docs-tile">
+      <a href="/introduction" class="docs-tile-link">
+        <span class="mono docs-tile-eyebrow">Open the docs</span>
+        <span class="docs-tile-title">/introduction →</span>
+      </a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Page wrapper — comfortable max width for the canvas */
+  :global(body) {
+    background: var(--color-bg);
+  }
+
+  .canvas-header {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 64px 32px 24px;
+  }
+  .canvas-meta {
+    font-size: 11px;
+    color: var(--color-fg-muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .canvas-header h1 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.045em;
+    margin: 0 0 16px;
+  }
+  .canvas-lede {
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--color-fg-muted);
+    max-width: 60ch;
+    margin: 0 0 24px;
+  }
+  .canvas-toc {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 12px;
+    color: var(--color-fg-muted);
+    padding-top: 16px;
+    border-top: 1px solid var(--color-border);
+  }
+  .canvas-toc a {
+    color: var(--color-fg-muted);
+    text-decoration: none;
+    transition: color 0.12s var(--ease-out-soft);
+  }
+  .canvas-toc a:hover {
+    color: var(--color-fg);
+  }
+
+  .canvas-section {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 64px 32px;
+    border-top: 1px solid var(--color-border);
+  }
+  @media (max-width: 720px) {
+    .canvas-section {
+      padding: 48px 20px;
+    }
+  }
+  .section-head {
+    margin-bottom: 24px;
+  }
+  .section-head h2 {
+    font-size: 28px;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    margin: 0 0 8px;
+  }
+  .section-head .section-sub {
+    margin: 0;
+    color: var(--color-fg-muted);
+    font-size: 14px;
+  }
+  .section-head-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 0;
+  }
+  .section-title {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+  }
+
+  .muted {
+    color: var(--color-fg-muted);
+  }
+  .emph {
+    color: var(--color-fg);
+  }
+
+  /* ---- Brand ---- */
+  .brand-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 720px) {
+    .brand-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .brand-card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 28px;
+  }
+  .brand-card-wide {
+    grid-column: 1 / -1;
+  }
+  .brand-card-scale {
+    grid-column: 1 / -1;
+  }
+  .brand-frame {
+    flex: 1;
+    display: grid;
+    place-items: center;
+    min-height: 200px;
+  }
+  .brand-frame-tight {
+    min-height: 160px;
+  }
+  .brand-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--color-fg-muted);
+    letter-spacing: -0.005em;
+  }
+  .brand-scale {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 8px 0;
+  }
+  .brand-wordmark {
+    padding: 32px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .brand-display {
+    font-size: clamp(3rem, 7vw, 5.25rem);
+    font-weight: 500;
+    letter-spacing: -0.05em;
+    line-height: 0.95;
+  }
+  .brand-wordmark-sub {
+    font-size: 14px;
+    color: var(--color-fg-muted);
+    max-width: 60ch;
+  }
+
+  /* ---- Color ---- */
+  .color-card-wide {
+    margin-bottom: 16px;
+  }
+  .zinc-scale {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  @media (max-width: 720px) {
+    .zinc-scale {
+      flex-wrap: wrap;
+    }
+  }
+  .zinc-swatch {
+    flex: 1;
+    min-width: 60px;
+  }
+  .zinc-chip {
+    height: 120px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+  }
+  .zinc-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 6px;
+    font-size: 10px;
+    color: var(--color-fg-muted);
+  }
+  .zinc-name {
+    color: var(--color-fg);
+    font-size: 11px;
+  }
+
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 720px) {
+    .color-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .token-card-light {
+    /* render as light-mode swatch even in dark mode */
+    --color-bg: var(--color-zinc-50);
+    --color-surface: #ffffff;
+    --color-surface-2: var(--color-zinc-100);
+    --color-fg: var(--color-zinc-950);
+    --color-fg-muted: var(--color-zinc-500);
+    --color-border: var(--color-zinc-200);
+    background: var(--color-bg);
+    color: var(--color-fg);
+  }
+  .token-card-dark {
+    --color-bg: var(--color-zinc-950);
+    --color-surface: var(--color-zinc-950);
+    --color-surface-2: var(--color-zinc-900);
+    --color-fg: var(--color-zinc-50);
+    --color-fg-muted: var(--color-zinc-400);
+    --color-border: var(--color-zinc-800);
+    background: var(--color-bg);
+    color: var(--color-fg);
+  }
+  .token-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .token-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+  .token-chip {
+    width: 30px;
+    height: 30px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    flex-shrink: 0;
+  }
+  .token-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .token-name {
+    font-size: 11px;
+    color: var(--color-fg);
+    font-weight: 500;
+  }
+  .token-role {
+    font-size: 10px;
+    color: var(--color-fg-muted);
+  }
+
+  /* ---- Type ---- */
+  .type-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 1024px) {
+    .type-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .type-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .type-scale {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding-top: 8px;
+  }
+  .type-row {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 20px;
+    align-items: baseline;
+    padding-bottom: 16px;
+    border-bottom: 1px dashed var(--color-border);
+  }
+  .type-row:last-child {
+    border-bottom: none;
+  }
+  .type-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--color-fg-muted);
+  }
+  .type-name {
+    color: var(--color-fg);
+  }
+  .type-sample {
+    color: var(--color-fg);
+    text-wrap: balance;
+    overflow-wrap: anywhere;
+  }
+
+  .mono-glyphs {
+    font-size: 28px;
+    color: var(--color-fg);
+    line-height: 1.4;
+    padding: 16px 0;
+  }
+  .mono-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 720px) {
+    .mono-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .mono-pane {
+    padding: 14px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+  }
+  .mono-pane-label {
+    font-size: 11px;
+    color: var(--color-fg-muted);
+    margin-bottom: 8px;
+  }
+  .mono-pane-code {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--color-fg);
+  }
+  .mono-pane-stats {
+    font-size: 12px;
+    color: var(--color-fg);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    line-height: 1.55;
+  }
+  .mono-features {
+    margin-top: 16px;
+    padding: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface-2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .mono-features-label {
+    font-size: 11px;
+    color: var(--color-fg-muted);
+  }
+  .mono-features-tail {
+    font-size: 10px;
+    color: var(--color-fg-subtle);
+    margin-left: auto;
+  }
+
+  /* ---- Components ---- */
+  .ui-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 1024px) {
+    .ui-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .ui-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 18px 0;
+  }
+  .ui-row-label {
+    font-size: 11px;
+    color: var(--color-fg-muted);
+    width: 56px;
+    flex-shrink: 0;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .ui-row-aside {
+    font-size: 12px;
+    color: var(--color-fg-muted);
+  }
+  .ui-meta {
+    font-size: 11px;
+    color: var(--color-fg-muted);
+    margin-top: 14px;
+  }
+
+  .ui-field {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .ui-field-label {
+    font-size: 11px;
+    color: var(--color-fg-muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .ui-field-hint {
+    font-size: 11px;
+    color: var(--color-fg-muted);
+  }
+  .ui-segment {
+    display: flex;
+    gap: 8px;
+  }
+  .ui-segment .btn {
+    flex: 1;
+  }
+
+  .ui-spinner {
+    width: 12px;
+    height: 12px;
+    border-radius: 99px;
+    border: 1.5px solid var(--color-fg-muted);
+    border-top-color: transparent;
+    animation: ui-spin 0.8s linear infinite;
+    display: inline-block;
+  }
+  @keyframes ui-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Card-grid for the "Cards" demo */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 18px;
+  }
+  @media (max-width: 720px) {
+    .card-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .sub-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px;
+  }
+  .sub-card-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sub-card-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    display: grid;
+    place-items: center;
+    font-size: 14px;
+  }
+  .sub-card-title {
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .sub-card-body {
+    font-size: 12px;
+    color: var(--color-fg-muted);
+    line-height: 1.55;
+  }
+  .sub-card-tags {
+    display: flex;
+    gap: 6px;
+    margin-top: auto;
+  }
+  .sub-card-eyebrow {
+    font-size: 10px;
+    color: var(--color-fg-muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .stat {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+  .stat-value {
+    font-size: 36px;
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .stat-unit {
+    font-size: 13px;
+    color: var(--color-fg-muted);
+  }
+  .stat-trend {
+    display: flex;
+    gap: 8px;
+    font-size: 11px;
+  }
+  .stat-bars {
+    display: flex;
+    gap: 2px;
+    height: 28px;
+    align-items: flex-end;
+    margin-top: auto;
+  }
+  .stat-bar {
+    flex: 1;
+    background: var(--color-zinc-700);
+    border-radius: 1px;
+  }
+  .stat-bar.is-active {
+    background: var(--color-fg);
+  }
+
+  /* Terminal */
+  .terminal {
+    flex: 1;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: #000;
+    overflow: hidden;
+    margin-top: 16px;
+  }
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-surface-2);
+  }
+  .terminal-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 99px;
+    background: var(--color-zinc-700);
+  }
+  .terminal-path {
+    font-size: 11px;
+    color: var(--color-fg-muted);
+    margin-left: 4px;
+  }
+  .terminal-shell {
+    font-size: 11px;
+    color: var(--color-fg-subtle);
+    margin-left: auto;
+  }
+  .terminal-body {
+    margin: 0;
+    padding: 14px 14px 18px;
+    font-size: 12px;
+    line-height: 1.65;
+    color: var(--color-fg);
+  }
+  .t-fg {
+    color: var(--color-fg);
+  }
+  .t-fg-strong {
+    color: var(--color-fg);
+    font-weight: 500;
+  }
+  .t-muted {
+    color: var(--color-fg-muted);
+  }
+  .t-subtle {
+    color: var(--color-fg-subtle);
+  }
+  .t-pill {
+    display: inline-block;
+    padding: 1px 7px;
+    background: var(--color-fg);
+    color: #000;
+    border-radius: 3px;
+    margin-right: 4px;
+  }
+  .t-cursor {
+    display: inline-block;
+    width: 8px;
+    height: 14px;
+    background: var(--color-fg);
+    vertical-align: -2px;
+  }
+
+  /* ---- Marketing ---- */
+  .hero-tile {
+    padding: 40px 48px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    margin-bottom: 16px;
+  }
+  .hero-nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .hero-nav-links {
+    display: flex;
+    gap: 16px;
+    margin-left: auto;
+    font-size: 13px;
+    color: var(--color-fg-muted);
+  }
+  .hero-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 880px;
+  }
+  .hero-badge {
+    align-self: flex-start;
+  }
+  .hero-headline {
+    margin: 0;
+    font-size: clamp(2.25rem, 6vw, 4.5rem);
+    font-weight: 500;
+    line-height: 0.95;
+    letter-spacing: -0.05em;
+    text-wrap: balance;
+  }
+  .hero-lede {
+    margin: 0;
+    max-width: 60ch;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--color-fg-muted);
+    text-wrap: pretty;
+  }
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .hero-meta {
+    font-size: 12px;
+    color: var(--color-fg-muted);
+    margin-left: 4px;
+  }
+
+  .features-tile {
+    padding: 40px 48px;
+  }
+  .features-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 1024px) {
+    .features-head {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+  .features-eyebrow {
+    font-size: 11px;
+    color: var(--color-fg-muted);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .features-title {
+    margin: 8px 0 0;
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+    max-width: 20ch;
+  }
+  .features-aside {
+    font-size: 12px;
+    color: var(--color-fg-muted);
+    max-width: 32ch;
+    text-align: right;
+    line-height: 1.6;
+    margin: 0;
+  }
+  @media (max-width: 1024px) {
+    .features-aside {
+      text-align: left;
+    }
+  }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  @media (max-width: 720px) {
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .features-cell {
+    padding: 22px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .features-cell.has-right {
+    border-right: 1px solid var(--color-border);
+  }
+  .features-cell.has-bottom {
+    border-bottom: 1px solid var(--color-border);
+  }
+  .features-cell-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .features-kbd {
+    font-size: 10px;
+    color: var(--color-fg-muted);
+    border: 1px solid var(--color-border);
+    border-radius: 3px;
+    padding: 2px 5px;
+  }
+  .features-tag {
+    font-size: 10px;
+    color: var(--color-fg-subtle);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .features-cell-title {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+  }
+  .features-cell-body {
+    font-size: 13px;
+    color: var(--color-fg-muted);
+    line-height: 1.55;
+  }
+
+  /* ---- Docs tile ---- */
+  .docs-tile {
+    padding: 0;
+  }
+  .docs-tile-link {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 32px 36px;
+    text-decoration: none;
+    color: inherit;
+    border-radius: inherit;
+    transition: background 0.12s var(--ease-out-soft);
+  }
+  .docs-tile-link:hover {
+    background: var(--color-surface-2);
+  }
+  .docs-tile-eyebrow {
+    font-size: 11px;
+    color: var(--color-fg-muted);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .docs-tile-title {
+    font-size: 28px;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    color: var(--color-fg);
+  }
+</style>

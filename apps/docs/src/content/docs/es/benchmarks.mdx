@@ -1,0 +1,53 @@
+---
+title: Benchmarks
+description: Puntuaciones de Lighthouse, metodología y cómo reproducirlas.
+lastUpdated: 2026-05-10
+tags: [referencia]
+---
+
+import Callout from '@/components/docs/Callout.astro';
+
+<Callout variant="note">
+  Los números reales aterrizarán aquí cuando se publique la 0.1.0 y CI empiece a publicar
+  reportes. La metodología está bloqueada.
+</Callout>
+
+## Objetivos
+
+Cada release de astro-ignite se valida con Lighthouse CI sobre el playground generado por el CLI. Medimos la página de inicio, el índice del blog, una entrada representativa y un caso de estudio, todo en config móvil.
+
+| Categoría      | Suelo duro | Objetivo blando |
+| -------------- | ---------- | --------------- |
+| Performance    | 95         | 100             |
+| Accessibility  | 95         | 100             |
+| Best Practices | 95         | 100             |
+| SEO            | 95         | 100             |
+
+Una PR que baje cualquier mediana por debajo de 95 falla el CI. Una PR que baje por debajo de 100 imprime un warning pero no bloquea.
+
+## Metodología
+
+- **Construir el sitio en producción** con `astro build` estándar.
+- **Servirlo estáticamente** vía el servidor de Lighthouse CI (sin trucos de caché más allá de lo que haría una CDN normal).
+- **Ejecutar Lighthouse 3 veces por URL**, tomar la mediana para absorber la variabilidad.
+- **Config móvil** con throttling 4G simulado y CPU 4× más lenta (defaults de Lighthouse).
+- Ejecutar en Ubuntu en GitHub Actions sobre la imagen `ubuntu-latest`.
+
+El JSON completo de Lighthouse se sube como artifact en cada CI run, así cualquiera puede auditar los números.
+
+## Reproducir localmente
+
+```bash
+pnpm scaffold:test
+```
+
+Esto borra `apps/playground/`, genera el scaffold con `--yes`, instala deps, ejecuta `astro build` y corre Lighthouse contra la salida estática. Verás los mismos números que CI.
+
+## Qué se rastrea
+
+- Puntuaciones de Lighthouse móvil (4 categorías × 4 rutas)
+- Tamaño total del bundle (JS + CSS + fuentes) para la carga fría del home
+- Números individuales de LCP, FCP, TBT, CLS
+- Tiempo de build
+
+Las tendencias se publican por release en la página de GitHub Releases una vez tengamos baseline.

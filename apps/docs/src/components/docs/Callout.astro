@@ -1,0 +1,90 @@
+---
+/**
+ * Callout / admonition block — used inside MDX content.
+ *
+ * Variants: note, tip, warning, danger. Each has a different border + label
+ * color drawn from theme tokens. Quietly styled to match the rest of the
+ * design system — no shouting boxes.
+ *
+ * Usage in MDX:
+ *   <Callout variant="warning" title="Heads up">
+ *     The five prompts can be skipped with `--yes`.
+ *   </Callout>
+ */
+
+type Variant = 'note' | 'tip' | 'warning' | 'danger';
+
+interface Props {
+  variant?: Variant;
+  title?: string;
+}
+
+const { variant = 'note', title } = Astro.props;
+
+const defaultTitles: Record<Variant, string> = {
+  note: 'Note',
+  tip: 'Tip',
+  warning: 'Warning',
+  danger: 'Heads up',
+};
+
+const heading = title ?? defaultTitles[variant];
+---
+
+<aside
+  class:list={['callout', `callout-${variant}`]}
+  role={variant === 'danger' ? 'alert' : undefined}
+>
+  <div class="callout-title mono">{heading}</div>
+  <div class="callout-body">
+    <slot />
+  </div>
+</aside>
+
+<style>
+  .callout {
+    margin: 1.5rem 0;
+    padding: 14px 16px 14px 18px;
+    border-left: 2px solid var(--color-fg);
+    background: var(--color-surface-2);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .callout-title {
+    font-size: 11px;
+    color: var(--color-fg-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .callout-body {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--color-fg);
+  }
+  .callout-body :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .callout-tip {
+    border-left-color: var(--color-success);
+  }
+  .callout-tip .callout-title {
+    color: var(--color-success);
+  }
+
+  .callout-warning {
+    border-left-color: var(--color-warning);
+  }
+  .callout-warning .callout-title {
+    color: var(--color-warning);
+  }
+
+  .callout-danger {
+    border-left-color: var(--color-danger);
+  }
+  .callout-danger .callout-title {
+    color: var(--color-danger);
+  }
+</style>

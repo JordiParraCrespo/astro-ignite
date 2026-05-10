@@ -1,0 +1,53 @@
+---
+title: Benchmarks
+description: Lighthouse scores, methodology, and how to reproduce them.
+lastUpdated: 2026-05-10
+tags: [reference]
+---
+
+import Callout from '@/components/docs/Callout.astro';
+
+<Callout variant="note">
+  Real numbers will land here once v0.1.0 ships and CI starts publishing
+  reports. The methodology below is locked.
+</Callout>
+
+## Targets
+
+Every release of astro-ignite is gated by Lighthouse CI on the scaffolded playground. We measure the home page, blog index, a representative blog post, and a project case study, all in mobile config.
+
+| Category       | Hard floor | Soft target |
+| -------------- | ---------- | ----------- |
+| Performance    | 95         | 100         |
+| Accessibility  | 95         | 100         |
+| Best Practices | 95         | 100         |
+| SEO            | 95         | 100         |
+
+A PR that drops any median below 95 fails CI. A PR that drops below 100 prints a warning but does not block.
+
+## Methodology
+
+- **Build the production site** with the standard `astro build`.
+- **Serve it statically** via Lighthouse CI's bundled server (no caching tricks beyond what a normal CDN would do).
+- **Run Lighthouse 3 times per URL**, take the median to absorb single-run variance.
+- **Mobile config** with simulated 4G throttling and 4× CPU slowdown (Lighthouse defaults).
+- Run on Ubuntu in GitHub Actions on the `ubuntu-latest` image.
+
+The full Lighthouse JSON for each run is uploaded as an artifact on every CI run, so anyone can audit the numbers.
+
+## Reproducing locally
+
+```bash
+pnpm scaffold:test
+```
+
+This wipes `apps/playground/`, scaffolds it from the CLI with `--yes`, installs deps, runs `astro build`, and runs Lighthouse against the static output. You'll see the same numbers CI sees.
+
+## What's tracked
+
+- Lighthouse mobile scores (4 categories × 4 routes)
+- Total bundle size (JS + CSS + fonts) for the homepage cold load
+- LCP, FCP, TBT, CLS individual numbers
+- Build time
+
+Trends published per release in the GitHub Releases page once we have a baseline.

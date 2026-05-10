@@ -1,0 +1,39 @@
+---
+title: Introducción
+description: Qué es astro-ignite, por qué existe y qué obtienes de fábrica.
+lastUpdated: 2026-05-10
+tags: [empezar]
+---
+
+import Callout from '@/components/docs/Callout.astro';
+
+**astro-ignite** es un CLI estilo shadcn para crear sitios Astro listos para producción. Respondes a cinco prompts y obtienes un sitio completo con SEO, i18n, rendimiento, plantillas legales y email ya cableados.
+
+## Por qué molestarse
+
+La mayoría de los starters de Astro se quedan en uno de dos extremos: un `hola mundo` mínimo que tienes que ensamblar tú, o un framework opinado que esconde las decisiones tras abstracciones. astro-ignite elige otro punto — valores opinados que el desarrollador posee por completo.
+
+Obtienes:
+
+- **Lighthouse 100 en móvil** desde el primer momento, verificado por CI
+- **i18n nativo** con un único camino de código para sitios mono y multilingües
+- **JSON-LD de Schema.org tipado** generado con `schema-dts`
+- **Un formulario de contacto funcional** con Astro Actions, Zod y Resend o SMTP
+- **Banner de cookies + plantillas legales** que no fingen ser asesoría legal
+- **Geist Sans + Mono autoalojados** sin CLS al cambiar
+- **Componentes Astro puros** — sin runtime de React/Vue/Svelte cargando la página
+
+<Callout variant="note" title="Pre-1.0">
+  La API y la forma de la plantilla pueden cambiar entre versiones menores. Consulta el ROADMAP para
+  saber qué es estable y qué no lo es.
+</Callout>
+
+## Lo que NO es
+
+astro-ignite no es un framework. No existe un paquete npm en runtime llamado `astro-ignite`. Después del scaffolding eres dueño del código y puedes editar lo que quieras. El "eject" es gratis porque no hay nada de lo que escapar.
+
+Tampoco es un CMS, un sistema de autenticación, ni un starter de e-commerce. Es un bootstrap de sitio.
+
+## A dónde ir ahora
+
+Si quieres leer sobre la filosofía, dirígete a **Los cinco prompts**. Si quieres ver código, salta directo a **Inicio rápido**.
