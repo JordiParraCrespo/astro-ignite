@@ -1,0 +1,50 @@
+---
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import Input from '@registry/base/input.astro';
+import Label from '@registry/base/label.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<ComponentsLayout
+  title={`input | ${t('seo.home.title')}`}
+  description={t('components.summary.input')}
+>
+  <ComponentShowcase
+    name="input"
+    description={t('components.detail.input.description')}
+    file="input.astro"
+    anno="4 states"
+  >
+    <div class="row" style="align-items: flex-start;">
+      <div class="field">
+        <Label for="i-default">{t('components.label.default')}</Label>
+        <Input id="i-default" placeholder="my-site" />
+      </div>
+      <div class="field">
+        <Label for="i-email">{t('components.detail.input.emailLabel')}</Label>
+        <Input id="i-email" type="email" placeholder="you@example.com" />
+      </div>
+      <div class="field">
+        <Label for="i-disabled">{t('components.detail.input.disabledLabel')}</Label>
+        <Input
+          id="i-disabled"
+          type="text"
+          placeholder={t('components.detail.input.disabledPlaceholder')}
+          disabled
+        />
+      </div>
+    </div>
+  </ComponentShowcase>
+</ComponentsLayout>
+
+<style>
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 200px;
+  }
+</style>

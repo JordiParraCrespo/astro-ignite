@@ -1,0 +1,43 @@
+---
+import { siteConfig } from '@/config/site';
+export function getStaticPaths() {
+  return siteConfig.locales
+    .filter((lang) => lang !== siteConfig.defaultLocale)
+    .map((lang) => ({ params: { lang } }));
+}
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import Avatar from '@registry/base/avatar.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<ComponentsLayout
+  title={`avatar | ${t('seo.home.title')}`}
+  description={t('components.summary.avatar')}
+>
+  <ComponentShowcase name="avatar" description={t('components.detail.avatar.description')}>
+    <div class="row">
+      <Avatar size="sm" fallback="Jordi Parra" />
+      <Avatar size="md" fallback="Jordi Parra" />
+      <Avatar size="lg" fallback="Jordi Parra" />
+    </div>
+
+    <div class="row">
+      <Avatar src="https://i.pravatar.cc/96?img=12" alt="Avatar 1" />
+      <Avatar src="https://i.pravatar.cc/96?img=33" alt="Avatar 2" />
+      <Avatar src="https://i.pravatar.cc/96?img=58" alt="Avatar 3" />
+      <Avatar fallback="AI" />
+    </div>
+  </ComponentShowcase>
+</ComponentsLayout>
+
+<style>
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+  }
+</style>

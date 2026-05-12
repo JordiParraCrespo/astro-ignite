@@ -1,0 +1,34 @@
+---
+import { cn } from '@/lib/cn';
+import type { HTMLAttributes } from 'astro/types';
+
+export type Props = HTMLAttributes<'div'> & {
+  orientation?: 'horizontal' | 'vertical';
+  class?: string;
+};
+
+const { orientation = 'horizontal', class: className, ...rest } = Astro.props;
+---
+
+<div
+  role="separator"
+  aria-orientation={orientation}
+  class={cn('sep', `sep--${orientation}`, className)}
+  {...rest}
+/>
+
+<style>
+  .sep {
+    background: var(--color-border);
+    flex-shrink: 0;
+  }
+  .sep--horizontal {
+    height: 1px;
+    width: 100%;
+  }
+  .sep--vertical {
+    width: 1px;
+    height: 100%;
+    align-self: stretch;
+  }
+</style>

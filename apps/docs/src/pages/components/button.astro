@@ -1,0 +1,44 @@
+---
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import Button from '@registry/base/button.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<ComponentsLayout
+  title={`button | ${t('seo.home.title')}`}
+  description={t('components.summary.button')}
+>
+  <ComponentShowcase
+    name="button"
+    description={t('components.detail.button.description')}
+    file="button.astro"
+    anno="6 variants · 4 sizes · 4 states"
+  >
+    <div class="row">
+      <span class="label">{t('components.label.variant')}</span>
+      <Button>{t('components.detail.button.default')}</Button>
+      <Button variant="secondary">{t('components.detail.button.secondary')}</Button>
+      <Button variant="outline">{t('components.detail.button.outline')}</Button>
+      <Button variant="ghost">{t('components.detail.button.ghost')}</Button>
+      <Button variant="destructive">{t('components.detail.button.destructive')}</Button>
+      <Button variant="link">{t('components.detail.button.linkVariant')}</Button>
+    </div>
+
+    <div class="row">
+      <span class="label">{t('components.label.size')}</span>
+      <Button size="sm">{t('components.detail.button.small')}</Button>
+      <Button size="md">{t('components.detail.button.medium')}</Button>
+      <Button size="lg">{t('components.detail.button.large')}</Button>
+      <Button size="icon" aria-label="icon">+</Button>
+    </div>
+
+    <div class="row">
+      <span class="label">{t('components.label.state')}</span>
+      <Button disabled>{t('components.detail.button.disabled')}</Button>
+      <Button href="#">{t('components.detail.button.asLink')}</Button>
+    </div>
+  </ComponentShowcase>
+</ComponentsLayout>

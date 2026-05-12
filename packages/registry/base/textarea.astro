@@ -1,0 +1,45 @@
+---
+import { cn } from '@/lib/cn';
+import type { HTMLAttributes } from 'astro/types';
+
+export type Props = HTMLAttributes<'textarea'> & { class?: string };
+const { class: className, rows = 4, ...rest } = Astro.props;
+---
+
+<textarea rows={rows} class={cn('textarea', className)} {...rest}><slot /></textarea>
+
+<style>
+  .textarea {
+    display: block;
+    width: 100%;
+    min-height: 80px;
+    padding: 8px 12px;
+    background: transparent;
+    color: var(--color-fg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    font: inherit;
+    font-size: 14px;
+    line-height: 1.5;
+    resize: vertical;
+    transition:
+      border-color 120ms ease,
+      box-shadow 120ms ease;
+  }
+  .textarea::placeholder {
+    color: var(--color-fg-subtle);
+  }
+  .textarea:focus,
+  .textarea:focus-visible {
+    outline: none;
+    border-color: var(--color-ring);
+    box-shadow: 0 0 0 1px var(--color-ring);
+  }
+  .textarea:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .textarea[aria-invalid='true'] {
+    border-color: var(--color-danger);
+  }
+</style>

@@ -1,0 +1,39 @@
+---
+import { siteConfig } from '@/config/site';
+export function getStaticPaths() {
+  return siteConfig.locales
+    .filter((lang) => lang !== siteConfig.defaultLocale)
+    .map((lang) => ({ params: { lang } }));
+}
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import Badge from '@registry/base/badge.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<ComponentsLayout
+  title={`badge | ${t('seo.home.title')}`}
+  description={t('components.summary.badge')}
+>
+  <ComponentShowcase name="badge" description={t('components.detail.badge.description')}>
+    <div class="row">
+      <Badge>{t('components.detail.badge.default')}</Badge>
+      <Badge variant="secondary">{t('components.detail.badge.secondary')}</Badge>
+      <Badge variant="outline">{t('components.detail.badge.outline')}</Badge>
+      <Badge variant="destructive">{t('components.detail.badge.destructive')}</Badge>
+      <Badge variant="success">{t('components.detail.badge.success')}</Badge>
+      <Badge variant="warning">{t('components.detail.badge.warning')}</Badge>
+    </div>
+  </ComponentShowcase>
+</ComponentsLayout>
+
+<style>
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+</style>

@@ -43,6 +43,7 @@ const caretHeight = 6 * size;
 const caretLift = 4 * size;
 const caretMargin = 4 * size;
 ---
+
 <Tag
   class:list={['ig-brand', `ig-brand-${variant}`, className]}
   href={href}
@@ -57,15 +58,15 @@ const caretMargin = 4 * size;
     --ig-caret-margin: ${caretMargin}px;
   `}
 >
-  {variant !== 'word' && (
-    <span class="ig-mark mono" aria-hidden={variant === 'lockup' ? 'true' : undefined}>
-      <span class="ig-gt">{'>'}</span>
-      <span class="ig-caret caret"></span>
-    </span>
-  )}
-  {variant !== 'mark' && (
-    <span class="ig-word">astro-ignite</span>
-  )}
+  {
+    variant !== 'word' && (
+      <span class="ig-mark mono" aria-hidden={variant === 'lockup' ? 'true' : undefined}>
+        <span class="ig-gt">{'>'}</span>
+        <span class="ig-caret caret" />
+      </span>
+    )
+  }
+  {variant !== 'mark' && <span class="ig-word">astro-ignite</span>}
 </Tag>
 
 <style>

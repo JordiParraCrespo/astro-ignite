@@ -1,0 +1,96 @@
+---
+import { useTranslations, type TranslationKey } from '@/i18n';
+
+export type Props = {
+  name: string;
+  description: string;
+  kind?: 'component' | 'block';
+};
+
+const { name, description, kind = 'component' } = Astro.props;
+const t = useTranslations(Astro.currentLocale);
+const install = `npx astro-ignite add ${name}`;
+const root = kind === 'block' ? '/blocks' : '/components';
+const backKey = (kind === 'block' ? 'blocks.back' : 'components.back') as TranslationKey;
+const installKey = (kind === 'block' ? 'blocks.install' : 'components.install') as TranslationKey;
+---
+
+<article class="showcase">
+  <header class="showcase__head">
+    <a href={root} class="showcase__back">{t(backKey)}</a>
+    <h1 class="showcase__title">{name}</h1>
+    <p class="showcase__desc">{description}</p>
+    <div class="showcase__install">
+      <span class="showcase__install-label">{t(installKey)}</span>
+      <code>{install}</code>
+    </div>
+  </header>
+
+  <section class="showcase__preview" aria-label="Preview">
+    <slot />
+  </section>
+</article>
+
+<style>
+  .showcase {
+    max-width: 880px;
+  }
+  .showcase__head {
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 24px;
+    margin-bottom: 32px;
+  }
+  .showcase__back {
+    display: inline-block;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: var(--color-fg-muted);
+    text-decoration: none;
+  }
+  .showcase__back:hover {
+    color: var(--color-fg);
+  }
+  .showcase__title {
+    font-size: clamp(1.75rem, 3vw, 2.375rem);
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+    margin: 0 0 12px;
+    text-transform: lowercase;
+    font-family: var(--font-mono, monospace);
+    color: var(--color-fg);
+  }
+  .showcase__desc {
+    color: var(--color-fg-muted);
+    margin: 0 0 16px;
+    font-size: 16px;
+    line-height: 1.55;
+    max-width: 60ch;
+  }
+  .showcase__install {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    font-family: var(--font-mono, monospace);
+    font-size: 13px;
+  }
+  .showcase__install-label {
+    color: var(--color-fg-muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .showcase__preview {
+    padding: 48px 24px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+</style>

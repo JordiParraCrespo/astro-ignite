@@ -1,0 +1,89 @@
+---
+import { cn } from '@/lib/cn';
+
+export type Props = {
+  id: string;
+  class?: string;
+  labelledBy?: string;
+};
+
+const { id, class: className, labelledBy } = Astro.props;
+---
+
+<dialog
+  id={id}
+  class={cn('dialog', className)}
+  aria-labelledby={labelledBy}
+>
+  <div class="dialog__panel">
+    <slot />
+  </div>
+</dialog>
+
+<style>
+  .dialog {
+    padding: 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    color: var(--color-fg);
+    max-width: min(90vw, 480px);
+    width: 100%;
+  }
+  .dialog::backdrop {
+    background: rgb(0 0 0 / 0.6);
+    backdrop-filter: blur(2px);
+  }
+  .dialog[open] {
+    animation: dialog-in 160ms ease-out;
+  }
+  .dialog__panel {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  @keyframes dialog-in {
+    from {
+      opacity: 0;
+      transform: translateY(-8px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .dialog[open] {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    const opener = target.closest<HTMLElement>('[data-dialog-open]');
+    if (opener) {
+      const id = opener.dataset.dialogOpen!;
+      const el = document.getElementById(id) as HTMLDialogElement | null;
+      el?.showModal();
+      return;
+    }
+    const closer = target.closest<HTMLElement>('[data-dialog-close]');
+    if (closer) {
+      closer.closest('dialog')?.close();
+      return;
+    }
+    if (target.tagName === 'DIALOG') {
+      const dlg = target as HTMLDialogElement;
+      const rect = dlg.getBoundingClientRect();
+      const inside =
+        e.clientX >= rect.left &&
+        e.clientX <= rect.right &&
+        e.clientY >= rect.top &&
+        e.clientY <= rect.bottom;
+      if (!inside) dlg.close();
+    }
+  });
+</script>

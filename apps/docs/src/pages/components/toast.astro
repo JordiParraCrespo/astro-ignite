@@ -1,0 +1,139 @@
+---
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import Toaster from '@registry/base/toaster.astro';
+import Button from '@registry/base/button.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+
+const messages = {
+  default: t('components.detail.toast.messageDefault'),
+  success: t('components.detail.toast.messageSuccess'),
+  warning: t('components.detail.toast.messageWarning'),
+  destructive: t('components.detail.toast.messageDestructive'),
+};
+---
+
+<ComponentsLayout
+  title={`toast | ${t('seo.home.title')}`}
+  description={t('components.summary.toast')}
+>
+  <ComponentShowcase
+    name="toast"
+    description={t('components.detail.toast.description')}
+    file="toaster.astro · lib/toast.ts"
+    anno="4 variants · close button"
+  >
+    <div class="col" style="gap: 10px; max-width: 420px;">
+      <div class="toast">
+        <span class="toast__icon">i</span>
+        <span class="toast__msg">{messages.default}</span>
+        <button class="toast__close" aria-label="Dismiss">×</button>
+      </div>
+      <div class="toast toast--success">
+        <span class="toast__icon">✓</span>
+        <span class="toast__msg">{messages.success}</span>
+        <button class="toast__close" aria-label="Dismiss">×</button>
+      </div>
+      <div class="toast toast--warning">
+        <span class="toast__icon">!</span>
+        <span class="toast__msg">{messages.warning}</span>
+        <button class="toast__close" aria-label="Dismiss">×</button>
+      </div>
+      <div class="toast toast--destructive">
+        <span class="toast__icon">×</span>
+        <span class="toast__msg">{messages.destructive}</span>
+        <button class="toast__close" aria-label="Dismiss">×</button>
+      </div>
+    </div>
+
+    <div class="row" data-toast-messages={JSON.stringify(messages)}>
+      <span class="label">{t('components.label.variant')}</span>
+      <Button size="sm" data-toast="default">{t('components.detail.toast.default')}</Button>
+      <Button size="sm" variant="outline" data-toast="success"
+        >{t('components.detail.toast.success')}</Button
+      >
+      <Button size="sm" variant="outline" data-toast="warning"
+        >{t('components.detail.toast.warning')}</Button
+      >
+      <Button size="sm" variant="outline" data-toast="destructive"
+        >{t('components.detail.toast.destructive')}</Button
+      >
+    </div>
+  </ComponentShowcase>
+  <Toaster position="bottom-right" />
+</ComponentsLayout>
+
+<script>
+  import { toast } from '@registry/lib/toast';
+
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    const btn = target.closest<HTMLElement>('[data-toast]');
+    if (!btn) return;
+    const variant = btn.dataset.toast as 'default' | 'success' | 'warning' | 'destructive';
+    const row = btn.closest<HTMLElement>('[data-toast-messages]');
+    const messages: Record<string, string> = row?.dataset.toastMessages
+      ? JSON.parse(row.dataset.toastMessages)
+      : {};
+    toast(messages[variant] ?? '', { variant });
+  });
+</script>
+
+<style>
+  .toast {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    box-shadow: 0 10px 30px -10px rgb(0 0 0 / 0.6);
+    min-width: 320px;
+  }
+  .toast__icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    border-radius: 999px;
+    border: 1.5px solid var(--color-fg-muted);
+    color: var(--color-fg-muted);
+    display: grid;
+    place-items: center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1;
+  }
+  .toast__msg {
+    flex: 1;
+    font-size: 13px;
+    color: var(--color-fg);
+    line-height: 1.4;
+  }
+  .toast__close {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    color: var(--color-fg-muted);
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .toast__close:hover {
+    color: var(--color-fg);
+  }
+  .toast--success .toast__icon {
+    border-color: var(--color-success);
+    color: var(--color-success);
+  }
+  .toast--warning .toast__icon {
+    border-color: var(--color-warning);
+    color: var(--color-warning);
+  }
+  .toast--destructive .toast__icon {
+    border-color: var(--color-danger);
+    color: var(--color-danger);
+  }
+</style>

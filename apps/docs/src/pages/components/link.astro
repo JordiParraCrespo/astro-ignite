@@ -1,0 +1,38 @@
+---
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import Link from '@registry/base/link.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<ComponentsLayout
+  title={`link | ${t('seo.home.title')}`}
+  description={t('components.summary.link')}
+>
+  <ComponentShowcase
+    name="link"
+    description={t('components.detail.link.description')}
+    file="link.astro"
+    anno="3 variants"
+  >
+    <div class="row">
+      <span class="label">{t('components.label.variant')}</span>
+      <Link href="#" variant="default">{t('components.detail.link.defaultExample')}</Link>
+      <span class="rule"></span>
+      <Link href="#" variant="muted">{t('components.detail.link.mutedExample')}</Link>
+      <span class="rule"></span>
+      <Link href="#" variant="underline">{t('components.detail.link.underlineExample')}</Link>
+    </div>
+  </ComponentShowcase>
+</ComponentsLayout>
+
+<style>
+  .rule {
+    display: inline-block;
+    width: 1px;
+    height: 14px;
+    background: var(--color-border);
+  }
+</style>

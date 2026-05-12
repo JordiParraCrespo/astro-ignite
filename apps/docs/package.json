@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "postbuild": "pagefind --site dist",
     "preview": "astro preview",
     "check": "astro check",
     "typecheck": "astro check",
@@ -25,6 +26,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
     "@types/node": "^22.10.2",
+    "pagefind": "^1.3.0",
     "typescript": "^5.7.2"
   }
 }

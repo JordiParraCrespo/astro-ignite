@@ -1,0 +1,36 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/Hero.astro';
+import FeatureGrid from '@/components/FeatureGrid.astro';
+import { useTranslations } from '@/i18n';
+import { siteConfig } from '@/config/site';
+
+export async function getStaticPaths() {
+  return siteConfig.locales
+    .filter((l) => l !== siteConfig.defaultLocale)
+    .map((lang) => ({ params: { lang } }));
+}
+
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
+
+const features = [
+  { title: t('home.features.f01.title'), description: t('home.features.f01.body'), icon: '🚀' },
+  { title: t('home.features.f02.title'), description: t('home.features.f02.body'), icon: '🔗' },
+  { title: t('home.features.f03.title'), description: t('home.features.f03.body'), icon: '🌍' },
+  { title: t('home.features.f04.title'), description: t('home.features.f04.body'), icon: '✉️' },
+  { title: t('home.features.f05.title'), description: t('home.features.f05.body'), icon: '📜' },
+  { title: t('home.features.f06.title'), description: t('home.features.f06.body'), icon: '🧰' },
+];
+---
+
+<BaseLayout title={t('seo.home.title')} description={t('seo.home.description')}>
+  <Hero
+    eyebrow={t('home.eyebrow')}
+    title={siteConfig.name[locale] ?? siteConfig.name[siteConfig.defaultLocale]!}
+    description={t('seo.home.description')}
+    primaryCta={{ label: t('home.primaryCta'), href: '/blog' }}
+    secondaryCta={{ label: t('home.secondaryCta'), href: '/projects' }}
+  />
+  <FeatureGrid heading={t('home.featuresHeading')} features={features} />
+</BaseLayout>

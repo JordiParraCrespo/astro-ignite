@@ -1,0 +1,57 @@
+---
+import { siteConfig } from '@/config/site';
+export function getStaticPaths() {
+  return siteConfig.locales
+    .filter((lang) => lang !== siteConfig.defaultLocale)
+    .map((lang) => ({ params: { lang } }));
+}
+
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import PostList from '@registry/blocks/post-list/post-list.astro';
+import PostListItem from '@registry/blocks/post-list/post-list-item.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<ComponentsLayout
+  title={`post-list | ${t('seo.home.title')}`}
+  description={t('blocks.summary.post-list')}
+>
+  <ComponentShowcase
+    kind="block"
+    name="post-list"
+    description={t('blocks.detail.post-list.description')}
+  >
+    <PostList>
+      <PostListItem
+        href="#"
+        date="2026-05-08"
+        author="Maria Soto"
+        readingTime="5 min"
+        title="Why we built astro-ignite for AI agents"
+        excerpt="After watching teams ship the same boilerplate four times in three months, we realized agents needed a starter they could actually reason about."
+        tags={['agents', 'process']}
+      />
+      <PostListItem
+        href="#"
+        date="2026-04-21"
+        author="Diego Park"
+        readingTime="8 min"
+        title="Lighthouse 100s as a build target, not a goal"
+        excerpt="Performance budgets in CI: how we make builds fail when bundles grow, LCP regresses, or CLS slips."
+        tags={['perf', 'ci']}
+      />
+      <PostListItem
+        href="#"
+        date="2026-03-30"
+        author="Maria Soto"
+        readingTime="3 min"
+        title="i18n without router gymnastics"
+        excerpt="Astro 5 ships native i18n. Here's how we wire locale-scoped routes and content collections."
+        tags={['i18n', 'astro']}
+      />
+    </PostList>
+  </ComponentShowcase>
+</ComponentsLayout>

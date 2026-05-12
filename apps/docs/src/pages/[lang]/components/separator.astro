@@ -1,0 +1,44 @@
+---
+import { siteConfig } from '@/config/site';
+export function getStaticPaths() {
+  return siteConfig.locales
+    .filter((lang) => lang !== siteConfig.defaultLocale)
+    .map((lang) => ({ params: { lang } }));
+}
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import Separator from '@registry/base/separator.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<ComponentsLayout
+  title={`separator | ${t('seo.home.title')}`}
+  description={t('components.summary.separator')}
+>
+  <ComponentShowcase name="separator" description={t('components.detail.separator.description')}>
+    <div>
+      <p>{t('components.detail.separator.above')}</p>
+      <Separator />
+      <p>{t('components.detail.separator.below')}</p>
+    </div>
+
+    <div class="hrow">
+      <span>{t('components.detail.separator.left')}</span>
+      <Separator orientation="vertical" />
+      <span>{t('components.detail.separator.middle')}</span>
+      <Separator orientation="vertical" />
+      <span>{t('components.detail.separator.right')}</span>
+    </div>
+  </ComponentShowcase>
+</ComponentsLayout>
+
+<style>
+  .hrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    height: 24px;
+  }
+</style>

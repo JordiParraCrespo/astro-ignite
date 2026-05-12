@@ -1,0 +1,25 @@
+---
+/**
+ * Non-default-locale landing page (e.g. /es/, /fr/).
+ * The default-locale lives at /, see src/pages/index.astro.
+ */
+
+import MarketingLayout from '@/layouts/MarketingLayout.astro';
+import LandingPage from '@/components/LandingPage.astro';
+import { siteConfig } from '@/config/site';
+
+export async function getStaticPaths() {
+  return siteConfig.locales
+    .filter((l) => l !== siteConfig.defaultLocale)
+    .map((lang) => ({ params: { lang } }));
+}
+
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const siteName = siteConfig.name[locale] ?? siteConfig.name[siteConfig.defaultLocale]!;
+const description =
+  siteConfig.description[locale] ?? siteConfig.description[siteConfig.defaultLocale]!;
+---
+
+<MarketingLayout title={`${siteName} — ${description}`} description={description}>
+  <LandingPage />
+</MarketingLayout>

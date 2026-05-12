@@ -1,0 +1,22 @@
+---
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import AuthorCard from '@registry/blocks/author-card.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<ComponentsLayout
+  title={`author-card | ${t('seo.home.title')}`}
+  description={t('blocks.summary.author-card')}
+>
+  <ComponentShowcase
+    kind="block"
+    name="author-card"
+    description={t('blocks.detail.author-card.description')}
+  >
+    <AuthorCard name="Diego Park" bio="Web platform engineer. Writes Astro, talks perf budgets." />
+    <AuthorCard href="#" name="Maria Soto" bio="Founder. Previously shipped docs at $bigco." />
+  </ComponentShowcase>
+</ComponentsLayout>

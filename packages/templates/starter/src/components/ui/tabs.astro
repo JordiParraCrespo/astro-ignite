@@ -1,0 +1,63 @@
+---
+import { cn } from '@/lib/cn';
+
+export type Props = {
+  defaultValue: string;
+  class?: string;
+};
+
+const { defaultValue, class: className } = Astro.props;
+---
+
+<ai-tabs data-default={defaultValue} class={cn('tabs', className)}>
+  <slot />
+</ai-tabs>
+
+<style>
+  .tabs {
+    display: block;
+  }
+</style>
+
+<script>
+  if (!customElements.get('ai-tabs')) {
+    class AiTabs extends HTMLElement {
+      connectedCallback() {
+        const initial = this.dataset.default;
+        const triggers = this.querySelectorAll<HTMLButtonElement>('[data-tab-trigger]');
+        const panels = this.querySelectorAll<HTMLElement>('[data-tab-panel]');
+
+        const activate = (value: string) => {
+          triggers.forEach((t) => {
+            const on = t.dataset.value === value;
+            t.dataset.active = on ? 'true' : 'false';
+            t.setAttribute('aria-selected', on ? 'true' : 'false');
+            t.tabIndex = on ? 0 : -1;
+          });
+          panels.forEach((p) => {
+            const on = p.dataset.value === value;
+            p.hidden = !on;
+          });
+        };
+
+        triggers.forEach((t) => {
+          t.addEventListener('click', () => activate(t.dataset.value!));
+          t.addEventListener('keydown', (e) => {
+            const list = Array.from(triggers);
+            const i = list.indexOf(t);
+            if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+              e.preventDefault();
+              const next =
+                list[(i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length]!;
+              next.focus();
+              activate(next.dataset.value!);
+            }
+          });
+        });
+
+        if (initial) activate(initial);
+      }
+    }
+    customElements.define('ai-tabs', AiTabs);
+  }
+</script>

@@ -1,0 +1,29 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+import LegalLayout from '@/layouts/LegalLayout.astro';
+import { siteConfig } from '@/config/site';
+
+export async function getStaticPaths() {
+  const docs = await getCollection('legal');
+  return docs.flatMap((entry: CollectionEntry<'legal'>) => {
+    const segments = entry.id.split('/');
+    const lang = segments[0]!;
+    if (lang === siteConfig.defaultLocale) return [];
+    if (!siteConfig.locales.includes(lang)) return [];
+    const slug = segments.slice(1).join('/');
+    return [{ params: { lang, slug }, props: { entry } }];
+  });
+}
+
+interface Props {
+  entry: CollectionEntry<'legal'>;
+}
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<LegalLayout entry={entry}>
+  <Content />
+</LegalLayout>

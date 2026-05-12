@@ -1,0 +1,31 @@
+---
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import TerminalPreview from '@registry/blocks/terminal-preview.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<ComponentsLayout
+  title={`terminal-preview | ${t('seo.home.title')}`}
+  description={t('blocks.summary.terminal-preview')}
+>
+  <ComponentShowcase
+    kind="block"
+    name="terminal-preview"
+    description={t('blocks.detail.terminal-preview.description')}
+  >
+    <TerminalPreview path="~/code">
+      <span class="mt">$</span> npm create astro-ignite my-site<br /><br />
+      <span class="mt">^</span> astro-ignite <span class="st">v0.1.0</span><br />
+      <span class="st">│</span><br />
+      <span class="st">◇</span> Template? <span class="mt">starter</span><br />
+      <span class="st">◇</span> Languages? <span class="mt">en, es, ja</span><br />
+      <span class="st">◇</span> Email? <span class="mt">Resend</span><br />
+      ◆ Install deps? <span class="pick">● Yes</span>
+      <span class="mt">○ No</span><br />
+      <span class="st">└</span>{' '}
+    </TerminalPreview>
+  </ComponentShowcase>
+</ComponentsLayout>

@@ -17,6 +17,7 @@ import Brand from '../Brand.astro';
 import SearchBox from './SearchBox.astro';
 import { sidebar } from '@/config/sidebar';
 import { siteConfig } from '@/config/site';
+import { useTranslations } from '@/i18n';
 
 interface Props {
   /** Path of the current page; used to mark the active item. */
@@ -25,6 +26,7 @@ interface Props {
 
 const { currentPath } = Astro.props;
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
 
 // Resolve labels from the current-locale entry's frontmatter. Sidebar config
 // uses bare slugs (`introduction`); the collection id is `<locale>/<slug>`.
@@ -39,9 +41,13 @@ const hasLocalizedEntry = (slug: string): boolean =>
   allDocs.some((e) => e.id === `${locale}/${slug}`);
 
 const isExternal = (slug: string) => slug.startsWith('http');
+// A slug starting with "/" is a direct path to a non-collection Astro page
+// (e.g. /components, /components/button). Bypasses the locale lookup.
+const isPath = (slug: string) => slug.startsWith('/');
 
 const hrefFor = (slug: string) => {
   if (isExternal(slug)) return slug;
+  if (isPath(slug)) return slug;
   return getRelativeLocaleUrl(locale, `/${slug}`);
 };
 
@@ -55,7 +61,7 @@ const isActive = (slug: string) => {
 
 <aside class="sidebar" aria-label="Documentation">
   <header class="sidebar-header">
-    <Brand href="/" variant="lockup" size={0.28} />
+    <Brand href="/" variant="lockup" size={0.42} />
   </header>
 
   <SearchBox />
@@ -63,31 +69,52 @@ const isActive = (slug: string) => {
   <nav class="sidebar-nav" aria-label="Sidebar">
     {
       sidebar.map((group) => {
-        // Only render items that exist in the current locale (or are external links).
+        // Render external links, direct paths, and doc-collection entries that
+        // exist in the current locale. Direct paths bypass the collection check.
         const visibleItems = group.items.filter(
-          (item) => isExternal(item.slug) || hasLocalizedEntry(item.slug)
+          (item) => isExternal(item.slug) || isPath(item.slug) || hasLocalizedEntry(item.slug)
         );
         if (visibleItems.length === 0) return null;
-        return (
+
+        const hasActive = visibleItems.some((i) => isActive(i.slug));
+        // Render a <details> group when `collapsed` is set, so the user can
+        // fold large nav groups. Auto-open when one of the items is active.
+        const isCollapsible = group.collapsed === true;
+        const open = isCollapsible ? hasActive : undefined;
+
+        const links = visibleItems.map((item) => {
+          const label = item.labelKey ? t(item.labelKey) : (item.label ?? titleForSlug(item.slug));
+          return (
+            <li>
+              <a
+                href={hrefFor(item.slug)}
+                class:list={['sidebar-link', isActive(item.slug) && 'is-active']}
+                aria-current={isActive(item.slug) ? 'page' : undefined}
+                rel={isExternal(item.slug) ? 'noopener noreferrer' : undefined}
+                target={isExternal(item.slug) ? '_blank' : undefined}
+              >
+                <span>{label}</span>
+                {item.badge && <span class="sidebar-badge mono">{item.badge}</span>}
+                {isExternal(item.slug) && <span aria-hidden="true">↗</span>}
+              </a>
+            </li>
+          );
+        });
+
+        const groupLabel = group.groupKey ? t(group.groupKey) : group.group;
+
+        return isCollapsible ? (
+          <details class="sidebar-group sidebar-group--collapsible" open={open}>
+            <summary class="sidebar-group-title mono">
+              <span>{groupLabel}</span>
+              <span class="sidebar-group-caret" aria-hidden="true">▸</span>
+            </summary>
+            <ul>{links}</ul>
+          </details>
+        ) : (
           <div class="sidebar-group">
-            <h2 class="sidebar-group-title mono">{group.group}</h2>
-            <ul>
-              {visibleItems.map((item) => (
-                <li>
-                  <a
-                    href={hrefFor(item.slug)}
-                    class:list={['sidebar-link', isActive(item.slug) && 'is-active']}
-                    aria-current={isActive(item.slug) ? 'page' : undefined}
-                    rel={isExternal(item.slug) ? 'noopener noreferrer' : undefined}
-                    target={isExternal(item.slug) ? '_blank' : undefined}
-                  >
-                    <span>{item.label ?? titleForSlug(item.slug)}</span>
-                    {item.badge && <span class="sidebar-badge mono">{item.badge}</span>}
-                    {isExternal(item.slug) && <span aria-hidden="true">↗</span>}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <h2 class="sidebar-group-title mono">{groupLabel}</h2>
+            <ul>{links}</ul>
           </div>
         );
       })
@@ -129,6 +156,30 @@ const isActive = (slug: string) => {
     text-transform: uppercase;
     padding: 4px 8px;
     margin: 0 0 2px;
+  }
+
+  .sidebar-group--collapsible > summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+    border-radius: var(--radius-sm);
+  }
+  .sidebar-group--collapsible > summary::-webkit-details-marker {
+    display: none;
+  }
+  .sidebar-group--collapsible > summary:hover {
+    color: var(--color-fg);
+  }
+  .sidebar-group-caret {
+    transition: transform 120ms ease;
+    font-size: 10px;
+    line-height: 1;
+  }
+  .sidebar-group--collapsible[open] > summary .sidebar-group-caret {
+    transform: rotate(90deg);
   }
   .sidebar-group ul {
     list-style: none;

@@ -1,0 +1,45 @@
+---
+import { cn } from '@/lib/cn';
+import type { HTMLAttributes } from 'astro/types';
+
+type Variant = 'default' | 'muted' | 'underline';
+
+export type Props = HTMLAttributes<'a'> & {
+  variant?: Variant;
+  class?: string;
+};
+
+const { variant = 'default', class: className, ...rest } = Astro.props;
+---
+
+<a class={cn('lnk', `lnk--${variant}`, className)} {...rest}><slot /></a>
+
+<style>
+  .lnk {
+    color: var(--color-fg);
+    text-decoration: none;
+    transition: color 120ms ease;
+  }
+  .lnk:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+  .lnk--default:hover {
+    color: var(--color-fg-muted);
+  }
+  .lnk--muted {
+    color: var(--color-fg-muted);
+  }
+  .lnk--muted:hover {
+    color: var(--color-fg);
+  }
+  .lnk--underline {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: var(--color-border-strong);
+  }
+  .lnk--underline:hover {
+    text-decoration-color: var(--color-fg);
+  }
+</style>

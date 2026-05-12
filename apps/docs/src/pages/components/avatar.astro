@@ -1,0 +1,41 @@
+---
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import Avatar from '@registry/base/avatar.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<ComponentsLayout
+  title={`avatar | ${t('seo.home.title')}`}
+  description={t('components.summary.avatar')}
+>
+  <ComponentShowcase
+    name="avatar"
+    description={t('components.detail.avatar.description')}
+    file="avatar.astro"
+    anno="3 sizes · image / initials"
+  >
+    <div class="row">
+      <span class="label">{t('components.label.size')}</span>
+      <Avatar size="sm" fallback="AI" />
+      <Avatar size="md" fallback="AI" />
+      <Avatar size="lg" fallback="AI" />
+    </div>
+
+    <div class="row">
+      <span class="label">{t('components.label.fallback')}</span>
+      <Avatar fallback="JD" />
+      <Avatar fallback="MK" />
+      <Avatar fallback="RS" />
+    </div>
+
+    <div class="row">
+      <span class="label">{t('components.label.image')}</span>
+      <Avatar src="https://i.pravatar.cc/96?img=12" alt="Avatar 1" />
+      <Avatar src="https://i.pravatar.cc/96?img=33" alt="Avatar 2" />
+      <Avatar src="https://i.pravatar.cc/96?img=58" alt="Avatar 3" />
+    </div>
+  </ComponentShowcase>
+</ComponentsLayout>

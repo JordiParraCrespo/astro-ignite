@@ -1,0 +1,47 @@
+---
+import { siteConfig } from '@/config/site';
+export function getStaticPaths() {
+  return siteConfig.locales
+    .filter((lang) => lang !== siteConfig.defaultLocale)
+    .map((lang) => ({ params: { lang } }));
+}
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import DropdownMenu from '@registry/base/dropdown-menu/dropdown-menu.astro';
+import DropdownMenuItem from '@registry/base/dropdown-menu/dropdown-menu-item.astro';
+import Button from '@registry/base/button.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<ComponentsLayout
+  title={`dropdown-menu | ${t('seo.home.title')}`}
+  description={t('components.summary.dropdown-menu')}
+>
+  <ComponentShowcase
+    name="dropdown-menu"
+    description={t('components.detail.dropdownMenu.description')}
+  >
+    <div class="trigger-wrap">
+      <Button class="dropdown-trigger" popovertarget="demo-menu">
+        {t('components.detail.dropdownMenu.trigger')}
+      </Button>
+      <DropdownMenu id="demo-menu">
+        <DropdownMenuItem>{t('components.detail.dropdownMenu.item1')}</DropdownMenuItem>
+        <DropdownMenuItem>{t('components.detail.dropdownMenu.item2')}</DropdownMenuItem>
+        <DropdownMenuItem>{t('components.detail.dropdownMenu.item3')}</DropdownMenuItem>
+        <DropdownMenuItem destructive>{t('components.detail.dropdownMenu.item4')}</DropdownMenuItem>
+      </DropdownMenu>
+    </div>
+  </ComponentShowcase>
+</ComponentsLayout>
+
+<style>
+  .trigger-wrap {
+    position: relative;
+  }
+  :global(.dropdown-trigger) {
+    anchor-name: --anchor;
+  }
+</style>

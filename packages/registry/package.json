@@ -1,0 +1,16 @@
+{
+  "name": "@astro-ignite/registry",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Source registry for astro-ignite base components and blocks. Consumed by create-astro-ignite at scaffold/add time.",
+  "type": "module",
+  "files": [
+    "base",
+    "blocks",
+    "lib",
+    "registry.json"
+  ],
+  "exports": {
+    "./registry.json": "./registry.json"
+  }
+}

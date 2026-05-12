@@ -1,0 +1,31 @@
+---
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import Tooltip from '@registry/base/tooltip.astro';
+import Button from '@registry/base/button.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<ComponentsLayout
+  title={`tooltip | ${t('seo.home.title')}`}
+  description={t('components.summary.tooltip')}
+>
+  <ComponentShowcase
+    name="tooltip"
+    description={t('components.detail.tooltip.description')}
+    file="tooltip.astro"
+    anno="side: top / bottom"
+  >
+    <div class="row" style="gap: 64px; padding: 28px 0;">
+      <Tooltip content={t('components.detail.tooltip.tipTop')}>
+        <Button variant="outline" size="sm">{t('components.detail.tooltip.triggerTop')}</Button>
+      </Tooltip>
+
+      <Tooltip content={t('components.detail.tooltip.tipBottom')} side="bottom">
+        <Button variant="outline" size="sm">{t('components.detail.tooltip.triggerBottom')}</Button>
+      </Tooltip>
+    </div>
+  </ComponentShowcase>
+</ComponentsLayout>

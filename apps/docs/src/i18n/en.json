@@ -28,6 +28,10 @@
     "switch": "Switch language"
   },
   "seo": {
+    "404": {
+      "title": "Page not found",
+      "description": "The page you were looking for doesn't exist."
+    },
     "home": {
       "title": "Home",
       "description": "Bootstrap a production-grade Astro site with top-tier SEO and performance defaults."
@@ -47,10 +51,6 @@
     "projects": {
       "title": "Projects",
       "description": "A collection of work, case studies, and experiments."
-    },
-    "404": {
-      "title": "Page not found",
-      "description": "The page you were looking for doesn't exist."
     }
   },
   "blog": {
@@ -114,6 +114,267 @@
       "heading": "Page not found",
       "body": "The page you were looking for doesn't exist or has been moved.",
       "back": "Back to home"
+    }
+  },
+  "sidebar": {
+    "startHere": "Start here",
+    "reference": "Reference",
+    "project": "Project"
+  },
+  "components": {
+    "back": "← All components",
+    "install": "Install",
+    "group": "Components",
+    "overview": "Overview",
+    "label": {
+      "variant": "Variant",
+      "size": "Size",
+      "state": "State",
+      "withDot": "With dot",
+      "fallback": "Fallback",
+      "image": "Image",
+      "vertical": "Vertical",
+      "horizontal": "Horizontal",
+      "default": "Default"
+    },
+    "index": {
+      "eyebrow": "Registry",
+      "title": "Components",
+      "description": "Every primitive in the astro-ignite registry, rendered live.",
+      "intro": "Production-ready Astro primitives. Copy-paste with",
+      "introTail": "— no runtime dependency."
+    },
+    "summary": {
+      "button": "Trigger actions. Supports variants and sizes.",
+      "link": "Inline navigation with default, muted and underline variants.",
+      "badge": "Compact status indicator.",
+      "card": "Surface container with header / content / footer slots.",
+      "input": "Single-line text field.",
+      "textarea": "Multi-line text field.",
+      "label": "Accessible label for form controls.",
+      "separator": "Horizontal or vertical divider.",
+      "alert": "Inline message block with semantic variants.",
+      "avatar": "User image with text fallback.",
+      "skeleton": "Loading placeholder shimmer.",
+      "kbd": "Keyboard shortcut indicator.",
+      "tabs": "Tabbed content panels.",
+      "accordion": "Collapsible content sections.",
+      "dialog": "Modal overlay built on the native <dialog> element.",
+      "dropdown-menu": "Anchored menu using the native popover API.",
+      "tooltip": "Hover and focus contextual hint.",
+      "toast": "Transient notifications via a toaster surface."
+    },
+    "detail": {
+      "button": {
+        "description": "Trigger actions. Renders a <button> by default, or an <a> when href is provided. Variants: default, secondary, outline, ghost, destructive, link. Sizes: sm, md, lg, icon.",
+        "default": "Default",
+        "secondary": "Secondary",
+        "outline": "Outline",
+        "ghost": "Ghost",
+        "destructive": "Destructive",
+        "linkVariant": "Link",
+        "small": "Small",
+        "medium": "Medium",
+        "large": "Large",
+        "disabled": "Disabled",
+        "asLink": "As link"
+      },
+      "link": {
+        "description": "Inline navigation. Renders an <a> with semantic colour variants.",
+        "defaultExample": "Default link example",
+        "mutedExample": "Muted link example",
+        "underlineExample": "Underlined link example"
+      },
+      "badge": {
+        "description": "Compact status indicator. Variants: default, secondary, outline, destructive, success, warning.",
+        "default": "Default",
+        "secondary": "Secondary",
+        "outline": "Outline",
+        "destructive": "Destructive",
+        "success": "Success",
+        "warning": "Warning"
+      },
+      "card": {
+        "description": "Surface container composed from card, card-header, card-title, card-description, card-content and card-footer.",
+        "title": "Project insights",
+        "lede": "The pulse of your team this week.",
+        "body": "Throughput is up 12% over last week. No regressions detected in the last 24 hours.",
+        "dismiss": "Dismiss",
+        "viewReport": "View report"
+      },
+      "input": {
+        "description": "Single-line text field. Forwards all standard <input> attributes.",
+        "emailLabel": "Email",
+        "disabledLabel": "Disabled",
+        "disabledPlaceholder": "Cannot edit"
+      },
+      "textarea": {
+        "description": "Multi-line text field. Forwards all standard <textarea> attributes.",
+        "messageLabel": "Message",
+        "messagePlaceholder": "Type your thoughts…"
+      },
+      "label": {
+        "description": "Accessible label for form controls. Use the for attribute to associate it with an input by id.",
+        "usernameLabel": "Username"
+      },
+      "separator": {
+        "description": "Visual divider. orientation: horizontal (default) or vertical.",
+        "above": "Above the line",
+        "below": "Below the line",
+        "left": "Left",
+        "middle": "Middle",
+        "right": "Right"
+      },
+      "alert": {
+        "description": "Inline message block. Variants: default, destructive, warning, success.",
+        "defaultTitle": "Heads up.",
+        "defaultBody": "This is a default alert — useful for general information.",
+        "successTitle": "Saved.",
+        "successBody": "Your changes are live.",
+        "warningTitle": "Heads up.",
+        "warningBody": "Storage is running low.",
+        "destructiveTitle": "Failed.",
+        "destructiveBody": "Could not reach the upstream server."
+      },
+      "avatar": {
+        "description": "User image with text fallback. Sizes: sm, md, lg. Falls back to initials when no src is provided or the image fails to load."
+      },
+      "skeleton": {
+        "description": "Loading placeholder. Size it freely with style attributes or utility classes."
+      },
+      "kbd": {
+        "description": "Keyboard shortcut indicator. Renders a styled <kbd> element.",
+        "line1Pre": "Press",
+        "line1Post": "to open the command palette.",
+        "line2Pre": "Save with",
+        "line2Mid": ", undo with",
+        "line2Post": "."
+      },
+      "tabs": {
+        "description": "Tabbed content panels. Compose with tabs, tabs-list, tabs-trigger and tabs-content. Behaviour ships in a custom element — no framework needed.",
+        "tab1": "Overview",
+        "tab2": "Install",
+        "tab3": "Usage",
+        "tab1Body": "Tabs let you swap related content in place without navigation.",
+        "tab2Body": "Run npx astro-ignite add tabs to copy the component into your project.",
+        "tab3Body": "Wrap triggers and content with matching value props inside a Tabs root."
+      },
+      "accordion": {
+        "description": "Collapsible content sections built on the native <details> element. Each item takes a title prop and an open flag.",
+        "q1Title": "What is astro-ignite?",
+        "q1Body": "A production-grade Astro scaffold with i18n, legal, analytics and a registry of primitives built in.",
+        "q2Title": "How do I install a component?",
+        "q2Body": "Run npx astro-ignite add <name>. The file is copied into src/components/ui — yours to edit.",
+        "q3Title": "Does it ship JavaScript?",
+        "q3Body": "Only the small custom elements that need interactivity (tabs, dialog, dropdown, toast). Everything else is zero-JS."
+      },
+      "dialog": {
+        "description": "Modal overlay built on the native <dialog> element. Trigger with [data-dialog-open=id], close with [data-dialog-close]. Click-outside-to-close handled by the registry script.",
+        "trigger": "Open dialog",
+        "title": "Delete project?",
+        "body": "This action is permanent. All deployments, environments and analytics for this project will be removed.",
+        "cancel": "Cancel",
+        "confirm": "Delete"
+      },
+      "dropdownMenu": {
+        "description": "Anchored menu using the native popover API + CSS anchor positioning. Wire a trigger by setting popovertarget to the menu id and anchor-name: --anchor on the trigger.",
+        "trigger": "Actions ▾",
+        "item1": "View profile",
+        "item2": "Account settings",
+        "item3": "Billing",
+        "item4": "Sign out"
+      },
+      "tooltip": {
+        "description": "Hover and focus contextual hint. Wraps any trigger and reveals content on pointer or keyboard focus. Side: top or bottom.",
+        "triggerTop": "Hover me (top)",
+        "tipTop": "Saves your draft locally",
+        "triggerBottom": "Hover me (bottom)",
+        "tipBottom": "Bottom side example"
+      },
+      "toast": {
+        "description": "Transient notifications. Drop a <Toaster /> once at the page root, then call toast(message, { variant }) from anywhere on the client.",
+        "default": "Default",
+        "success": "Success",
+        "warning": "Warning",
+        "destructive": "Destructive",
+        "messageDefault": "Heads up — something happened.",
+        "messageSuccess": "Saved. Your changes are live.",
+        "messageWarning": "Storage is running low.",
+        "messageDestructive": "Failed to reach the upstream server."
+      }
+    }
+  },
+  "blocks": {
+    "group": "Blocks",
+    "overview": "Overview",
+    "back": "← All blocks",
+    "install": "Install",
+    "index": {
+      "eyebrow": "Registry",
+      "title": "Blocks",
+      "description": "Higher-level compositions built from the primitives.",
+      "intro": "Composed blocks ready to drop in. Copy-paste with",
+      "introTail": "— no runtime dependency."
+    },
+    "summary": {
+      "page-hero": "Page heading composed of eyebrow, title and lede.",
+      "breadcrumb": "Trail of links with separators marking the current page.",
+      "release-pill": "Inline pill announcing a release or version.",
+      "command-block": "Copyable terminal command with one-click clipboard.",
+      "terminal-preview": "Faux terminal frame with chrome bar, content slot and blinking caret.",
+      "feature-grid": "Bordered grid of numbered features with tag, title and body.",
+      "post-list": "Vertical list of blog post entries with date, author, excerpt and tags.",
+      "prev-next-nav": "Paired previous / next navigation links for article footers.",
+      "author-card": "Author bio block with avatar fallback and link affordance.",
+      "project-card": "Project preview card with status pill, patterned cover and chips.",
+      "metadata-grid": "Key / value metadata grid for case-study summaries.",
+      "toc-rail": "Sticky table of contents with scroll-spy highlighting.",
+      "not-found-state": "404 / empty-state block with code, title and action slot.",
+      "notice-banner": "Inline notice with icon and four semantic variants."
+    },
+    "detail": {
+      "page-hero": {
+        "description": "Composes an eyebrow label, an h1 title and a lede paragraph. Use as the top section of any content page."
+      },
+      "breadcrumb": {
+        "description": "Renders a list of links with a current-page marker. Pass an items array of { label, href }."
+      },
+      "release-pill": {
+        "description": "Inline pill with a pulsing dot, label and optional detail. Becomes a link when href is set."
+      },
+      "command-block": {
+        "description": "Shows a terminal command with a prompt prefix and a Copy button that writes to the clipboard."
+      },
+      "terminal-preview": {
+        "description": "Faux terminal with macOS-style chrome dots, a path label and zsh badge. Slot accepts pre-formatted lines; pass caret={false} to hide the blinking caret."
+      },
+      "feature-grid": {
+        "description": "Three- or two-column grid of features. Each cell renders an optional index, an uppercase tag, a heading and a body line."
+      },
+      "post-list": {
+        "description": "Vertical post list. Use <PostList> as the container, then drop <PostListItem> children with title, href, date, author, reading time, excerpt and tags."
+      },
+      "prev-next-nav": {
+        "description": "Renders previous / next navigation cards in a 2-column grid. Either side can be omitted."
+      },
+      "author-card": {
+        "description": "Author bio block. If src is omitted, initials fall back from the name. Pass href to make the whole card a link."
+      },
+      "project-card": {
+        "description": "Project preview card with patterned cover, status pill, title, description and chip row. Becomes a link when href is set."
+      },
+      "metadata-grid": {
+        "description": "Renders a key / value grid as a semantic dl > dt + dd structure. Defaults to 4 columns; collapses to 2 on narrow viewports."
+      },
+      "toc-rail": {
+        "description": "Sticky table of contents. Pass an entries array of { id, label, depth }. Uses IntersectionObserver to mark the currently visible heading."
+      },
+      "not-found-state": {
+        "description": "Centered 404 / empty state with an eyebrow code, headline, description and an actions slot for buttons."
+      },
+      "notice-banner": {
+        "description": "Inline notice with icon and four variants: info, warning, success, danger. Slot accepts the message."
+      }
     }
   }
 }

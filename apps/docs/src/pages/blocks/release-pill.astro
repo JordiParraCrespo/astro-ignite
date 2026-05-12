@@ -1,0 +1,35 @@
+---
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import ReleasePill from '@registry/blocks/release-pill.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<ComponentsLayout
+  title={`release-pill | ${t('seo.home.title')}`}
+  description={t('blocks.summary.release-pill')}
+>
+  <ComponentShowcase
+    kind="block"
+    name="release-pill"
+    description={t('blocks.detail.release-pill.description')}
+  >
+    <div class="row">
+      <ReleasePill href="#" label="BETA" detail="v0.1.0 just shipped →" />
+    </div>
+    <div class="row">
+      <ReleasePill label="STABLE" detail="v1.0.0" pulse={false} />
+    </div>
+  </ComponentShowcase>
+</ComponentsLayout>
+
+<style>
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+  }
+</style>

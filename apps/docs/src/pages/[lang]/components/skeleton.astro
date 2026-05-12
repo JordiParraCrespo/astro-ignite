@@ -1,0 +1,54 @@
+---
+import { siteConfig } from '@/config/site';
+export function getStaticPaths() {
+  return siteConfig.locales
+    .filter((lang) => lang !== siteConfig.defaultLocale)
+    .map((lang) => ({ params: { lang } }));
+}
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import Skeleton from '@registry/base/skeleton.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<ComponentsLayout
+  title={`skeleton | ${t('seo.home.title')}`}
+  description={t('components.summary.skeleton')}
+>
+  <ComponentShowcase name="skeleton" description={t('components.detail.skeleton.description')}>
+    <div class="card">
+      <Skeleton style="height: 12px; width: 70%;" />
+      <Skeleton style="height: 12px; width: 90%;" />
+      <Skeleton style="height: 12px; width: 50%;" />
+    </div>
+
+    <div class="row">
+      <Skeleton style="height: 48px; width: 48px; border-radius: 999px;" />
+      <div class="col">
+        <Skeleton style="height: 12px; width: 120px;" />
+        <Skeleton style="height: 12px; width: 200px;" />
+      </div>
+    </div>
+  </ComponentShowcase>
+</ComponentsLayout>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 360px;
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+</style>

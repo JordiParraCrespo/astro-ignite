@@ -9,11 +9,13 @@
   },
   "files": [
     "dist",
+    "templates",
     "README.md"
   ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
+    "prepack": "node ./scripts/copy-templates.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",

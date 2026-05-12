@@ -1,0 +1,52 @@
+---
+import { cn } from '@/lib/cn';
+import type { HTMLAttributes } from 'astro/types';
+
+type AsButton = { href?: undefined } & HTMLAttributes<'button'>;
+type AsAnchor = { href: string } & HTMLAttributes<'a'>;
+
+export type Props = (AsButton | AsAnchor) & { class?: string; destructive?: boolean };
+
+const { class: className, href, destructive = false, ...rest } = Astro.props;
+const classes = cn('menu-item', destructive && 'menu-item--destructive', className);
+---
+
+{
+  href ? (
+    <a href={href} role="menuitem" class={classes} {...(rest as HTMLAttributes<'a'>)}>
+      <slot />
+    </a>
+  ) : (
+    <button type="button" role="menuitem" class={classes} {...(rest as HTMLAttributes<'button'>)}>
+      <slot />
+    </button>
+  )
+}
+
+<style>
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 6px 8px;
+    border-radius: calc(var(--radius) - 2px);
+    background: transparent;
+    border: none;
+    color: var(--color-fg);
+    font: inherit;
+    font-size: 13px;
+    line-height: 1.4;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .menu-item:hover,
+  .menu-item:focus-visible {
+    background: var(--color-surface-2);
+    outline: none;
+  }
+  .menu-item--destructive {
+    color: var(--color-danger);
+  }
+</style>

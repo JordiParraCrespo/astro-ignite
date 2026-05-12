@@ -1,0 +1,41 @@
+---
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import Alert from '@registry/base/alert.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<ComponentsLayout
+  title={`alert | ${t('seo.home.title')}`}
+  description={t('components.summary.alert')}
+>
+  <ComponentShowcase
+    name="alert"
+    description={t('components.detail.alert.description')}
+    file="alert.astro"
+    anno="4 variants"
+  >
+    <Alert>
+      <Fragment slot="icon">i</Fragment>
+      <Fragment slot="title">{t('components.detail.alert.defaultTitle')}</Fragment>
+      {t('components.detail.alert.defaultBody')}
+    </Alert>
+    <Alert variant="success">
+      <Fragment slot="icon">✓</Fragment>
+      <Fragment slot="title">{t('components.detail.alert.successTitle')}</Fragment>
+      {t('components.detail.alert.successBody')}
+    </Alert>
+    <Alert variant="warning">
+      <Fragment slot="icon">!</Fragment>
+      <Fragment slot="title">{t('components.detail.alert.warningTitle')}</Fragment>
+      {t('components.detail.alert.warningBody')}
+    </Alert>
+    <Alert variant="destructive">
+      <Fragment slot="icon">×</Fragment>
+      <Fragment slot="title">{t('components.detail.alert.destructiveTitle')}</Fragment>
+      {t('components.detail.alert.destructiveBody')}
+    </Alert>
+  </ComponentShowcase>
+</ComponentsLayout>

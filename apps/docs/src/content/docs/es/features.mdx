@@ -1,0 +1,87 @@
+---
+title: Características
+description: Todo lo que astro-ignite incluye — qué hace cada característica y dónde vive.
+lastUpdated: 2026-05-11
+tags: [empezando, caracteristicas]
+---
+
+import Callout from '@/components/docs/Callout.astro';
+
+Cada característica aquí está conectada de extremo a extremo desde el primer arranque. Nada está simulado, stub, ni detrás de un feature flag. A continuación está lo que obtienes y dónde vive en el árbol.
+
+## Internacionalización
+
+i18n nativo con un solo camino de código para sitios monolingües y multilingües. Elige los locales al momento del scaffold; el CLI genera rutas con prefijo de locale, content collections, entradas del sitemap y etiquetas `hreflang`.
+
+- `astro.config.mjs` → `i18n.locales` controla todo lo demás
+- `src/i18n/<locale>.json` para strings tipados de UI vía `useTranslations()`
+- `src/pages/[lang]/...` refleja las rutas del locale por defecto
+- `LocaleSwitcher.astro` cambia el prefijo de URL sin perder la ruta actual
+
+## SEO y analítica
+
+JSON-LD tipado de Schema.org construido con `schema-dts`, imágenes OG, sitemap con alternativas por locale y analítica Plausible que respeta el consentimiento de cookies.
+
+- `src/lib/jsonld.ts` construye `WebPage`, `BreadcrumbList`, `Article`, etc.
+- `Analytics.astro` carga Plausible de forma diferida solo tras el consentimiento
+- Imágenes OG por página generadas en build desde `src/lib/og/`
+
+## Plantillas legales y consentimiento de cookies
+
+Plantillas de política de privacidad, política de cookies y términos de servicio como entradas de content-collection — traducibles, versionadas y renderizadas mediante `LegalLayout`.
+
+<Callout variant="warn" title="No es asesoría legal">
+  Las plantillas incluyen un aviso que recuerda revisar con asesoría antes de
+  publicar. Los textos viven en tu `i18n/*.json` para que puedas suavizarlos,
+  endurecerlos o reemplazarlos.
+</Callout>
+
+- `src/content/legal/<locale>/*.mdx` para los documentos en sí
+- `CookieBanner.astro` aplaza la analítica hasta aceptar/rechazar
+- Los campos de última actualización y versión aparecen automáticamente en el layout
+
+## Registro de componentes
+
+Un registro estilo shadcn de primitivos puros de Astro. Copia y pega con `npx astro-ignite add <nombre>` — los componentes aterrizan en `src/components/ui/` y son tuyos.
+
+- 18 primitivos: button, card, dialog, dropdown-menu, tabs, accordion, toast, …
+- Cero runtime de React/Vue/Svelte — el comportamiento es custom elements + las APIs nativas de popover/dialog
+- Explora cada primitivo en vivo en [Componentes](/es/components)
+
+## Temas y diseño
+
+Un sistema de diseño basado en Zinc en variables CSS, oscuro por defecto, con un cambio de tema sin flash que persiste entre visitas.
+
+- `src/styles/global.css` define los tokens de diseño
+- `ThemeToggle.astro` cambia las variables `--color-*`; el script anti-flash se ejecuta antes del pintado
+- Geist Sans + Mono auto-alojados vía `astro:assets` (cero CLS al cambiar)
+
+## Rendimiento
+
+Lighthouse 100 en móvil, verificado por CI. Salida puramente Astro, optimización de imágenes, precarga de fuentes y cero JS en cliente en la mayoría de páginas.
+
+- `Image` desde `astro:assets` para `srcset` responsive + AVIF/WebP
+- CSS crítico inline por página; el no crítico se aplaza
+- Mira [Benchmarks](/es/benchmarks) para los números y cómo reproducirlos
+
+## Content collections
+
+Contenido tipado para entradas de blog, proyectos de caso de estudio, documentos legales y los propios docs — todo consciente del locale, todo con esquemas de frontmatter.
+
+- `src/content.config.ts` define los esquemas Zod
+- Una carpeta por locale (p. ej. `src/content/blog/en/`, `src/content/blog/es/`)
+- Los enlaces entre locales se resuelven por id de colección
+
+## Formularios y email
+
+Un formulario de contacto funcional construido sobre Astro Actions, validación Zod, y tu elección de Resend o SMTP al hacer scaffold.
+
+- `src/actions/index.ts` para la acción del servidor
+- `src/lib/email/` para el adaptador del proveedor
+- La protección anti-spam está intencionalmente fuera del alcance — añade Turnstile o hCaptcha al gusto
+
+## A dónde ir
+
+- [Inicio rápido](/es/quick-start) — instala y empieza a editar
+- [Componentes](/es/components) — cada primitivo, renderizado en vivo
+- [Benchmarks](/es/benchmarks) — la historia de Lighthouse

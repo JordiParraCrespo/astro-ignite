@@ -1,0 +1,49 @@
+---
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import Separator from '@registry/base/separator.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<ComponentsLayout
+  title={`separator | ${t('seo.home.title')}`}
+  description={t('components.summary.separator')}
+>
+  <ComponentShowcase
+    name="separator"
+    description={t('components.detail.separator.description')}
+    file="separator.astro"
+    anno="horizontal · vertical"
+  >
+    <div class="col" style="width: 360px;">
+      <span class="hint">{t('components.detail.separator.above')}</span>
+      <Separator />
+      <span class="hint">{t('components.detail.separator.below')}</span>
+    </div>
+    <div class="row">
+      <span class="label">{t('components.label.vertical')}</span>
+      <span class="word">{t('components.detail.separator.left')}</span>
+      <Separator orientation="vertical" />
+      <span class="word">{t('components.detail.separator.middle')}</span>
+      <Separator orientation="vertical" />
+      <span class="word">{t('components.detail.separator.right')}</span>
+    </div>
+  </ComponentShowcase>
+</ComponentsLayout>
+
+<style>
+  .hint {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-fg-muted);
+  }
+  .word {
+    font-size: 13px;
+    color: var(--color-fg);
+  }
+  :global(.showcase__preview .sep--vertical) {
+    height: 18px;
+  }
+</style>

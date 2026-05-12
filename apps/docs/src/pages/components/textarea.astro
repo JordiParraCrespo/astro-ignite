@@ -1,0 +1,45 @@
+---
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import Textarea from '@registry/base/textarea.astro';
+import Label from '@registry/base/label.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<ComponentsLayout
+  title={`textarea | ${t('seo.home.title')}`}
+  description={t('components.summary.textarea')}
+>
+  <ComponentShowcase
+    name="textarea"
+    description={t('components.detail.textarea.description')}
+    file="textarea.astro"
+    anno="same states as input"
+  >
+    <div class="row" style="align-items: flex-start;">
+      <div class="field">
+        <Label for="t-default">{t('components.label.default')}</Label>
+        <Textarea
+          id="t-default"
+          placeholder={t('components.detail.textarea.messagePlaceholder')}
+          rows={4}
+        />
+      </div>
+      <div class="field">
+        <Label for="t-msg">{t('components.detail.textarea.messageLabel')}</Label>
+        <Textarea id="t-msg" rows={4}>Pre-wired SEO, i18n, and email — out of the box.</Textarea>
+      </div>
+    </div>
+  </ComponentShowcase>
+</ComponentsLayout>
+
+<style>
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 280px;
+  }
+</style>

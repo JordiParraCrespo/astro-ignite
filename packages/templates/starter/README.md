@@ -82,12 +82,12 @@ In dev, missing env vars fall back to console-logging — `pnpm dev` produces a 
 
 | Topic                                            | Read                               |
 | ------------------------------------------------ | ---------------------------------- |
-| Custom fonts (swap, add, system-only)            | [`FONTS.md`](./FONTS.md)           |
-| Analytics swap (Plausible ↔ Umami ↔ Fathom ↔ GA) | [`ANALYTICS.md`](./ANALYTICS.md)   |
-| OG images (per-locale, dynamic generation)       | [`OG.md`](./OG.md)                 |
-| Image component conventions                      | [`IMAGES.md`](./IMAGES.md)         |
-| Legal templates (review with counsel!)           | [`LEGAL.md`](./LEGAL.md)           |
-| Performance benchmarks + reproducing them        | [`BENCHMARKS.md`](./BENCHMARKS.md) |
+| Custom fonts (swap, add, system-only)            | [`FONTS.md`](./docs/FONTS.md)           |
+| Analytics swap (Plausible ↔ Umami ↔ Fathom ↔ GA) | [`ANALYTICS.md`](./docs/ANALYTICS.md)   |
+| OG images (per-locale, dynamic generation)       | [`OG.md`](./docs/OG.md)                 |
+| Image component conventions                      | [`IMAGES.md`](./docs/IMAGES.md)         |
+| Legal templates (review with counsel!)           | [`LEGAL.md`](./docs/LEGAL.md)           |
+| Performance benchmarks + reproducing them        | [`BENCHMARKS.md`](./docs/BENCHMARKS.md) |
 
 ## Adding a new locale
 
@@ -131,7 +131,7 @@ The scaffold is tuned for Lighthouse 100s on mobile. Key principles encoded in t
 - Anti-flash inline theme script
 - No client-side framework runtime
 
-See [`BENCHMARKS.md`](./BENCHMARKS.md) for measurement methodology.
+See [`BENCHMARKS.md`](./docs/BENCHMARKS.md) for measurement methodology.
 
 ## License
 

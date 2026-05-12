@@ -1,0 +1,25 @@
+---
+import { siteConfig } from '@/config/site';
+export function getStaticPaths() {
+  return siteConfig.locales
+    .filter((lang) => lang !== siteConfig.defaultLocale)
+    .map((lang) => ({ params: { lang } }));
+}
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import Link from '@registry/base/link.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<ComponentsLayout
+  title={`link | ${t('seo.home.title')}`}
+  description={t('components.summary.link')}
+>
+  <ComponentShowcase name="link" description={t('components.detail.link.description')}>
+    <p><Link href="#" variant="default">{t('components.detail.link.defaultExample')}</Link></p>
+    <p><Link href="#" variant="muted">{t('components.detail.link.mutedExample')}</Link></p>
+    <p><Link href="#" variant="underline">{t('components.detail.link.underlineExample')}</Link></p>
+  </ComponentShowcase>
+</ComponentsLayout>

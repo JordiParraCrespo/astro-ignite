@@ -5,6 +5,13 @@ dist
 .vercel
 .netlify
 .cache
+.wrangler
+
+# Local CLI prepack output (regenerated from packages/templates/ on publish)
+packages/create-astro-ignite/templates
+
+# Tarballs from `npm pack` / `pnpm pack`
+*.tgz
 
 # env files
 .env

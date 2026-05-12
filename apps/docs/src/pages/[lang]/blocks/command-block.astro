@@ -1,0 +1,30 @@
+---
+import { siteConfig } from '@/config/site';
+export function getStaticPaths() {
+  return siteConfig.locales
+    .filter((lang) => lang !== siteConfig.defaultLocale)
+    .map((lang) => ({ params: { lang } }));
+}
+
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import CommandBlock from '@registry/blocks/command-block.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<ComponentsLayout
+  title={`command-block | ${t('seo.home.title')}`}
+  description={t('blocks.summary.command-block')}
+>
+  <ComponentShowcase
+    kind="block"
+    name="command-block"
+    description={t('blocks.detail.command-block.description')}
+  >
+    <CommandBlock command="npm create astro-ignite@latest my-site" />
+    <CommandBlock command="pnpm add @astro-ignite/registry" prompt="❯" />
+    <CommandBlock command="pnpm build" copy={false} />
+  </ComponentShowcase>
+</ComponentsLayout>

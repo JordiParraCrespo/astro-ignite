@@ -127,6 +127,30 @@
     outline-offset: 2px;
   }
 
+  /* Themed scrollbars — match the dark surface so OS chrome doesn't bleed through. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border-strong) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 999px;
+    border: 2px solid var(--color-bg);
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background: var(--color-border-strong);
+  }
+  *::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
   code,
   pre {
     font-family: var(--font-mono);

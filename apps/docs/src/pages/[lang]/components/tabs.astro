@@ -1,0 +1,41 @@
+---
+import { siteConfig } from '@/config/site';
+export function getStaticPaths() {
+  return siteConfig.locales
+    .filter((lang) => lang !== siteConfig.defaultLocale)
+    .map((lang) => ({ params: { lang } }));
+}
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import Tabs from '@registry/base/tabs/tabs.astro';
+import TabsList from '@registry/base/tabs/tabs-list.astro';
+import TabsTrigger from '@registry/base/tabs/tabs-trigger.astro';
+import TabsContent from '@registry/base/tabs/tabs-content.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<ComponentsLayout
+  title={`tabs | ${t('seo.home.title')}`}
+  description={t('components.summary.tabs')}
+>
+  <ComponentShowcase name="tabs" description={t('components.detail.tabs.description')}>
+    <Tabs defaultValue="overview">
+      <TabsList>
+        <TabsTrigger value="overview">{t('components.detail.tabs.tab1')}</TabsTrigger>
+        <TabsTrigger value="install">{t('components.detail.tabs.tab2')}</TabsTrigger>
+        <TabsTrigger value="usage">{t('components.detail.tabs.tab3')}</TabsTrigger>
+      </TabsList>
+      <TabsContent value="overview">
+        <p>{t('components.detail.tabs.tab1Body')}</p>
+      </TabsContent>
+      <TabsContent value="install">
+        <p>{t('components.detail.tabs.tab2Body')}</p>
+      </TabsContent>
+      <TabsContent value="usage">
+        <p>{t('components.detail.tabs.tab3Body')}</p>
+      </TabsContent>
+    </Tabs>
+  </ComponentShowcase>
+</ComponentsLayout>

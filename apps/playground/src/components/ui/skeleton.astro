@@ -1,0 +1,43 @@
+---
+import { cn } from '@/lib/cn';
+import type { HTMLAttributes } from 'astro/types';
+
+export type Props = HTMLAttributes<'div'> & { class?: string };
+const { class: className, ...rest } = Astro.props;
+---
+
+<div class={cn('skeleton', className)} aria-hidden="true" {...rest}></div>
+
+<style>
+  .skeleton {
+    background: var(--color-surface-2);
+    border-radius: var(--radius);
+    position: relative;
+    overflow: hidden;
+  }
+  .skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in oklch, var(--color-fg) 6%, transparent),
+      transparent
+    );
+    animation: skeleton-shimmer 1.4s linear infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton::after {
+      animation: none;
+    }
+  }
+  @keyframes skeleton-shimmer {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
+</style>

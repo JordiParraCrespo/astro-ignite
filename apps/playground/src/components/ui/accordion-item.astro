@@ -1,0 +1,68 @@
+---
+import { cn } from '@/lib/cn';
+
+export type Props = {
+  title: string;
+  open?: boolean;
+  class?: string;
+};
+
+const { title, open = false, class: className } = Astro.props;
+---
+
+<details class={cn('accordion-item', className)} open={open}>
+  <summary class="accordion-item__summary">
+    <span>{title}</span>
+    <svg
+      class="accordion-item__chevron"
+      width="14"
+      height="14"
+      viewBox="0 0 14 14"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path d="M3.5 5.25L7 8.75L10.5 5.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </summary>
+  <div class="accordion-item__body"><slot /></div>
+</details>
+
+<style>
+  .accordion-item {
+    border-bottom: 1px solid var(--color-border);
+  }
+  .accordion-item__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 0;
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--color-fg);
+    list-style: none;
+    user-select: none;
+  }
+  .accordion-item__summary::-webkit-details-marker {
+    display: none;
+  }
+  .accordion-item__summary:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+  .accordion-item__chevron {
+    color: var(--color-fg-muted);
+    transition: transform 200ms ease;
+    flex-shrink: 0;
+  }
+  .accordion-item[open] > .accordion-item__summary .accordion-item__chevron {
+    transform: rotate(180deg);
+  }
+  .accordion-item__body {
+    padding: 0 0 16px;
+    color: var(--color-fg-muted);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+</style>

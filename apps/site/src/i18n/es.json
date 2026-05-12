@@ -1,0 +1,269 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "blog": "Blog",
+    "projects": "Proyectos",
+    "about": "Acerca",
+    "contact": "Contacto",
+    "menu": "Menú",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "skipToContent": "Saltar al contenido principal"
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados.",
+    "builtWith": "Hecho con astro-ignite.",
+    "rss": "Feed RSS",
+    "legal": "Legal",
+    "social": "Redes"
+  },
+  "theme": {
+    "label": "Tema",
+    "light": "Claro",
+    "dark": "Oscuro",
+    "system": "Sistema"
+  },
+  "locale": {
+    "label": "Idioma",
+    "switch": "Cambiar idioma"
+  },
+  "seo": {
+    "home": {
+      "title": "Inicio",
+      "description": "Crea un sitio Astro listo para producción con valores predeterminados de SEO y rendimiento de primer nivel."
+    },
+    "about": {
+      "title": "Acerca",
+      "description": "Conoce más sobre nosotros — qué hacemos, por qué y cómo contactarnos."
+    },
+    "contact": {
+      "title": "Contacto",
+      "description": "Ponte en contacto — nos encantaría saber de ti."
+    },
+    "blog": {
+      "title": "Blog",
+      "description": "Artículos, notas y novedades."
+    },
+    "projects": {
+      "title": "Proyectos",
+      "description": "Una colección de trabajo, casos de estudio y experimentos."
+    },
+    "404": {
+      "title": "Página no encontrada",
+      "description": "La página que buscas no existe."
+    }
+  },
+  "blog": {
+    "byAuthor": "por",
+    "publishedOn": "Publicado el",
+    "updatedOn": "Actualizado el",
+    "readMore": "Leer más",
+    "readingTime": "{minutes} min de lectura",
+    "morePosts": "Más entradas",
+    "backToBlog": "Volver al blog",
+    "noPosts": "Aún no hay entradas."
+  },
+  "projects": {
+    "viewProject": "Ver proyecto",
+    "viewLive": "Ver en vivo",
+    "viewRepo": "Ver repositorio",
+    "viewDemo": "Ver demo",
+    "viewCaseStudy": "Leer caso de estudio",
+    "techStack": "Tecnologías",
+    "role": "Rol",
+    "client": "Cliente",
+    "status": {
+      "shipped": "Publicado",
+      "in-progress": "En progreso",
+      "archived": "Archivado"
+    },
+    "backToProjects": "Volver a proyectos",
+    "noProjects": "Aún no hay proyectos."
+  },
+  "contact": {
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "message": "Mensaje",
+    "send": "Enviar mensaje",
+    "sending": "Enviando…",
+    "success": "Gracias — te responderemos pronto.",
+    "error": "Algo salió mal. Inténtalo de nuevo o escríbenos directamente.",
+    "validation": {
+      "nameRequired": "Por favor ingresa tu nombre.",
+      "emailInvalid": "Por favor ingresa un correo válido.",
+      "messageTooShort": "Por favor escribe al menos 10 caracteres."
+    }
+  },
+  "cookies": {
+    "banner": {
+      "title": "Preferencias de cookies",
+      "description": "Usamos almacenamiento mínimo para recordar tus preferencias. La analítica está desactivada hasta que aceptes.",
+      "accept": "Aceptar",
+      "decline": "Rechazar",
+      "policyLink": "Leer nuestra política de cookies"
+    }
+  },
+  "legal": {
+    "lastUpdated": "Última actualización",
+    "version": "Versión",
+    "tableOfContents": "Tabla de contenidos",
+    "templateNotice": "Este es un documento de plantilla. Revísalo con asesoría legal antes de publicar."
+  },
+  "errors": {
+    "404": {
+      "heading": "Página no encontrada",
+      "body": "La página que buscas no existe o ha sido movida.",
+      "back": "Volver al inicio"
+    }
+  },
+  "home": {
+    "eyebrow": "Pre-1.0 — creado con astro-ignite",
+    "primaryCta": "Leer el blog",
+    "secondaryCta": "Ver proyectos",
+    "featuresHeading": "Lo que viene de fábrica",
+    "features": {
+      "f01": {
+        "title": "Lighthouse 100 en móvil",
+        "body": "CSS por capas con estilos scoped above-the-fold, Tailwind debajo y extracción de critical-CSS con Beasties. Verificado por CI."
+      },
+      "f02": {
+        "title": "JSON-LD tipado de Schema.org",
+        "body": "Constructores schema-dts componen un único @graph. Atrapa datos estructurados malformados en build, no en Search Console."
+      },
+      "f03": {
+        "title": "i18n nativo",
+        "body": "Routing i18n de Astro 5 con un único camino de código para sitios mono y multilingües. Hreflang autocalculado."
+      },
+      "f04": {
+        "title": "Formulario de contacto funcional",
+        "body": "Astro Actions + validación Zod + honeypot + tu elección entre Resend o SMTP. En dev imprime en consola."
+      },
+      "f05": {
+        "title": "Banner de cookies + plantillas legales",
+        "body": "Privacidad, términos, cookies — traducidos, con un aviso de \"revísalo con asesoría\" incluido."
+      },
+      "f06": {
+        "title": "Eres dueño del código",
+        "body": "Sin dependencia en runtime. Edita lo que quieras. Para siempre. Cinco prompts y es tuyo."
+      }
+    }
+  },
+  "about": {
+    "body": {
+      "p1": "Reemplaza este contenido con tu historia. La página es un componente Astro normal que usa BaseLayout directamente — no hace falta un layout separado para páginas estáticas como ésta.",
+      "p2": "Las páginas que no encajan en una content collection viven como archivos .astro en src/pages/. Llaman a t() para el texto traducido y pasan el resultado a BaseLayout para el SEO. Los layouts especializados (Article, Project, Legal) manejan las páginas de colecciones.",
+      "heading": "Qué va aquí",
+      "li1": "Quién eres o qué hace tu equipo",
+      "li2": "Por qué construiste esto",
+      "li3": "Cómo contactarte (el formulario vive en /contact)"
+    }
+  },
+  "landing": {
+    "nav": {
+      "docs": "Documentación",
+      "templates": "Plantillas",
+      "plan": "Plan",
+      "changelog": "Cambios",
+      "github": "GitHub ↗",
+      "readDocs": "Leer la documentación",
+      "getStarted": "Empezar"
+    },
+    "hero": {
+      "headlineMuted": "Sitios Astro,",
+      "headlineTail": "hechos para agentes de IA.",
+      "lede": "SEO, i18n, rendimiento, páginas legales y email — preconfigurados con valores sensatos que realmente posees. Sin dependencias en tiempo de ejecución. Sin lock-in.",
+      "ledeEmph": "Solo código.",
+      "copyLabel": "copiar",
+      "pillTag": "Beta",
+      "pillAnnouncement": "v0.1.0 recién lanzado",
+      "getStarted": "Empezar",
+      "readPlan": "Leer el plan",
+      "primaryCta": "Enciende tu sitio",
+      "secondaryCta": "Estrella en GitHub ★"
+    },
+    "features": {
+      "eyebrow": "Lo que obtienes",
+      "headline": "Veinte cosas que de otra forma construirías a las 11 de la noche.",
+      "meta": "Tú posees cada línea. Sin dependencia de runtime sobre esta herramienta — el eject es gratis, porque no hay nada de lo que escapar.",
+      "f01": {
+        "title": "Lighthouse 100",
+        "body": "Móvil y escritorio. Los budgets de CI rompen el build antes de que se publiquen regresiones."
+      },
+      "f02": {
+        "title": "Astro 5 + i18n",
+        "body": "i18n nativo, content collections y Astro Actions. Esquemas Zod estrictos."
+      },
+      "f03": {
+        "title": "Tailwind v4",
+        "body": "Estrategia de CSS por capas. Scoped above-the-fold + extracción de critical-CSS."
+      },
+      "f04": {
+        "title": "JSON-LD tipado",
+        "body": "Schema.org vía schema-dts. Errores en compilación en vez de snippets desactualizados."
+      },
+      "f05": {
+        "title": "Pipeline de imágenes",
+        "body": "AVIF + WebP, srcset responsivo, placeholders LQIP, cero CLS."
+      },
+      "f06": {
+        "title": "Fuentes autoalojadas",
+        "body": "Geist Sans + Mono vía astro:fonts. Subset, precargadas, cero CLS."
+      },
+      "f07": {
+        "title": "Modo oscuro tri-estado",
+        "body": "Claro / oscuro / sistema, con script inline anti-flash. Sin FOUC."
+      },
+      "f08": {
+        "title": "Formulario de contacto",
+        "body": "Astro Actions + validación Zod + Resend o SMTP. Cableado, no un stub."
+      },
+      "f09": {
+        "title": "Cookies + legal",
+        "body": "Banner, privacidad, términos y plantillas de cookies. Conscientes de i18n."
+      }
+    },
+    "templates": {
+      "eyebrow": "Plantillas",
+      "headline": "Dos formas de empezar. Las dos sacan un 100.",
+      "lede": "Elige una plantilla en el prompt, o pasa",
+      "ledeTail": ". Más en camino.",
+      "meta": "Cada plantilla es un proyecto Astro completo — no un fragmento. Lee el código, haz fork, olvídate de nosotros.",
+      "starter": {
+        "name": "Starter",
+        "meta": "predeterminada",
+        "desc": "Base marketing-first. Hero, features, blog, formulario de contacto y páginas legales. Todo lo del grid de arriba, sin paja."
+      },
+      "docs": {
+        "name": "Docs",
+        "meta": "estilo starlight",
+        "desc": "Sitio de documentación a tres columnas con sidebar, componentes MDX, TOC en la página, breadcrumbs y contenido bilingüe."
+      },
+      "starterPreviewSub": "Un starter limpio orientado a marketing con blog, contacto e i18n cableados.",
+      "starterPreviewHeadingLead": "Envía rápido.",
+      "starterPreviewHeadingMuted": "Envía mejor.",
+      "preview": "Vista previa ↗",
+      "moreLead": "Más plantillas en progreso:",
+      "browseAll": "Ver todas →"
+    },
+    "cta": {
+      "pill": "listo en 90 segundos",
+      "headlineLead": "Deja de afeitar yaks en el",
+      "headlineMuted": "primer 30%",
+      "headlineTail": ".",
+      "lede": "Cinco prompts, una instalación, un sitio Astro terminado que es totalmente tuyo. Hazle eject cuando quieras — no hay de qué hacer eject.",
+      "getStarted": "Empezar",
+      "github": "Star en GitHub ★"
+    },
+    "footer": {
+      "lede": "Sitios Astro listos para producción en cinco prompts. MIT · pre-1.0.",
+      "productHead": "Producto",
+      "resourcesHead": "Recursos",
+      "legalHead": "Legal",
+      "license": "Licencia",
+      "privacy": "Privacidad",
+      "cookies": "Cookies",
+      "issues": "Issues",
+      "discussions": "Discussions"
+    }
+  }
+}

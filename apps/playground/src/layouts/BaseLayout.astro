@@ -87,8 +87,7 @@ const allSchemas = [...siteSchemas(locale), ...schemas];
       (() => {
         const stored = localStorage.getItem('theme');
         const isLight =
-          stored === 'light' ||
-          (!stored && !matchMedia('(prefers-color-scheme: dark)').matches);
+          stored === 'light' || (!stored && !matchMedia('(prefers-color-scheme: dark)').matches);
         if (isLight) document.documentElement.classList.add('light');
         document.documentElement.dataset.theme = stored ?? 'system';
       })();

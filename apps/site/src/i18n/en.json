@@ -1,0 +1,269 @@
+{
+  "nav": {
+    "home": "Home",
+    "blog": "Blog",
+    "projects": "Projects",
+    "about": "About",
+    "contact": "Contact",
+    "menu": "Menu",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "skipToContent": "Skip to main content"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "builtWith": "Built with astro-ignite.",
+    "rss": "RSS feed",
+    "legal": "Legal",
+    "social": "Social"
+  },
+  "theme": {
+    "label": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "locale": {
+    "label": "Language",
+    "switch": "Switch language"
+  },
+  "seo": {
+    "home": {
+      "title": "Home",
+      "description": "Bootstrap a production-grade Astro site with top-tier SEO and performance defaults."
+    },
+    "about": {
+      "title": "About",
+      "description": "Learn more about us — what we do, why, and how to get in touch."
+    },
+    "contact": {
+      "title": "Contact",
+      "description": "Get in touch — we'd love to hear from you."
+    },
+    "blog": {
+      "title": "Blog",
+      "description": "Articles, notes, and updates."
+    },
+    "projects": {
+      "title": "Projects",
+      "description": "A collection of work, case studies, and experiments."
+    },
+    "404": {
+      "title": "Page not found",
+      "description": "The page you were looking for doesn't exist."
+    }
+  },
+  "blog": {
+    "byAuthor": "by",
+    "publishedOn": "Published on",
+    "updatedOn": "Updated on",
+    "readMore": "Read more",
+    "readingTime": "{minutes} min read",
+    "morePosts": "More posts",
+    "backToBlog": "Back to blog",
+    "noPosts": "No posts yet."
+  },
+  "projects": {
+    "viewProject": "View project",
+    "viewLive": "View live",
+    "viewRepo": "View repo",
+    "viewDemo": "View demo",
+    "viewCaseStudy": "Read case study",
+    "techStack": "Tech stack",
+    "role": "Role",
+    "client": "Client",
+    "status": {
+      "shipped": "Shipped",
+      "in-progress": "In progress",
+      "archived": "Archived"
+    },
+    "backToProjects": "Back to projects",
+    "noProjects": "No projects yet."
+  },
+  "contact": {
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send message",
+    "sending": "Sending…",
+    "success": "Thanks — we'll get back to you soon.",
+    "error": "Something went wrong. Please try again or email us directly.",
+    "validation": {
+      "nameRequired": "Please enter your name.",
+      "emailInvalid": "Please enter a valid email address.",
+      "messageTooShort": "Please write at least 10 characters."
+    }
+  },
+  "cookies": {
+    "banner": {
+      "title": "Cookie preferences",
+      "description": "We use minimal storage to remember your preferences. Analytics is disabled until you accept.",
+      "accept": "Accept",
+      "decline": "Decline",
+      "policyLink": "Read our cookie policy"
+    }
+  },
+  "legal": {
+    "lastUpdated": "Last updated",
+    "version": "Version",
+    "tableOfContents": "Table of contents",
+    "templateNotice": "This is a template document. Review with legal counsel before publishing."
+  },
+  "errors": {
+    "404": {
+      "heading": "Page not found",
+      "body": "The page you were looking for doesn't exist or has been moved.",
+      "back": "Back to home"
+    }
+  },
+  "home": {
+    "eyebrow": "Pre-1.0 — bootstrapped with astro-ignite",
+    "primaryCta": "Read the blog",
+    "secondaryCta": "See projects",
+    "featuresHeading": "What ships out of the box",
+    "features": {
+      "f01": {
+        "title": "Lighthouse 100s on mobile",
+        "body": "Layered CSS with above-the-fold scoped styles, Tailwind below the fold, and Beasties critical-CSS extraction. CI-enforced."
+      },
+      "f02": {
+        "title": "Typed Schema.org JSON-LD",
+        "body": "schema-dts builders compose into a single @graph. Catch malformed structured data at build, not in Search Console."
+      },
+      "f03": {
+        "title": "Native i18n",
+        "body": "Astro 5 i18n routing with one code path for monolingual and multilingual sites. Hreflang auto-computed."
+      },
+      "f04": {
+        "title": "Working contact form",
+        "body": "Astro Actions + Zod validation + honeypot + your choice of Resend or SMTP. Dev mode logs to console."
+      },
+      "f05": {
+        "title": "Cookie banner + legal templates",
+        "body": "Privacy, terms, cookies — translated, with a \"review with counsel\" disclaimer baked in."
+      },
+      "f06": {
+        "title": "You own the code",
+        "body": "No runtime dependency. Edit anything. Forever. Five prompts, then it's yours."
+      }
+    }
+  },
+  "about": {
+    "body": {
+      "p1": "Replace this content with your story. The page is a regular Astro component using BaseLayout directly — no separate layout is needed for static pages like this one.",
+      "p2": "Pages that don't fit a content collection live as .astro files in src/pages/. They call t() for translated copy and pass the result to BaseLayout for SEO. Specialized layouts (Article, Project, Legal) handle the collection-driven pages.",
+      "heading": "What goes here",
+      "li1": "Who you are or what your team does",
+      "li2": "Why you built the thing",
+      "li3": "How to get in touch (the contact form lives at /contact)"
+    }
+  },
+  "landing": {
+    "nav": {
+      "docs": "Docs",
+      "templates": "Templates",
+      "plan": "Plan",
+      "changelog": "Changelog",
+      "github": "GitHub ↗",
+      "readDocs": "Read the docs",
+      "getStarted": "Get started"
+    },
+    "hero": {
+      "headlineMuted": "Astro sites,",
+      "headlineTail": "built for AI agents.",
+      "lede": "SEO, i18n, perf, legal, and email — pre-wired with sane defaults you actually own. No runtime dependency. No lock-in.",
+      "ledeEmph": "Just code.",
+      "copyLabel": "copy",
+      "pillTag": "Beta",
+      "pillAnnouncement": "v0.1.0 just shipped",
+      "getStarted": "Get started",
+      "readPlan": "Read the plan",
+      "primaryCta": "Ignite your site",
+      "secondaryCta": "Star on GitHub ★"
+    },
+    "features": {
+      "eyebrow": "What you get",
+      "headline": "Twenty things you'd otherwise build at 11pm.",
+      "meta": "You own every line. No runtime dependency on this tool — eject is free, because there's nothing to eject.",
+      "f01": {
+        "title": "Lighthouse 100s",
+        "body": "Mobile and desktop. CI budgets fail the build before regressions ship."
+      },
+      "f02": {
+        "title": "Astro 5 + i18n",
+        "body": "Native i18n, content collections, and Astro Actions. Strict Zod schemas."
+      },
+      "f03": {
+        "title": "Tailwind v4",
+        "body": "Layered CSS strategy. Scoped above-the-fold + critical-CSS extraction."
+      },
+      "f04": {
+        "title": "Typed JSON-LD",
+        "body": "Schema.org via schema-dts. Compile-time errors instead of stale snippets."
+      },
+      "f05": {
+        "title": "Image pipeline",
+        "body": "AVIF + WebP, responsive srcset, LQIP placeholders, zero CLS."
+      },
+      "f06": {
+        "title": "Self-hosted fonts",
+        "body": "Geist Sans + Mono via astro:fonts. Subsetted, preloaded, zero CLS."
+      },
+      "f07": {
+        "title": "Tri-state dark mode",
+        "body": "Light / dark / system, with anti-flash inline script. No FOUC."
+      },
+      "f08": {
+        "title": "Working contact form",
+        "body": "Astro Actions + Zod validation + Resend or SMTP. Wired, not a stub."
+      },
+      "f09": {
+        "title": "Cookies + legal",
+        "body": "Banner, privacy, terms, and cookies templates. i18n-aware."
+      }
+    },
+    "templates": {
+      "eyebrow": "Templates",
+      "headline": "Two ways to start. Both ship to a 100.",
+      "lede": "Pick a template at the prompt, or pass",
+      "ledeTail": ". More are on the way.",
+      "meta": "Each template is a full Astro project — not a fragment. Read the source, fork it, ignore us.",
+      "starter": {
+        "name": "Starter",
+        "meta": "default",
+        "desc": "Marketing-first base. Hero, features, blog, contact form, and legal pages. Everything from the feature grid above, none of the fluff."
+      },
+      "docs": {
+        "name": "Docs",
+        "meta": "starlight-style",
+        "desc": "Three-column documentation site with sidebar nav, MDX components, on-this-page TOC, breadcrumbs, and bilingual seed content."
+      },
+      "starterPreviewSub": "A clean marketing-first starter with blog, contact, and i18n already wired.",
+      "starterPreviewHeadingLead": "Ship faster.",
+      "starterPreviewHeadingMuted": "Ship better.",
+      "preview": "Preview ↗",
+      "moreLead": "More templates in progress:",
+      "browseAll": "Browse all →"
+    },
+    "cta": {
+      "pill": "ready in 90 seconds",
+      "headlineLead": "Stop yak-shaving the",
+      "headlineMuted": "first 30%",
+      "headlineTail": ".",
+      "lede": "Five prompts, one install, a finished Astro site you own outright. Eject any time — there's nothing to eject from.",
+      "getStarted": "Get started",
+      "github": "Star on GitHub ★"
+    },
+    "footer": {
+      "lede": "Production-grade Astro sites in five prompts. MIT · pre-1.0.",
+      "productHead": "Product",
+      "resourcesHead": "Resources",
+      "legalHead": "Legal",
+      "license": "License",
+      "privacy": "Privacy",
+      "cookies": "Cookies",
+      "issues": "Issues",
+      "discussions": "Discussions"
+    }
+  }
+}

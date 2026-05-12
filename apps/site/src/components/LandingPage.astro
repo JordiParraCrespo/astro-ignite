@@ -1,0 +1,1181 @@
+---
+/**
+ * astro-ignite landing page — port of the Claude Design Landing.html handoff.
+ *
+ * Sections (top to bottom):
+ *   1. Sticky nav with brand + version pill + nav links + CTAs
+ *   2. Hero: split layout — copy + command on the left, terminal preview on the right
+ *   3. Meta strip — Lighthouse / Bundle / LCP / CLS / Astro 5 / Tailwind v4 / MIT
+ *   4. Features — 9-up grid built only from system tokens
+ *   5. Templates — Starter + Docs cards, each with mini-preview
+ *   6. CTA — centered "Stop yak-shaving the first 30%" with command + buttons
+ *   7. Footer — brand + 3 columns of links
+ *
+ * Pure Astro. No React. Above-the-fold uses scoped <style>; below-the-fold
+ * is also scoped here because the whole page is one component (deviation from
+ * the layered-CSS rule is fine for a single-route site — no Tailwind weight
+ * to worry about).
+ */
+
+import { Image } from 'astro:assets';
+import Brand from '@/components/Brand.astro';
+import ThemeToggle from '@/components/ThemeToggle.astro';
+import { siteConfig } from '@/config/site';
+import { useTranslations } from '@/i18n';
+import starterPreview from '@/assets/templates/starter.png';
+import docsPreview from '@/assets/templates/docs.png';
+
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
+
+// Numeric IDs (01..09) drive the i18n key lookups: t('landing.features.f01.title') etc.
+// Tags ('perf', 'core', 'css', ...) are technical labels — kept English across locales.
+const FEATURE_IDS = [
+  { id: 'f01', num: '01', tag: 'perf' },
+  { id: 'f02', num: '02', tag: 'core' },
+  { id: 'f03', num: '03', tag: 'css' },
+  { id: 'f04', num: '04', tag: 'seo' },
+  { id: 'f05', num: '05', tag: 'media' },
+  { id: 'f06', num: '06', tag: 'type' },
+  { id: 'f07', num: '07', tag: 'ux' },
+  { id: 'f08', num: '08', tag: 'email' },
+  { id: 'f09', num: '09', tag: 'legal' },
+] as const;
+
+const ghUrl = siteConfig.social.github ?? 'https://github.com/JordiParraCrespo/astro-ignite';
+const siteDescription =
+  siteConfig.description[locale] ?? siteConfig.description[siteConfig.defaultLocale]!;
+---
+
+<Fragment>
+  <nav class="nav">
+    <div class="page nav-inner">
+      <Brand href="/" variant="lockup" size={0.34} />
+      <span class="pill mono"><span class="dot" aria-hidden="true"></span>v0.1.0 · pre-1.0</span>
+      <div class="nav-cta">
+        <a class="nav-link" href="/docs">{t('landing.nav.docs')}</a>
+        <a class="nav-link" href="#templates">{t('landing.nav.templates')}</a>
+        <a class="nav-link" href={ghUrl} rel="noopener">{t('landing.nav.github')}</a>
+        <ThemeToggle />
+        <a class="btn btn-primary btn-sm" href="#install">{t('landing.nav.getStarted')}</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <header class="hero">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="page hero-inner">
+        <div class="hero-split">
+          <div class="hero-copy">
+            <a class="pill pill--release" href={`${ghUrl}/releases`} rel="noopener" target="_blank">
+              <span class="dot" aria-hidden="true"></span>
+              <span class="pill-tag">{t('landing.hero.pillTag')}</span>
+              <span>{t('landing.hero.pillAnnouncement')}</span>
+              <span class="pill-arrow" aria-hidden="true">→</span>
+            </a>
+            <h1>
+              <span class="muted">{t('landing.hero.headlineMuted')}</span>{' '}
+              {t('landing.hero.headlineTail')}
+            </h1>
+            <p class="hero-lede">
+              {t('landing.hero.lede')}
+              <span class="emph">{t('landing.hero.ledeEmph')}</span>
+            </p>
+
+            <div class="cmd" id="install">
+              <span
+                ><span class="cmd-prompt">$</span><span class="cmd-text mono"
+                  >npm create astro-ignite@latest my-site</span
+                ></span
+              >
+              <button
+                class="cmd-copy"
+                type="button"
+                data-copy="npm create astro-ignite@latest my-site"
+                >{t('landing.hero.copyLabel')}</button
+              >
+            </div>
+
+            <div class="hero-cta">
+              <a class="btn btn-primary btn-lg" href="/docs/quick-start"
+                >{t('landing.hero.primaryCta')}</a
+              >
+              <a class="btn btn-outline btn-lg" href={ghUrl} rel="noopener"
+                >{t('landing.hero.secondaryCta')}</a
+              >
+              <span class="mono hero-meta">MIT · Astro 5 · Tailwind v4</span>
+            </div>
+          </div>
+
+          <div class="term" aria-label="Scaffold flow preview">
+            <div class="term-bar">
+              <span class="term-dot" aria-hidden="true"></span>
+              <span class="term-dot" aria-hidden="true"></span>
+              <span class="term-dot" aria-hidden="true"></span>
+              <span class="term-path mono">~/code</span>
+              <span class="term-shell mono">zsh</span>
+            </div>
+            <div class="term-body mono">
+              <span class="t-muted">$</span> npm create astro-ignite my-site<br /><br />
+              <span class="t-muted">^</span>&nbsp; <span class="t-strong">astro-ignite</span>
+              <span class="t-subtle">v0.1.0</span><br />
+              <span class="t-subtle">│</span><br />
+              <span class="t-subtle">◇</span>&nbsp; Template? <span class="t-muted">starter</span
+              ><br />
+              <span class="t-subtle">◇</span>&nbsp; Project name? <span class="t-muted"
+                >./my-site</span
+              ><br />
+              <span class="t-subtle">◇</span>&nbsp; Languages? <span class="t-muted"
+                >en, es, ja</span
+              ><br />
+              <span class="t-subtle">◇</span>&nbsp; Email? <span class="t-muted">Resend</span><br />
+              ◆&nbsp; Install deps?<br />
+              <span class="t-subtle">│</span>&nbsp; <span class="t-pick">● Yes</span>&nbsp;<span
+                class="t-muted">○ No ○ pnpm ○ bun</span
+              ><br />
+              <span class="t-subtle">└</span>&nbsp; <span class="caret"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="page">
+      <div class="meta-strip mono">
+        <div class="meta-item">
+          <span>Lighthouse</span><span class="meta-value">100 / 100 / 100 / 100</span>
+        </div>
+        <div class="meta-item"><span>Bundle</span><span class="meta-value">17.4 kB</span></div>
+        <div class="meta-item"><span>LCP</span><span class="meta-value">0.4 s</span></div>
+        <div class="meta-item"><span>CLS</span><span class="meta-value">0.00</span></div>
+        <div class="meta-item meta-spacer"><span>Astro 5</span></div>
+        <div class="meta-item"><span>Tailwind v4</span></div>
+        <div class="meta-item"><span>MIT</span></div>
+      </div>
+    </div>
+
+    <section class="features-section">
+      <div class="page">
+        <div class="section-head">
+          <div class="section-lead">
+            <span class="eyebrow mono">{t('landing.features.eyebrow')}</span>
+            <h2>{t('landing.features.headline')}</h2>
+          </div>
+          <p class="section-meta mono">{t('landing.features.meta')}</p>
+        </div>
+
+        <div class="features">
+          {
+            FEATURE_IDS.map((f) => (
+              <div class="feat">
+                <div class="feat-head">
+                  <span class="feat-num mono">{f.num}</span>
+                  <span class="feat-tag mono">{f.tag}</span>
+                </div>
+                <h3>{t(`landing.features.${f.id}.title` as const)}</h3>
+                <p>{t(`landing.features.${f.id}.body` as const)}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="templates-section" id="templates">
+      <div class="page">
+        <div class="section-head">
+          <div class="section-lead">
+            <span class="eyebrow mono">{t('landing.templates.eyebrow')}</span>
+            <h2>{t('landing.templates.headline')}</h2>
+            <p>
+              {t('landing.templates.lede')}
+              <span class="mono inline-code">--template</span>{t('landing.templates.ledeTail')}
+            </p>
+          </div>
+          <p class="section-meta mono">{t('landing.templates.meta')}</p>
+        </div>
+
+        <div class="tpls">
+          <article class="tpl">
+            <div class="tpl-preview">
+              <Image
+                src={starterPreview}
+                alt={t('landing.templates.starter.name')}
+                widths={[640, 960, 1280]}
+                sizes="(max-width: 900px) 100vw, 50vw"
+                loading="lazy"
+                class="tpl-preview-img"
+              />
+            </div>
+            <div class="tpl-body">
+              <div class="tpl-row">
+                <h3>{t('landing.templates.starter.name')}</h3>
+                <span class="tpl-meta mono">{t('landing.templates.starter.meta')}</span>
+              </div>
+              <p class="tpl-desc">{t('landing.templates.starter.desc')}</p>
+              <div class="tpl-tags">
+                <span class="tag-chip mono">marketing</span>
+                <span class="tag-chip mono">blog</span>
+                <span class="tag-chip mono">i18n</span>
+                <span class="tag-chip mono">resend</span>
+                <span class="tag-chip mono">plausible</span>
+              </div>
+            </div>
+            <div class="tpl-foot">
+              <span class="tpl-install mono"
+                ><span class="tpl-flag">$</span> npm create astro-ignite my-site <span
+                  class="tpl-flag">--template</span
+                > starter</span
+              >
+              <a class="btn btn-outline btn-sm" href="/docs">{t('landing.templates.preview')}</a>
+            </div>
+          </article>
+
+          <article class="tpl">
+            <div class="tpl-preview">
+              <Image
+                src={docsPreview}
+                alt={t('landing.templates.docs.name')}
+                widths={[640, 960, 1280]}
+                sizes="(max-width: 900px) 100vw, 50vw"
+                loading="lazy"
+                class="tpl-preview-img"
+              />
+            </div>
+            <div class="tpl-body">
+              <div class="tpl-row">
+                <h3>{t('landing.templates.docs.name')}</h3>
+                <span class="tpl-meta mono">{t('landing.templates.docs.meta')}</span>
+              </div>
+              <p class="tpl-desc">{t('landing.templates.docs.desc')}</p>
+              <div class="tpl-tags">
+                <span class="tag-chip mono">docs</span>
+                <span class="tag-chip mono">mdx</span>
+                <span class="tag-chip mono">i18n</span>
+                <span class="tag-chip mono">callouts</span>
+                <span class="tag-chip mono">code-copy</span>
+              </div>
+            </div>
+            <div class="tpl-foot">
+              <span class="tpl-install mono"
+                ><span class="tpl-flag">$</span> npm create astro-ignite my-docs <span
+                  class="tpl-flag">--template</span
+                > docs</span
+              >
+              <a class="btn btn-outline btn-sm" href="/docs">{t('landing.templates.preview')}</a>
+            </div>
+          </article>
+        </div>
+
+        <div class="tpls-foot">
+          <span class="mono tpls-coming"
+            >{t('landing.templates.moreLead')}{' '}
+            <span class="emph">portfolio</span>, <span class="emph">commerce</span>, <span
+              class="emph">changelog</span
+            >.</span
+          >
+          <a class="btn btn-ghost btn-sm" href={ghUrl + '/blob/main/ROADMAP.md'} rel="noopener"
+            >{t('landing.templates.browseAll')}</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="page">
+        <div class="cta-box">
+          <span class="pill"
+            ><span class="dot" aria-hidden="true"></span><span class="mono"
+              >{t('landing.cta.pill')}</span
+            ></span
+          >
+          <h2>
+            {t('landing.cta.headlineLead')}{' '}
+            <span class="muted">{t('landing.cta.headlineMuted')}</span>{
+              t('landing.cta.headlineTail')
+            }
+          </h2>
+          <p>{t('landing.cta.lede')}</p>
+          <div class="cmd">
+            <span
+              ><span class="cmd-prompt">$</span><span class="cmd-text mono"
+                >npm create astro-ignite@latest</span
+              ></span
+            >
+            <button class="cmd-copy" type="button" data-copy="npm create astro-ignite@latest"
+              >{t('landing.hero.copyLabel')}</button
+            >
+          </div>
+          <div class="cta-actions">
+            <a class="btn btn-primary btn-lg" href="/docs/quick-start">Get started</a>
+            <a class="btn btn-outline btn-lg" href={ghUrl} rel="noopener">Star on GitHub ★</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="page footer-grid">
+      <div class="footer-brand">
+        <Brand variant="lockup" size={0.32} />
+        <p class="footer-lede mono">{t('landing.footer.lede')}</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <span class="footer-head">{t('landing.footer.productHead')}</span>
+          <a href="#templates">{t('landing.nav.templates')}</a>
+          <a href="/docs">{t('landing.nav.docs')}</a>
+          <a
+            href="https://github.com/JordiParraCrespo/astro-ignite/blob/main/plan.md"
+            rel="noopener">{t('landing.nav.plan')}</a
+          >
+          <a href="https://github.com/JordiParraCrespo/astro-ignite/releases" rel="noopener"
+            >{t('landing.nav.changelog')}</a
+          >
+        </div>
+        <div class="footer-col">
+          <span class="footer-head">{t('landing.footer.resourcesHead')}</span>
+          <a href={ghUrl} rel="noopener">GitHub</a>
+          <a href={ghUrl + '/issues'} rel="noopener">{t('landing.footer.issues')}</a>
+          <a href={ghUrl + '/discussions'} rel="noopener">{t('landing.footer.discussions')}</a>
+          <a href="https://www.npmjs.com/package/create-astro-ignite" rel="noopener">npm</a>
+        </div>
+        <div class="footer-col">
+          <span class="footer-head">{t('landing.footer.legalHead')}</span>
+          <a href={ghUrl + '/blob/main/LICENSE'} rel="noopener">{t('landing.footer.license')}</a>
+          <a href="/docs/legal/privacy">{t('landing.footer.privacy')}</a>
+          <a href="/docs/legal/cookies">{t('landing.footer.cookies')}</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Copy-to-clipboard for the .cmd-copy buttons.
+    document.querySelectorAll<HTMLButtonElement>('.cmd-copy').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const text = btn.dataset.copy;
+        if (!text || !navigator.clipboard) return;
+        try {
+          await navigator.clipboard.writeText(text);
+          const original = btn.textContent;
+          btn.textContent = 'copied';
+          setTimeout(() => {
+            btn.textContent = original;
+          }, 1200);
+        } catch {
+          /* permissions denied — silent */
+        }
+      });
+    });
+  </script>
+</Fragment>
+
+<style>
+  /* =============================================================================
+   * Layout primitives
+   * ============================================================================= */
+  .page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+  @media (max-width: 720px) {
+    .page {
+      padding: 0 24px;
+    }
+  }
+
+  .muted {
+    color: var(--color-fg-muted);
+  }
+  .emph {
+    color: var(--color-fg);
+  }
+  .inline-code {
+    font-size: 14px;
+    color: var(--color-fg);
+  }
+
+  /* =============================================================================
+   * Pill (badge variant for the landing — outline style)
+   * ============================================================================= */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px 5px 8px;
+    font-size: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-surface-2);
+    color: var(--color-fg);
+  }
+  .pill .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 99px;
+    background: var(--color-fg);
+  }
+  .pill .mono {
+    font-size: 11px;
+    color: var(--color-fg-muted);
+  }
+
+  /* Release-announcement pill: clickable, links to GitHub releases */
+  .pill--release {
+    text-decoration: none;
+    padding-block: 6px;
+    font-size: 13px;
+    transition:
+      border-color 120ms ease,
+      background 120ms ease;
+  }
+  .pill--release:hover {
+    border-color: var(--color-border-strong, var(--color-fg-muted));
+    background: var(--color-surface);
+  }
+  .pill--release .pill-tag {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-fg);
+    padding-right: 8px;
+    border-right: 1px solid var(--color-border);
+  }
+  .pill--release .dot {
+    background: var(--color-primary, var(--color-fg));
+    animation: release-pulse 2.2s ease-in-out infinite;
+  }
+  .pill--release .pill-arrow {
+    color: var(--color-fg-muted);
+    transition:
+      transform 160ms ease,
+      color 160ms ease;
+  }
+  .pill--release:hover .pill-arrow {
+    transform: translateX(2px);
+    color: var(--color-fg);
+  }
+  @keyframes release-pulse {
+    0%,
+    100% {
+      opacity: 0.4;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.25);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pill--release .dot {
+      animation: none;
+      opacity: 0.7;
+    }
+    .pill--release:hover .pill-arrow {
+      transform: none;
+    }
+  }
+
+  /* =============================================================================
+   * Nav
+   * ============================================================================= */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in oklab, var(--color-bg) 72%, transparent);
+    backdrop-filter: saturate(140%) blur(14px);
+    -webkit-backdrop-filter: saturate(140%) blur(14px);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    height: 60px;
+    /* Keep brand + version pill on one line — they're inline atoms, not
+       wrap candidates. */
+    white-space: nowrap;
+  }
+  .nav-cta {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-left: auto;
+  }
+  .nav-link {
+    font-size: 13px;
+    color: var(--color-fg-muted);
+    text-decoration: none;
+    transition: color 0.12s var(--ease-out-soft);
+  }
+  .nav-link:hover {
+    color: var(--color-fg);
+  }
+
+  /* Progressive responsive trimming.
+     - 920px: drop the version pill — secondary info
+     - 720px: drop the GitHub text link to save room for theme + CTA
+     - 560px: drop the remaining nav links (Docs, Templates)
+     - 420px: tighten gaps further so brand + CTA still fit
+  */
+  @media (max-width: 920px) {
+    .nav-inner > .pill {
+      display: none;
+    }
+  }
+  @media (max-width: 720px) {
+    .nav-inner {
+      gap: 16px;
+    }
+    .nav-cta {
+      gap: 12px;
+    }
+    .nav-link[href*='github'] {
+      display: none;
+    }
+  }
+  @media (max-width: 560px) {
+    .nav-link {
+      display: none;
+    }
+  }
+  @media (max-width: 420px) {
+    .nav-inner {
+      gap: 8px;
+    }
+    .nav-cta {
+      gap: 6px;
+    }
+  }
+
+  /* =============================================================================
+   * Hero
+   * ============================================================================= */
+  .hero {
+    padding: 80px 0 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    /* Use --color-border (zinc-200 light / zinc-800 dark) for visible
+       contrast against the bg in both themes. */
+    background-image:
+      linear-gradient(to right, var(--color-border) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--color-border) 1px, transparent 1px);
+    background-size: 56px 56px;
+    opacity: 0.5;
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 30%, transparent 80%);
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 30%, transparent 80%);
+  }
+  /* Light theme: zinc-200 on zinc-50 is lower contrast, so a touch more
+     opacity is needed to read at all — but keep it well below 1 so it stays
+     a quiet pattern, not a chart. */
+  :global(html.light) .hero-grid {
+    opacity: 0.65;
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+  }
+  .hero-split {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 56px;
+    align-items: center;
+  }
+  @media (max-width: 920px) {
+    .hero-split {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+  }
+  .hero-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .hero h1 {
+    /* Max 80 (down from 96) — at 96 "Production-grade" hyphen-wraps in the
+       split layout's left column on common laptop widths. */
+    font-size: clamp(40px, 5.6vw, 80px);
+    font-weight: 500;
+    letter-spacing: -0.05em;
+    line-height: 0.95;
+    margin: 0;
+    text-wrap: balance;
+    /* Browser auto-hyphenation breaks "Production-grade" awkwardly on narrow
+       columns. Disable. */
+    hyphens: none;
+    word-break: normal;
+    overflow-wrap: normal;
+  }
+  .hero-lede {
+    margin: 0;
+    font-size: clamp(16px, 1.4vw, 19px);
+    line-height: 1.55;
+    color: var(--color-fg-muted);
+    max-width: 60ch;
+    text-wrap: pretty;
+  }
+  .hero-cta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .hero-meta {
+    font-size: 12px;
+    color: var(--color-fg-muted);
+  }
+
+  /* =============================================================================
+   * Command line
+   * ============================================================================= */
+  .cmd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 10px 10px 16px;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    background: var(--color-surface-2);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    width: fit-content;
+    max-width: 100%;
+  }
+  .cmd-prompt {
+    color: var(--color-fg-muted);
+    margin-right: 6px;
+  }
+  .cmd-text {
+    color: var(--color-fg);
+  }
+  @media (max-width: 480px) {
+    .cmd {
+      font-size: 12px;
+      gap: 10px;
+      padding: 8px 8px 8px 12px;
+    }
+  }
+  .cmd-copy {
+    appearance: none;
+    background: transparent;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-fg-muted);
+    border: 1px solid var(--color-border);
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition:
+      color 0.12s,
+      border-color 0.12s;
+  }
+  .cmd-copy:hover {
+    color: var(--color-fg);
+    border-color: var(--color-border-strong);
+  }
+
+  /* =============================================================================
+   * Terminal preview
+   * ============================================================================= */
+  /* Terminal block stays dark regardless of theme — terminals look right
+     dark even on a light page (like a code block). Direct zinc hex refs
+     make these rules theme-invariant. */
+  .term {
+    border: 1px solid #27272a;
+    border-radius: 12px;
+    background: #000;
+    overflow: hidden;
+    box-shadow:
+      0 30px 60px -20px rgba(0, 0, 0, 0.8),
+      0 0 0 1px #27272a;
+    /* Prevent the terminal preview from blowing out the column on mobile.
+       Grid items default to min-content sizing; we want it to shrink. */
+    max-width: 100%;
+    min-width: 0;
+  }
+  .term-body {
+    overflow-x: auto;
+  }
+  @media (max-width: 480px) {
+    .term-body {
+      font-size: 11px;
+      padding: 14px 12px;
+    }
+  }
+  .term-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    border-bottom: 1px solid #27272a;
+    background: #18181b;
+  }
+  .term-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 99px;
+    background: #3f3f46;
+  }
+  .term-path {
+    font-size: 11px;
+    color: #71717a;
+    margin-left: 8px;
+  }
+  .term-shell {
+    font-size: 11px;
+    color: #52525b;
+    margin-left: auto;
+  }
+  .term-body {
+    padding: 18px 16px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #f4f4f5;
+  }
+  .t-muted {
+    color: #71717a;
+  }
+  .t-subtle {
+    color: #52525b;
+  }
+  .t-strong {
+    font-weight: 500;
+    color: #fafafa;
+  }
+  .t-pick {
+    display: inline-block;
+    padding: 1px 8px;
+    background: #fafafa;
+    color: #000;
+    border-radius: 3px;
+  }
+  .caret {
+    display: inline-block;
+    width: 8px;
+    height: 14px;
+    background: #fafafa;
+    vertical-align: -2px;
+  }
+
+  /* =============================================================================
+   * Meta strip
+   * ============================================================================= */
+  .meta-strip {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    flex-wrap: wrap;
+    padding: 18px 0;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    font-size: 12px;
+    color: var(--color-fg-muted);
+  }
+  .meta-item {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .meta-value {
+    color: var(--color-fg);
+    font-size: 14px;
+  }
+  .meta-spacer {
+    margin-left: auto;
+  }
+  @media (max-width: 720px) {
+    .meta-spacer {
+      margin-left: 0;
+    }
+  }
+
+  /* =============================================================================
+   * Section heads
+   * ============================================================================= */
+  section {
+    padding: 96px 0;
+  }
+  @media (max-width: 720px) {
+    section {
+      padding: 64px 0;
+    }
+  }
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+  .section-lead {
+    max-width: 32ch;
+  }
+  .section-lead p {
+    margin-top: 12px;
+    color: var(--color-fg-muted);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  .section-lead h2 {
+    font-size: clamp(32px, 4.4vw, 56px);
+    font-weight: 500;
+    letter-spacing: -0.045em;
+    line-height: 1.05;
+    margin: 0;
+    text-wrap: balance;
+    margin-top: 12px;
+  }
+  .section-meta {
+    font-size: 12px;
+    color: var(--color-fg-muted);
+    max-width: 30ch;
+    text-align: right;
+    line-height: 1.6;
+    margin: 0;
+  }
+  .eyebrow {
+    font-size: 11px;
+    color: var(--color-fg-muted);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  @media (max-width: 720px) {
+    .section-head {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .section-meta {
+      text-align: left;
+    }
+  }
+
+  /* =============================================================================
+   * Features grid (9-up)
+   * ============================================================================= */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  @media (max-width: 920px) {
+    .features {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 560px) {
+    .features {
+      grid-template-columns: 1fr;
+    }
+  }
+  .feat {
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-right: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-bg);
+  }
+  .features .feat:nth-child(3n) {
+    border-right: none;
+  }
+  .features .feat:nth-last-child(-n + 3) {
+    border-bottom: none;
+  }
+  @media (max-width: 920px) {
+    .features .feat {
+      border-right: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .features .feat:nth-child(2n) {
+      border-right: none;
+    }
+    .features .feat:nth-last-child(-n + 2) {
+      border-bottom: none;
+    }
+  }
+  @media (max-width: 560px) {
+    .features .feat {
+      border-right: none;
+    }
+    .features .feat:not(:last-child) {
+      border-bottom: 1px solid var(--color-border);
+    }
+  }
+  .feat-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .feat-num {
+    font-size: 10px;
+    color: var(--color-fg-muted);
+    border: 1px solid var(--color-border);
+    border-radius: 3px;
+    padding: 2px 5px;
+  }
+  .feat-tag {
+    font-size: 10px;
+    color: var(--color-fg-subtle);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .feat h3 {
+    margin: 4px 0 0;
+    font-size: 19px;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    color: var(--color-fg);
+  }
+  .feat p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--color-fg-muted);
+  }
+
+  /* =============================================================================
+   * Templates section
+   * ============================================================================= */
+  .templates-section {
+    padding-top: 0;
+  }
+  .tpls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 900px) {
+    .tpls {
+      grid-template-columns: 1fr;
+    }
+  }
+  .tpl {
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--color-surface);
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.12s var(--ease-out-soft);
+  }
+  .tpl:hover {
+    border-color: var(--color-border-strong);
+  }
+
+  /* Template preview area — pre-rendered design screenshots. Theme-invariant. */
+  .tpl-preview {
+    aspect-ratio: 16 / 9;
+    background: var(--color-zinc-950, #0a0a0a);
+    border-bottom: 1px solid var(--color-border);
+    position: relative;
+    overflow: hidden;
+  }
+  .tpl-preview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .tpl-body {
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .tpl-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .tpl-row h3 {
+    margin: 0;
+    font-size: 19px;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    color: var(--color-fg);
+  }
+  .tpl-meta {
+    font-size: 11px;
+    color: var(--color-fg-muted);
+  }
+  .tpl-desc {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--color-fg-muted);
+  }
+  .tpl-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+  }
+  .tag-chip {
+    font-size: 11px;
+    color: var(--color-fg-muted);
+    padding: 3px 9px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+  }
+  .tpl-foot {
+    border-top: 1px solid var(--color-border);
+    padding: 14px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    background: var(--color-surface-2);
+  }
+  .tpl-install {
+    font-size: 12px;
+    color: var(--color-fg-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .tpl-flag {
+    color: var(--color-fg-subtle);
+  }
+  .tpls-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .tpls-coming {
+    font-size: 12px;
+    color: var(--color-fg-muted);
+  }
+
+  /* =============================================================================
+   * CTA box
+   * ============================================================================= */
+  .cta-section {
+    padding-top: 0;
+  }
+  .cta-box {
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    padding: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: center;
+    text-align: center;
+    background: radial-gradient(
+      ellipse 60% 100% at 50% 0%,
+      var(--color-surface-2) 0%,
+      var(--color-bg) 70%
+    );
+  }
+  .cta-box h2 {
+    font-size: clamp(28px, 4.4vw, 56px);
+    font-weight: 500;
+    letter-spacing: -0.045em;
+    line-height: 1.05;
+    margin: 0;
+    max-width: 18ch;
+    text-wrap: balance;
+  }
+  .cta-box p {
+    margin: 0;
+    max-width: 52ch;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--color-fg-muted);
+  }
+  .cta-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  @media (max-width: 560px) {
+    .cta-box {
+      padding: 32px 20px;
+      gap: 18px;
+      border-radius: 14px;
+    }
+    .cta-actions {
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+      max-width: 280px;
+    }
+    .cta-actions .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  /* =============================================================================
+   * Footer
+   * ============================================================================= */
+  footer {
+    border-top: 1px solid var(--color-border);
+    padding: 40px 0 56px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-fg-muted);
+  }
+  .footer-grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .footer-grid a {
+    color: var(--color-fg-muted);
+    text-decoration: none;
+    transition: color 0.12s var(--ease-out-soft);
+  }
+  .footer-grid a:hover {
+    color: var(--color-fg);
+  }
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 36ch;
+  }
+  .footer-lede {
+    margin: 0;
+    font-size: 12px;
+    color: var(--color-fg-muted);
+  }
+  .footer-cols {
+    display: flex;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+  .footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .footer-head {
+    color: var(--color-fg);
+    margin-bottom: 4px;
+  }
+</style>

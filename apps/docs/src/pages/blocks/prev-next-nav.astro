@@ -1,0 +1,25 @@
+---
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import PrevNextNav from '@registry/blocks/prev-next-nav.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<ComponentsLayout
+  title={`prev-next-nav | ${t('seo.home.title')}`}
+  description={t('blocks.summary.prev-next-nav')}
+>
+  <ComponentShowcase
+    kind="block"
+    name="prev-next-nav"
+    description={t('blocks.detail.prev-next-nav.description')}
+  >
+    <PrevNextNav
+      prev={{ href: '#', title: 'i18n without router gymnastics' }}
+      next={{ href: '#', title: 'Why we built astro-ignite' }}
+    />
+    <PrevNextNav next={{ href: '#', title: 'Only next is present' }} />
+  </ComponentShowcase>
+</ComponentsLayout>

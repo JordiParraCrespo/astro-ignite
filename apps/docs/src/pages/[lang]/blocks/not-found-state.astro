@@ -1,0 +1,35 @@
+---
+import { siteConfig } from '@/config/site';
+export function getStaticPaths() {
+  return siteConfig.locales
+    .filter((lang) => lang !== siteConfig.defaultLocale)
+    .map((lang) => ({ params: { lang } }));
+}
+
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import NotFoundState from '@registry/blocks/not-found-state.astro';
+import Button from '@registry/base/button.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<ComponentsLayout
+  title={`not-found-state | ${t('seo.home.title')}`}
+  description={t('blocks.summary.not-found-state')}
+>
+  <ComponentShowcase
+    kind="block"
+    name="not-found-state"
+    description={t('blocks.detail.not-found-state.description')}
+  >
+    <NotFoundState
+      title="Page not found."
+      description="The page you're looking for doesn't exist, was renamed, or is hiding from agents. Let's get you back."
+    >
+      <Button href="/">← Back to home</Button>
+      <Button variant="outline">Search docs</Button>
+    </NotFoundState>
+  </ComponentShowcase>
+</ComponentsLayout>

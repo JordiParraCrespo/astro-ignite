@@ -1,0 +1,39 @@
+---
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import Accordion from '@registry/base/accordion/accordion.astro';
+import AccordionItem from '@registry/base/accordion/accordion-item.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<ComponentsLayout
+  title={`accordion | ${t('seo.home.title')}`}
+  description={t('components.summary.accordion')}
+>
+  <ComponentShowcase
+    name="accordion"
+    description={t('components.detail.accordion.description')}
+    file="accordion/accordion.astro · accordion-item"
+    anno="composition"
+  >
+    <Accordion class="ai-acc">
+      <AccordionItem title={t('components.detail.accordion.q1Title')} open>
+        <p>{t('components.detail.accordion.q1Body')}</p>
+      </AccordionItem>
+      <AccordionItem title={t('components.detail.accordion.q2Title')}>
+        <p>{t('components.detail.accordion.q2Body')}</p>
+      </AccordionItem>
+      <AccordionItem title={t('components.detail.accordion.q3Title')}>
+        <p>{t('components.detail.accordion.q3Body')}</p>
+      </AccordionItem>
+    </Accordion>
+  </ComponentShowcase>
+</ComponentsLayout>
+
+<style>
+  :global(.showcase__preview .ai-acc) {
+    max-width: 540px;
+  }
+</style>

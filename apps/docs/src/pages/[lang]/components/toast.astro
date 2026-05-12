@@ -1,0 +1,66 @@
+---
+import { siteConfig } from '@/config/site';
+export function getStaticPaths() {
+  return siteConfig.locales
+    .filter((lang) => lang !== siteConfig.defaultLocale)
+    .map((lang) => ({ params: { lang } }));
+}
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import Toaster from '@registry/base/toaster.astro';
+import Button from '@registry/base/button.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+
+// Map of variant -> translated message, serialized so the client-side script
+// can read it without re-running the t() resolver in the browser.
+const messages = {
+  default: t('components.detail.toast.messageDefault'),
+  success: t('components.detail.toast.messageSuccess'),
+  warning: t('components.detail.toast.messageWarning'),
+  destructive: t('components.detail.toast.messageDestructive'),
+};
+---
+
+<ComponentsLayout
+  title={`toast | ${t('seo.home.title')}`}
+  description={t('components.summary.toast')}
+>
+  <ComponentShowcase name="toast" description={t('components.detail.toast.description')}>
+    <div class="row" data-toast-messages={JSON.stringify(messages)}>
+      <Button data-toast="default">{t('components.detail.toast.default')}</Button>
+      <Button variant="outline" data-toast="success">{t('components.detail.toast.success')}</Button>
+      <Button variant="outline" data-toast="warning">{t('components.detail.toast.warning')}</Button>
+      <Button variant="outline" data-toast="destructive"
+        >{t('components.detail.toast.destructive')}</Button
+      >
+    </div>
+  </ComponentShowcase>
+  <Toaster position="bottom-right" />
+</ComponentsLayout>
+
+<script>
+  import { toast } from '@registry/lib/toast';
+
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    const btn = target.closest<HTMLElement>('[data-toast]');
+    if (!btn) return;
+    const variant = btn.dataset.toast as 'default' | 'success' | 'warning' | 'destructive';
+    const row = btn.closest<HTMLElement>('[data-toast-messages]');
+    const messages: Record<string, string> = row?.dataset.toastMessages
+      ? JSON.parse(row.dataset.toastMessages)
+      : {};
+    toast(messages[variant] ?? '', { variant });
+  });
+</script>
+
+<style>
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+  }
+</style>

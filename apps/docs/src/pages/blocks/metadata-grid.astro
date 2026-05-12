@@ -1,0 +1,35 @@
+---
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import MetadataGrid from '@registry/blocks/metadata-grid.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<ComponentsLayout
+  title={`metadata-grid | ${t('seo.home.title')}`}
+  description={t('blocks.summary.metadata-grid')}
+>
+  <ComponentShowcase
+    kind="block"
+    name="metadata-grid"
+    description={t('blocks.detail.metadata-grid.description')}
+  >
+    <MetadataGrid
+      items={[
+        { label: 'Client', value: 'Aurora Health Network' },
+        { label: 'Role', value: 'Lead engineer + design' },
+        { label: 'Stack', value: 'Astro 5 · Tailwind v4 · i18n' },
+        { label: 'Status', value: 'Shipped · Q1 2026' },
+      ]}
+    />
+    <MetadataGrid
+      columns={2}
+      items={[
+        { label: 'Updated', value: 'May 02, 2026' },
+        { label: 'Version', value: '1.2' },
+      ]}
+    />
+  </ComponentShowcase>
+</ComponentsLayout>

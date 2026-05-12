@@ -1,0 +1,143 @@
+---
+import { useTranslations, type TranslationKey } from '@/i18n';
+
+export type Props = {
+  name: string;
+  description: string;
+  kind?: 'component' | 'block';
+  file?: string;
+  anno?: string;
+};
+
+const { name, description, kind = 'component', file, anno } = Astro.props;
+const t = useTranslations(Astro.currentLocale);
+const install = `npx astro-ignite add ${name}`;
+const root = kind === 'block' ? '/blocks' : '/components';
+const backKey = (kind === 'block' ? 'blocks.back' : 'components.back') as TranslationKey;
+const installKey = (kind === 'block' ? 'blocks.install' : 'components.install') as TranslationKey;
+---
+
+<article class="showcase">
+  <header class="showcase__head">
+    <a href={root} class="showcase__back">{t(backKey)}</a>
+    <h1 class="showcase__title">{name}</h1>
+    <p class="showcase__desc">{description}</p>
+    <div class="showcase__meta">
+      <div class="showcase__install">
+        <span class="showcase__install-label">{t(installKey)}</span>
+        <code>{install}</code>
+      </div>
+      {file && <span class="showcase__file">{file}</span>}
+      {anno && <span class="showcase__anno">{anno}</span>}
+    </div>
+  </header>
+
+  <section class="showcase__preview" aria-label="Preview">
+    <slot />
+  </section>
+</article>
+
+<style>
+  .showcase {
+    max-width: 880px;
+  }
+  .showcase__head {
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 24px;
+    margin-bottom: 32px;
+  }
+  .showcase__back {
+    display: inline-block;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: var(--color-fg-muted);
+    text-decoration: none;
+  }
+  .showcase__back:hover {
+    color: var(--color-fg);
+  }
+  .showcase__title {
+    font-size: clamp(1.75rem, 3vw, 2.375rem);
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+    margin: 0 0 12px;
+    text-transform: lowercase;
+    font-family: var(--font-mono, monospace);
+    color: var(--color-fg);
+  }
+  .showcase__desc {
+    color: var(--color-fg-muted);
+    margin: 0 0 16px;
+    font-size: 16px;
+    line-height: 1.55;
+    max-width: 60ch;
+  }
+  .showcase__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+  }
+  .showcase__install {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    font-family: var(--font-mono, monospace);
+    font-size: 13px;
+  }
+  .showcase__install-label {
+    color: var(--color-fg-muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .showcase__file,
+  .showcase__anno {
+    font-family: var(--font-mono, monospace);
+    font-size: 11px;
+    color: var(--color-fg-muted);
+    letter-spacing: -0.005em;
+  }
+  .showcase__preview {
+    padding: 32px 28px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-surface);
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent 0 7px,
+      color-mix(in oklch, var(--color-fg) 1.2%, transparent) 7px 8px
+    );
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    overflow: hidden;
+  }
+
+  /* Shared row/label utilities used by every demo page. */
+  .showcase__preview :global(.row) {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .showcase__preview :global(.col) {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .showcase__preview :global(.label) {
+    font-family: var(--font-mono, monospace);
+    font-size: 10px;
+    color: var(--color-fg-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    min-width: 80px;
+    display: inline-block;
+  }
+</style>

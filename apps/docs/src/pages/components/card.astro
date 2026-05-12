@@ -1,0 +1,48 @@
+---
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import Card from '@registry/base/card/card.astro';
+import CardHeader from '@registry/base/card/card-header.astro';
+import CardTitle from '@registry/base/card/card-title.astro';
+import CardDescription from '@registry/base/card/card-description.astro';
+import CardContent from '@registry/base/card/card-content.astro';
+import CardFooter from '@registry/base/card/card-footer.astro';
+import Button from '@registry/base/button.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<ComponentsLayout
+  title={`card | ${t('seo.home.title')}`}
+  description={t('components.summary.card')}
+>
+  <ComponentShowcase
+    name="card"
+    description={t('components.detail.card.description')}
+    file="card/card.astro · card-header · card-title · card-description · card-content · card-footer"
+    anno="composition"
+  >
+    <div class="row" style="gap: 20px; align-items: flex-start;">
+      <Card class="ai-card">
+        <CardHeader>
+          <CardTitle>{t('components.detail.card.title')}</CardTitle>
+          <CardDescription>{t('components.detail.card.lede')}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p>{t('components.detail.card.body')}</p>
+        </CardContent>
+        <CardFooter>
+          <Button size="sm" variant="outline">{t('components.detail.card.dismiss')}</Button>
+          <Button size="sm">{t('components.detail.card.viewReport')}</Button>
+        </CardFooter>
+      </Card>
+    </div>
+  </ComponentShowcase>
+</ComponentsLayout>
+
+<style>
+  :global(.showcase__preview .ai-card) {
+    width: 320px;
+  }
+</style>

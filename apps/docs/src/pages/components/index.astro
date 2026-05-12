@@ -1,0 +1,138 @@
+---
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import { useTranslations, type TranslationKey } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+
+const componentNames = [
+  'button',
+  'link',
+  'badge',
+  'card',
+  'input',
+  'textarea',
+  'label',
+  'separator',
+  'alert',
+  'avatar',
+  'skeleton',
+  'kbd',
+  'tabs',
+  'accordion',
+  'dialog',
+  'dropdown-menu',
+  'tooltip',
+  'toast',
+] as const;
+---
+
+<ComponentsLayout
+  title={t('components.index.title')}
+  description={t('components.index.description')}
+>
+  <main class="page">
+    <header class="page__head">
+      <p class="page__eyebrow">{t('components.index.eyebrow')}</p>
+      <h1 class="page__title">{t('components.index.title')}</h1>
+      <p class="page__desc">
+        {t('components.index.intro')}
+        <code>npx astro-ignite add &lt;name&gt;</code>
+        {t('components.index.introTail')}
+      </p>
+    </header>
+
+    <ul class="grid">
+      {
+        componentNames.map((name) => (
+          <li class="card">
+            <a href={`/components/${name}`} class="card__link">
+              <h2 class="card__title">{name}</h2>
+              <p class="card__desc">{t(`components.summary.${name}` as TranslationKey)}</p>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </main>
+</ComponentsLayout>
+
+<style>
+  .page {
+    max-width: 1000px;
+  }
+  .page__head {
+    margin-bottom: 28px;
+  }
+  .page__eyebrow {
+    color: var(--color-fg-muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 8px;
+  }
+  .page__title {
+    font-size: clamp(1.75rem, 3vw, 2.375rem);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    margin: 0 0 12px;
+    color: var(--color-fg);
+  }
+  .page__desc {
+    color: var(--color-fg-muted);
+    font-size: 16px;
+    max-width: 60ch;
+    line-height: 1.55;
+    margin: 0;
+  }
+  .page__desc code {
+    font-family: var(--font-mono, monospace);
+    font-size: 13px;
+    padding: 2px 6px;
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+  }
+
+  .grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .card {
+    margin: 0;
+  }
+  .card__link {
+    display: block;
+    padding: 20px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    color: var(--color-fg);
+    text-decoration: none;
+    transition:
+      border-color 120ms ease,
+      background 120ms ease;
+    height: 100%;
+  }
+  .card__link:hover {
+    border-color: var(--color-border-strong);
+    background: var(--color-surface-2);
+  }
+  .card__title {
+    font-family: var(--font-mono, monospace);
+    font-size: 15px;
+    font-weight: 500;
+    margin: 0 0 8px;
+    text-transform: lowercase;
+  }
+  .card__desc {
+    color: var(--color-fg-muted);
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0;
+  }
+</style>

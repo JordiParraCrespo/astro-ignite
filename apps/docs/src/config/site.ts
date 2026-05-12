@@ -32,7 +32,7 @@ export interface SiteConfig {
 }
 
 export const siteConfig: SiteConfig = {
-  url: 'https://astro-ignite.dev',
+  url: 'https://docs.astroignite.dev',
   defaultLocale: 'en',
   locales: ['en', 'es'],
 

@@ -1,0 +1,19 @@
+---
+/**
+ * Non-default-locale root → redirects to the localized home doc.
+ * Mirrors src/pages/index.astro for /{lang}/.
+ */
+
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { siteConfig } from '@/config/site';
+
+export async function getStaticPaths() {
+  return siteConfig.locales
+    .filter((l) => l !== siteConfig.defaultLocale)
+    .map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang ?? siteConfig.defaultLocale;
+const target = getRelativeLocaleUrl(lang, siteConfig.homePath);
+return Astro.redirect(target);
+---

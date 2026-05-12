@@ -115,5 +115,47 @@
       "body": "The page you were looking for doesn't exist or has been moved.",
       "back": "Back to home"
     }
+  },
+  "home": {
+    "eyebrow": "Pre-1.0 — bootstrapped with astro-ignite",
+    "primaryCta": "Read the blog",
+    "secondaryCta": "See projects",
+    "featuresHeading": "What ships out of the box",
+    "features": {
+      "f01": {
+        "title": "Lighthouse 100s on mobile",
+        "body": "Layered CSS with above-the-fold scoped styles, Tailwind below the fold, and Beasties critical-CSS extraction. CI-enforced."
+      },
+      "f02": {
+        "title": "Typed Schema.org JSON-LD",
+        "body": "schema-dts builders compose into a single @graph. Catch malformed structured data at build, not in Search Console."
+      },
+      "f03": {
+        "title": "Native i18n",
+        "body": "Astro 5 i18n routing with one code path for monolingual and multilingual sites. Hreflang auto-computed."
+      },
+      "f04": {
+        "title": "Working contact form",
+        "body": "Astro Actions + Zod validation + honeypot + your choice of Resend or SMTP. Dev mode logs to console."
+      },
+      "f05": {
+        "title": "Cookie banner + legal templates",
+        "body": "Privacy, terms, cookies — translated, with a \"review with counsel\" disclaimer baked in."
+      },
+      "f06": {
+        "title": "You own the code",
+        "body": "No runtime dependency. Edit anything. Forever. Five prompts, then it's yours."
+      }
+    }
+  },
+  "about": {
+    "body": {
+      "p1": "Replace this content with your story. The page is a regular Astro component using BaseLayout directly — no separate layout is needed for static pages like this one.",
+      "p2": "Pages that don't fit a content collection live as .astro files in src/pages/. They call t() for translated copy and pass the result to BaseLayout for SEO. Specialized layouts (Article, Project, Legal) handle the collection-driven pages.",
+      "heading": "What goes here",
+      "li1": "Who you are or what your team does",
+      "li2": "Why you built the thing",
+      "li3": "How to get in touch (the contact form lives at /contact)"
+    }
   }
 }

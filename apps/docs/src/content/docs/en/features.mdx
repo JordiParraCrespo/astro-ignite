@@ -1,0 +1,87 @@
+---
+title: Features
+description: Everything astro-ignite ships with — what each feature does and how it works.
+lastUpdated: 2026-05-11
+tags: [getting-started, features]
+---
+
+import Callout from '@/components/docs/Callout.astro';
+
+Every feature here is wired end-to-end on first run. Nothing is mocked, stubbed, or behind a feature flag. Below is what you get and where it lives in the tree.
+
+## Internationalization
+
+Native i18n with one code path for monolingual and multilingual sites. Pick locales at scaffold time; the CLI generates locale-scoped routes, content collections, sitemap entries, and `hreflang` tags.
+
+- `astro.config.mjs` → `i18n.locales` drives everything else
+- `src/i18n/<locale>.json` for typed UI strings via `useTranslations()`
+- `src/pages/[lang]/...` mirrors the default-locale routes
+- `LocaleSwitcher.astro` swaps the URL prefix without losing the current path
+
+## SEO & analytics
+
+Typed Schema.org JSON-LD built from `schema-dts`, OG images, sitemap with locale alternates, and Plausible analytics that respect cookie consent.
+
+- `src/lib/jsonld.ts` builds `WebPage`, `BreadcrumbList`, `Article` etc.
+- `Analytics.astro` lazy-loads Plausible only after consent
+- Per-page OG images generated at build time from `src/lib/og/`
+
+## Legal templates & cookie consent
+
+Privacy policy, cookie policy, and terms of service templates as content-collection entries — translatable, versioned, and rendered through `LegalLayout`.
+
+<Callout variant="warn" title="Not legal advice">
+  Templates ship with a banner reminding readers to review with counsel before
+  publishing. The strings live in your `i18n/*.json` so you can soften, harden,
+  or replace them.
+</Callout>
+
+- `src/content/legal/<locale>/*.mdx` for the documents themselves
+- `CookieBanner.astro` defers analytics until accept/decline
+- Last-updated and version fields surface automatically in the layout
+
+## Component registry
+
+A shadcn-style registry of pure-Astro primitives. Copy-paste with `npx astro-ignite add <name>` — components land in `src/components/ui/` and you own them.
+
+- 18 primitives: button, card, dialog, dropdown-menu, tabs, accordion, toast, …
+- Zero React/Vue/Svelte runtime — behaviour is custom elements + the native popover/dialog APIs
+- Browse every primitive live under [Components](/components)
+
+## Theming & design
+
+A Zinc-based design system in CSS variables, dark by default, with a no-flash theme toggle that persists across visits.
+
+- `src/styles/global.css` defines the design tokens
+- `ThemeToggle.astro` flips `--color-*` variables; the anti-flash script runs before paint
+- Self-hosted Geist Sans + Mono via `astro:assets` (zero CLS on swap)
+
+## Performance
+
+Lighthouse 100s on mobile, CI-enforced. Pure-Astro output, image optimization, font preloading, and zero client JS on most pages.
+
+- `Image` from `astro:assets` for responsive `srcset` + AVIF/WebP
+- Critical CSS inlined per page; non-critical deferred
+- See [Benchmarks](/benchmarks) for the numbers and how to reproduce them
+
+## Content collections
+
+Typed content for blog posts, case-study projects, legal documents, and docs themselves — all locale-aware, all with frontmatter schemas.
+
+- `src/content.config.ts` defines the Zod schemas
+- One folder per locale (e.g. `src/content/blog/en/`, `src/content/blog/es/`)
+- Cross-locale links resolved by collection id
+
+## Forms & email
+
+A working contact form built on Astro Actions, Zod validation, and your choice of Resend or SMTP at scaffold time.
+
+- `src/actions/index.ts` for the server action
+- `src/lib/email/` for the provider adapter
+- Spam protection is intentionally out of scope — add Turnstile or hCaptcha to taste
+
+## Where to next
+
+- [Quick start](/quick-start) — install and start editing
+- [Components](/components) — every primitive, rendered live
+- [Benchmarks](/benchmarks) — the Lighthouse story
