@@ -1,87 +1,67 @@
 # astro-ignite
 
-![astro-ignite banner](./assets/banners/banner.gif)
+![astro-ignite banner](./assets/banners/banner.png)
 
-> shadcn-style CLI for bootstrapping production-grade Astro sites with top-tier SEO and performance defaults.
+> Astro sites, built for AI agents.
 
 ```bash
 npm create astro-ignite@latest my-site
 ```
 
-You answer five prompts. You get a finished site with SEO, i18n, perf, legal, and email pre-wired. You own every line of code — no runtime dependency on this tool.
+Answer five prompts. Get a finished site with SEO, i18n, performance, legal, and email pre-wired. Structured for agents to read, edit, and extend — every line is code you own. No runtime dependency on this tool once you've scaffolded.
 
 ## What you get
 
-- **Lighthouse 100s on mobile** out of the box (CI-enforced)
+- **Lighthouse 100s** on mobile and desktop, CI-enforced (the build fails before a regression ships)
 - **Astro 5** with native i18n, content collections, and Astro Actions
-- **Tailwind v4** with a layered CSS strategy (scoped above-the-fold + Tailwind below + critical-CSS extraction)
-- **TypeScript-typed Schema.org JSON-LD** built from `schema-dts`
-- **Image components** with AVIF + WebP, responsive `srcset`, LQIP placeholders
-- **Geist Sans + Geist Mono** via `astro:fonts` (self-hosted, zero CLS)
-- **Tri-state dark mode** (light / dark / system) with anti-flash inline script
-- **Working contact form** with Astro Actions, Zod validation, and your choice of Resend or SMTP
-- **Cookie banner + legal page templates** (privacy, terms, cookies) with i18n
-- **Plausible analytics** (env-gated, consent-gated, easy swap to Umami/Fathom/GA)
-- **Sitemap, RSS, robots, manifest** all wired and i18n-aware
-- **Blog and projects** as Astro 5 i18n content collections with strict Zod schemas
+- **Tailwind v4** with a layered CSS strategy — scoped styles above the fold, utilities below, critical CSS extracted at build time
+- **Typed Schema.org JSON-LD** via `schema-dts`, composed per-page into one `@graph`
+- **Image components** with AVIF + WebP, responsive `srcset`, and LQIP placeholders
+- **Geist Sans + Geist Mono** through `astro:fonts` — self-hosted, zero CLS
+- **Tri-state dark mode** (light / dark / system) with an anti-flash inline script
+- **Working contact form** built on Astro Actions, Zod-validated, with Resend or SMTP
+- **Cookie banner + legal pages** (privacy, terms, cookies) — i18n-aware templates you adapt
+- **Plausible analytics**, env-gated and consent-gated (easy swap to Umami / Fathom / GA)
+- **Sitemap, RSS, robots, manifest** — all i18n-aware
+- **Blog and projects** as content collections with strict Zod schemas
+- **A copy-paste component registry** — 18 atoms + 14 blocks, installed with `npx astro-ignite add <name>`
+
+## Why "built for AI agents"
+
+The codebase is shaped so an LLM can navigate it without ceremony:
+
+- **Small surface area.** No framework magic, no hidden abstractions. The five things you'd want to edit live where you'd expect them.
+- **You own the output.** Templates are copied in, not imported. Agents can rewrite freely without breaking an upstream contract.
+- **Native HTML primitives.** `<details>`, `<dialog>`, popover API, custom elements. No React tree to reason about, no client hydration to schedule.
+- **Strict types end to end.** Astro's TypeScript checker runs on every route; agents that introduce a bug see it before commit.
 
 ## Status
 
-Pre-1.0, in active development. See [`plan.md`](./plan.md) for the full design spec and rationale behind every decision.
+Pre-1.0, in active development. See [`plan.md`](./plan.md) for the full design spec and the reasoning behind each locked decision.
+
+## Components
+
+Two layers, both owned by you, both rendered against the same design tokens:
+
+- **Atoms** — `packages/registry/base/`. 18 primitives (button, input, dialog, tooltip, accordion, …) built with Astro + vanilla JS. Native HTML where possible: `<details name>` for accordion, `<dialog>` for modal, popover API for menus, CSS-only tooltip, custom elements for tabs and toasts.
+- **Blocks** — `packages/registry/blocks/`. 14 compositions (page-hero, feature-grid, command-block, terminal-preview, breadcrumb, prev-next-nav, …). Drop them in and edit.
+
+Browse the live catalog at [`/components`](https://docs.astroignite.dev/components) — every primitive and block on one scrollable page, rendered against the actual design system, not screenshots.
 
 ## Repo layout
 
 ```
 packages/
   create-astro-ignite/     # the CLI
-  design-fetch/            # CLI to extract Claude Design handoff bundles
   registry/                # shadcn-style component source (base + blocks)
   templates/
     starter/               # marketing / blog / projects template
     docs/                  # docs-site template
 apps/
-  site/                    # public marketing site, built via the CLI
-  docs/                    # the project's docs site, built via the CLI
+  site/                    # public marketing site
+  docs/                    # the project's docs site
   playground/              # CI smoke target
 ```
-
-## Design system
-
-The visual identity — zinc scale, dark-first, Geist Sans + Geist Mono, `>_` cursor mark — was authored in [claude.ai/design](https://claude.ai/design) and lives in two places:
-
-- **Live catalog page** at [`/components`](https://docs.astroignite.dev/components) (also under `apps/docs`). One scrollable page covering every registry primitive, every block, and the site/docs chrome — rendered against real components, not screenshots.
-- **Component source** in `packages/registry/`. 18 base atoms + 14 blocks + a `lib/cn.ts` class-merge helper, all shadcn-style: copy the file into your project and own it.
-
-### Regenerating from a Claude Design bundle
-
-When the design file in `claude.ai/design` is updated, pull the new bundle locally with the `design-fetch` CLI:
-
-```bash
-# Authenticated:
-ANTHROPIC_API_KEY=sk-… pnpm --filter @astro-ignite/design-fetch dev -- \
-  https://claude.ai/design/h/<id> --out design/latest --force
-
-# Or with a bundle you downloaded in-browser:
-node packages/design-fetch/dist/index.js \
-  --file ./bundle.tar.gz --out design/latest --force
-```
-
-The bundle ships an authoritative `README.md` (read it first — it tells you which file the user was last iterating on), conversation transcripts under `chats/`, and the HTML/JSX prototype files under `project/`. Treat them as a reference — recreate the look in real components, don't copy the prototype structure.
-
-### Social assets
-
-Rendered straight from the design bundle and committed under [`assets/banners/`](./assets/banners). Use any in launch threads.
-
-| | |
-| :---: | :---: |
-| [![GitHub social preview · 1280×640](./assets/banners/github.png)](./assets/banners/github.png) | [![Twitter · announcement](./assets/banners/twitter-01-announcement.png)](./assets/banners/twitter-01-announcement.png) |
-| GitHub social preview · 1280×640 | Twitter · announcement |
-| [![Twitter · split + terminal](./assets/banners/twitter-02-split-terminal.png)](./assets/banners/twitter-02-split-terminal.png) | [![Twitter · terminal full-bleed](./assets/banners/twitter-03-terminal-fullbleed.png)](./assets/banners/twitter-03-terminal-fullbleed.png) |
-| Twitter · split + terminal | Twitter · terminal full-bleed |
-| [![Twitter · feature pillars](./assets/banners/twitter-04-feature-pillars.png)](./assets/banners/twitter-04-feature-pillars.png) | [![Twitter · agent quote](./assets/banners/twitter-05-agent-quote.png)](./assets/banners/twitter-05-agent-quote.png) |
-| Twitter · feature pillars | Twitter · agent quote |
-| [![Twitter · Lighthouse 100](./assets/banners/twitter-06-lighthouse-100.png)](./assets/banners/twitter-06-lighthouse-100.png) | |
-| Twitter · Lighthouse 100 | |
 
 ## Development
 
