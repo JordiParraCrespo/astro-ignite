@@ -99,6 +99,7 @@ export const sidebar: SidebarGroup[] = [
     groupKey: 'sidebar.project',
     items: [
       { slug: 'roadmap' },
+      { slug: 'releases' },
       { slug: 'https://github.com/JordiParraCrespo/astro-ignite', label: 'GitHub' },
     ],
   },

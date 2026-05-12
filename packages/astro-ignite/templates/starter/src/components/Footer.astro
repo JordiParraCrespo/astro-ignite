@@ -1,0 +1,105 @@
+---
+/**
+ * Site footer — links to legal pages, RSS, and social profiles.
+ *
+ * Below-the-fold component, so it can use Tailwind classes freely.
+ */
+
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
+import { siteConfig } from '@/config/site';
+import { useTranslations } from '@/i18n';
+
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
+const siteName = siteConfig.name[locale] ?? siteConfig.name[siteConfig.defaultLocale]!;
+
+const legalLinks = [
+  { label: 'Privacy', href: getRelativeLocaleUrl(locale, '/legal/privacy') },
+  { label: 'Terms', href: getRelativeLocaleUrl(locale, '/legal/terms') },
+  { label: 'Cookies', href: getRelativeLocaleUrl(locale, '/legal/cookies') },
+];
+
+const rssUrl = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/rss.xml`;
+
+const social = Object.entries(siteConfig.social).filter(
+  ([, v]) => typeof v === 'string' && v.length > 0
+) as [string, string][];
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-[var(--color-border)] mt-16">
+  <div class="max-w-[80rem] mx-auto px-5 py-10 grid gap-8 md:grid-cols-4">
+    <div class="md:col-span-2">
+      <p class="text-base font-semibold tracking-tight text-[var(--color-fg)]">
+        {siteName}
+      </p>
+      <p class="text-sm text-[var(--color-fg-muted)] mt-2 max-w-md">
+        {siteConfig.description[locale] ?? siteConfig.description[siteConfig.defaultLocale]}
+      </p>
+    </div>
+
+    <div>
+      <h3 class="text-sm font-semibold mb-3">{t('footer.legal')}</h3>
+      <ul class="space-y-2">
+        {
+          legalLinks.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-fg)]"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <a
+            href={rssUrl}
+            class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-fg)]"
+          >
+            {t('footer.rss')}
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    {
+      social.length > 0 && (
+        <div>
+          <h3 class="text-sm font-semibold mb-3">{t('footer.social')}</h3>
+          <ul class="space-y-2">
+            {social.map(([platform, url]) => (
+              <li>
+                <a
+                  href={url}
+                  rel="noopener noreferrer me"
+                  target="_blank"
+                  class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-fg)] capitalize"
+                >
+                  {platform}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+  </div>
+
+  <div class="border-t border-[var(--color-border)]">
+    <div
+      class="max-w-[80rem] mx-auto px-5 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
+    >
+      <p class="text-xs text-[var(--color-fg-muted)]">
+        © {year}
+        {siteName}. {t('footer.rights')}
+      </p>
+      <p class="text-xs text-[var(--color-fg-muted)]">
+        {t('footer.builtWith')}
+      </p>
+    </div>
+  </div>
+</footer>

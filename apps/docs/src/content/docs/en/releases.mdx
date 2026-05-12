@@ -1,0 +1,157 @@
+---
+title: Releases
+description: How astro-ignite is versioned and shipped to npm — the two-package CLI, stable releases, and per-PR betas.
+lastUpdated: 2026-05-12
+tags: [project]
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
+
+## The two packages
+
+astro-ignite ships as two npm packages that always publish together at the same version:
+
+| Package | What it is |
+| --- | --- |
+| [`astro-ignite`](https://www.npmjs.com/package/astro-ignite) | The primary CLI. Subcommand-based: `bootstrap` today, `add` / `upgrade` planned. |
+| [`create-astro-ignite`](https://www.npmjs.com/package/create-astro-ignite) | A thin shim that exists so `npm create astro-ignite@latest` works. Delegates to `astro-ignite bootstrap`. |
+
+Both invocations reach the same code:
+
+<CodeBlock filename="terminal" language="bash">
+{`npm create astro-ignite@latest my-site     # shim → spawns the line below
+npx astro-ignite@latest bootstrap my-site  # direct`}
+</CodeBlock>
+
+The two-package split exists because the `create-*` convention is the discoverable install (every Astro/Vite/Next scaffolder uses it), but a single binary with subcommands is the cleaner UX once we add `astro-ignite add <component>` and `astro-ignite upgrade`. Shipping both gives users both UXes.
+
+<Callout variant="tip" title="Which should I tell people to use?">
+  Use `npm create astro-ignite@latest my-site` in marketing copy — it's the
+  pattern people expect from Astro/Vite/Next. Once a project is scaffolded,
+  power users can reach for `npx astro-ignite ...` directly.
+</Callout>
+
+## Two release channels
+
+| Channel | Trigger | npm dist-tag | Version shape |
+| --- | --- | --- | --- |
+| **Stable** | Merging the auto-opened **Version Packages** PR on `main` | `latest` | semver, e.g. `0.1.0` |
+| **Beta** | Labeling any open PR with `🚀 autorelease` | `beta` | `0.0.0-beta.<short-sha>` |
+
+Both flows share one workflow file: `.github/workflows/release.yml`, modeled on `shadcn-ui/ui`.
+
+## Stable releases
+
+Triggered automatically by every push to `main`. Maintained via [Changesets](https://github.com/changesets/changesets).
+
+```text
+write changes  →  pnpm changeset  →  git push  →  PR + merge to main
+                                                       │
+                                                       ▼
+                            workflow runs on main, action sees
+                            pending changesets and opens (or
+                            updates) the "Version Packages" PR
+                            on branch `changeset-release/main`
+                                                       │
+                                                       │  (whenever you're ready)
+                                                       ▼
+                            merge the Version Packages PR
+                                                       │
+                                                       ▼
+                            workflow runs again, no pending
+                            changesets remain → `changeset publish`
+                            ships both packages to npm as @latest
+```
+
+Implementation detail: the `version` step calls `.github/changeset-version.js` (a thin wrapper) which runs `changeset version` and then `pnpm install --lockfile-only` so the Version Packages PR carries a fresh `pnpm-lock.yaml`.
+
+## Beta releases
+
+Triggered when a maintainer adds the **`🚀 autorelease`** label to an open PR against `main`.
+
+```text
+open a PR with your changes  →  add the "🚀 autorelease" label
+                                          │
+                                          ▼
+                              workflow's prerelease job runs:
+                                1. checkout the PR head
+                                2. node .github/version-script-beta.js
+                                   → rewrites packages/astro-ignite/package.json
+                                     and packages/create-astro-ignite/package.json
+                                     to version `0.0.0-beta.<short-sha>`
+                                3. build both packages
+                                4. npm publish --tag beta --access public
+                                   for each
+                                5. upload the built tarball as a workflow artifact
+```
+
+The version bump is NOT committed — it only lives in the published tarballs. Each new push to the same PR can be re-published by removing and re-adding the label.
+
+Install a beta:
+
+<CodeBlock filename="terminal" language="bash">
+{`npm create astro-ignite@beta my-site               # latest beta
+npm create astro-ignite@0.0.0-beta.abc123 my-site  # pin to a specific PR build
+npx astro-ignite@beta bootstrap my-site            # direct, latest beta`}
+</CodeBlock>
+
+Beta versions never become `@latest`. Users have to opt in explicitly.
+
+## Writing a changeset
+
+For every change that should ship to users:
+
+<CodeBlock filename="terminal" language="bash">
+{`pnpm changeset`}
+</CodeBlock>
+
+Interactive prompt: pick the bump type (`patch` | `minor` | `major`) and write a one-line summary. A markdown file lands in `.changeset/`. Commit it alongside your code change.
+
+Bump-type rules of thumb:
+
+- `patch` — bug fix, doc fix, internal refactor with no behavior change.
+- `minor` — new feature, new template, new prompt, new flag.
+- `major` — breaking change to CLI flags, generated project layout, or template contract.
+
+The `astro-ignite` and `create-astro-ignite` packages are **linked** in `.changeset/config.json` — bumping one always bumps the other to the same version. The shim is tightly coupled to the CLI binary it delegates to.
+
+## Files involved
+
+| Path | Purpose |
+| --- | --- |
+| `.github/workflows/release.yml` | The two-job workflow (stable + beta). |
+| `.github/changeset-version.js` | Stable: `changeset version` + lockfile refresh. |
+| `.github/version-script-beta.js` | Beta: rewrite both packages' versions to `0.0.0-beta.<sha>`. |
+| `.changeset/config.json` | changesets config (access, ignore list, linked packages). |
+| `.changeset/*.md` | Pending change descriptions, consumed at release time. |
+
+## Required setup
+
+This is one-time-per-repo setup. Already done for `astro-ignite`, listed here for forks.
+
+- **GitHub Environment `Prod`** with secret **`NPM_TOKEN`** — npm Granular Access Token, **Bypass 2FA** checkbox ticked, scope **Read and write** on **All packages** (Granular tokens can't be scoped to a non-existent package; rotate to a narrower one after first publish).
+- **Repository label `🚀 autorelease`** — color green (`#0E8A16`).
+- **Settings → Actions → General → Workflow permissions** → ✅ Allow GitHub Actions to create and approve pull requests (required so the Version Packages PR can be opened).
+
+## Troubleshooting
+
+**"GitHub Actions is not permitted to create or approve pull requests"** — flip the toggle in repo Settings → Actions → General → Workflow permissions.
+
+**`npm error code ENEEDAUTH`** — the secret didn't resolve. Either the workflow job is missing `environment: Prod`, or `NPM_TOKEN` isn't in the Prod environment.
+
+**`npm error code EOTP`** — the token doesn't bypass 2FA. Regenerate a Granular Access Token with the **Bypass two-factor authentication (2FA)** checkbox ticked.
+
+**`npm error 403 Forbidden`** on first publish — your npm account email isn't verified. Confirm via the email link sent at signup.
+
+**Version Packages PR doesn't appear** after merging changesets — check `.changeset/` contains `.md` files besides `README.md` and `config.json`. The action only opens a PR when there are unconsumed changesets.
+
+**Beta job doesn't run after labeling** — the label is `🚀 autorelease` exactly (rocket emoji + single space + `autorelease`), and the PR targets `main`. Forks can't publish; the job's `if:` checks `github.repository_owner`.
+
+## Future upgrades
+
+Tracked, not yet done:
+
+- **npm OIDC trusted publishers** — replace `NPM_TOKEN` with OIDC so there's no long-lived secret in the repo. Requires configuring trusted publishers on each package's npm settings page.
+- **Pin the shim to its own version** — `create-astro-ignite` currently spawns `astro-ignite@latest`. After stable releases exist, `npm create astro-ignite@beta` would run the *stable* CLI, not the beta. The shim should spawn `astro-ignite@<its-own-version>`.
+- **Demote `latest` post-first-publish** — npm's first-publish quirk sets `latest` even with `--tag beta`. Add a workflow step to `npm dist-tag rm <pkg> latest` on the very first beta publish, or accept it and let the first stable release overwrite `latest`.

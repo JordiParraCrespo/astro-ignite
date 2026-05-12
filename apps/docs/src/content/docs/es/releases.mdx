@@ -1,0 +1,158 @@
+---
+title: Publicaciones
+description: Cómo astro-ignite se versiona y publica en npm — los dos paquetes del CLI, releases estables y betas por PR.
+lastUpdated: 2026-05-12
+tags: [proyecto]
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
+
+## Los dos paquetes
+
+astro-ignite se publica como dos paquetes de npm que siempre se publican juntos, con la misma versión:
+
+| Paquete | Qué es |
+| --- | --- |
+| [`astro-ignite`](https://www.npmjs.com/package/astro-ignite) | El CLI principal. Con subcomandos: `bootstrap` hoy, `add` / `upgrade` previstos. |
+| [`create-astro-ignite`](https://www.npmjs.com/package/create-astro-ignite) | Un shim fino que existe para que funcione `npm create astro-ignite@latest`. Delega en `astro-ignite bootstrap`. |
+
+Ambas invocaciones acaban en el mismo código:
+
+<CodeBlock filename="terminal" language="bash">
+{`npm create astro-ignite@latest mi-sitio     # shim → ejecuta la línea de abajo
+npx astro-ignite@latest bootstrap mi-sitio  # directo`}
+</CodeBlock>
+
+La separación en dos paquetes existe porque la convención `create-*` es la instalación que la gente descubre (todos los scaffolders de Astro/Vite/Next la usan), pero un único binario con subcomandos es más limpio cuando añadamos `astro-ignite add <componente>` y `astro-ignite upgrade`. Publicar ambos da a los usuarios las dos UX.
+
+<Callout variant="tip" title="¿Cuál recomendar?">
+  Usa `npm create astro-ignite@latest mi-sitio` en marketing — es el patrón
+  que la gente espera de Astro/Vite/Next. Una vez creado el proyecto, los
+  usuarios avanzados pueden usar `npx astro-ignite ...` directamente.
+</Callout>
+
+## Dos canales de publicación
+
+| Canal | Disparador | dist-tag de npm | Forma de versión |
+| --- | --- | --- | --- |
+| **Estable** | Fusionar el PR **Version Packages** abierto automáticamente en `main` | `latest` | semver, p. ej. `0.1.0` |
+| **Beta** | Etiquetar cualquier PR abierto con `🚀 autorelease` | `beta` | `0.0.0-beta.<sha-corto>` |
+
+Ambos flujos comparten un único workflow: `.github/workflows/release.yml`, basado en el de `shadcn-ui/ui`.
+
+## Releases estables
+
+Disparadas automáticamente con cada push a `main`. Mantenidas con [Changesets](https://github.com/changesets/changesets).
+
+```text
+escribe cambios  →  pnpm changeset  →  git push  →  PR + merge a main
+                                                         │
+                                                         ▼
+                              el workflow corre en main, la action ve
+                              changesets pendientes y abre (o actualiza)
+                              el PR "Version Packages" en la rama
+                              `changeset-release/main`
+                                                         │
+                                                         │  (cuando estés listo)
+                                                         ▼
+                              fusiona el PR "Version Packages"
+                                                         │
+                                                         ▼
+                              el workflow corre otra vez, no quedan
+                              changesets pendientes → `changeset publish`
+                              publica ambos paquetes en npm como @latest
+```
+
+Detalle de implementación: el paso `version` llama a `.github/changeset-version.js` (un envoltorio fino) que ejecuta `changeset version` y luego `pnpm install --lockfile-only` para que el PR "Version Packages" lleve un `pnpm-lock.yaml` actualizado.
+
+## Releases beta
+
+Disparadas cuando un mantenedor añade la etiqueta **`🚀 autorelease`** a un PR abierto contra `main`.
+
+```text
+abre un PR con tus cambios  →  añade la etiqueta "🚀 autorelease"
+                                          │
+                                          ▼
+                              el job prerelease del workflow corre:
+                                1. checkout del HEAD del PR
+                                2. node .github/version-script-beta.js
+                                   → reescribe packages/astro-ignite/package.json
+                                     y packages/create-astro-ignite/package.json
+                                     a la versión `0.0.0-beta.<sha-corto>`
+                                3. construye ambos paquetes
+                                4. npm publish --tag beta --access public
+                                   para cada uno
+                                5. sube el tarball construido como artefacto
+                                   del workflow
+```
+
+El cambio de versión NO se commitea — solo vive en los tarballs publicados. Cada nuevo push al mismo PR puede re-publicarse quitando y volviendo a poner la etiqueta.
+
+Instalar una beta:
+
+<CodeBlock filename="terminal" language="bash">
+{`npm create astro-ignite@beta mi-sitio               # última beta
+npm create astro-ignite@0.0.0-beta.abc123 mi-sitio  # fijar a un PR concreto
+npx astro-ignite@beta bootstrap mi-sitio            # directo, última beta`}
+</CodeBlock>
+
+Las versiones beta nunca pasan a `@latest`. Los usuarios tienen que pedirlas explícitamente.
+
+## Escribir un changeset
+
+Para cada cambio que tenga que llegar a los usuarios:
+
+<CodeBlock filename="terminal" language="bash">
+{`pnpm changeset`}
+</CodeBlock>
+
+Prompt interactivo: elige el tipo de bump (`patch` | `minor` | `major`) y escribe un resumen de una línea. Un archivo markdown aparece en `.changeset/`. Commitealo junto con tu cambio de código.
+
+Regla de bump:
+
+- `patch` — fix de bug, fix de docs, refactor interno sin cambio de comportamiento.
+- `minor` — nueva feature, nueva plantilla, nuevo prompt, nuevo flag.
+- `major` — cambio de ruptura en flags del CLI, layout del proyecto generado o contrato de las plantillas.
+
+Los paquetes `astro-ignite` y `create-astro-ignite` están **vinculados** en `.changeset/config.json` — subir uno siempre sube el otro a la misma versión. El shim está acoplado al binario del CLI al que delega.
+
+## Archivos involucrados
+
+| Ruta | Propósito |
+| --- | --- |
+| `.github/workflows/release.yml` | El workflow de dos jobs (estable + beta). |
+| `.github/changeset-version.js` | Estable: `changeset version` + refrescar lockfile. |
+| `.github/version-script-beta.js` | Beta: reescribir las versiones de ambos paquetes a `0.0.0-beta.<sha>`. |
+| `.changeset/config.json` | Config de changesets (access, lista ignore, paquetes vinculados). |
+| `.changeset/*.md` | Descripciones de cambios pendientes, consumidas al publicar. |
+
+## Setup requerido
+
+Solo una vez por repositorio. Ya hecho para `astro-ignite`; aquí queda para forks.
+
+- **Environment `Prod`** de GitHub con el secret **`NPM_TOKEN`** — token Granular de npm, con el checkbox **Bypass 2FA** activado, scope **Read and write** sobre **All packages** (los tokens granulares no pueden limitarse a un paquete inexistente; rota a uno más estrecho tras la primera publicación).
+- **Etiqueta de repositorio `🚀 autorelease`** — color verde (`#0E8A16`).
+- **Settings → Actions → General → Workflow permissions** → ✅ Allow GitHub Actions to create and approve pull requests (necesario para que el PR Version Packages se pueda abrir).
+
+## Resolución de problemas
+
+**"GitHub Actions is not permitted to create or approve pull requests"** — activa el toggle en Settings → Actions → General → Workflow permissions del repositorio.
+
+**`npm error code ENEEDAUTH`** — el secret no se resolvió. O al job le falta `environment: Prod`, o `NPM_TOKEN` no está en el environment Prod.
+
+**`npm error code EOTP`** — el token no salta el 2FA. Regenera un Granular Access Token con el checkbox **Bypass two-factor authentication (2FA)** activado.
+
+**`npm error 403 Forbidden`** en la primera publicación — el email de tu cuenta de npm no está verificado. Confírmalo desde el enlace que recibiste al registrarte.
+
+**El PR Version Packages no aparece** tras fusionar changesets — comprueba que `.changeset/` contiene archivos `.md` aparte de `README.md` y `config.json`. La action solo abre el PR cuando hay changesets sin consumir.
+
+**El job de beta no corre tras etiquetar** — la etiqueta es exactamente `🚀 autorelease` (emoji cohete + un espacio + `autorelease`), y el PR apunta a `main`. Los forks no pueden publicar; el `if:` del job comprueba `github.repository_owner`.
+
+## Mejoras futuras
+
+Anotadas, aún no hechas:
+
+- **Trusted publishers OIDC de npm** — sustituir `NPM_TOKEN` por OIDC para no tener secrets de larga duración en el repo. Requiere configurar trusted publishers en la página de npm de cada paquete.
+- **Fijar el shim a su propia versión** — `create-astro-ignite` lanza ahora mismo `astro-ignite@latest`. Cuando existan releases estables, `npm create astro-ignite@beta` correría el CLI *estable*, no la beta. El shim debería lanzar `astro-ignite@<su-propia-versión>`.
+- **Degradar `latest` tras la primera publicación** — npm pone `latest` también en la primera publicación aunque uses `--tag beta`. Añadir un paso del workflow que haga `npm dist-tag rm <pkg> latest` en la primera beta, o aceptarlo y dejar que la primera estable sobrescriba `latest`.

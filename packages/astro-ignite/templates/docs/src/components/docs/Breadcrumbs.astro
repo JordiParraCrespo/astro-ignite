@@ -1,0 +1,76 @@
+---
+/**
+ * Breadcrumbs trail above the page title.
+ *
+ * Reads the current path and walks each segment, creating links from the
+ * sidebar's group names where possible. The last segment is the current
+ * page (no link).
+ */
+
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
+import { sidebar } from '@/config/sidebar';
+import { siteConfig } from '@/config/site';
+
+interface Props {
+  /** Bare slug, e.g. "introduction" (no locale prefix). */
+  currentSlug: string;
+  currentTitle: string;
+}
+
+const { currentSlug, currentTitle } = Astro.props;
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+
+// Find the sidebar group this slug belongs to (if any).
+const owningGroup = sidebar.find((g) => g.items.some((it) => it.slug === currentSlug));
+
+const crumbs = [
+  { label: 'Docs', href: getRelativeLocaleUrl(locale, '/') },
+  ...(owningGroup ? [{ label: owningGroup.group, href: undefined }] : []),
+  { label: currentTitle, href: undefined },
+];
+---
+
+<nav class="breadcrumbs mono" aria-label="Breadcrumbs">
+  {
+    crumbs.map((c, i) => (
+      <>
+        {c.href ? (
+          <a href={c.href}>{c.label}</a>
+        ) : (
+          <span class:list={[i === crumbs.length - 1 && 'current']}>{c.label}</span>
+        )}
+        {i < crumbs.length - 1 && (
+          <span class="separator" aria-hidden="true">
+            /
+          </span>
+        )}
+      </>
+    ))
+  }
+</nav>
+
+<style>
+  .breadcrumbs {
+    font-size: 11px;
+    color: var(--color-fg-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    letter-spacing: -0.005em;
+  }
+  .breadcrumbs a {
+    color: var(--color-fg-muted);
+    text-decoration: none;
+  }
+  .breadcrumbs a:hover {
+    color: var(--color-fg);
+  }
+  .breadcrumbs .current {
+    color: var(--color-fg);
+  }
+  .breadcrumbs .separator {
+    color: var(--color-fg-subtle);
+  }
+</style>

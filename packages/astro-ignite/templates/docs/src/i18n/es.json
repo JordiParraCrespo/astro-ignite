@@ -1,0 +1,369 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "blog": "Blog",
+    "projects": "Proyectos",
+    "about": "Acerca",
+    "contact": "Contacto",
+    "menu": "Menú",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "skipToContent": "Saltar al contenido principal"
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados.",
+    "builtWith": "Hecho con astro-ignite.",
+    "rss": "Feed RSS",
+    "legal": "Legal",
+    "social": "Redes"
+  },
+  "theme": {
+    "label": "Tema",
+    "light": "Claro",
+    "dark": "Oscuro",
+    "system": "Sistema"
+  },
+  "locale": {
+    "label": "Idioma",
+    "switch": "Cambiar idioma"
+  },
+  "seo": {
+    "404": {
+      "title": "Página no encontrada",
+      "description": "La página que buscas no existe."
+    },
+    "home": {
+      "title": "Inicio",
+      "description": "Crea un sitio Astro listo para producción con valores predeterminados de SEO y rendimiento de primer nivel."
+    },
+    "about": {
+      "title": "Acerca",
+      "description": "Conoce más sobre nosotros — qué hacemos, por qué y cómo contactarnos."
+    },
+    "contact": {
+      "title": "Contacto",
+      "description": "Ponte en contacto — nos encantaría saber de ti."
+    },
+    "blog": {
+      "title": "Blog",
+      "description": "Artículos, notas y novedades."
+    },
+    "projects": {
+      "title": "Proyectos",
+      "description": "Una colección de trabajo, casos de estudio y experimentos."
+    }
+  },
+  "blog": {
+    "byAuthor": "por",
+    "publishedOn": "Publicado el",
+    "updatedOn": "Actualizado el",
+    "readMore": "Leer más",
+    "readingTime": "{minutes} min de lectura",
+    "morePosts": "Más entradas",
+    "backToBlog": "Volver al blog",
+    "noPosts": "Aún no hay entradas."
+  },
+  "projects": {
+    "viewProject": "Ver proyecto",
+    "viewLive": "Ver en vivo",
+    "viewRepo": "Ver repositorio",
+    "viewDemo": "Ver demo",
+    "viewCaseStudy": "Leer caso de estudio",
+    "techStack": "Tecnologías",
+    "role": "Rol",
+    "client": "Cliente",
+    "status": {
+      "shipped": "Publicado",
+      "in-progress": "En progreso",
+      "archived": "Archivado"
+    },
+    "backToProjects": "Volver a proyectos",
+    "noProjects": "Aún no hay proyectos."
+  },
+  "contact": {
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "message": "Mensaje",
+    "send": "Enviar mensaje",
+    "sending": "Enviando…",
+    "success": "Gracias — te responderemos pronto.",
+    "error": "Algo salió mal. Inténtalo de nuevo o escríbenos directamente.",
+    "validation": {
+      "nameRequired": "Por favor ingresa tu nombre.",
+      "emailInvalid": "Por favor ingresa un correo válido.",
+      "messageTooShort": "Por favor escribe al menos 10 caracteres."
+    }
+  },
+  "cookies": {
+    "banner": {
+      "title": "Preferencias de cookies",
+      "description": "Usamos almacenamiento mínimo para recordar tus preferencias. La analítica está desactivada hasta que aceptes.",
+      "accept": "Aceptar",
+      "decline": "Rechazar",
+      "policyLink": "Leer nuestra política de cookies"
+    }
+  },
+  "legal": {
+    "lastUpdated": "Última actualización",
+    "version": "Versión",
+    "tableOfContents": "Tabla de contenidos",
+    "templateNotice": "Este es un documento de plantilla. Revísalo con asesoría legal antes de publicar."
+  },
+  "errors": {
+    "404": {
+      "heading": "Página no encontrada",
+      "body": "La página que buscas no existe o ha sido movida.",
+      "back": "Volver al inicio"
+    }
+  },
+  "sidebar": {
+    "startHere": "Empieza aquí",
+    "reference": "Referencia",
+    "project": "Proyecto"
+  },
+  "components": {
+    "back": "← Todos los componentes",
+    "install": "Instalar",
+    "group": "Componentes",
+    "overview": "Resumen",
+    "index": {
+      "eyebrow": "Registro",
+      "title": "Componentes",
+      "description": "Cada primitivo del registro de astro-ignite, renderizado en vivo.",
+      "intro": "Primitivos de Astro listos para producción. Copia y pega con",
+      "introTail": "— sin dependencias en tiempo de ejecución."
+    },
+    "summary": {
+      "button": "Dispara acciones. Soporta variantes y tamaños.",
+      "link": "Navegación en línea con variantes default, muted y underline.",
+      "badge": "Indicador de estado compacto.",
+      "card": "Contenedor de superficie con slots de encabezado / contenido / pie.",
+      "input": "Campo de texto de una línea.",
+      "textarea": "Campo de texto multilínea.",
+      "label": "Etiqueta accesible para controles de formulario.",
+      "separator": "Separador horizontal o vertical.",
+      "alert": "Bloque de mensaje en línea con variantes semánticas.",
+      "avatar": "Imagen de usuario con respaldo en texto.",
+      "skeleton": "Placeholder de carga con animación.",
+      "kbd": "Indicador de atajo de teclado.",
+      "tabs": "Paneles de contenido en pestañas.",
+      "accordion": "Secciones de contenido colapsables.",
+      "dialog": "Superposición modal basada en el elemento nativo <dialog>.",
+      "dropdown-menu": "Menú anclado usando la API nativa popover.",
+      "tooltip": "Indicación contextual al pasar el cursor o enfocar.",
+      "toast": "Notificaciones transitorias a través de una superficie toaster."
+    },
+    "detail": {
+      "button": {
+        "description": "Dispara acciones. Renderiza un <button> por defecto, o un <a> cuando se proporciona href. Variantes: default, secondary, outline, ghost, destructive, link. Tamaños: sm, md, lg, icon.",
+        "default": "Predeterminado",
+        "secondary": "Secundario",
+        "outline": "Contorno",
+        "ghost": "Fantasma",
+        "destructive": "Destructivo",
+        "linkVariant": "Enlace",
+        "small": "Pequeño",
+        "medium": "Mediano",
+        "large": "Grande",
+        "disabled": "Deshabilitado",
+        "asLink": "Como enlace"
+      },
+      "link": {
+        "description": "Navegación en línea. Renderiza un <a> con variantes de color semánticas.",
+        "defaultExample": "Ejemplo de enlace predeterminado",
+        "mutedExample": "Ejemplo de enlace atenuado",
+        "underlineExample": "Ejemplo de enlace subrayado"
+      },
+      "badge": {
+        "description": "Indicador de estado compacto. Variantes: default, secondary, outline, destructive, success, warning.",
+        "default": "Predeterminado",
+        "secondary": "Secundario",
+        "outline": "Contorno",
+        "destructive": "Destructivo",
+        "success": "Éxito",
+        "warning": "Advertencia"
+      },
+      "card": {
+        "description": "Contenedor de superficie compuesto por card, card-header, card-title, card-description, card-content y card-footer.",
+        "title": "Información del proyecto",
+        "lede": "El pulso de tu equipo esta semana.",
+        "body": "El rendimiento ha subido un 12% respecto a la semana pasada. Sin regresiones detectadas en las últimas 24 horas.",
+        "dismiss": "Descartar",
+        "viewReport": "Ver informe"
+      },
+      "input": {
+        "description": "Campo de texto de una línea. Reenvía todos los atributos estándar de <input>.",
+        "emailLabel": "Correo electrónico",
+        "disabledLabel": "Deshabilitado",
+        "disabledPlaceholder": "No se puede editar"
+      },
+      "textarea": {
+        "description": "Campo de texto multilínea. Reenvía todos los atributos estándar de <textarea>.",
+        "messageLabel": "Mensaje",
+        "messagePlaceholder": "Escribe lo que piensas…"
+      },
+      "label": {
+        "description": "Etiqueta accesible para controles de formulario. Usa el atributo for para asociarla con un input por id.",
+        "usernameLabel": "Usuario"
+      },
+      "separator": {
+        "description": "Separador visual. orientation: horizontal (predeterminado) o vertical.",
+        "above": "Encima de la línea",
+        "below": "Debajo de la línea",
+        "left": "Izquierda",
+        "middle": "Centro",
+        "right": "Derecha"
+      },
+      "alert": {
+        "description": "Bloque de mensaje en línea. Variantes: default, destructive, warning, success.",
+        "defaultTitle": "Atención.",
+        "defaultBody": "Esta es una alerta predeterminada — útil para información general.",
+        "successTitle": "Guardado.",
+        "successBody": "Tus cambios están en vivo.",
+        "warningTitle": "Atención.",
+        "warningBody": "El almacenamiento se está agotando.",
+        "destructiveTitle": "Falló.",
+        "destructiveBody": "No se pudo alcanzar el servidor remoto."
+      },
+      "avatar": {
+        "description": "Imagen de usuario con respaldo en texto. Tamaños: sm, md, lg. Vuelve a las iniciales cuando no se proporciona src o la imagen falla al cargar."
+      },
+      "skeleton": {
+        "description": "Placeholder de carga. Ajusta su tamaño libremente con atributos style o clases de utilidad."
+      },
+      "kbd": {
+        "description": "Indicador de atajo de teclado. Renderiza un elemento <kbd> con estilo.",
+        "line1Pre": "Pulsa",
+        "line1Post": "para abrir la paleta de comandos.",
+        "line2Pre": "Guarda con",
+        "line2Mid": ", deshaz con",
+        "line2Post": "."
+      },
+      "tabs": {
+        "description": "Paneles de contenido en pestañas. Compón con tabs, tabs-list, tabs-trigger y tabs-content. El comportamiento viene en un elemento personalizado — sin framework necesario.",
+        "tab1": "Resumen",
+        "tab2": "Instalación",
+        "tab3": "Uso",
+        "tab1Body": "Las pestañas te permiten intercambiar contenido relacionado en su lugar sin navegación.",
+        "tab2Body": "Ejecuta npx astro-ignite add tabs para copiar el componente a tu proyecto.",
+        "tab3Body": "Envuelve los triggers y el contenido con props value coincidentes dentro de un Tabs root."
+      },
+      "accordion": {
+        "description": "Secciones de contenido colapsables construidas con el elemento nativo <details>. Cada elemento toma una prop title y una bandera open.",
+        "q1Title": "¿Qué es astro-ignite?",
+        "q1Body": "Un scaffold de Astro listo para producción con i18n, legal, analítica y un registro de primitivos integrado.",
+        "q2Title": "¿Cómo instalo un componente?",
+        "q2Body": "Ejecuta npx astro-ignite add <nombre>. El archivo se copia a src/components/ui — tuyo para editar.",
+        "q3Title": "¿Envía JavaScript?",
+        "q3Body": "Solo los pequeños elementos personalizados que necesitan interactividad (tabs, dialog, dropdown, toast). Todo lo demás es cero-JS."
+      },
+      "dialog": {
+        "description": "Superposición modal construida con el elemento nativo <dialog>. Activa con [data-dialog-open=id], cierra con [data-dialog-close]. El cierre al hacer clic fuera lo maneja el script del registro.",
+        "trigger": "Abrir diálogo",
+        "title": "¿Eliminar proyecto?",
+        "body": "Esta acción es permanente. Todos los despliegues, entornos y analíticas de este proyecto serán eliminados.",
+        "cancel": "Cancelar",
+        "confirm": "Eliminar"
+      },
+      "dropdownMenu": {
+        "description": "Menú anclado usando la API nativa popover + posicionamiento por anchor de CSS. Conecta un trigger estableciendo popovertarget al id del menú y anchor-name: --anchor en el trigger.",
+        "trigger": "Acciones ▾",
+        "item1": "Ver perfil",
+        "item2": "Configuración de cuenta",
+        "item3": "Facturación",
+        "item4": "Cerrar sesión"
+      },
+      "tooltip": {
+        "description": "Indicación contextual al pasar el cursor o enfocar. Envuelve cualquier trigger y revela contenido al posicionar el puntero o enfocar con el teclado. Lado: top o bottom.",
+        "triggerTop": "Pasa el cursor (arriba)",
+        "tipTop": "Guarda tu borrador localmente",
+        "triggerBottom": "Pasa el cursor (abajo)",
+        "tipBottom": "Ejemplo del lado inferior"
+      },
+      "toast": {
+        "description": "Notificaciones transitorias. Coloca un <Toaster /> una vez en la raíz de la página, luego llama a toast(mensaje, { variant }) desde cualquier parte del cliente.",
+        "default": "Predeterminado",
+        "success": "Éxito",
+        "warning": "Advertencia",
+        "destructive": "Destructivo",
+        "messageDefault": "Atención — algo ha pasado.",
+        "messageSuccess": "Guardado. Tus cambios están en vivo.",
+        "messageWarning": "El almacenamiento se está agotando.",
+        "messageDestructive": "No se pudo alcanzar el servidor remoto."
+      }
+    }
+  },
+  "blocks": {
+    "group": "Bloques",
+    "overview": "Resumen",
+    "back": "← Todos los bloques",
+    "install": "Instalar",
+    "index": {
+      "eyebrow": "Registro",
+      "title": "Bloques",
+      "description": "Composiciones de nivel superior construidas a partir de las primitivas.",
+      "intro": "Bloques compuestos listos para usar. Copia y pega con",
+      "introTail": "— sin dependencia en runtime."
+    },
+    "summary": {
+      "page-hero": "Encabezado compuesto por eyebrow, título y lede.",
+      "breadcrumb": "Sendero de enlaces con separadores marcando la página actual.",
+      "release-pill": "Pastilla en línea anunciando un release o versión.",
+      "command-block": "Comando de terminal copiable con un click.",
+      "terminal-preview": "Marco de terminal con barra superior, contenido y caret parpadeante.",
+      "feature-grid": "Grilla bordeada de funciones numeradas con tag, título y cuerpo.",
+      "post-list": "Lista vertical de posts con fecha, autor, extracto y tags.",
+      "prev-next-nav": "Navegación previo / siguiente para pies de artículo.",
+      "author-card": "Bloque de autor con avatar de fallback y enlace.",
+      "project-card": "Tarjeta de proyecto con pastilla de estado, cubierta y chips.",
+      "metadata-grid": "Grilla clave / valor para resúmenes de casos de estudio.",
+      "toc-rail": "Tabla de contenidos sticky con scroll-spy.",
+      "not-found-state": "Bloque 404 / estado vacío con código, título y slot de acciones.",
+      "notice-banner": "Aviso en línea con icono y cuatro variantes semánticas."
+    },
+    "detail": {
+      "page-hero": {
+        "description": "Compone un eyebrow, un h1 y un párrafo lede. Úsalo como sección superior de cualquier página de contenido."
+      },
+      "breadcrumb": {
+        "description": "Renderiza una lista de enlaces con marcador de página actual. Pasa un array items con { label, href }."
+      },
+      "release-pill": {
+        "description": "Pastilla con punto pulsante, etiqueta y detalle opcional. Se vuelve enlace si pasas href."
+      },
+      "command-block": {
+        "description": "Muestra un comando de terminal con prefijo de prompt y un botón Copiar que escribe al portapapeles."
+      },
+      "terminal-preview": {
+        "description": "Terminal con cromo estilo macOS, ruta y badge zsh. El slot acepta líneas preformateadas; pasa caret={false} para ocultar el caret."
+      },
+      "feature-grid": {
+        "description": "Grilla de 2 o 3 columnas de features. Cada celda renderiza un índice opcional, un tag, un título y un cuerpo."
+      },
+      "post-list": {
+        "description": "Lista vertical de posts. Usa <PostList> como contenedor y luego <PostListItem> con title, href, date, author, reading time, excerpt y tags."
+      },
+      "prev-next-nav": {
+        "description": "Navegación previo / siguiente en una grilla de 2 columnas. Cualquier lado puede omitirse."
+      },
+      "author-card": {
+        "description": "Bloque de autor. Si src se omite, las iniciales se generan desde name. Pasa href para volver la tarjeta un enlace."
+      },
+      "project-card": {
+        "description": "Tarjeta de preview con cubierta patrón, pastilla de estado, título, descripción y chips. Se vuelve enlace si pasas href."
+      },
+      "metadata-grid": {
+        "description": "Grilla clave / valor como estructura semántica dl > dt + dd. Por defecto 4 columnas; colapsa a 2 en viewports angostos."
+      },
+      "toc-rail": {
+        "description": "Tabla de contenidos sticky. Pasa un array entries con { id, label, depth }. Usa IntersectionObserver para resaltar el heading visible."
+      },
+      "not-found-state": {
+        "description": "Estado 404 centrado con código eyebrow, título, descripción y un slot de acciones para botones."
+      },
+      "notice-banner": {
+        "description": "Aviso en línea con icono y cuatro variantes: info, warning, success, danger. El slot acepta el mensaje."
+      }
+    }
+  }
+}

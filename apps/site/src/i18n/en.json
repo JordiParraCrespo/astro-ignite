@@ -42,7 +42,7 @@
     },
     "blog": {
       "title": "Blog",
-      "description": "Articles, notes, and updates."
+      "description": "Notes on astro-ignite, Astro scaffolding, performance, SEO, i18n, and owned-code web projects."
     },
     "projects": {
       "title": "Projects",
@@ -161,6 +161,7 @@
   "landing": {
     "nav": {
       "docs": "Docs",
+      "blog": "Blog",
       "templates": "Templates",
       "plan": "Plan",
       "changelog": "Changelog",

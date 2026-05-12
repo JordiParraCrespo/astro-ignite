@@ -1,7 +1,7 @@
 {
   "name": "create-astro-ignite",
   "version": "0.0.0",
-  "description": "Bootstrap a production-grade Astro site with top-tier SEO and performance defaults",
+  "description": "npm create shim for astro-ignite — delegates to `astro-ignite bootstrap`",
   "license": "MIT",
   "type": "module",
   "bin": {
@@ -9,27 +9,18 @@
   },
   "files": [
     "dist",
-    "templates",
     "README.md"
   ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "prepack": "node ./scripts/copy-templates.mjs",
-    "test": "vitest run",
-    "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src"
-  },
-  "dependencies": {
-    "@clack/prompts": "^0.9.0",
-    "kleur": "^4.1.5"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
     "tsup": "^8.3.5",
-    "typescript": "^5.7.2",
-    "vitest": "^2.1.8"
+    "typescript": "^5.7.2"
   },
   "engines": {
     "node": ">=20.11.0"

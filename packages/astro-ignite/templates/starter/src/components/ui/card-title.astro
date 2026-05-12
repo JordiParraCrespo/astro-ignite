@@ -1,0 +1,23 @@
+---
+import { cn } from '@/lib/cn';
+import type { HTMLAttributes } from 'astro/types';
+
+export type Props = HTMLAttributes<'h3'> & {
+  as?: 'h1' | 'h2' | 'h3' | 'h4';
+  class?: string;
+};
+
+const { as: Tag = 'h3', class: className, ...rest } = Astro.props;
+---
+
+<Tag class={cn('card-title', className)} {...rest}><slot /></Tag>
+
+<style>
+  .card-title {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--color-fg);
+    margin: 0;
+  }
+</style>

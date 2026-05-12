@@ -1,0 +1,176 @@
+---
+/**
+ * Sidebar navigation — left column of the docs layout.
+ *
+ * Reads the `sidebar` config and renders grouped links. Highlights the
+ * current page based on `Astro.url.pathname`. External links (starting with
+ * `http`) get an icon + open-in-new-tab.
+ *
+ * Above-the-fold component — uses scoped <style> only.
+ */
+
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
+import Brand from '../Brand.astro';
+import SearchBox from './SearchBox.astro';
+import { sidebar } from '@/config/sidebar';
+import { siteConfig } from '@/config/site';
+
+interface Props {
+  /** Path of the current page; used to mark the active item. */
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+
+// Resolve labels from the current-locale entry's frontmatter. Sidebar config
+// uses bare slugs (`introduction`); the collection id is `<locale>/<slug>`.
+const allDocs = await getCollection('docs', (e: CollectionEntry<'docs'>) => !e.data.draft);
+const titleForSlug = (slug: string): string => {
+  const entry = allDocs.find((e) => e.id === `${locale}/${slug}`);
+  return entry?.data.title ?? slug;
+};
+
+// True when a sidebar slug has an entry in the current locale.
+const hasLocalizedEntry = (slug: string): boolean =>
+  allDocs.some((e) => e.id === `${locale}/${slug}`);
+
+const isExternal = (slug: string) => slug.startsWith('http');
+
+// The home doc renders at the locale root (/ or /<lang>/), not at /<slug>.
+const homeSlug = siteConfig.homePath.replace(/^\//, '');
+
+const hrefFor = (slug: string) => {
+  if (isExternal(slug)) return slug;
+  if (slug === homeSlug) return getRelativeLocaleUrl(locale, '/');
+  return getRelativeLocaleUrl(locale, `/${slug}`);
+};
+
+const isActive = (slug: string) => {
+  if (isExternal(slug)) return false;
+  const path = currentPath.replace(/\/$/, '');
+  const target = hrefFor(slug).replace(/\/$/, '');
+  return path === target;
+};
+---
+
+<aside class="sidebar" aria-label="Documentation">
+  <header class="sidebar-header">
+    <Brand href="/" variant="lockup" size={0.42} />
+  </header>
+
+  <SearchBox />
+
+  <nav class="sidebar-nav" aria-label="Sidebar">
+    {
+      sidebar.map((group) => {
+        // Only render items that exist in the current locale (or are external links).
+        const visibleItems = group.items.filter(
+          (item) => isExternal(item.slug) || hasLocalizedEntry(item.slug)
+        );
+        if (visibleItems.length === 0) return null;
+        return (
+          <div class="sidebar-group">
+            <h2 class="sidebar-group-title mono">{group.group}</h2>
+            <ul>
+              {visibleItems.map((item) => (
+                <li>
+                  <a
+                    href={hrefFor(item.slug)}
+                    class:list={['sidebar-link', isActive(item.slug) && 'is-active']}
+                    aria-current={isActive(item.slug) ? 'page' : undefined}
+                    rel={isExternal(item.slug) ? 'noopener noreferrer' : undefined}
+                    target={isExternal(item.slug) ? '_blank' : undefined}
+                  >
+                    <span>{item.label ?? titleForSlug(item.slug)}</span>
+                    {item.badge && <span class="sidebar-badge mono">{item.badge}</span>}
+                    {isExternal(item.slug) && <span aria-hidden="true">↗</span>}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })
+    }
+  </nav>
+</aside>
+
+<style>
+  .sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-right: 1px solid var(--color-border);
+    padding: 28px 16px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: var(--color-bg);
+  }
+  .sidebar-header {
+    padding: 0 4px;
+  }
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .sidebar-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .sidebar-group-title {
+    font-size: 10px;
+    color: var(--color-fg-muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    margin: 0 0 2px;
+  }
+  .sidebar-group ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 8px;
+    border-radius: var(--radius-sm);
+    color: var(--color-fg-muted);
+    font-size: 13px;
+    text-decoration: none;
+    line-height: 1.5;
+    transition:
+      background 0.12s var(--ease-out-soft),
+      color 0.12s var(--ease-out-soft);
+  }
+  .sidebar-link:hover {
+    color: var(--color-fg);
+    background: var(--color-surface-2);
+  }
+  .sidebar-link.is-active {
+    color: var(--color-fg);
+    font-weight: 500;
+    background: var(--color-surface-2);
+  }
+  .sidebar-badge {
+    font-size: 10px;
+    color: var(--color-fg-subtle);
+    padding: 1px 5px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    margin-left: auto;
+  }
+</style>

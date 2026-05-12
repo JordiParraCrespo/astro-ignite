@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Block API routes + dynamic OG endpoints (when added)
+Disallow: /api/
+Disallow: /og/
+
+# Sitemap index — replace the host with your own after scaffold (or let the
+# site URL in astro.config.mjs propagate via the `site` field).
+Sitemap: http://localhost:4321/sitemap-index.xml

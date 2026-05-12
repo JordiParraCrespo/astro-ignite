@@ -1,0 +1,161 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "blog": "Blog",
+    "projects": "Proyectos",
+    "about": "Acerca",
+    "contact": "Contacto",
+    "menu": "Menú",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "skipToContent": "Saltar al contenido principal"
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados.",
+    "builtWith": "Hecho con astro-ignite.",
+    "rss": "Feed RSS",
+    "legal": "Legal",
+    "social": "Redes"
+  },
+  "theme": {
+    "label": "Tema",
+    "light": "Claro",
+    "dark": "Oscuro",
+    "system": "Sistema"
+  },
+  "locale": {
+    "label": "Idioma",
+    "switch": "Cambiar idioma"
+  },
+  "seo": {
+    "home": {
+      "title": "Inicio",
+      "description": "Crea un sitio Astro listo para producción con valores predeterminados de SEO y rendimiento de primer nivel."
+    },
+    "about": {
+      "title": "Acerca",
+      "description": "Conoce más sobre nosotros — qué hacemos, por qué y cómo contactarnos."
+    },
+    "contact": {
+      "title": "Contacto",
+      "description": "Ponte en contacto — nos encantaría saber de ti."
+    },
+    "blog": {
+      "title": "Blog",
+      "description": "Artículos, notas y novedades."
+    },
+    "projects": {
+      "title": "Proyectos",
+      "description": "Una colección de trabajo, casos de estudio y experimentos."
+    },
+    "404": {
+      "title": "Página no encontrada",
+      "description": "La página que buscas no existe."
+    }
+  },
+  "blog": {
+    "byAuthor": "por",
+    "publishedOn": "Publicado el",
+    "updatedOn": "Actualizado el",
+    "readMore": "Leer más",
+    "readingTime": "{minutes} min de lectura",
+    "morePosts": "Más entradas",
+    "backToBlog": "Volver al blog",
+    "noPosts": "Aún no hay entradas."
+  },
+  "projects": {
+    "viewProject": "Ver proyecto",
+    "viewLive": "Ver en vivo",
+    "viewRepo": "Ver repositorio",
+    "viewDemo": "Ver demo",
+    "viewCaseStudy": "Leer caso de estudio",
+    "techStack": "Tecnologías",
+    "role": "Rol",
+    "client": "Cliente",
+    "status": {
+      "shipped": "Publicado",
+      "in-progress": "En progreso",
+      "archived": "Archivado"
+    },
+    "backToProjects": "Volver a proyectos",
+    "noProjects": "Aún no hay proyectos."
+  },
+  "contact": {
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "message": "Mensaje",
+    "send": "Enviar mensaje",
+    "sending": "Enviando…",
+    "success": "Gracias — te responderemos pronto.",
+    "error": "Algo salió mal. Inténtalo de nuevo o escríbenos directamente.",
+    "validation": {
+      "nameRequired": "Por favor ingresa tu nombre.",
+      "emailInvalid": "Por favor ingresa un correo válido.",
+      "messageTooShort": "Por favor escribe al menos 10 caracteres."
+    }
+  },
+  "cookies": {
+    "banner": {
+      "title": "Preferencias de cookies",
+      "description": "Usamos almacenamiento mínimo para recordar tus preferencias. La analítica está desactivada hasta que aceptes.",
+      "accept": "Aceptar",
+      "decline": "Rechazar",
+      "policyLink": "Leer nuestra política de cookies"
+    }
+  },
+  "legal": {
+    "lastUpdated": "Última actualización",
+    "version": "Versión",
+    "tableOfContents": "Tabla de contenidos",
+    "templateNotice": "Este es un documento de plantilla. Revísalo con asesoría legal antes de publicar."
+  },
+  "errors": {
+    "404": {
+      "heading": "Página no encontrada",
+      "body": "La página que buscas no existe o ha sido movida.",
+      "back": "Volver al inicio"
+    }
+  },
+  "home": {
+    "eyebrow": "Pre-1.0 — creado con astro-ignite",
+    "primaryCta": "Leer el blog",
+    "secondaryCta": "Ver proyectos",
+    "featuresHeading": "Lo que viene de fábrica",
+    "features": {
+      "f01": {
+        "title": "Lighthouse 100 en móvil",
+        "body": "CSS por capas con estilos scoped above-the-fold, Tailwind debajo y extracción de critical-CSS con Beasties. Verificado por CI."
+      },
+      "f02": {
+        "title": "JSON-LD tipado de Schema.org",
+        "body": "Constructores schema-dts componen un único @graph. Atrapa datos estructurados malformados en build, no en Search Console."
+      },
+      "f03": {
+        "title": "i18n nativo",
+        "body": "Routing i18n de Astro 5 con un único camino de código para sitios mono y multilingües. Hreflang autocalculado."
+      },
+      "f04": {
+        "title": "Formulario de contacto funcional",
+        "body": "Astro Actions + validación Zod + honeypot + tu elección entre Resend o SMTP. En dev imprime en consola."
+      },
+      "f05": {
+        "title": "Banner de cookies + plantillas legales",
+        "body": "Privacidad, términos, cookies — traducidos, con un aviso de \"revísalo con asesoría\" incluido."
+      },
+      "f06": {
+        "title": "Eres dueño del código",
+        "body": "Sin dependencia en runtime. Edita lo que quieras. Para siempre. Tuyo, línea a línea."
+      }
+    }
+  },
+  "about": {
+    "body": {
+      "p1": "Reemplaza este contenido con tu historia. La página es un componente Astro normal que usa BaseLayout directamente — no hace falta un layout separado para páginas estáticas como ésta.",
+      "p2": "Las páginas que no encajan en una content collection viven como archivos .astro en src/pages/. Llaman a t() para el texto traducido y pasan el resultado a BaseLayout para el SEO. Los layouts especializados (Article, Project, Legal) manejan las páginas de colecciones.",
+      "heading": "Qué va aquí",
+      "li1": "Quién eres o qué hace tu equipo",
+      "li2": "Por qué construiste esto",
+      "li3": "Cómo contactarte (el formulario vive en /contact)"
+    }
+  }
+}

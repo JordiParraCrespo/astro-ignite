@@ -1,0 +1,48 @@
+---
+title: Quick start
+description: Bootstrap a new astro-ignite site in under a minute.
+lastUpdated: 2026-05-10
+tags: [getting-started]
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
+
+## Prerequisites
+
+- Node 20.11+ or 22 LTS
+- A package manager — pnpm (recommended), npm, yarn, or bun
+
+## Scaffold a new site
+
+<CodeBlock filename="terminal" language="bash">
+  {`npm create astro-ignite@latest my-site`}
+</CodeBlock>
+
+You'll be asked six questions. Pick or accept defaults; the whole flow takes around fifteen seconds.
+
+## Run it
+
+<CodeBlock filename="terminal" language="bash">
+  {`cd my-site
+pnpm install
+pnpm dev`}
+</CodeBlock>
+
+Open the URL printed in your terminal. You should see a working site with a styled hero, a blog with two example posts, a projects showcase, an about page, a working contact form (logs to console in dev), legal pages, a cookie banner, and a dark-mode toggle.
+
+<Callout variant="tip" title="No account signups required">
+  In dev, missing env vars fall back to console logs — `pnpm dev` produces a complete working flow
+  without any account signup. Set `RESEND_API_KEY` and `PUBLIC_PLAUSIBLE_DOMAIN` only when you go to
+  production.
+</Callout>
+
+## What to edit first
+
+1. **Brand colors + tokens** in `src/styles/global.css` (`@theme` block)
+2. **Site identity** in `src/config/site.ts` — name, URL, organization, social
+3. **OG image** at `public/og/og-default.png` (placeholder ships)
+4. **Legal pages** in `src/content/legal/{locale}/*.mdx` — placeholders need filling, then **review with counsel before publishing**
+5. **Author bio** in `src/content/authors/jordi.json`
+
+The rest you can grow into over time.

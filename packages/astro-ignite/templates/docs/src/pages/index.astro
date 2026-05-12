@@ -1,0 +1,23 @@
+---
+import { getEntry, render } from 'astro:content';
+
+import DocsLayout from '@/layouts/DocsLayout.astro';
+import Callout from '@/components/docs/Callout.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
+import { siteConfig } from '@/config/site';
+
+const homeSlug = siteConfig.homePath.replace(/^\//, '');
+const entry = await getEntry('docs', `${siteConfig.defaultLocale}/${homeSlug}`);
+if (!entry) {
+  throw new Error(
+    `Home doc not found: docs/${siteConfig.defaultLocale}/${homeSlug}. Check siteConfig.homePath.`
+  );
+}
+const { Content, headings } = await render(entry);
+
+const mdxComponents = { Callout, CodeBlock };
+---
+
+<DocsLayout entry={entry} headings={headings}>
+  <Content components={mdxComponents} />
+</DocsLayout>

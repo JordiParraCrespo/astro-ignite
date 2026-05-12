@@ -1,0 +1,104 @@
+---
+/**
+ * BaseLayout — head + theme + SEO scaffolding for docs pages.
+ *
+ * Lighter than the starter's BaseLayout: no Nav (the docs sidebar replaces
+ * it), no Footer (each page renders its own prev/next + edit link), but
+ * still wires SEO, JsonLd, anti-flash theme, fonts, analytics, and the
+ * cookie banner.
+ *
+ * Defaults to LIGHT theme on first visit (`siteConfig.defaultTheme`) — docs
+ * sites read better in light. The toggle still flips to dark and the choice
+ * persists across visits.
+ */
+
+import { Font } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import type { Thing } from 'schema-dts';
+
+import '@/styles/global.css';
+import { siteConfig } from '@/config/site';
+import { siteSchemas } from '@/lib/jsonld';
+import SEO from '@/components/seo/SEO.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
+import CookieBanner from '@/components/CookieBanner.astro';
+import Analytics from '@/components/Analytics.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: ImageMetadata | string;
+  imageAlt?: string;
+  noindex?: boolean;
+  type?: 'website' | 'article' | 'profile';
+  alternates?: Array<{ lang: string; href: string }>;
+  schemas?: Thing[];
+}
+
+const {
+  title,
+  description,
+  image,
+  imageAlt,
+  noindex = false,
+  type = 'website',
+  alternates,
+  schemas = [],
+} = Astro.props;
+
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const allSchemas = [...siteSchemas(locale), ...schemas];
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content={siteConfig.themeColor} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!--
+      Anti-flash theme script. Uses siteConfig.defaultTheme (light by default
+      for docs) when no preference is stored. Adds .light class to <html>
+      when the resolved theme is light.
+    -->
+    <script is:inline define:vars={{ defaultTheme: siteConfig.defaultTheme }}>
+      (() => {
+        const stored = localStorage.getItem('theme');
+        const systemPrefersDark = matchMedia('(prefers-color-scheme: dark)').matches;
+        let isLight;
+        if (stored === 'light') isLight = true;
+        else if (stored === 'dark') isLight = false;
+        else if (defaultTheme === 'light') isLight = true;
+        else if (defaultTheme === 'dark') isLight = false;
+        else isLight = !systemPrefersDark;
+        if (isLight) document.documentElement.classList.add('light');
+        document.documentElement.dataset.theme = stored ?? 'system';
+      })();
+    </script>
+
+    <Font cssVariable="--font-display" preload />
+    <Font cssVariable="--font-mono" />
+
+    <SEO
+      title={title}
+      description={description}
+      image={image}
+      imageAlt={imageAlt}
+      noindex={noindex}
+      type={type}
+      alternates={alternates}
+      locale={locale}
+    />
+    <JsonLd schemas={allSchemas} />
+    <Analytics />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to main content</a>
+    <slot />
+    <CookieBanner />
+  </body>
+</html>

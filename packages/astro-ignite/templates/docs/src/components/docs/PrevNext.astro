@@ -1,0 +1,101 @@
+---
+/**
+ * Previous / Next navigation at the bottom of each docs page.
+ *
+ * Walks the flat sidebar order to find the doc before and after the
+ * current slug. Skips items that are external links AND items that don't
+ * exist in the current locale.
+ */
+
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
+import { sidebar } from '@/config/sidebar';
+import { siteConfig } from '@/config/site';
+
+interface Props {
+  /** Bare slug, e.g. "introduction" (no locale prefix). */
+  currentSlug: string;
+}
+
+const { currentSlug } = Astro.props;
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+
+const allDocs = await getCollection('docs', (e: CollectionEntry<'docs'>) => !e.data.draft);
+
+// Flat sidebar items, skipping externals and any slug whose entry doesn't
+// exist in the current locale.
+const flat = sidebar
+  .flatMap((g) => g.items)
+  .filter((it) => !it.slug.startsWith('http'))
+  .filter((it) => allDocs.some((e) => e.id === `${locale}/${it.slug}`));
+
+const idx = flat.findIndex((it) => it.slug === currentSlug);
+const prev = idx > 0 ? flat[idx - 1] : null;
+const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null;
+
+const titleForSlug = (slug: string): string =>
+  allDocs.find((e) => e.id === `${locale}/${slug}`)?.data.title ?? slug;
+---
+
+{
+  (prev || next) && (
+    <nav class="prev-next" aria-label="Page navigation">
+      {prev ? (
+        <a class="prev-next-link" href={getRelativeLocaleUrl(locale, `/${prev.slug}`)}>
+          <span class="prev-next-label mono">← Previous</span>
+          <span class="prev-next-title">{prev.label ?? titleForSlug(prev.slug)}</span>
+        </a>
+      ) : (
+        <span />
+      )}
+      {next && (
+        <a
+          class="prev-next-link prev-next-link-right"
+          href={getRelativeLocaleUrl(locale, `/${next.slug}`)}
+        >
+          <span class="prev-next-label mono">Next →</span>
+          <span class="prev-next-title">{next.label ?? titleForSlug(next.slug)}</span>
+        </a>
+      )}
+    </nav>
+  )
+}
+
+<style>
+  .prev-next {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .prev-next-link {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 14px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: var(--color-fg);
+    transition: border-color 0.12s var(--ease-out-soft);
+  }
+  .prev-next-link:hover {
+    border-color: var(--color-border-strong);
+  }
+  .prev-next-link-right {
+    text-align: right;
+  }
+  .prev-next-label {
+    font-size: 11px;
+    color: var(--color-fg-muted);
+  }
+  .prev-next-title {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+</style>

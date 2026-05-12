@@ -1,0 +1,38 @@
+---
+title: Roadmap
+description: How astro-ignite evolves from 0.1 to 1.0 and beyond.
+lastUpdated: 2026-05-10
+tags: [philosophy]
+---
+
+import Callout from '@/components/docs/Callout.astro';
+
+The full roadmap lives in [`ROADMAP.md`](https://github.com/JordiParraCrespo/astro-ignite/blob/main/ROADMAP.md) at the repo root. The short version:
+
+## Now (0.1.x)
+
+The scaffold works end-to-end. CLI ships with `starter` + `docs` templates. SEO, JSON-LD, image pipeline, fonts, theme, contact form, legal templates, sitemap, RSS — all wired.
+
+## Next (0.2 – 0.6)
+
+- **0.2** — UI primitives: Button, Link, Card, Badge, Alert, Container, Section, Prose, Breadcrumbs, Avatar
+- **0.3** — Real Lighthouse numbers + WCAG 2.2 AA audit
+- **0.4** — Reading time, related posts, MDX components, Pagefind search
+- **0.5** — Adapter swap recipes (Vercel, Netlify, Cloudflare) + static-only mode
+- **0.6** — i18n depth (per-locale parallels for static pages, translation tooling, locale OG)
+
+## 1.0
+
+API stable. Template structure stable. Breaking changes only at major versions, with migration guides.
+
+## 1.1+
+
+`astro-ignite add <component>` registry-driven CLI. Pull-on-demand components: Tabs, Accordion, MegaMenu, DropdownMenu, Modal, Toast, Pagination, Search, OG generation. Plus `astro-ignite init` for existing projects.
+
+## 2.x
+
+Registry-first distribution. Templates become thin; most components arrive via `add`. Community registries.
+
+<Callout variant="note">
+  This page is a summary. The canonical roadmap with rationale and risks lives in the GitHub repo.
+</Callout>

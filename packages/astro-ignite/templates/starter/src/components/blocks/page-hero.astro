@@ -1,0 +1,69 @@
+---
+import { cn } from '@/lib/cn';
+
+export type Props = {
+  eyebrow?: string;
+  title: string;
+  lede?: string;
+  align?: 'start' | 'center';
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+};
+
+const { eyebrow, title, lede, align = 'start', size = 'lg', class: className } = Astro.props;
+---
+
+<header class={cn('page-hero', `page-hero--${align}`, `page-hero--${size}`, className)}>
+  {eyebrow && <span class="page-hero__eyebrow mono">{eyebrow}</span>}
+  <h1 class="page-hero__title">{title}</h1>
+  {lede && <p class="page-hero__lede">{lede}</p>}
+  <slot />
+</header>
+
+<style>
+  .page-hero {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 720px;
+  }
+  .page-hero--center {
+    margin-inline: auto;
+    text-align: center;
+  }
+  .page-hero__eyebrow {
+    font-size: 11px;
+    color: var(--color-fg-subtle);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .page-hero__title {
+    margin: 0;
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--color-fg);
+    text-wrap: balance;
+  }
+  .page-hero--sm .page-hero__title {
+    font-size: clamp(32px, 5vw, 40px);
+  }
+  .page-hero--md .page-hero__title {
+    font-size: clamp(36px, 6vw, 48px);
+  }
+  .page-hero--lg .page-hero__title {
+    font-size: clamp(40px, 7vw, 56px);
+    letter-spacing: -0.045em;
+  }
+  .page-hero__lede {
+    margin: 4px 0 0;
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--color-fg-muted);
+    max-width: 60ch;
+    text-wrap: pretty;
+  }
+  .page-hero--center .page-hero__lede {
+    margin-inline: auto;
+  }
+</style>
