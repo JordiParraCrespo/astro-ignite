@@ -42,7 +42,7 @@
     },
     "blog": {
       "title": "Blog",
-      "description": "Artículos, notas y novedades."
+      "description": "Notas sobre astro-ignite, scaffolding Astro, rendimiento, SEO, i18n y proyectos web con código propio."
     },
     "projects": {
       "title": "Proyectos",

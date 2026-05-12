@@ -1,0 +1,53 @@
+---
+title: What is astro-ignite?
+description: astro-ignite is a shadcn-style CLI for scaffolding production-grade Astro sites with SEO, performance, i18n, legal, and email defaults.
+datePublished: 2026-05-12
+author: jordi
+heroImage: ../../../../../../assets/banners/banner.png
+heroImageAlt: astro-ignite product banner showing the CLI, terminal setup flow, and the phrase "Astro sites, built for AI agents."
+tags: [astro, cli, introduction]
+featured: true
+---
+
+astro-ignite is a CLI for starting Astro projects that should feel closer to a finished product than a blank starter. It gives you a real Astro site with routes, content collections, SEO plumbing, i18n, legal pages, analytics consent, and a working contact flow already wired together.
+
+The important part is ownership: the generated site is just code in your repository. There is no runtime dependency on astro-ignite after scaffolding, no hidden framework layer, and no upgrade treadmill. You can keep the conventions, change them, or delete them.
+
+## Why it exists
+
+Most new Astro sites repeat the same early work: choose a structure, wire metadata, add content collections, configure images, build navigation, think about legal pages, add a cookie banner, and keep performance from slipping while doing all of that.
+
+astro-ignite packages those decisions into a scaffold so you can start from a strong baseline instead of a todo list. The defaults are opinionated because production quality requires decisions, but they stay visible because the output belongs to you.
+
+## What it creates
+
+A generated astro-ignite site can include:
+
+- A marketing homepage with production-ready layout patterns.
+- A blog powered by Astro content collections and MDX.
+- Project or case-study pages for portfolio-style work.
+- Native Astro i18n with default-locale routes at `/` and translated routes under `/[lang]/`.
+- Typed Schema.org JSON-LD composed into a single graph.
+- Responsive images with stable dimensions and optimized output.
+- A dark-mode toggle, locale switcher, cookie banner, RSS, sitemap, robots, and manifest.
+- A contact form using Astro Actions, validation, honeypot protection, and your chosen email transport.
+
+The goal is not to hide complexity. The goal is to put the right pieces in place so you can inspect them, learn from them, and ship with fewer missing basics.
+
+## What makes it different
+
+astro-ignite follows the same spirit as shadcn: you do not install a black box component library, you copy code you can own. The CLI is the installer. Your app is the product.
+
+That approach matters for small teams and AI-assisted development. Agents can work better when the project has clear conventions, typed data, predictable folders, and local examples to copy. Humans get the same benefit: fewer decisions are implicit, and the site remains editable without learning a private abstraction.
+
+## Who it is for
+
+astro-ignite is built for developers who want a serious Astro starting point for marketing sites, blogs, documentation-adjacent sites, portfolios, and small product websites. It is especially useful when SEO, speed, internationalization, and owned code matter from day one.
+
+It is not trying to be a CMS, a design tool, or a full application framework. It gives you the production foundation. You bring the product, the content, and the parts that make the site specific.
+
+## Where it is heading
+
+The current focus is a strong v1: templates that are complete enough to ship, a CLI that asks the right setup questions, and a registry of Astro-first UI primitives. More templates and blocks can come later, but the core promise stays the same.
+
+Run the CLI, get a site, own every line.
