@@ -20,7 +20,6 @@
 import { Image } from 'astro:assets';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import Brand from '@/components/Brand.astro';
-import ThemeToggle from '@/components/ThemeToggle.astro';
 import { siteConfig } from '@/config/site';
 import { useTranslations } from '@/i18n';
 import starterPreview from '@/assets/templates/starter.png';
@@ -48,21 +47,6 @@ const blogHref = getRelativeLocaleUrl(locale, '/blog');
 ---
 
 <Fragment>
-  <nav class="nav">
-    <div class="page nav-inner">
-      <Brand href="/" variant="lockup" size={0.34} />
-      <span class="pill mono"><span class="dot" aria-hidden="true"></span>v0.1.0 · pre-1.0</span>
-      <div class="nav-cta">
-        <a class="nav-link" href="/docs">{t('landing.nav.docs')}</a>
-        <a class="nav-link" href={blogHref}>{t('landing.nav.blog')}</a>
-        <a class="nav-link" href="#templates">{t('landing.nav.templates')}</a>
-        <a class="nav-link" href={ghUrl} rel="noopener">{t('landing.nav.github')}</a>
-        <ThemeToggle />
-        <a class="btn btn-primary btn-sm" href="#install">{t('landing.nav.getStarted')}</a>
-      </div>
-    </div>
-  </nav>
-
   <main id="main">
     <header class="hero">
       <div class="hero-grid" aria-hidden="true"></div>
@@ -403,7 +387,8 @@ const blogHref = getRelativeLocaleUrl(locale, '/blog');
   }
 
   /* =============================================================================
-   * Pill (badge variant for the landing — outline style)
+   * Pill (release variant — clickable, links to GitHub releases)
+   * The neutral .pill atom lives in Nav.astro alongside the shared header.
    * ============================================================================= */
   .pill {
     display: inline-flex;
@@ -422,12 +407,6 @@ const blogHref = getRelativeLocaleUrl(locale, '/blog');
     border-radius: 99px;
     background: var(--color-fg);
   }
-  .pill .mono {
-    font-size: 11px;
-    color: var(--color-fg-muted);
-  }
-
-  /* Release-announcement pill: clickable, links to GitHub releases */
   .pill--release {
     text-decoration: none;
     padding-block: 6px;
@@ -481,79 +460,6 @@ const blogHref = getRelativeLocaleUrl(locale, '/blog');
     }
     .pill--release:hover .pill-arrow {
       transform: none;
-    }
-  }
-
-  /* =============================================================================
-   * Nav
-   * ============================================================================= */
-  .nav {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background: color-mix(in oklab, var(--color-bg) 72%, transparent);
-    backdrop-filter: saturate(140%) blur(14px);
-    -webkit-backdrop-filter: saturate(140%) blur(14px);
-    border-bottom: 1px solid var(--color-border);
-  }
-  .nav-inner {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    height: 60px;
-    /* Keep brand + version pill on one line — they're inline atoms, not
-       wrap candidates. */
-    white-space: nowrap;
-  }
-  .nav-cta {
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    margin-left: auto;
-  }
-  .nav-link {
-    font-size: 13px;
-    color: var(--color-fg-muted);
-    text-decoration: none;
-    transition: color 0.12s var(--ease-out-soft);
-  }
-  .nav-link:hover {
-    color: var(--color-fg);
-  }
-
-  /* Progressive responsive trimming.
-     - 920px: drop the version pill — secondary info
-     - 720px: drop the GitHub text link to save room for theme + CTA
-     - 560px: drop the remaining nav links (Docs, Templates)
-     - 420px: tighten gaps further so brand + CTA still fit
-  */
-  @media (max-width: 920px) {
-    .nav-inner > .pill {
-      display: none;
-    }
-  }
-  @media (max-width: 720px) {
-    .nav-inner {
-      gap: 16px;
-    }
-    .nav-cta {
-      gap: 12px;
-    }
-    .nav-link[href*='github'] {
-      display: none;
-    }
-  }
-  @media (max-width: 560px) {
-    .nav-link {
-      display: none;
-    }
-  }
-  @media (max-width: 420px) {
-    .nav-inner {
-      gap: 8px;
-    }
-    .nav-cta {
-      gap: 6px;
     }
   }
 

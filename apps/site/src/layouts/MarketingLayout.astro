@@ -21,6 +21,7 @@ import { siteConfig } from '@/config/site';
 import { siteSchemas } from '@/lib/jsonld';
 import SEO from '@/components/seo/SEO.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
+import Nav from '@/components/Nav.astro';
 import CookieBanner from '@/components/CookieBanner.astro';
 import Analytics from '@/components/Analytics.astro';
 
@@ -91,6 +92,7 @@ const allSchemas = [...siteSchemas(locale), ...schemas];
   </head>
   <body>
     <a href="#main" class="skip-link">Skip to main content</a>
+    <Nav />
     <slot />
     <CookieBanner />
   </body>

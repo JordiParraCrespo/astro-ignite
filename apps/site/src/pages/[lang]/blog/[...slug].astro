@@ -13,6 +13,8 @@ import type { CollectionEntry } from 'astro:content';
 import ArticleLayout from '@/layouts/ArticleLayout.astro';
 import { siteConfig } from '@/config/site';
 
+export const prerender = true;
+
 export async function getStaticPaths() {
   const posts = await getCollection('blog', (e: CollectionEntry<'blog'>) => !e.data.draft);
   return posts.flatMap((entry: CollectionEntry<'blog'>) => {

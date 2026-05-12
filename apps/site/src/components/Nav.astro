@@ -1,200 +1,130 @@
 ---
 /**
- * Site navigation.
+ * Site navigation — shared across the landing and every internal page.
  *
- * Above-the-fold component — uses scoped <style> blocks (not Tailwind) so the
- * styles inline per-route automatically. Mobile menu is a vanilla-JS toggle
- * that flips a class + aria-expanded on the nav.
+ * Above-the-fold component — uses a scoped <style> block so the CSS inlines
+ * per-route automatically. Anchor links (#templates, #install) resolve to
+ * the home page so they keep working from any route.
  */
 
 import { getRelativeLocaleUrl } from 'astro:i18n';
 
 import { siteConfig } from '@/config/site';
 import { useTranslations } from '@/i18n';
+import Brand from './Brand.astro';
 import ThemeToggle from './ThemeToggle.astro';
 import LocaleSwitcher from './LocaleSwitcher.astro';
-import Brand from './Brand.astro';
 
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const t = useTranslations(locale);
 
-const links = [
-  { label: t('nav.blog'), href: getRelativeLocaleUrl(locale, '/blog') },
-  { label: t('nav.projects'), href: getRelativeLocaleUrl(locale, '/projects') },
-  { label: t('nav.about'), href: getRelativeLocaleUrl(locale, '/about') },
-  { label: t('nav.contact'), href: getRelativeLocaleUrl(locale, '/contact') },
-];
-
 const homeUrl = getRelativeLocaleUrl(locale, '/');
+const blogHref = getRelativeLocaleUrl(locale, '/blog');
+const docsHref = '/docs';
+const templatesHref = `${homeUrl.replace(/\/$/, '')}/#templates`;
+const installHref = `${homeUrl.replace(/\/$/, '')}/#install`;
+const ghUrl = siteConfig.social.github ?? 'https://github.com/JordiParraCrespo/astro-ignite';
 const siteName = siteConfig.name[locale] ?? siteConfig.name[siteConfig.defaultLocale]!;
 ---
 
-<header class="site-header">
-  <nav class="site-nav" aria-label="Primary">
-    <Brand href={homeUrl} variant="lockup" size={0.32} label={siteName} />
-
-    <button
-      type="button"
-      class="nav-toggle"
-      aria-controls="primary-nav-menu"
-      aria-expanded="false"
-      aria-label={t('nav.openMenu')}
-    >
-      <span class="nav-toggle-icon" aria-hidden="true">
-        <span></span><span></span><span></span>
-      </span>
-    </button>
-
-    <div id="primary-nav-menu" class="nav-menu">
-      <ul>
-        {
-          links.map((link) => (
-            <li>
-              <a href={link.href}>{link.label}</a>
-            </li>
-          ))
-        }
-      </ul>
-      <div class="nav-actions">
-        <LocaleSwitcher />
-        <ThemeToggle />
-      </div>
+<header class="nav" aria-label="Primary">
+  <div class="nav-inner">
+    <Brand href={homeUrl} variant="lockup" size={0.34} label={siteName} />
+    <span class="pill mono"><span class="dot" aria-hidden="true"></span>v0.1.0 · pre-1.0</span>
+    <div class="nav-cta">
+      <a class="nav-link" href={docsHref}>{t('landing.nav.docs')}</a>
+      <a class="nav-link" href={blogHref}>{t('landing.nav.blog')}</a>
+      <a class="nav-link" href={templatesHref}>{t('landing.nav.templates')}</a>
+      <a class="nav-link" href={ghUrl} rel="noopener">{t('landing.nav.github')}</a>
+      <LocaleSwitcher />
+      <ThemeToggle />
+      <a class="btn btn-primary btn-sm" href={installHref}>{t('landing.nav.getStarted')}</a>
     </div>
-  </nav>
+  </div>
 </header>
 
-<script is:inline>
-  (() => {
-    const toggle = document.querySelector('.nav-toggle');
-    const menu = document.getElementById('primary-nav-menu');
-    if (!toggle || !menu) return;
-    toggle.addEventListener('click', () => {
-      const isOpen = toggle.getAttribute('aria-expanded') === 'true';
-      toggle.setAttribute('aria-expanded', String(!isOpen));
-      menu.classList.toggle('open', !isOpen);
-      document.body.classList.toggle('nav-open', !isOpen);
-    });
-    // Close on resize to desktop
-    window.addEventListener('resize', () => {
-      if (window.innerWidth >= 768) {
-        toggle.setAttribute('aria-expanded', 'false');
-        menu.classList.remove('open');
-        document.body.classList.remove('nav-open');
-      }
-    });
-  })();
-</script>
-
 <style>
-  .site-header {
+  .nav {
     position: sticky;
     top: 0;
-    z-index: 40;
-    background: color-mix(in oklch, var(--color-bg) 92%, transparent);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    z-index: 50;
+    background: color-mix(in oklab, var(--color-bg) 72%, transparent);
+    backdrop-filter: saturate(140%) blur(14px);
+    -webkit-backdrop-filter: saturate(140%) blur(14px);
     border-bottom: 1px solid var(--color-border);
   }
-  .site-nav {
+  .nav-inner {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    max-width: 80rem;
+    gap: 24px;
+    height: 60px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0.875rem 1.25rem;
-    gap: 1rem;
+    padding: 0 40px;
+    white-space: nowrap;
   }
-  .nav-toggle {
-    appearance: none;
-    background: transparent;
-    border: none;
-    padding: 0.5rem;
-    cursor: pointer;
-    color: var(--color-fg);
-    border-radius: 0.5rem;
-  }
-  .nav-toggle:hover {
-    background: var(--color-surface-2);
-  }
-  .nav-toggle-icon {
+  .nav-cta {
     display: flex;
-    flex-direction: column;
-    gap: 4px;
-    width: 20px;
-  }
-  .nav-toggle-icon span {
-    display: block;
-    height: 2px;
-    background: currentColor;
-    border-radius: 1px;
-  }
-
-  .nav-menu {
-    display: none;
-  }
-  .nav-menu ul {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    gap: 1.5rem;
-  }
-  .nav-menu a {
-    text-decoration: none;
-    color: var(--color-fg-muted);
-    font-size: 0.9375rem;
-    font-weight: 500;
-    transition: color 0.15s var(--ease-out-soft);
-  }
-  .nav-menu a:hover {
-    color: var(--color-fg);
-  }
-  .nav-actions {
-    display: flex;
+    gap: 16px;
     align-items: center;
-    gap: 0.5rem;
-    margin-left: 1rem;
+    margin-left: auto;
+  }
+  .nav-link {
+    font-size: 13px;
+    color: var(--color-fg-muted);
+    text-decoration: none;
+    transition: color 0.12s var(--ease-out-soft);
+  }
+  .nav-link:hover {
+    color: var(--color-fg);
   }
 
-  /* Desktop layout */
-  @media (min-width: 768px) {
-    .nav-toggle {
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px 5px 8px;
+    font-size: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-surface-2);
+    color: var(--color-fg-muted);
+  }
+  .pill .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 99px;
+    background: var(--color-fg);
+  }
+
+  @media (max-width: 920px) {
+    .nav-inner > .pill {
       display: none;
     }
-    .nav-menu {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
+  }
+  @media (max-width: 720px) {
+    .nav-inner {
+      gap: 16px;
+      padding: 0 24px;
+    }
+    .nav-cta {
+      gap: 12px;
+    }
+    .nav-link[href*='github'] {
+      display: none;
     }
   }
-
-  /* Mobile menu open */
-  @media (max-width: 767px) {
-    .nav-menu.open {
-      display: block;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: var(--color-bg);
-      border-bottom: 1px solid var(--color-border);
-      padding: 1rem 1.25rem 1.5rem;
+  @media (max-width: 560px) {
+    .nav-link {
+      display: none;
     }
-    .nav-menu.open ul {
-      flex-direction: column;
-      gap: 0.875rem;
-      align-items: flex-start;
+  }
+  @media (max-width: 420px) {
+    .nav-inner {
+      gap: 8px;
     }
-    .nav-menu.open a {
-      font-size: 1.125rem;
-    }
-    .nav-menu.open .nav-actions {
-      margin-top: 1rem;
-      margin-left: 0;
-      padding-top: 1rem;
-      border-top: 1px solid var(--color-border);
-      width: 100%;
-      justify-content: flex-start;
+    .nav-cta {
+      gap: 6px;
     }
   }
 </style>
