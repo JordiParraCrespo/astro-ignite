@@ -1,0 +1,48 @@
+---
+title: Lighthouse 100s as a build target
+description: Treating performance as an invariant the build enforces — budget contracts in frontmatter, CI that fails before any regression ships.
+datePublished: 2026-05-15
+author: jordi
+heroImage: ../../../../../../assets/banners/banner.png
+heroImageAlt: astro-ignite product banner — terminal mockup over a faint grid background.
+tags: [perf, ci, astro]
+---
+
+Most teams treat Lighthouse like a quarterly health check. astro-ignite ships with the assumption that performance is a test, not a metric — your build fails before the regression ships. The mechanics aren't novel; the discipline is.
+
+This piece walks through the budget contract, what we learned migrating four projects to it, and why agents tend to handle this kind of constraint well.
+
+## The budget contract
+
+Each route can declare its perf budget next to the route itself, not in a global config file. CI runs Lighthouse against the production build and refuses to merge if any score drops below 95 or the JS bundle grows by more than 5%.
+
+```ts
+export const budget = {
+  lcp: 2500,    // ms
+  cls: 0.1,
+  inp: 200,     // ms — was FID pre-2024
+  js:  18000,   // bytes, gzipped
+};
+```
+
+Keeping the budget in the route means changing it is a code review, not an ops conversation. The reviewer sees the budget delta in the same diff as the feature that needed it. That alone catches most regressions before CI does.
+
+## What we learned
+
+Hitting 100 once is not the hard part. Keeping the 100 as features land is. Treat perf the way you treat types: an invariant the build enforces. The first month of any project gets noisy; people will hit the budget on accident. After that the team self-edits. PR descriptions start including budget deltas without anyone asking.
+
+### Failure modes
+
+The most common false-positive is a flaky LCP measurement on cold cache. Run Lighthouse three times per route and take the median. The most common *true* positive is a new image without an explicit `width × height`. A lint rule catches that one cheaply.
+
+> Performance is a feature. The moment you make it failable, you can stop arguing about it.
+
+## Why this is agent-friendly
+
+Agents are good at small, local optimizations and bad at remembering global constraints. Budgets-as-code give them a feedback loop they can act on — fail, read the diff, fix, re-run. In practice agents converge to a passing perf budget in two or three iterations without human intervention.
+
+One gotcha: if you let an agent dynamically adjust the budget to make a failing build pass, you'll end up with a slow site over time. Budgets must be human-edited. The build enforces the contract; the contract itself stays out of the agent's reach.
+
+## Closing
+
+Lighthouse 100s aren't a marketing number. They're the artifact of treating performance as an invariant. astro-ignite ships with these budgets pre-wired — eject them, tighten them, swap the metrics, but please don't delete the check.

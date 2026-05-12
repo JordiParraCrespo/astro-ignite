@@ -1,0 +1,170 @@
+---
+import type { BlogCardData } from '@/lib/blog';
+
+interface Props {
+  card: BlogCardData;
+}
+
+const { card } = Astro.props;
+---
+
+<a href={card.href} class="bcard">
+  <div class="bcard-top" aria-hidden="true">
+    <span class="num mono">{card.number}</span>
+    <span class="glyph mono">{card.glyph}</span>
+  </div>
+  <div class="meta-row mono">
+    <time datetime={card.dateIso}>{card.dateText}</time>
+    <span class="dot" aria-hidden="true">·</span>
+    <span class="badge-mono">{card.minutes} min</span>
+  </div>
+  <h3>{card.post.data.title}</h3>
+  <p class="ex">{card.post.data.description}</p>
+  <div class="bcard-foot">
+    <span class="author mono">
+      <span class="av">{card.authorInitials}</span>
+      {card.authorName}
+    </span>
+    {
+      card.tags.length > 0 && (
+        <div class="tags">
+          {card.tags.slice(0, 2).map((tag) => (
+            <span class="chip mono">#{tag}</span>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</a>
+
+<style>
+  .bcard {
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    background: var(--color-surface);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 320px;
+    text-decoration: none;
+    color: inherit;
+    transition:
+      border-color 0.15s var(--ease-out-soft),
+      transform 0.15s var(--ease-out-soft);
+  }
+  .bcard:hover {
+    border-color: var(--color-border-strong);
+    transform: translateY(-1px);
+  }
+  .bcard-top {
+    aspect-ratio: 16 / 9;
+    border-bottom: 1px solid var(--color-border);
+    background: radial-gradient(
+      ellipse 60% 100% at 30% 50%,
+      var(--color-surface-2) 0%,
+      var(--color-bg) 70%
+    );
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 12px 14px;
+  }
+  .bcard-top .num {
+    font-size: 10px;
+    color: var(--color-fg-subtle);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .bcard-top .glyph {
+    font-size: 13px;
+    color: var(--color-fg-muted);
+  }
+  .meta-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px 0;
+    font-size: 11px;
+    color: var(--color-fg-subtle);
+  }
+  .meta-row .dot {
+    color: var(--color-border-strong);
+  }
+  .badge-mono {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 2px 6px;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    color: var(--color-fg-muted);
+  }
+  .bcard h3 {
+    margin: 8px 18px 0;
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1.3;
+    color: var(--color-fg);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .bcard .ex {
+    margin: 8px 18px 20px;
+    font-size: 13px;
+    color: var(--color-fg-muted);
+    line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .bcard-foot {
+    margin-top: auto;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--color-border);
+    gap: 8px;
+  }
+  .bcard .author {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--color-fg);
+  }
+  .bcard .author .av {
+    width: 20px;
+    height: 20px;
+    border-radius: 99px;
+    background: var(--color-surface-2);
+    display: inline-grid;
+    place-items: center;
+    font-size: 9px;
+    font-weight: 500;
+    border: 1px solid var(--color-border-strong);
+    color: var(--color-fg);
+  }
+  .bcard .tags {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    color: var(--color-fg-muted);
+    background: transparent;
+    white-space: nowrap;
+  }
+</style>

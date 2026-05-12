@@ -1,13 +1,10 @@
 ---
-import { getCollection } from 'astro:content';
-import type { CollectionEntry } from 'astro:content';
-import { getRelativeLocaleUrl } from 'astro:i18n';
-
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import Image from '@/components/image/Image.astro';
+import BlogCard from '@/components/BlogCard.astro';
 import { useTranslations } from '@/i18n';
 import { siteConfig } from '@/config/site';
 import { breadcrumbListSchema, collectionPageSchema } from '@/lib/jsonld';
+import { getBlogCards } from '@/lib/blog';
 
 export async function getStaticPaths() {
   return siteConfig.locales
@@ -18,38 +15,13 @@ export async function getStaticPaths() {
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const t = useTranslations(locale);
 
-const posts = (
-  await getCollection(
-    'blog',
-    (entry: CollectionEntry<'blog'>) => entry.id.startsWith(`${locale}/`) && !entry.data.draft
-  )
-).sort(
-  (a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) =>
-    +b.data.datePublished - +a.data.datePublished
-);
+const cards = await getBlogCards(locale);
+const total = cards.length;
+const startYear = cards.length
+  ? Math.min(...cards.map((c) => c.post.data.datePublished.getFullYear()))
+  : new Date().getFullYear();
 
-const dateFmt = new Intl.DateTimeFormat(locale, {
-  year: 'numeric',
-  month: 'short',
-  day: 'numeric',
-});
-
-type PostCard = {
-  post: CollectionEntry<'blog'>;
-  href: string;
-  dateText: string;
-  dateIso: string;
-};
-
-const postCards: PostCard[] = posts.map((post: CollectionEntry<'blog'>) => {
-  const slug = post.id.split('/').slice(1).join('/');
-  return {
-    post,
-    href: getRelativeLocaleUrl(locale, `/blog/${slug}`),
-    dateText: dateFmt.format(post.data.datePublished),
-    dateIso: post.data.datePublished.toISOString(),
-  };
-});
+const [featured, ...rest] = cards;
 
 const schemas = [
   breadcrumbListSchema([
@@ -66,127 +38,316 @@ const schemas = [
 ---
 
 <BaseLayout title={t('seo.blog.title')} description={t('seo.blog.description')} schemas={schemas}>
-  <section class="page">
-    <header class="page-header">
-      <h1>{t('seo.blog.title')}</h1>
-      <p class="lede">{t('seo.blog.description')}</p>
+  <div class="blog-ct">
+    <header class="bi-head">
+      <div class="bi-lead">
+        <span class="eye mono">{t('nav.blog')}</span>
+        <h1>{t('seo.blog.title')}</h1>
+        <p>{t('seo.blog.description')}</p>
+      </div>
+      <div class="bi-meta mono">{total} posts · since {startYear}</div>
     </header>
 
     {
-      posts.length === 0 ? (
+      cards.length === 0 ? (
         <p class="empty">{t('blog.noPosts')}</p>
       ) : (
-        <ul class="post-list">
-          {postCards.map(({ post, href, dateText, dateIso }: PostCard) => (
-            <li>
-              <a href={href} class="post-card">
-                <div class="post-card-image">
-                  <Image
-                    src={post.data.heroImage}
-                    alt={post.data.heroImageAlt}
-                    width={800}
-                    height={420}
-                    sizes="(min-width: 768px) 384px, 100vw"
-                  />
+        <>
+          {featured && (
+            <a href={featured.href} class="feat">
+              <div class="feat-left">
+                <span class="feat-label mono">Featured · most recent</span>
+                <h2>{featured.post.data.title}</h2>
+                <p class="ex">{featured.post.data.description}</p>
+                <div class="feat-meta mono">
+                  <time datetime={featured.dateIso}>{featured.dateText}</time>
+                  <span class="dot" aria-hidden="true">·</span>
+                  <span class="author">
+                    <span class="av">{featured.authorInitials}</span>
+                    {featured.authorName}
+                  </span>
+                  <span class="dot" aria-hidden="true">·</span>
+                  <span class="badge-mono">{featured.minutes} min read</span>
                 </div>
-                <div class="post-card-body">
-                  <h2>{post.data.title}</h2>
-                  <p class="post-meta">
-                    <time datetime={dateIso}>{dateText}</time>
-                  </p>
-                  <p class="post-description">{post.data.description}</p>
+                {featured.tags.length > 0 && (
+                  <div class="feat-tags">
+                    {featured.tags.map((tag) => (
+                      <span class="chip mono">#{tag}</span>
+                    ))}
+                  </div>
+                )}
+                <div class="feat-actions">
+                  <span class="btn btn-primary btn-sm">Read article →</span>
                 </div>
-              </a>
-            </li>
-          ))}
-        </ul>
+              </div>
+              <div class="feat-right" aria-hidden="true">
+                <div class="feat-ovl">
+                  <div class="feat-top">
+                    <span class="mono">{featured.glyph}</span>
+                    <span class="mono dim">cover · 4:3</span>
+                  </div>
+                  <div class="feat-bottom">
+                    <span class="num mono">{featured.number}</span>
+                    <span class="mono dim">{featured.dateText}</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          )}
+
+          {rest.length > 0 && (
+            <div class="blog-grid">
+              {rest.map((c) => (
+                <BlogCard card={c} />
+              ))}
+            </div>
+          )}
+        </>
       )
     }
-  </section>
+  </div>
 </BaseLayout>
 
 <style>
-  .page {
-    max-width: 64rem;
+  .blog-ct {
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 3rem 1.25rem 4rem;
+    padding: 64px 40px 96px;
   }
-  .page-header {
-    margin-bottom: 2.5rem;
-  }
-  .page-header h1 {
-    font-size: clamp(2rem, 5vw, 2.75rem);
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    margin: 0 0 0.75rem;
-  }
-  .lede {
-    font-size: 1.125rem;
-    color: var(--color-fg-muted);
-    margin: 0;
-  }
-  .empty {
-    color: var(--color-fg-muted);
-    font-size: 1rem;
-    text-align: center;
-    padding: 3rem 0;
-  }
-
-  .post-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    gap: 1.5rem;
-  }
-  @media (min-width: 768px) {
-    .post-list {
-      grid-template-columns: repeat(2, 1fr);
+  @media (max-width: 720px) {
+    .blog-ct {
+      padding: 48px 24px 72px;
     }
   }
 
-  .post-card {
-    display: block;
+  .bi-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 32px;
+    margin-bottom: 40px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .bi-lead {
+    max-width: 56ch;
+  }
+  .eye {
+    display: inline-block;
+    font-size: 11px;
+    color: var(--color-fg-subtle);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .bi-head h1 {
+    margin: 8px 0 6px;
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 500;
+    letter-spacing: -0.045em;
+    line-height: 1;
+    color: var(--color-fg);
+  }
+  .bi-head p {
+    margin: 0;
+    font-size: 15px;
+    color: var(--color-fg-muted);
+    max-width: 56ch;
+    line-height: 1.55;
+  }
+  .bi-meta {
+    font-size: 12px;
+    color: var(--color-fg-subtle);
+    white-space: nowrap;
+  }
+  @media (max-width: 720px) {
+    .bi-head {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  .empty {
+    color: var(--color-fg-muted);
+    text-align: center;
+    padding: 64px 0;
+  }
+
+  .feat {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    padding: 36px 0;
+    border-bottom: 1px solid var(--color-border);
     text-decoration: none;
     color: inherit;
-    border: 1px solid var(--color-border);
-    border-radius: 0.75rem;
-    overflow: hidden;
-    transition:
-      border-color 0.15s var(--ease-out-soft),
-      transform 0.15s var(--ease-out-soft);
   }
-  .post-card:hover {
-    border-color: var(--color-primary);
+  @media (max-width: 900px) {
+    .feat {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
   }
-  .post-card-image :global(picture),
-  .post-card-image :global(img) {
-    width: 100%;
-    height: auto;
-    display: block;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
+  .feat-left {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-self: center;
   }
-  .post-card-body {
-    padding: 1.25rem;
+  .feat-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--color-fg-subtle);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
   }
-  .post-card-body h2 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    line-height: 1.3;
-    margin: 0 0 0.5rem;
-    letter-spacing: -0.01em;
+  .feat-label::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 99px;
+    background: var(--color-fg);
   }
-  .post-meta {
-    color: var(--color-fg-muted);
-    font-size: 0.8125rem;
-    margin: 0 0 0.75rem;
-  }
-  .post-description {
-    color: var(--color-fg-muted);
-    font-size: 0.9375rem;
-    line-height: 1.5;
+  .feat h2 {
     margin: 0;
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+    text-wrap: balance;
+    color: var(--color-fg);
+  }
+  .feat .ex {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--color-fg-muted);
+    max-width: 50ch;
+  }
+  .feat-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    color: var(--color-fg-subtle);
+    flex-wrap: wrap;
+  }
+  .feat-meta .dot {
+    color: var(--color-border-strong);
+  }
+  .feat-meta .author {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--color-fg);
+  }
+  .feat-meta .author .av {
+    width: 20px;
+    height: 20px;
+    border-radius: 99px;
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border-strong);
+    display: inline-grid;
+    place-items: center;
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--color-fg);
+  }
+  .badge-mono {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 2px 6px;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    color: var(--color-fg-muted);
+  }
+  .feat-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .feat-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .feat-right {
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    aspect-ratio: 4 / 3;
+    background: radial-gradient(
+      ellipse 60% 80% at 30% 50%,
+      var(--color-surface-2) 0%,
+      var(--color-bg) 70%
+    );
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.15s var(--ease-out-soft);
+  }
+  .feat:hover .feat-right {
+    border-color: var(--color-border-strong);
+  }
+  .feat-ovl {
+    position: absolute;
+    inset: 0;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .feat-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--color-fg-muted);
+  }
+  .feat-bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .feat .num {
+    font-size: 11px;
+    color: var(--color-fg-subtle);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .dim {
+    color: var(--color-fg-subtle);
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    color: var(--color-fg-muted);
+    background: transparent;
+    white-space: nowrap;
+  }
+  .feat-tags .chip {
+    font-size: 11px;
+    padding: 3px 9px;
+  }
+
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding-top: 36px;
+  }
+  @media (max-width: 920px) {
+    .blog-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 620px) {
+    .blog-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

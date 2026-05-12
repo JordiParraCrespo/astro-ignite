@@ -1,105 +1,119 @@
 ---
 /**
- * Site footer — links to legal pages, RSS, and social profiles.
+ * Site footer — shared across every layout.
  *
- * Below-the-fold component, so it can use Tailwind classes freely.
+ * Below-the-fold component. Scoped <style> mirrors the landing design:
+ * brand block on the left, three link columns (Product / Resources / Legal)
+ * on the right, mono font throughout.
  */
 
 import { getRelativeLocaleUrl } from 'astro:i18n';
 
 import { siteConfig } from '@/config/site';
 import { useTranslations } from '@/i18n';
+import Brand from './Brand.astro';
 
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const t = useTranslations(locale);
-const siteName = siteConfig.name[locale] ?? siteConfig.name[siteConfig.defaultLocale]!;
 
-const legalLinks = [
-  { label: 'Privacy', href: getRelativeLocaleUrl(locale, '/legal/privacy') },
-  { label: 'Terms', href: getRelativeLocaleUrl(locale, '/legal/terms') },
-  { label: 'Cookies', href: getRelativeLocaleUrl(locale, '/legal/cookies') },
-];
-
+const homeUrl = getRelativeLocaleUrl(locale, '/');
+const homeRoot = homeUrl.replace(/\/$/, '');
+const blogHref = getRelativeLocaleUrl(locale, '/blog');
+const privacyHref = getRelativeLocaleUrl(locale, '/legal/privacy');
+const termsHref = getRelativeLocaleUrl(locale, '/legal/terms');
+const cookiesHref = getRelativeLocaleUrl(locale, '/legal/cookies');
 const rssUrl = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/rss.xml`;
 
-const social = Object.entries(siteConfig.social).filter(
-  ([, v]) => typeof v === 'string' && v.length > 0
-) as [string, string][];
-
-const year = new Date().getFullYear();
+const ghUrl = siteConfig.social.github ?? 'https://github.com/JordiParraCrespo/astro-ignite';
 ---
 
-<footer class="border-t border-[var(--color-border)] mt-16">
-  <div class="max-w-[80rem] mx-auto px-5 py-10 grid gap-8 md:grid-cols-4">
-    <div class="md:col-span-2">
-      <p class="text-base font-semibold tracking-tight text-[var(--color-fg)]">
-        {siteName}
-      </p>
-      <p class="text-sm text-[var(--color-fg-muted)] mt-2 max-w-md">
-        {siteConfig.description[locale] ?? siteConfig.description[siteConfig.defaultLocale]}
-      </p>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <Brand variant="lockup" size={0.32} />
+      <p class="footer-lede mono">{t('landing.footer.lede')}</p>
     </div>
-
-    <div>
-      <h3 class="text-sm font-semibold mb-3">{t('footer.legal')}</h3>
-      <ul class="space-y-2">
-        {
-          legalLinks.map((link) => (
-            <li>
-              <a
-                href={link.href}
-                class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-fg)]"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))
-        }
-        <li>
-          <a
-            href={rssUrl}
-            class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-fg)]"
-          >
-            {t('footer.rss')}
-          </a>
-        </li>
-      </ul>
-    </div>
-
-    {
-      social.length > 0 && (
-        <div>
-          <h3 class="text-sm font-semibold mb-3">{t('footer.social')}</h3>
-          <ul class="space-y-2">
-            {social.map(([platform, url]) => (
-              <li>
-                <a
-                  href={url}
-                  rel="noopener noreferrer me"
-                  target="_blank"
-                  class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-fg)] capitalize"
-                >
-                  {platform}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )
-    }
-  </div>
-
-  <div class="border-t border-[var(--color-border)]">
-    <div
-      class="max-w-[80rem] mx-auto px-5 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
-    >
-      <p class="text-xs text-[var(--color-fg-muted)]">
-        © {year}
-        {siteName}. {t('footer.rights')}
-      </p>
-      <p class="text-xs text-[var(--color-fg-muted)]">
-        {t('footer.builtWith')}
-      </p>
+    <div class="footer-cols">
+      <div class="footer-col">
+        <span class="footer-head">{t('landing.footer.productHead')}</span>
+        <a href={`${homeRoot}/#templates`}>{t('landing.nav.templates')}</a>
+        <a href={blogHref}>{t('landing.nav.blog')}</a>
+        <a href="/docs">{t('landing.nav.docs')}</a>
+        <a href={`${ghUrl}/blob/main/plan.md`} rel="noopener">{t('landing.nav.plan')}</a>
+        <a href={`${ghUrl}/releases`} rel="noopener">{t('landing.nav.changelog')}</a>
+      </div>
+      <div class="footer-col">
+        <span class="footer-head">{t('landing.footer.resourcesHead')}</span>
+        <a href={ghUrl} rel="noopener">GitHub</a>
+        <a href={`${ghUrl}/issues`} rel="noopener">{t('landing.footer.issues')}</a>
+        <a href={`${ghUrl}/discussions`} rel="noopener">{t('landing.footer.discussions')}</a>
+        <a href="https://www.npmjs.com/package/create-astro-ignite" rel="noopener">npm</a>
+      </div>
+      <div class="footer-col">
+        <span class="footer-head">{t('landing.footer.legalHead')}</span>
+        <a href={`${ghUrl}/blob/main/LICENSE`} rel="noopener">{t('landing.footer.license')}</a>
+        <a href={privacyHref}>{t('landing.footer.privacy')}</a>
+        <a href={termsHref}>Terms</a>
+        <a href={cookiesHref}>{t('landing.footer.cookies')}</a>
+        <a href={rssUrl}>{t('footer.rss')}</a>
+      </div>
     </div>
   </div>
 </footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--color-border);
+    padding: 40px 0 56px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-fg-muted);
+  }
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  @media (max-width: 720px) {
+    .footer-inner {
+      padding: 0 24px;
+    }
+  }
+  .footer-inner a {
+    color: var(--color-fg-muted);
+    text-decoration: none;
+    transition: color 0.12s var(--ease-out-soft);
+  }
+  .footer-inner a:hover {
+    color: var(--color-fg);
+  }
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 36ch;
+  }
+  .footer-lede {
+    margin: 0;
+    font-size: 12px;
+    color: var(--color-fg-muted);
+  }
+  .footer-cols {
+    display: flex;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+  .footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .footer-head {
+    color: var(--color-fg);
+    margin-bottom: 4px;
+  }
+</style>

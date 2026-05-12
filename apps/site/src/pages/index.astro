@@ -4,7 +4,7 @@
  * Non-default locales render via src/pages/[lang]/index.astro.
  */
 
-import MarketingLayout from '@/layouts/MarketingLayout.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
 import LandingPage from '@/components/LandingPage.astro';
 import { siteConfig } from '@/config/site';
 
@@ -14,6 +14,6 @@ const description =
   siteConfig.description[locale] ?? siteConfig.description[siteConfig.defaultLocale]!;
 ---
 
-<MarketingLayout title={`${siteName} — ${description}`} description={description}>
+<BaseLayout title={`${siteName} — ${description}`} description={description}>
   <LandingPage />
-</MarketingLayout>
+</BaseLayout>

@@ -19,9 +19,11 @@
 
 import { Image } from 'astro:assets';
 import { getRelativeLocaleUrl } from 'astro:i18n';
-import Brand from '@/components/Brand.astro';
+
 import { siteConfig } from '@/config/site';
 import { useTranslations } from '@/i18n';
+import { getBlogCards } from '@/lib/blog';
+import BlogCard from '@/components/BlogCard.astro';
 import starterPreview from '@/assets/templates/starter.png';
 import docsPreview from '@/assets/templates/docs.png';
 
@@ -43,11 +45,14 @@ const FEATURE_IDS = [
 ] as const;
 
 const ghUrl = siteConfig.social.github ?? 'https://github.com/JordiParraCrespo/astro-ignite';
+
+const blogCards = await getBlogCards(locale);
+const recentCards = blogCards.slice(0, 3);
 const blogHref = getRelativeLocaleUrl(locale, '/blog');
+const rssHref = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/rss.xml`;
 ---
 
 <Fragment>
-  <main id="main">
     <header class="hero">
       <div class="hero-grid" aria-hidden="true"></div>
       <div class="page hero-inner">
@@ -268,6 +273,40 @@ const blogHref = getRelativeLocaleUrl(locale, '/blog');
       </div>
     </section>
 
+    {
+      recentCards.length > 0 && (
+        <section class="blog-section">
+          <div class="page">
+            <div class="section-head">
+              <div class="section-lead">
+                <span class="eyebrow mono">From the blog</span>
+                <h2>Notes from the build.</h2>
+              </div>
+              <p class="section-meta mono">
+                Writing on perf budgets, i18n, agent-friendly conventions, and the occasional rant
+                about modern web tooling.
+              </p>
+            </div>
+
+            <div class="blog-grid">
+              {recentCards.map((c) => (
+                <BlogCard card={c} />
+              ))}
+            </div>
+
+            <div class="blog-foot">
+              <span class="mono blog-foot-meta">
+                {blogCards.length} articles · <a href={rssHref}>RSS ↗</a>
+              </span>
+              <a class="btn btn-ghost btn-sm" href={blogHref}>
+                Browse all posts →
+              </a>
+            </div>
+          </div>
+        </section>
+      )
+    }
+
     <section class="cta-section">
       <div class="page">
         <div class="cta-box">
@@ -300,44 +339,6 @@ const blogHref = getRelativeLocaleUrl(locale, '/blog');
         </div>
       </div>
     </section>
-  </main>
-
-  <footer>
-    <div class="page footer-grid">
-      <div class="footer-brand">
-        <Brand variant="lockup" size={0.32} />
-        <p class="footer-lede mono">{t('landing.footer.lede')}</p>
-      </div>
-      <div class="footer-cols">
-        <div class="footer-col">
-          <span class="footer-head">{t('landing.footer.productHead')}</span>
-          <a href="#templates">{t('landing.nav.templates')}</a>
-          <a href={blogHref}>{t('landing.nav.blog')}</a>
-          <a href="/docs">{t('landing.nav.docs')}</a>
-          <a
-            href="https://github.com/JordiParraCrespo/astro-ignite/blob/main/plan.md"
-            rel="noopener">{t('landing.nav.plan')}</a
-          >
-          <a href="https://github.com/JordiParraCrespo/astro-ignite/releases" rel="noopener"
-            >{t('landing.nav.changelog')}</a
-          >
-        </div>
-        <div class="footer-col">
-          <span class="footer-head">{t('landing.footer.resourcesHead')}</span>
-          <a href={ghUrl} rel="noopener">GitHub</a>
-          <a href={ghUrl + '/issues'} rel="noopener">{t('landing.footer.issues')}</a>
-          <a href={ghUrl + '/discussions'} rel="noopener">{t('landing.footer.discussions')}</a>
-          <a href="https://www.npmjs.com/package/create-astro-ignite" rel="noopener">npm</a>
-        </div>
-        <div class="footer-col">
-          <span class="footer-head">{t('landing.footer.legalHead')}</span>
-          <a href={ghUrl + '/blob/main/LICENSE'} rel="noopener">{t('landing.footer.license')}</a>
-          <a href="/docs/legal/privacy">{t('landing.footer.privacy')}</a>
-          <a href="/docs/legal/cookies">{t('landing.footer.cookies')}</a>
-        </div>
-      </div>
-    </div>
-  </footer>
 
   <script>
     // Copy-to-clipboard for the .cmd-copy buttons.
@@ -977,6 +978,51 @@ const blogHref = getRelativeLocaleUrl(locale, '/blog');
   }
 
   /* =============================================================================
+   * From the blog
+   * ============================================================================= */
+  .blog-section {
+    padding-top: 0;
+  }
+  .blog-section .section-head .section-lead h2 {
+    margin: 12px 0 0;
+  }
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 920px) {
+    .blog-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 620px) {
+    .blog-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .blog-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 24px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .blog-foot-meta {
+    font-size: 12px;
+    color: var(--color-fg-muted);
+  }
+  .blog-foot-meta a {
+    color: var(--color-fg-muted);
+    text-decoration: none;
+    transition: color 0.12s var(--ease-out-soft);
+  }
+  .blog-foot-meta a:hover {
+    color: var(--color-fg);
+  }
+
+  /* =============================================================================
    * CTA box
    * ============================================================================= */
   .cta-section {
@@ -1038,53 +1084,4 @@ const blogHref = getRelativeLocaleUrl(locale, '/blog');
     }
   }
 
-  /* =============================================================================
-   * Footer
-   * ============================================================================= */
-  footer {
-    border-top: 1px solid var(--color-border);
-    padding: 40px 0 56px;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--color-fg-muted);
-  }
-  .footer-grid {
-    display: flex;
-    justify-content: space-between;
-    gap: 32px;
-    flex-wrap: wrap;
-  }
-  .footer-grid a {
-    color: var(--color-fg-muted);
-    text-decoration: none;
-    transition: color 0.12s var(--ease-out-soft);
-  }
-  .footer-grid a:hover {
-    color: var(--color-fg);
-  }
-  .footer-brand {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    max-width: 36ch;
-  }
-  .footer-lede {
-    margin: 0;
-    font-size: 12px;
-    color: var(--color-fg-muted);
-  }
-  .footer-cols {
-    display: flex;
-    gap: 48px;
-    flex-wrap: wrap;
-  }
-  .footer-col {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .footer-head {
-    color: var(--color-fg);
-    margin-bottom: 4px;
-  }
 </style>
