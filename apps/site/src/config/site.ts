@@ -17,9 +17,47 @@ export interface OrganizationInfo {
   legalName?: string;
 }
 
+export interface NavLink {
+  /** i18n key suffix — resolved as `landing.nav.<key>`. */
+  key: string;
+  /** Absolute URL or root-relative path. Anchors like `/#templates` are fine. */
+  href: string;
+  /** Set `true` for cross-origin links (adds `rel="noopener"` + opens in new tab). */
+  external?: boolean;
+}
+
+export interface NavCta {
+  /** i18n key suffix — resolved as `landing.nav.<key>`. */
+  key: string;
+  /** Absolute URL or root-relative path / anchor. */
+  href: string;
+}
+
+export interface NavConfig {
+  /** Primary links between the brand and the right-side controls. */
+  links: NavLink[];
+  /** Optional right-side button. Set to `null` to omit. */
+  cta?: NavCta | null;
+}
+
+export interface ExternalUrls {
+  /** Docs site — full URL because docs ship on a subdomain (e.g. `https://docs.example.com`). */
+  docs: string;
+  /** Live preview of the `starter` template (defaults to the marketing site itself). */
+  starterPreview: string;
+  /** Live preview of the `docs` template. */
+  docsPreview: string;
+}
+
 export interface SiteConfig {
   /** Canonical site URL (no trailing slash). */
   url: string;
+
+  /** External resources the site links to. */
+  urls: ExternalUrls;
+
+  /** Header navigation. */
+  nav: NavConfig;
 
   /** Default locale used for `prefixDefaultLocale: false`. */
   defaultLocale: string;
@@ -66,6 +104,27 @@ export interface SiteConfig {
 
 export const siteConfig: SiteConfig = {
   url: 'https://astroignite.dev',
+
+  urls: {
+    docs: 'https://docs.astroignite.dev',
+    starterPreview: 'https://starter.astroignite.dev',
+    docsPreview: 'https://docs-starter.astroignite.dev',
+  },
+
+  nav: {
+    links: [
+      { key: 'docs', href: 'https://docs.astroignite.dev', external: true },
+      { key: 'blog', href: '/blog' },
+      { key: 'templates', href: '/#templates' },
+      {
+        key: 'github',
+        href: 'https://github.com/JordiParraCrespo/astro-ignite',
+        external: true,
+      },
+    ],
+    cta: { key: 'getStarted', href: '/#install' },
+  },
+
   defaultLocale: 'en',
   locales: ['en', 'es'],
 

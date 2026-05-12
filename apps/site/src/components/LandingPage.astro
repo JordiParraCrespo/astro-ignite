@@ -45,6 +45,10 @@ const FEATURE_IDS = [
 ] as const;
 
 const ghUrl = siteConfig.social.github ?? 'https://github.com/JordiParraCrespo/astro-ignite';
+const docsUrl = siteConfig.urls.docs;
+const quickStartUrl = `${docsUrl.replace(/\/$/, '')}/quick-start`;
+const starterPreviewUrl = siteConfig.urls.starterPreview;
+const docsPreviewUrl = siteConfig.urls.docsPreview;
 
 const blogCards = await getBlogCards(locale);
 const recentCards = blogCards.slice(0, 3);
@@ -89,8 +93,11 @@ const rssHref = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/r
             </div>
 
             <div class="hero-cta">
-              <a class="btn btn-primary btn-lg" href="/docs/quick-start"
-                >{t('landing.hero.primaryCta')}</a
+              <a
+                class="btn btn-primary btn-lg"
+                href={quickStartUrl}
+                target="_blank"
+                rel="noopener">{t('landing.hero.primaryCta')}</a
               >
               <a class="btn btn-outline btn-lg" href={ghUrl} rel="noopener"
                 >{t('landing.hero.secondaryCta')}</a
@@ -219,7 +226,12 @@ const rssHref = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/r
                   class="tpl-flag">--template</span
                 > starter</span
               >
-              <a class="btn btn-outline btn-sm" href="/docs">{t('landing.templates.preview')}</a>
+              <a
+                class="btn btn-outline btn-sm"
+                href={starterPreviewUrl}
+                target="_blank"
+                rel="noopener">{t('landing.templates.preview')}</a
+              >
             </div>
           </article>
 
@@ -254,7 +266,12 @@ const rssHref = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/r
                   class="tpl-flag">--template</span
                 > docs</span
               >
-              <a class="btn btn-outline btn-sm" href="/docs">{t('landing.templates.preview')}</a>
+              <a
+                class="btn btn-outline btn-sm"
+                href={docsPreviewUrl}
+                target="_blank"
+                rel="noopener">{t('landing.templates.preview')}</a
+              >
             </div>
           </article>
         </div>
@@ -333,7 +350,12 @@ const rssHref = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/r
             >
           </div>
           <div class="cta-actions">
-            <a class="btn btn-primary btn-lg" href="/docs/quick-start">Get started</a>
+            <a
+              class="btn btn-primary btn-lg"
+              href={quickStartUrl}
+              target="_blank"
+              rel="noopener">Get started</a
+            >
             <a class="btn btn-outline btn-lg" href={ghUrl} rel="noopener">Star on GitHub ★</a>
           </div>
         </div>

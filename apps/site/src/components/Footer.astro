@@ -24,6 +24,7 @@ const termsHref = getRelativeLocaleUrl(locale, '/legal/terms');
 const cookiesHref = getRelativeLocaleUrl(locale, '/legal/cookies');
 const rssUrl = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/rss.xml`;
 
+const docsUrl = siteConfig.urls.docs;
 const ghUrl = siteConfig.social.github ?? 'https://github.com/JordiParraCrespo/astro-ignite';
 ---
 
@@ -38,7 +39,7 @@ const ghUrl = siteConfig.social.github ?? 'https://github.com/JordiParraCrespo/a
         <span class="footer-head">{t('landing.footer.productHead')}</span>
         <a href={`${homeRoot}/#templates`}>{t('landing.nav.templates')}</a>
         <a href={blogHref}>{t('landing.nav.blog')}</a>
-        <a href="/docs">{t('landing.nav.docs')}</a>
+        <a href={docsUrl} target="_blank" rel="noopener">{t('landing.nav.docs')}</a>
         <a href={`${ghUrl}/blob/main/plan.md`} rel="noopener">{t('landing.nav.plan')}</a>
         <a href={`${ghUrl}/releases`} rel="noopener">{t('landing.nav.changelog')}</a>
       </div>

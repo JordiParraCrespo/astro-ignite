@@ -33,7 +33,8 @@
   --color-surface-2: var(--color-zinc-900);
   --color-fg: var(--color-zinc-50);
   --color-fg-muted: var(--color-zinc-400);
-  --color-fg-subtle: var(--color-zinc-500);
+  /* zinc-400 on zinc-950 ≈ 8:1 (AA pass). Was zinc-500 (~4:1, fails AA). */
+  --color-fg-subtle: var(--color-zinc-400);
   --color-border: var(--color-zinc-800);
   --color-border-strong: var(--color-zinc-700);
   --color-primary: var(--color-zinc-50);
@@ -76,7 +77,8 @@
   --color-surface-2: var(--color-zinc-100);
   --color-fg: var(--color-zinc-950);
   --color-fg-muted: var(--color-zinc-500);
-  --color-fg-subtle: var(--color-zinc-400);
+  /* zinc-500 on zinc-50 ≈ 4.8:1 (AA pass). Was zinc-400 (~2.4:1, fails AA). */
+  --color-fg-subtle: var(--color-zinc-500);
   --color-border: var(--color-zinc-200);
   --color-border-strong: var(--color-zinc-300);
   --color-primary: var(--color-zinc-900);

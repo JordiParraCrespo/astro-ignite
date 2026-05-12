@@ -2,15 +2,16 @@
 /**
  * Site navigation — shared across the landing and every internal page.
  *
- * Above-the-fold component — uses a scoped <style> block so the CSS inlines
- * per-route automatically. Anchor links (#templates, #install) resolve to
- * the home page so they keep working from any route.
+ * Links are driven by `siteConfig.nav`. External links are opened in a new
+ * tab; internal root-relative paths are resolved against the current locale.
+ * Anchors (`/#templates`, `/#install`) resolve from the locale home so they
+ * keep working from any route.
  */
 
 import { getRelativeLocaleUrl } from 'astro:i18n';
 
-import { siteConfig } from '@/config/site';
-import { useTranslations } from '@/i18n';
+import { siteConfig, type NavLink, type NavCta } from '@/config/site';
+import { useTranslations, type TranslationKey } from '@/i18n';
 import Brand from './Brand.astro';
 import ThemeToggle from './ThemeToggle.astro';
 import LocaleSwitcher from './LocaleSwitcher.astro';
@@ -19,12 +20,24 @@ const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const t = useTranslations(locale);
 
 const homeUrl = getRelativeLocaleUrl(locale, '/');
-const blogHref = getRelativeLocaleUrl(locale, '/blog');
-const docsHref = '/docs';
-const templatesHref = `${homeUrl.replace(/\/$/, '')}/#templates`;
-const installHref = `${homeUrl.replace(/\/$/, '')}/#install`;
-const ghUrl = siteConfig.social.github ?? 'https://github.com/JordiParraCrespo/astro-ignite';
+const localeRoot = homeUrl.replace(/\/$/, '');
 const siteName = siteConfig.name[locale] ?? siteConfig.name[siteConfig.defaultLocale]!;
+
+const resolveHref = (link: NavLink | NavCta): string => {
+  if (link.href.startsWith('http://') || link.href.startsWith('https://')) {
+    return link.href;
+  }
+  if (link.href.startsWith('/#')) {
+    return `${localeRoot}${link.href}`;
+  }
+  if (link.href.startsWith('/')) {
+    return getRelativeLocaleUrl(locale, link.href);
+  }
+  return link.href;
+};
+
+const navLinks = siteConfig.nav.links;
+const cta = siteConfig.nav.cta ?? null;
 ---
 
 <header class="nav" aria-label="Primary">
@@ -32,13 +45,28 @@ const siteName = siteConfig.name[locale] ?? siteConfig.name[siteConfig.defaultLo
     <Brand href={homeUrl} variant="lockup" size={0.34} label={siteName} />
     <span class="pill mono"><span class="dot" aria-hidden="true"></span>v0.1.0 · pre-1.0</span>
     <div class="nav-cta">
-      <a class="nav-link" href={docsHref}>{t('landing.nav.docs')}</a>
-      <a class="nav-link" href={blogHref}>{t('landing.nav.blog')}</a>
-      <a class="nav-link" href={templatesHref}>{t('landing.nav.templates')}</a>
-      <a class="nav-link" href={ghUrl} rel="noopener">{t('landing.nav.github')}</a>
+      {
+        navLinks.map((link) => (
+          <a
+            class="nav-link"
+            data-nav-key={link.key}
+            href={resolveHref(link)}
+            target={link.external ? '_blank' : undefined}
+            rel={link.external ? 'noopener' : undefined}
+          >
+            {t(`landing.nav.${link.key}` as TranslationKey)}
+          </a>
+        ))
+      }
       <LocaleSwitcher />
       <ThemeToggle />
-      <a class="btn btn-primary btn-sm" href={installHref}>{t('landing.nav.getStarted')}</a>
+      {
+        cta && (
+          <a class="btn btn-primary btn-sm" href={resolveHref(cta)}>
+            {t(`landing.nav.${cta.key}` as TranslationKey)}
+          </a>
+        )
+      }
     </div>
   </div>
 </header>
@@ -110,7 +138,7 @@ const siteName = siteConfig.name[locale] ?? siteConfig.name[siteConfig.defaultLo
     .nav-cta {
       gap: 12px;
     }
-    .nav-link[href*='github'] {
+    .nav-link[data-nav-key='github'] {
       display: none;
     }
   }
