@@ -1,37 +1,93 @@
-# Manual release workflow.
+# Release workflow modeled on shadcn-ui/ui.
 #
-# Triggered from Actions → Release → Run workflow. The workflow:
-#   1. Applies any pending changesets (bumps versions, writes CHANGELOG).
-#   2. Commits the version bumps back to the branch it ran on.
-#   3. Builds the CLI.
-#   4. Publishes to npm via `changeset publish`.
+# Two parallel flows share this file:
 #
-# Prerelease mode is respected automatically — when `.changeset/pre.json`
-# exists, publishes go to the configured dist-tag (e.g. `beta`) instead
-# of `latest`.
+#   1. Stable — on push to main. The changesets action opens (or updates)
+#      a "Version Packages" PR whenever pending changesets exist. Merging
+#      that PR re-runs this workflow and publishes to npm as @latest.
 #
-# The `dry_run` input runs steps 1 and 3 but skips the commit and the
-# npm publish, so you can sanity-check what would happen.
+#   2. Beta — on a PR being labeled with `🚀 autorelease`. The job rewrites
+#      create-astro-ignite's version to `0.0.0-beta.<short-sha>`, builds,
+#      and publishes with the `beta` dist-tag. The version bump is NOT
+#      committed — it only lives in the published tarball.
+#
+# Required setup:
+#   - Repository secret: NPM_TOKEN (npm automation token).
+#   - Repository label: `🚀 autorelease`.
+#   - Settings → Actions → General → Workflow permissions:
+#       ✓ Allow GitHub Actions to create and approve pull requests.
 
 name: Release
 
+run-name: ${{ github.event_name == 'pull_request' && format('Release Beta — PR #{0}', github.event.number) || 'Release Stable' }}
+
 on:
-  workflow_dispatch:
-    inputs:
-      dry_run:
-        description: 'Dry run (build only, no commit, no publish)'
-        type: boolean
-        default: false
+  push:
+    branches: [main]
+  pull_request:
+    types: [labeled]
+    branches: [main]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
+  prerelease:
+    name: Publish beta to npm
+    if: >-
+      ${{ github.event_name == 'pull_request'
+          && github.repository_owner == 'JordiParraCrespo'
+          && contains(github.event.pull_request.labels.*.name, '🚀 autorelease') }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Rewrite version to beta
+        run: node .github/version-script-beta.js
+
+      - name: Build CLI
+        run: pnpm --filter create-astro-ignite build
+
+      - name: Publish beta to npm
+        run: cd packages/create-astro-ignite && npm publish --tag beta --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Read published version
+        id: pkg
+        run: echo "version=$(node -p "require('./packages/create-astro-ignite/package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Upload tarball as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: create-astro-ignite-${{ steps.pkg.outputs.version }}-pr-${{ github.event.number }}
+          path: packages/create-astro-ignite/dist/index.js
+
   release:
-    name: Release
+    name: Create version PR or publish stable
+    if: >-
+      ${{ github.event_name == 'push'
+          && github.repository_owner == 'JordiParraCrespo' }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
       id-token: write
     steps:
       - uses: actions/checkout@v4
@@ -48,33 +104,18 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Apply pending changesets
-        run: pnpm changeset version
-
-      - name: Commit version bumps
-        if: ${{ !inputs.dry_run }}
-        run: |
-          if [ -n "$(git status --porcelain)" ]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add .
-            git commit -m "chore(release): version packages"
-            git push
-          else
-            echo "No version changes to commit."
-          fi
-
-      - name: Build
+      - name: Build CLI
         run: pnpm --filter create-astro-ignite build
 
-      - name: Publish to npm
-        if: ${{ !inputs.dry_run }}
-        run: pnpm changeset publish
+      - name: Open version PR or publish
+        uses: changesets/action@v1
+        with:
+          setupGitUser: true
+          commit: 'chore(release): version packages'
+          title: 'chore(release): version packages'
+          version: node .github/changeset-version.js
+          publish: pnpm changeset publish
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Push tags
-        if: ${{ !inputs.dry_run }}
-        run: git push --tags
