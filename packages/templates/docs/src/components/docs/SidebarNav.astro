@@ -40,8 +40,12 @@ const hasLocalizedEntry = (slug: string): boolean =>
 
 const isExternal = (slug: string) => slug.startsWith('http');
 
+// The home doc renders at the locale root (/ or /<lang>/), not at /<slug>.
+const homeSlug = siteConfig.homePath.replace(/^\//, '');
+
 const hrefFor = (slug: string) => {
   if (isExternal(slug)) return slug;
+  if (slug === homeSlug) return getRelativeLocaleUrl(locale, '/');
   return getRelativeLocaleUrl(locale, `/${slug}`);
 };
 

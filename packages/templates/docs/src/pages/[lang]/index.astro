@@ -1,19 +1,34 @@
 ---
-/**
- * Non-default-locale root → redirects to the localized home doc.
- * Mirrors src/pages/index.astro for /{lang}/.
- */
+import { getEntry, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 
-import { getRelativeLocaleUrl } from 'astro:i18n';
+import DocsLayout from '@/layouts/DocsLayout.astro';
+import Callout from '@/components/docs/Callout.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
 import { siteConfig } from '@/config/site';
 
 export async function getStaticPaths() {
-  return siteConfig.locales
-    .filter((l) => l !== siteConfig.defaultLocale)
-    .map((lang) => ({ params: { lang } }));
+  const homeSlug = siteConfig.homePath.replace(/^\//, '');
+  const langs = siteConfig.locales.filter((l) => l !== siteConfig.defaultLocale);
+  const entries = await Promise.all(
+    langs.map(async (lang) => {
+      const entry = await getEntry('docs', `${lang}/${homeSlug}`);
+      return entry ? { params: { lang }, props: { entry } } : null;
+    })
+  );
+  return entries.filter((e): e is { params: { lang: string }; props: { entry: CollectionEntry<'docs'> } } => e !== null);
 }
 
-const lang = Astro.params.lang ?? siteConfig.defaultLocale;
-const target = getRelativeLocaleUrl(lang, siteConfig.homePath);
-return Astro.redirect(target);
+interface Props {
+  entry: CollectionEntry<'docs'>;
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+
+const mdxComponents = { Callout, CodeBlock };
 ---
+
+<DocsLayout entry={entry} headings={headings}>
+  <Content components={mdxComponents} />
+</DocsLayout>

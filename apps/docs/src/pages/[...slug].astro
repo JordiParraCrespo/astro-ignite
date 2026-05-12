@@ -16,9 +16,11 @@ import CodeBlock from '@/components/docs/CodeBlock.astro';
 import { siteConfig } from '@/config/site';
 
 export async function getStaticPaths() {
+  const homeId = `${siteConfig.defaultLocale}/${siteConfig.homePath.replace(/^\//, '')}`;
   const docs = await getCollection(
     'docs',
-    (e: CollectionEntry<'docs'>) => !e.data.draft && e.id.startsWith(`${siteConfig.defaultLocale}/`)
+    (e: CollectionEntry<'docs'>) =>
+      !e.data.draft && e.id.startsWith(`${siteConfig.defaultLocale}/`) && e.id !== homeId
   );
   return docs.map((entry) => {
     const slug = entry.id.split('/').slice(1).join('/');
