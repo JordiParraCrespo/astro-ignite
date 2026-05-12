@@ -1,0 +1,58 @@
+---
+title: Plantillas
+description: Los puntos de partida que ofrece astro-ignite — para qué sirve cada uno, con previsualizaciones en vivo del proyecto generado.
+lastUpdated: 2026-05-12
+tags: [empezar]
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
+
+astro-ignite incluye dos plantillas hoy. Elige una de forma interactiva al crear el proyecto, o pasa `--template=<tipo>` para saltarte el prompt.
+
+## starter
+
+La opción por defecto. Un sitio de marketing con colecciones de blog y proyectos, un formulario de contacto operativo, i18n completo, páginas legales y el registro de componentes preinstalado en `src/components/ui/`.
+
+- **Previsualización en vivo**: [`starter.astroignite.dev`](https://starter.astroignite.dev)
+- **Código**: [`packages/templates/starter/`](https://github.com/JordiParraCrespo/astro-ignite/tree/main/packages/templates/starter)
+- **Cómo elegirla**: `--template=starter` (o acepta el valor por defecto en el prompt)
+
+Úsala para construir un sitio de producto, una web personal, una landing de lanzamiento o cualquier cosa que necesite blog + proyectos + contacto.
+
+## docs
+
+Un sitio de documentación construido desde primitivas — barra lateral, buscador con Pagefind, índice "en esta página", bloques de código con botón de copiar, callouts, breadcrumbs. Sin Starlight; toda la UI es código tuyo que puedes editar.
+
+- **Previsualización en vivo**: [`docs-starter.astroignite.dev`](https://docs-starter.astroignite.dev)
+- **Código**: [`packages/templates/docs/`](https://github.com/JordiParraCrespo/astro-ignite/tree/main/packages/templates/docs)
+- **Cómo elegirla**: `--template=docs`
+
+Úsala para la documentación de una librería, una API, una herramienta interna o cualquier otra cosa que quiera un layout de sidebar izquierda / TOC derecha con buscador.
+
+<Callout variant="tip" title="La propia documentación usa esta plantilla">
+  Esta misma documentación que estás leyendo es una instancia `apps/docs`
+  construida desde la misma plantilla. Edita el código en
+  `packages/templates/docs/` para cambiar lo que recibirán los futuros
+  proyectos generados con la plantilla docs.
+</Callout>
+
+## Pruébalas sin generar nada
+
+Ambas previsualizaciones se despliegan continuamente desde `main`. Haz clic para ver exactamente lo que produce `--template=<tipo>` antes de generar el proyecto en local.
+
+## Generar
+
+<CodeBlock filename="terminal" language="bash">
+  {`# Interactivo — elige plantilla, responde los prompts
+npm create astro-ignite@latest mi-sitio
+
+# No interactivo — sin prompts
+npm create astro-ignite@latest mi-sitio -- --yes --template=starter
+npm create astro-ignite@latest mi-sitio -- --yes --template=docs`}
+</CodeBlock>
+
+## Y a continuación
+
+- [Inicio rápido](/es/quick-start) — recorrido completo del bootstrap
+- [Características](/es/features) — qué trae cada plantilla

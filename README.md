@@ -10,6 +10,13 @@ npm create astro-ignite@latest my-site
 
 Production-grade Astro sites that AI agents can read, edit, and extend. SEO, i18n, performance, legal, and email — pre-wired with sane defaults, every line is code you own. No runtime dependency on this tool once you've scaffolded.
 
+## Templates
+
+| Template            | Use case                                                                     | Live preview                                                           |
+| ------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `starter` (default) | Marketing site + blog + projects, contact form, full i18n, legal pages       | [`starter.astroignite.dev`](https://starter.astroignite.dev)           |
+| `docs`              | Documentation site built from primitives (no Starlight); search via Pagefind | [`docs-starter.astroignite.dev`](https://docs-starter.astroignite.dev) |
+
 ## What you get
 
 - **Lighthouse 100s** on mobile and desktop, CI-enforced (the build fails before a regression ships)

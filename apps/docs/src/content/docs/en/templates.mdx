@@ -1,0 +1,57 @@
+---
+title: Templates
+description: The starting points astro-ignite ships — what each one is for, and live previews of the scaffolded output.
+lastUpdated: 2026-05-12
+tags: [getting-started]
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
+
+astro-ignite ships two templates today. Pick one interactively when you scaffold, or pass `--template=<kind>` to skip the prompt.
+
+## starter
+
+The default. A marketing site with blog and projects collections, a working contact form, full i18n, legal pages, and the full component registry pre-installed in `src/components/ui/`.
+
+- **Live preview**: [`starter.astroignite.dev`](https://starter.astroignite.dev)
+- **Source**: [`packages/templates/starter/`](https://github.com/JordiParraCrespo/astro-ignite/tree/main/packages/templates/starter)
+- **Pick it**: `--template=starter` (or just accept the default in the prompt)
+
+Use it when you're building a product site, a personal site, a launch page, or anything that needs blog + projects + contact form.
+
+## docs
+
+A documentation site built from primitives — sidebar nav, search via Pagefind, on-this-page TOC, code blocks with copy buttons, callouts, breadcrumbs. No Starlight; the whole UI is owned code you can edit.
+
+- **Live preview**: [`docs-starter.astroignite.dev`](https://docs-starter.astroignite.dev)
+- **Source**: [`packages/templates/docs/`](https://github.com/JordiParraCrespo/astro-ignite/tree/main/packages/templates/docs)
+- **Pick it**: `--template=docs`
+
+Use it when you're shipping documentation for a library, an API, an internal tool, or anything else that wants a left-sidebar / right-TOC layout with search.
+
+<Callout variant="tip" title="The real docs site uses this template">
+  These very docs you're reading are an `apps/docs` instance built from the
+  same template. Edit the source under `packages/templates/docs/` to change
+  what every future docs-template scaffold ships with.
+</Callout>
+
+## Try one without scaffolding
+
+Both previews above are deployed continuously from `main`. Click through to see exactly what `--template=<kind>` produces before you scaffold locally.
+
+## Scaffold
+
+<CodeBlock filename="terminal" language="bash">
+  {`# Interactive — pick a template, answer prompts
+npm create astro-ignite@latest my-site
+
+# Non-interactive — skip the prompt
+npm create astro-ignite@latest my-site -- --yes --template=starter
+npm create astro-ignite@latest my-site -- --yes --template=docs`}
+</CodeBlock>
+
+## Where to next
+
+- [Quick start](/quick-start) — full bootstrap walkthrough
+- [Features](/features) — what each template ships with

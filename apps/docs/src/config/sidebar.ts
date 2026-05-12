@@ -39,7 +39,12 @@ export const sidebar: SidebarGroup[] = [
   {
     group: 'Start here',
     groupKey: 'sidebar.startHere',
-    items: [{ slug: 'introduction' }, { slug: 'quick-start' }, { slug: 'features' }],
+    items: [
+      { slug: 'introduction' },
+      { slug: 'quick-start' },
+      { slug: 'templates' },
+      { slug: 'features' },
+    ],
   },
   {
     group: 'Reference',
