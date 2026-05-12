@@ -60,7 +60,21 @@ jobs:
           node-version: 20
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter @astro-ignite/template-${{ matrix.template }} build
+      # Retry up to 3 times; astro:fonts fetches from fonts.bunny.net at build
+      # time and that occasionally flakes in CI.
+      - name: Build template (with retry)
+        run: |
+          set +e
+          for i in 1 2 3; do
+            pnpm --filter @astro-ignite/template-${{ matrix.template }} build
+            code=$?
+            if [ "$code" -eq 0 ]; then
+              exit 0
+            fi
+            echo "::warning::template build failed (attempt $i), retrying after 5s"
+            sleep 5
+          done
+          exit 1
       - uses: actions/upload-artifact@v4
         with:
           name: template-${{ matrix.template }}-dist
@@ -109,4 +123,16 @@ jobs:
           node-version: 20
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter @astro-ignite/${{ matrix.app }} build
+      - name: Build app (with retry)
+        run: |
+          set +e
+          for i in 1 2 3; do
+            pnpm --filter @astro-ignite/${{ matrix.app }} build
+            code=$?
+            if [ "$code" -eq 0 ]; then
+              exit 0
+            fi
+            echo "::warning::app build failed (attempt $i), retrying after 5s"
+            sleep 5
+          done
+          exit 1
