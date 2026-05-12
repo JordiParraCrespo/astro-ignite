@@ -121,9 +121,7 @@ async function ensureEmpty(dir: string, force: boolean): Promise<void> {
     const entries = await readdir(dir);
     if (entries.length === 0) return;
     if (!force) {
-      throw new Error(
-        `${dir} is not empty. Pass --force to overwrite, or pick a different --out.`,
-      );
+      throw new Error(`${dir} is not empty. Pass --force to overwrite, or pick a different --out.`);
     }
     await rm(dir, { recursive: true, force: true });
   } catch (err) {
@@ -151,7 +149,7 @@ async function downloadBundle(url: string, apiKey: string | undefined): Promise<
   const buf = Buffer.from(await res.arrayBuffer());
   if (buf.length < 2 || buf[0] !== 0x1f || buf[1] !== 0x8b) {
     throw new Error(
-      'response is not a gzip archive — confirm the URL is a Claude Design handoff link',
+      'response is not a gzip archive — confirm the URL is a Claude Design handoff link'
     );
   }
   const tmp = join(tmpdir(), `design-fetch-${randomUUID()}.tar.gz`);

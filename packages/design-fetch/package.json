@@ -1,18 +1,22 @@
 {
   "name": "@astro-ignite/design-fetch",
   "version": "0.0.0",
-  "description": "Fetch and extract a Claude Design (claude.ai/design) handoff bundle into a local folder.",
+  "private": true,
+  "description": "Internal: fetch and extract a design handoff bundle into a local folder.",
   "license": "MIT",
   "type": "module",
   "bin": {
     "design-fetch": "./dist/index.js"
   },
-  "files": ["dist", "README.md"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
     "kleur": "^4.1.5"
@@ -26,5 +30,10 @@
   "engines": {
     "node": ">=20.11.0"
   },
-  "keywords": ["claude", "design", "handoff", "astro-ignite"]
+  "keywords": [
+    "claude",
+    "design",
+    "handoff",
+    "astro-ignite"
+  ]
 }

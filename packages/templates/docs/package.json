@@ -11,8 +11,7 @@
     "preview": "astro preview",
     "check": "astro check",
     "typecheck": "astro check",
-    "lint": "eslint src",
-    "test": "vitest run --passWithNoTests"
+    "lint": "eslint src"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.0.3",

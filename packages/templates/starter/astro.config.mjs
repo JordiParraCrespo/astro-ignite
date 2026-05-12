@@ -44,6 +44,7 @@ export default defineConfig({
     }),
   ],
   vite: {
+    // @ts-expect-error — @tailwindcss/vite pulls Vite 7 types; Astro is on Vite 6. Runtime is fine.
     plugins: [tailwindcss()],
   },
   experimental: {

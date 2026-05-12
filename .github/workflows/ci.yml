@@ -26,6 +26,7 @@ jobs:
       - run: pnpm --filter create-astro-ignite typecheck
       - run: pnpm --filter @astro-ignite/template-starter typecheck
       - run: pnpm --filter @astro-ignite/template-docs typecheck
+      - run: pnpm --filter @astro-ignite/site typecheck
       - run: pnpm --filter @astro-ignite/docs typecheck
 
   test:
@@ -88,9 +89,13 @@ jobs:
       - run: pnpm --filter create-astro-ignite build
       - run: node ./scripts/scaffold-test.mjs --full --pm=${{ matrix.pm }}
 
-  docs-build:
-    name: Docs build
+  apps-build:
+    name: App build (${{ matrix.app }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [site, docs]
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -99,4 +104,4 @@ jobs:
           node-version: 20
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter @astro-ignite/docs build
+      - run: pnpm --filter @astro-ignite/${{ matrix.app }} build

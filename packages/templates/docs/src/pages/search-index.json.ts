@@ -44,7 +44,7 @@ export const GET: APIRoute = async () => {
 
   for (const entry of docs) {
     const [locale, ...rest] = entry.id.split('/');
-    if (!locale) continue;
+    if (!locale || !siteConfig.locales.includes(locale)) continue;
     const slug = rest.join('/');
     const url = getRelativeLocaleUrl(locale, slug);
     entries.push({
