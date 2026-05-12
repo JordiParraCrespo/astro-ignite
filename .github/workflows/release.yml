@@ -19,7 +19,7 @@
 
 name: Release
 
-run-name: ${{ github.event_name == 'pull_request' && format('Release Beta — PR #{0}', github.event.number) || 'Release Stable' }}
+run-name: "${{ github.event_name == 'pull_request' && format('Release Beta — PR {0}', github.event.number) || 'Release Stable' }}"
 
 on:
   push:
