@@ -1,37 +1,46 @@
 {
-  "name": "create-astro-ignite",
+  "name": "astro-ignite",
   "version": "0.0.0",
-  "description": "npm create shim for astro-ignite — delegates to `astro-ignite bootstrap`",
+  "description": "CLI for bootstrapping and maintaining production-grade Astro sites",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "create-astro-ignite": "./dist/index.js"
+    "astro-ignite": "./dist/index.js"
   },
   "files": [
     "dist",
+    "templates",
     "README.md"
   ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
+    "prepack": "node ./scripts/copy-templates.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.9.0",
+    "kleur": "^4.1.5"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
     "tsup": "^8.3.5",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
   },
   "engines": {
     "node": ">=20.11.0"
   },
   "keywords": [
     "astro",
-    "create-astro",
     "starter",
     "seo",
     "performance",
     "shadcn",
-    "scaffolding"
+    "scaffolding",
+    "cli"
   ]
 }

@@ -7,12 +7,16 @@
 #      that PR re-runs this workflow and publishes to npm as @latest.
 #
 #   2. Beta — on a PR being labeled with `🚀 autorelease`. The job rewrites
-#      create-astro-ignite's version to `0.0.0-beta.<short-sha>`, builds,
-#      and publishes with the `beta` dist-tag. The version bump is NOT
-#      committed — it only lives in the published tarball.
+#      every publishable package's version to `0.0.0-beta.<short-sha>`,
+#      builds, and publishes them with the `beta` dist-tag. Bumps are NOT
+#      committed — they only live in the published tarballs.
+#
+# Publishable packages (kept in sync at the same version):
+#   - astro-ignite           (primary CLI: bootstrap + future subcommands)
+#   - create-astro-ignite    (shim that runs `astro-ignite bootstrap`)
 #
 # Required setup:
-#   - Repository secret: NPM_TOKEN (npm automation token).
+#   - Environment "Prod" secret: NPM_TOKEN (npm token with Bypass 2FA).
 #   - Repository label: `🚀 autorelease`.
 #   - Settings → Actions → General → Workflow permissions:
 #       ✓ Allow GitHub Actions to create and approve pull requests.
@@ -59,26 +63,33 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Rewrite version to beta
+      - name: Rewrite versions to beta
         run: node .github/version-script-beta.js
 
-      - name: Build CLI
-        run: pnpm --filter create-astro-ignite build
+      - name: Build packages
+        run: |
+          pnpm --filter astro-ignite build
+          pnpm --filter create-astro-ignite build
 
-      - name: Publish beta to npm
+      - name: Publish astro-ignite (beta)
+        run: cd packages/astro-ignite && npm publish --tag beta --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish create-astro-ignite shim (beta)
         run: cd packages/create-astro-ignite && npm publish --tag beta --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Read published version
         id: pkg
-        run: echo "version=$(node -p "require('./packages/create-astro-ignite/package.json').version")" >> "$GITHUB_OUTPUT"
+        run: echo "version=$(node -p "require('./packages/astro-ignite/package.json').version")" >> "$GITHUB_OUTPUT"
 
       - name: Upload tarball as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: create-astro-ignite-${{ steps.pkg.outputs.version }}-pr-${{ github.event.number }}
-          path: packages/create-astro-ignite/dist/index.js
+          name: astro-ignite-${{ steps.pkg.outputs.version }}-pr-${{ github.event.number }}
+          path: packages/astro-ignite/dist/index.js
 
   release:
     name: Create version PR or publish stable
@@ -106,8 +117,10 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Build CLI
-        run: pnpm --filter create-astro-ignite build
+      - name: Build packages
+        run: |
+          pnpm --filter astro-ignite build
+          pnpm --filter create-astro-ignite build
 
       - name: Open version PR or publish
         uses: changesets/action@v1
