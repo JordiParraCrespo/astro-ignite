@@ -16,7 +16,9 @@ export async function getStaticPaths() {
       return entry ? { params: { lang }, props: { entry } } : null;
     })
   );
-  return entries.filter((e): e is { params: { lang: string }; props: { entry: CollectionEntry<'docs'> } } => e !== null);
+  return entries.filter(
+    (e): e is { params: { lang: string }; props: { entry: CollectionEntry<'docs'> } } => e !== null
+  );
 }
 
 interface Props {
