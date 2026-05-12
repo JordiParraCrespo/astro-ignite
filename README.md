@@ -1,6 +1,6 @@
 # astro-ignite
 
-![astro-ignite banner](./assets/banners/banner.png)
+![astro-ignite banner](.github/assets/banner.png)
 
 > Astro sites, built for AI agents.
 
