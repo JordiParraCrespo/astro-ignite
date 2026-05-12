@@ -17,7 +17,7 @@
     "dev:starter": "pnpm --filter @astro-ignite/template-starter dev",
     "dev:docs-template": "pnpm --filter @astro-ignite/template-docs dev",
     "dev:cli": "pnpm --filter create-astro-ignite dev",
-    "test": "pnpm -r test",
+    "test": "pnpm -r --filter=!playground test",
     "lint": "pnpm -r lint",
     "format": "prettier --write \"**/*.{ts,tsx,astro,md,mdx,json,yaml,yml}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,astro,md,mdx,json,yaml,yml}\"",

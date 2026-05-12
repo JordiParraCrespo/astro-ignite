@@ -89,7 +89,7 @@ jobs:
       - if: matrix.pm == 'bun'
         uses: oven-sh/setup-bun@v2
       - if: matrix.pm == 'yarn'
-        run: corepack enable && corepack prepare yarn@stable --activate
+        run: corepack enable && corepack prepare yarn@1.22.22 --activate
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter create-astro-ignite build
       - run: node ./scripts/scaffold-test.mjs --full --pm=${{ matrix.pm }}
