@@ -8,7 +8,7 @@
 npm create astro-ignite@latest my-site
 ```
 
-Answer five prompts. Get a finished site with SEO, i18n, performance, legal, and email pre-wired. Structured for agents to read, edit, and extend — every line is code you own. No runtime dependency on this tool once you've scaffolded.
+Production-grade Astro sites that AI agents can read, edit, and extend. SEO, i18n, performance, legal, and email — pre-wired with sane defaults, every line is code you own. No runtime dependency on this tool once you've scaffolded.
 
 ## What you get
 
@@ -25,43 +25,6 @@ Answer five prompts. Get a finished site with SEO, i18n, performance, legal, and
 - **Sitemap, RSS, robots, manifest** — all i18n-aware
 - **Blog and projects** as content collections with strict Zod schemas
 - **A copy-paste component registry** — 18 atoms + 14 blocks, installed with `npx astro-ignite add <name>`
-
-## Why "built for AI agents"
-
-The codebase is shaped so an LLM can navigate it without ceremony:
-
-- **Small surface area.** No framework magic, no hidden abstractions. The five things you'd want to edit live where you'd expect them.
-- **You own the output.** Templates are copied in, not imported. Agents can rewrite freely without breaking an upstream contract.
-- **Native HTML primitives.** `<details>`, `<dialog>`, popover API, custom elements. No React tree to reason about, no client hydration to schedule.
-- **Strict types end to end.** Astro's TypeScript checker runs on every route; agents that introduce a bug see it before commit.
-
-## Status
-
-Pre-1.0, in active development. See [`plan.md`](./plan.md) for the full design spec and the reasoning behind each locked decision.
-
-## Components
-
-Two layers, both owned by you, both rendered against the same design tokens:
-
-- **Atoms** — `packages/registry/base/`. 18 primitives (button, input, dialog, tooltip, accordion, …) built with Astro + vanilla JS. Native HTML where possible: `<details name>` for accordion, `<dialog>` for modal, popover API for menus, CSS-only tooltip, custom elements for tabs and toasts.
-- **Blocks** — `packages/registry/blocks/`. 14 compositions (page-hero, feature-grid, command-block, terminal-preview, breadcrumb, prev-next-nav, …). Drop them in and edit.
-
-Browse the live catalog at [`/components`](https://docs.astroignite.dev/components) — every primitive and block on one scrollable page, rendered against the actual design system, not screenshots.
-
-## Repo layout
-
-```
-packages/
-  create-astro-ignite/     # the CLI
-  registry/                # shadcn-style component source (base + blocks)
-  templates/
-    starter/               # marketing / blog / projects template
-    docs/                  # docs-site template
-apps/
-  site/                    # public marketing site
-  docs/                    # the project's docs site
-  playground/              # CI smoke target
-```
 
 ## Development
 

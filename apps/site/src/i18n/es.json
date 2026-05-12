@@ -144,7 +144,7 @@
       },
       "f06": {
         "title": "Eres dueño del código",
-        "body": "Sin dependencia en runtime. Edita lo que quieras. Para siempre. Cinco prompts y es tuyo."
+        "body": "Sin dependencia en runtime. Edita lo que quieras. Para siempre. Tuyo, línea a línea."
       }
     }
   },
@@ -250,12 +250,12 @@
       "headlineLead": "Deja de afeitar yaks en el",
       "headlineMuted": "primer 30%",
       "headlineTail": ".",
-      "lede": "Cinco prompts, una instalación, un sitio Astro terminado que es totalmente tuyo. Hazle eject cuando quieras — no hay de qué hacer eject.",
+      "lede": "Una instalación, un sitio Astro terminado que es totalmente tuyo. Hazle eject cuando quieras — no hay de qué hacer eject.",
       "getStarted": "Empezar",
       "github": "Star en GitHub ★"
     },
     "footer": {
-      "lede": "Sitios Astro listos para producción en cinco prompts. MIT · pre-1.0.",
+      "lede": "Sitios Astro listos para producción , hechos para agentes de IA. MIT · pre-1.0.",
       "productHead": "Producto",
       "resourcesHead": "Recursos",
       "legalHead": "Legal",

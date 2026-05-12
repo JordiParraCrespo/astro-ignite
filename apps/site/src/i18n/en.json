@@ -144,7 +144,7 @@
       },
       "f06": {
         "title": "You own the code",
-        "body": "No runtime dependency. Edit anything. Forever. Five prompts, then it's yours."
+        "body": "No runtime dependency. Edit anything. Forever. Yours, line by line."
       }
     }
   },
@@ -250,12 +250,12 @@
       "headlineLead": "Stop yak-shaving the",
       "headlineMuted": "first 30%",
       "headlineTail": ".",
-      "lede": "Five prompts, one install, a finished Astro site you own outright. Eject any time — there's nothing to eject from.",
+      "lede": "One install, a finished Astro site you own outright. Eject any time — there's nothing to eject from.",
       "getStarted": "Get started",
       "github": "Star on GitHub ★"
     },
     "footer": {
-      "lede": "Production-grade Astro sites in five prompts. MIT · pre-1.0.",
+      "lede": "Production-grade Astro sites , built for AI agents. MIT · pre-1.0.",
       "productHead": "Product",
       "resourcesHead": "Resources",
       "legalHead": "Legal",

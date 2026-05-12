@@ -60,7 +60,7 @@ No pre-commit hook. Run `pnpm format` yourself before opening a PR — CI checks
 `packages/create-astro-ignite/src/`:
 
 - `index.ts` — entrypoint, orchestrates prompts → scaffold
-- `prompts.ts` — the five-prompt flow (project name, package manager, git init, install, **template**)
+- `prompts.ts` — the setup prompt flow (project name, package manager, git init, install, **template**)
 - `scaffold.ts` — copies the chosen template from `packages/templates/<template>/`, rewrites `package.json` (name + adapter/email dep stripping based on which features the target template actually uses), runs install + git init
 - `pm.ts`, `git.ts` — pnpm/npm/yarn/bun detection + git init helpers
 - `types.ts` — shared types

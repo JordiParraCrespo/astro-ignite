@@ -84,8 +84,8 @@ export const siteConfig: SiteConfig = {
   },
 
   description: {
-    en: 'Production-grade Astro sites in five prompts. SEO, i18n, perf, legal, and email — pre-wired with sane defaults you actually own.',
-    es: 'Sitios Astro listos para producción en cinco prompts. SEO, i18n, rendimiento, páginas legales y email — preconfigurados con valores sensatos que tú posees.',
+    en: 'Production-grade Astro sites , built for AI agents. SEO, i18n, perf, legal, and email — pre-wired with sane defaults you actually own.',
+    es: 'Sitios Astro listos para producción , hechos para agentes de IA. SEO, i18n, rendimiento, páginas legales y email — preconfigurados con valores sensatos que tú posees.',
   },
 
   organization: {
