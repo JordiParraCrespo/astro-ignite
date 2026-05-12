@@ -1,0 +1,14 @@
+{
+  "mode": "pre",
+  "tag": "beta",
+  "initialVersions": {
+    "@astro-ignite/docs": "0.1.0",
+    "playground": "0.1.0",
+    "@astro-ignite/site": "0.1.0",
+    "create-astro-ignite": "0.0.0",
+    "@astro-ignite/design-fetch": "0.0.0",
+    "@astro-ignite/template-docs": "0.0.0",
+    "@astro-ignite/template-starter": "0.0.0"
+  },
+  "changesets": []
+}
