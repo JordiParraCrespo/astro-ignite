@@ -1,0 +1,75 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { useTranslations } from '@/i18n';
+import { siteConfig } from '@/config/site';
+import { aboutPageSchema, breadcrumbListSchema } from '@/lib/jsonld';
+
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
+
+const schemas = [
+  breadcrumbListSchema([
+    { name: t('nav.home'), url: '/' },
+    { name: t('nav.about'), url: '/about' },
+  ]),
+  aboutPageSchema({
+    url: '/about',
+    title: t('seo.about.title'),
+    description: t('seo.about.description'),
+    inLanguage: locale,
+  }),
+];
+---
+
+<BaseLayout title={t('seo.about.title')} description={t('seo.about.description')} schemas={schemas}>
+  <article class="page">
+    <header class="page-header">
+      <h1>{t('seo.about.title')}</h1>
+      <p class="lede">{t('seo.about.description')}</p>
+    </header>
+    <div class="prose">
+      <p>
+        Replace this content with your story. The page is a regular Astro component using <code
+          >BaseLayout</code
+        > directly — no separate layout is needed for static pages like this one.
+      </p>
+      <p>
+        Pages that don't fit a content collection live as <code>.astro</code>
+        files in <code>src/pages/[...lang]/</code>. They call <code>t()</code>
+        for translated copy and pass the result to <code>BaseLayout</code> for SEO. Specialized layouts
+        (Article, Project, Legal) handle the collection-driven pages.
+      </p>
+      <h2>What goes here</h2>
+      <ul>
+        <li>Who you are or what your team does</li>
+        <li>Why you built the thing</li>
+        <li>How to get in touch (the contact form lives at <code>/contact</code>)</li>
+      </ul>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .page {
+    max-width: 48rem;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 4rem;
+  }
+  .page-header {
+    margin-bottom: 2rem;
+  }
+  .page-header h1 {
+    font-size: clamp(2rem, 5vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.75rem;
+    color: var(--color-fg);
+  }
+  .lede {
+    font-size: 1.125rem;
+    color: var(--color-fg-muted);
+    margin: 0;
+    line-height: 1.5;
+  }
+</style>

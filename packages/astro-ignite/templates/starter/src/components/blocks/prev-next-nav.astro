@@ -1,0 +1,86 @@
+---
+import { cn } from '@/lib/cn';
+
+export type PrevNextItem = {
+  href: string;
+  title: string;
+  label?: string;
+};
+
+export type Props = {
+  prev?: PrevNextItem;
+  next?: PrevNextItem;
+  prevLabel?: string;
+  nextLabel?: string;
+  class?: string;
+};
+
+const {
+  prev,
+  next,
+  prevLabel = '← Previous',
+  nextLabel = 'Next →',
+  class: className,
+} = Astro.props;
+---
+
+<nav class={cn('prev-next', className)} aria-label="Previous and next">
+  {
+    prev ? (
+      <a href={prev.href} class="prev-next__box">
+        <span class="prev-next__label mono">{prev.label ?? prevLabel}</span>
+        <span class="prev-next__title">{prev.title}</span>
+      </a>
+    ) : (
+      <span aria-hidden="true" />
+    )
+  }
+  {
+    next ? (
+      <a href={next.href} class="prev-next__box prev-next__box--end">
+        <span class="prev-next__label mono">{next.label ?? nextLabel}</span>
+        <span class="prev-next__title">{next.title}</span>
+      </a>
+    ) : (
+      <span aria-hidden="true" />
+    )
+  }
+</nav>
+
+<style>
+  .prev-next {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .prev-next__box {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    text-decoration: none;
+    color: var(--color-fg);
+    transition: border-color 120ms ease;
+  }
+  .prev-next__box:hover {
+    border-color: var(--color-border-strong);
+  }
+  .prev-next__box--end {
+    text-align: right;
+  }
+  .prev-next__label {
+    font-size: 10px;
+    color: var(--color-fg-subtle);
+  }
+  .prev-next__title {
+    font-size: 13px;
+    font-weight: 500;
+  }
+  @media (max-width: 640px) {
+    .prev-next {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,129 @@
+---
+import { cn } from '@/lib/cn';
+
+export type Props = {
+  position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
+  class?: string;
+};
+
+const { position = 'bottom-right', class: className } = Astro.props;
+---
+
+<ai-toaster
+  data-position={position}
+  class={cn('toaster', `toaster--${position}`, className)}
+  aria-live="polite"
+  aria-atomic="false"></ai-toaster>
+
+<style>
+  .toaster {
+    position: fixed;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+    max-width: min(420px, calc(100vw - 32px));
+    pointer-events: none;
+  }
+  .toaster--top-right {
+    top: 0;
+    right: 0;
+  }
+  .toaster--top-left {
+    top: 0;
+    left: 0;
+  }
+  .toaster--bottom-right {
+    bottom: 0;
+    right: 0;
+  }
+  .toaster--bottom-left {
+    bottom: 0;
+    left: 0;
+  }
+  .toaster :global(.toast) {
+    pointer-events: auto;
+    background: var(--color-surface);
+    color: var(--color-fg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    box-shadow:
+      0 10px 15px -3px rgb(0 0 0 / 0.3),
+      0 4px 6px -4px rgb(0 0 0 / 0.2);
+    font-size: 14px;
+    line-height: 1.4;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    animation: toast-in 200ms ease-out;
+  }
+  .toaster :global(.toast--destructive) {
+    border-color: color-mix(in oklch, var(--color-danger) 50%, var(--color-border));
+  }
+  .toaster :global(.toast--success) {
+    border-color: color-mix(in oklch, var(--color-success) 50%, var(--color-border));
+  }
+  .toaster :global(.toast--warning) {
+    border-color: color-mix(in oklch, var(--color-warning) 50%, var(--color-border));
+  }
+  .toaster :global(.toast__close) {
+    margin-left: auto;
+    background: transparent;
+    border: none;
+    color: var(--color-fg-muted);
+    cursor: pointer;
+    padding: 0 4px;
+    font-size: 14px;
+    line-height: 1;
+  }
+  .toaster :global(.toast__close:hover) {
+    color: var(--color-fg);
+  }
+  @keyframes toast-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<script>
+  if (!customElements.get('ai-toaster')) {
+    class AiToaster extends HTMLElement {
+      connectedCallback() {
+        window.addEventListener('ai-toast', (e: Event) => {
+          const detail = (e as CustomEvent).detail as {
+            message: string;
+            variant?: 'default' | 'success' | 'destructive' | 'warning';
+            duration?: number;
+          };
+          this.show(detail);
+        });
+      }
+      show(opts: { message: string; variant?: string; duration?: number }) {
+        const el = document.createElement('div');
+        el.className = `toast toast--${opts.variant ?? 'default'}`;
+        el.setAttribute('role', opts.variant === 'destructive' ? 'alert' : 'status');
+        const text = document.createElement('span');
+        text.textContent = opts.message;
+        el.appendChild(text);
+        const close = document.createElement('button');
+        close.className = 'toast__close';
+        close.setAttribute('aria-label', 'Close');
+        close.textContent = '×';
+        close.addEventListener('click', () => el.remove());
+        el.appendChild(close);
+        this.appendChild(el);
+        const ms = opts.duration ?? 4000;
+        if (ms > 0) setTimeout(() => el.remove(), ms);
+      }
+    }
+    customElements.define('ai-toaster', AiToaster);
+  }
+</script>

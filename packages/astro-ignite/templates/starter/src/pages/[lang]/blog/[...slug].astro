@@ -1,0 +1,43 @@
+---
+/**
+ * Per-locale blog post route — handles non-default locales.
+ *
+ * Default-locale posts render at /blog/[slug] via the sibling file at
+ * src/pages/blog/[...slug].astro. This file generates paths for every
+ * locale in siteConfig.locales EXCEPT the default.
+ */
+
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+import ArticleLayout from '@/layouts/ArticleLayout.astro';
+import { siteConfig } from '@/config/site';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', (e: CollectionEntry<'blog'>) => !e.data.draft);
+  return posts.flatMap((entry: CollectionEntry<'blog'>) => {
+    const segments = entry.id.split('/');
+    const lang = segments[0]!;
+    if (lang === siteConfig.defaultLocale) return [];
+    if (!siteConfig.locales.includes(lang)) return [];
+    const slug = segments.slice(1).join('/');
+    return [
+      {
+        params: { lang, slug },
+        props: { entry },
+      },
+    ];
+  });
+}
+
+interface Props {
+  entry: CollectionEntry<'blog'>;
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<ArticleLayout entry={entry}>
+  <Content />
+</ArticleLayout>

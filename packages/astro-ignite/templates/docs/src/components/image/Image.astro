@@ -1,0 +1,82 @@
+---
+/**
+ * Content image — lazy, with blur placeholder, AVIF + WebP, JPEG fallback.
+ *
+ * Use this for any image NOT in the initial viewport. For above-the-fold
+ * images use <HeroImage> instead — its defaults are tuned for LCP.
+ *
+ * The blur placeholder is rendered as a CSS background behind the actual
+ * image; once the image loads, a small fade hides the blur. SVG sources
+ * skip the blur step (they're already vector and tiny).
+ */
+
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+import { getBlurDataUrl } from '@/lib/image/blur';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  width?: number;
+  height?: number;
+  sizes?: string;
+  class?: string;
+}
+
+const {
+  src,
+  alt,
+  width,
+  height,
+  sizes = '(min-width: 768px) 50vw, 100vw',
+  class: className,
+} = Astro.props;
+
+const blur = await getBlurDataUrl(src);
+const aspectStyle = width && height ? `aspect-ratio: ${width} / ${height};` : '';
+---
+
+<div
+  class:list={['ig-image', className]}
+  data-has-blur={blur ? '' : null}
+  style={`${aspectStyle}${blur ? `--blur:url(${blur});` : ''}`}
+>
+  <Picture
+    src={src}
+    alt={alt}
+    width={width}
+    height={height}
+    sizes={sizes}
+    loading="lazy"
+    decoding="async"
+    formats={['avif', 'webp']}
+    quality={80}
+  />
+</div>
+
+<style>
+  .ig-image {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-surface-2);
+  }
+  .ig-image[data-has-blur]::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: var(--blur);
+    background-size: cover;
+    background-position: center;
+    filter: blur(20px);
+    transform: scale(1.1);
+    z-index: 0;
+  }
+  .ig-image img {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+</style>

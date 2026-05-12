@@ -1,0 +1,112 @@
+---
+/**
+ * LegalLayout — wraps BaseLayout for privacy/terms/cookies pages.
+ *
+ * Narrow reading column, "last updated" header prominently displayed,
+ * automatic disclaimer banner reminding users this is a template.
+ */
+
+import type { CollectionEntry } from 'astro:content';
+
+import { siteConfig } from '@/config/site';
+import { useTranslations } from '@/i18n';
+import { breadcrumbListSchema, webPageSchema } from '@/lib/jsonld';
+
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  entry: CollectionEntry<'legal'>;
+}
+
+const { entry } = Astro.props;
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
+
+const slugSegments = entry.id.split('/');
+const slug = slugSegments.slice(1).join('/');
+const url = `/legal/${slug}`;
+
+const crumbs = [
+  { name: t('nav.home'), url: '/' },
+  { name: t('footer.legal'), url: '/legal/privacy' },
+  { name: entry.data.title, url },
+];
+
+const schemas = [
+  breadcrumbListSchema(crumbs),
+  webPageSchema({
+    url,
+    title: entry.data.title,
+    description: entry.data.description,
+    inLanguage: locale,
+    dateModified: entry.data.lastUpdated,
+  }),
+];
+
+const dateFmt = new Intl.DateTimeFormat(locale, {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  type="website"
+  schemas={schemas}
+>
+  <article class="legal">
+    <header class="legal-header">
+      <h1>{entry.data.title}</h1>
+      <p class="legal-meta">
+        <span>
+          {t('legal.lastUpdated')}:
+          <time datetime={entry.data.lastUpdated.toISOString()}>
+            {dateFmt.format(entry.data.lastUpdated)}
+          </time>
+        </span>
+        <span class="dot" aria-hidden="true">·</span>
+        <span>{t('legal.version')} {entry.data.version}</span>
+      </p>
+    </header>
+
+    <div class="prose legal-prose">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .legal {
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+  }
+  .legal-header {
+    margin-bottom: 2rem;
+  }
+  .legal-header h1 {
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.5rem;
+    color: var(--color-fg);
+  }
+  .legal-meta {
+    color: var(--color-fg-muted);
+    font-size: 0.875rem;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .legal-prose :global(blockquote) {
+    background: var(--color-surface-2);
+    border-left: 3px solid var(--color-warning);
+    padding: 0.75rem 1rem;
+    margin: 1.5rem 0;
+    border-radius: 0 0.375rem 0.375rem 0;
+  }
+</style>

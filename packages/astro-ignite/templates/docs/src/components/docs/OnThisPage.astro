@@ -1,0 +1,115 @@
+---
+/**
+ * Right-column "On this page" TOC.
+ *
+ * Receives Astro's `headings` array (from `entry.render()`) and builds an
+ * outline of H2 + H3 anchors. Active heading is tracked via IntersectionObserver
+ * so the highlight follows the reader's scroll position.
+ */
+
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  headings: MarkdownHeading[];
+  /** Optional title shown above the TOC. */
+  title?: string;
+}
+
+const { headings, title = 'On this page' } = Astro.props;
+
+// Filter to depth 2 + 3 — H1 is the page title, H4+ is too granular.
+const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+{
+  items.length > 0 && (
+    <aside class="on-this-page" aria-label={title}>
+      <div class="on-this-page-title mono">{title}</div>
+      <ul>
+        {items.map((h) => (
+          <li class:list={[`depth-${h.depth}`]}>
+            <a href={`#${h.slug}`} data-heading={h.slug}>
+              {h.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </aside>
+  )
+}
+
+<script>
+  // Highlight the heading currently in view.
+  const links = document.querySelectorAll<HTMLAnchorElement>('.on-this-page a[data-heading]');
+  if (links.length > 0) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const id = entry.target.id;
+          links.forEach((a) => {
+            a.toggleAttribute('data-active', a.dataset.heading === id);
+          });
+          break;
+        }
+      },
+      { rootMargin: '0px 0px -70% 0px' }
+    );
+    links.forEach((a) => {
+      const target = document.getElementById(a.dataset.heading!);
+      if (target) observer.observe(target);
+    });
+  }
+</script>
+
+<style>
+  .on-this-page {
+    position: sticky;
+    top: 32px;
+    align-self: start;
+    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+  }
+  .on-this-page-title {
+    font-size: 10px;
+    color: var(--color-fg-muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .on-this-page ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .on-this-page li.depth-3 {
+    padding-left: 12px;
+  }
+  .on-this-page a {
+    display: block;
+    padding: 4px 10px;
+    border-left: 2px solid transparent;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    color: var(--color-fg-muted);
+    font-size: 12px;
+    line-height: 1.45;
+    text-decoration: none;
+    transition:
+      color 0.1s,
+      border-color 0.1s;
+  }
+  .on-this-page a:hover {
+    color: var(--color-fg);
+  }
+  .on-this-page a[data-active] {
+    color: var(--color-fg);
+    font-weight: 500;
+    border-left-color: var(--color-fg);
+  }
+</style>
