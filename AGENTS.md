@@ -53,7 +53,7 @@ Single-package: `pnpm --filter <pkg-name> <script>` (names: `create-astro-ignite
 
 Single test file in the CLI: `pnpm --filter create-astro-ignite test -- scaffold.test.ts`.
 
-Pre-commit runs `pnpm format:check` via `simple-git-hooks`. Don't bypass it.
+No pre-commit hook. Run `pnpm format` yourself before opening a PR — CI checks formatting, but local commits are not gated.
 
 ## CLI architecture
 
