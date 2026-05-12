@@ -6,139 +6,1191 @@ export function getStaticPaths() {
     .map((lang) => ({ params: { lang } }));
 }
 import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
-import { useTranslations, type TranslationKey } from '@/i18n';
+import { useTranslations } from '@/i18n';
+
+import Button from '@registry/base/button.astro';
+import Link from '@registry/base/link.astro';
+import Badge from '@registry/base/badge.astro';
+import Input from '@registry/base/input.astro';
+import Textarea from '@registry/base/textarea.astro';
+import Label from '@registry/base/label.astro';
+import Separator from '@registry/base/separator.astro';
+import Alert from '@registry/base/alert.astro';
+import Avatar from '@registry/base/avatar.astro';
+import Skeleton from '@registry/base/skeleton.astro';
+import Kbd from '@registry/base/kbd.astro';
+import Card from '@registry/base/card/card.astro';
+import CardHeader from '@registry/base/card/card-header.astro';
+import CardTitle from '@registry/base/card/card-title.astro';
+import CardDescription from '@registry/base/card/card-description.astro';
+import CardContent from '@registry/base/card/card-content.astro';
+import CardFooter from '@registry/base/card/card-footer.astro';
+import Tabs from '@registry/base/tabs/tabs.astro';
+import TabsList from '@registry/base/tabs/tabs-list.astro';
+import TabsTrigger from '@registry/base/tabs/tabs-trigger.astro';
+import TabsContent from '@registry/base/tabs/tabs-content.astro';
+import Accordion from '@registry/base/accordion/accordion.astro';
+import AccordionItem from '@registry/base/accordion/accordion-item.astro';
+import Tooltip from '@registry/base/tooltip.astro';
+import Toaster from '@registry/base/toaster.astro';
+
+import PageHero from '@registry/blocks/page-hero.astro';
+import Breadcrumb from '@registry/blocks/breadcrumb.astro';
+import ReleasePill from '@registry/blocks/release-pill.astro';
+import CommandBlock from '@registry/blocks/command-block.astro';
+import TerminalPreview from '@registry/blocks/terminal-preview.astro';
+import FeatureGrid from '@registry/blocks/feature-grid.astro';
+import PrevNextNav from '@registry/blocks/prev-next-nav.astro';
+import AuthorCard from '@registry/blocks/author-card.astro';
+import NoticeBanner from '@registry/blocks/notice-banner.astro';
 
 const t = useTranslations(Astro.currentLocale);
-
-const componentNames = [
-  'button',
-  'link',
-  'badge',
-  'card',
-  'input',
-  'textarea',
-  'label',
-  'separator',
-  'alert',
-  'avatar',
-  'skeleton',
-  'kbd',
-  'tabs',
-  'accordion',
-  'dialog',
-  'dropdown-menu',
-  'tooltip',
-  'toast',
-] as const;
 ---
 
 <ComponentsLayout
-  title={t('components.index.title')}
-  description={t('components.index.description')}
+  title={`Components | ${t('seo.home.title')}`}
+  description="Every visual surface in astro-ignite — registry primitives, site & docs chrome, and the landing composites."
 >
-  <main class="page">
-    <header class="page__head">
-      <p class="page__eyebrow">{t('components.index.eyebrow')}</p>
-      <h1 class="page__title">{t('components.index.title')}</h1>
-      <p class="page__desc">
-        {t('components.index.intro')}
-        <code>npx astro-ignite add &lt;name&gt;</code>
-        {t('components.index.introTail')}
+  <div class="cat">
+    <header class="cat__head">
+      <p class="cat__eyebrow mono">Design system · 0.1.0</p>
+      <h1 class="cat__title">Components</h1>
+      <p class="cat__lede">
+        Every visual surface in astro-ignite, in one place. Registry primitives, site &amp; docs
+        chrome, and the landing composites. All built on a single zinc scale and Geist type pairing.
       </p>
+      <div class="cat__meta mono">
+        <span><strong>33</strong> components</span>
+        <span><strong>18</strong> registry primitives</span>
+        <span><strong>14</strong> blocks</span>
+        <span><strong>1</strong> brand mark</span>
+      </div>
+
+      <nav class="cat__jump mono" aria-label="Jump to section">
+        <a href="#brand">Brand</a>
+        <a href="#primitives">Primitives</a>
+        <a href="#blocks">Blocks</a>
+        <a href="#chrome">Chrome</a>
+      </nav>
     </header>
 
-    <ul class="grid">
-      {
-        componentNames.map((name) => (
-          <li class="card">
-            <a href={`/components/${name}`} class="card__link">
-              <h2 class="card__title">{name}</h2>
-              <p class="card__desc">{t(`components.summary.${name}` as TranslationKey)}</p>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </main>
+    <!-- ============ BRAND ============ -->
+    <section class="grp" id="brand">
+      <header class="grp__head">
+        <div>
+          <h2>Brand</h2>
+          <p class="grp__lede">
+            The <span class="mono">&gt;_</span> mark and lockup. Always Geist Mono, always lowercase wordmark.
+          </p>
+        </div>
+        <span class="grp__count mono">1 component · 2 variants</span>
+      </header>
+
+      <article class="comp">
+        <div class="comp__head">
+          <h3>Brand</h3>
+          <span class="comp__file mono">apps/site/src/components/Brand.astro</span>
+          <span class="comp__anno mono">variant=lockup | mark</span>
+        </div>
+        <div class="preview">
+          <div class="row" style="gap: 48px; flex-wrap: wrap;">
+            <div class="col">
+              <span class="label mono">lockup</span>
+              <div class="b-lockup">
+                <span class="b-lockup__glyph mono">&gt;_</span>
+                <span class="b-lockup__name">astro-ignite</span>
+              </div>
+            </div>
+            <div class="col">
+              <span class="label mono">mark</span>
+              <div class="b-mark mono">&gt;_</div>
+            </div>
+            <div class="col">
+              <span class="label mono">size · sm/md/lg</span>
+              <div class="row" style="align-items: baseline; gap: 20px;">
+                <span class="mono" style="font-size: 14px;">&gt;_</span>
+                <span class="mono" style="font-size: 22px;">&gt;_</span>
+                <span class="mono" style="font-size: 36px;">&gt;_</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============ REGISTRY PRIMITIVES ============ -->
+    <section class="grp" id="primitives">
+      <header class="grp__head">
+        <div>
+          <h2>Registry primitives</h2>
+          <p class="grp__lede">
+            shadcn-style copy-paste components. Source in
+            <span class="mono">packages/registry/base</span>.
+          </p>
+        </div>
+        <span class="grp__count mono">18 components</span>
+      </header>
+
+      <article class="comp" id="button">
+        <div class="comp__head">
+          <h3>Button</h3><span class="comp__file mono">button.astro</span>
+          <span class="comp__anno mono">5 variants · 3 sizes</span>
+        </div>
+        <div class="preview">
+          <div class="row"><span class="label mono">variant</span>
+            <Button>Default</Button>
+            <Button variant="secondary">Secondary</Button>
+            <Button variant="outline">Outline</Button>
+            <Button variant="ghost">Ghost</Button>
+            <Button variant="destructive">Destructive</Button>
+          </div>
+          <div class="row"><span class="label mono">size</span>
+            <Button size="sm">Small</Button>
+            <Button>Medium</Button>
+            <Button size="lg">Large</Button>
+          </div>
+        </div>
+      </article>
+
+      <article class="comp" id="link">
+        <div class="comp__head">
+          <h3>Link</h3><span class="comp__file mono">link.astro</span>
+        </div>
+        <div class="preview">
+          <div class="row"><span class="label mono">variants</span>
+            <Link href="#">Default link</Link>
+            <span class="vsep"></span>
+            <Link href="#" variant="muted">Muted link</Link>
+            <span class="vsep"></span>
+            <Link href="#" variant="underline">Underline link</Link>
+          </div>
+        </div>
+      </article>
+
+      <article class="comp" id="badge">
+        <div class="comp__head">
+          <h3>Badge</h3><span class="comp__file mono">badge.astro</span>
+        </div>
+        <div class="preview">
+          <div class="row"><span class="label mono">variants</span>
+            <Badge>Default</Badge>
+            <Badge variant="secondary">Secondary</Badge>
+            <Badge variant="outline">Outline</Badge>
+            <Badge variant="destructive">Destructive</Badge>
+          </div>
+        </div>
+      </article>
+
+      <article class="comp" id="card">
+        <div class="comp__head">
+          <h3>Card</h3><span class="comp__file mono">card/*.astro</span>
+          <span class="comp__anno mono">composition</span>
+        </div>
+        <div class="preview">
+          <Card class="card-sample">
+            <CardHeader>
+              <CardTitle>Lighthouse 100s</CardTitle>
+              <CardDescription>Mobile and desktop. CI budgets fail the build before regressions ship.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              Built into every template. Disable per-route with a frontmatter flag.
+            </CardContent>
+            <CardFooter>
+              <Button size="sm">Configure</Button>
+              <Button size="sm" variant="ghost">Learn more</Button>
+            </CardFooter>
+          </Card>
+        </div>
+      </article>
+
+      <article class="comp" id="input">
+        <div class="comp__head">
+          <h3>Input</h3><span class="comp__file mono">input.astro</span>
+        </div>
+        <div class="preview">
+          <div class="row" style="align-items: flex-start; gap: 16px;">
+            <div class="col field"><Label>Default</Label><Input placeholder="my-site" /></div>
+            <div class="col field"><Label>Filled</Label><Input value="my-site" /></div>
+            <div class="col field"><Label>Disabled</Label><Input disabled value="my-site" /></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="comp" id="textarea">
+        <div class="comp__head">
+          <h3>Textarea</h3><span class="comp__file mono">textarea.astro</span>
+        </div>
+        <div class="preview">
+          <div class="col field" style="max-width: 360px;">
+            <Label>Description</Label>
+            <Textarea placeholder="Tell us about your site…" />
+          </div>
+        </div>
+      </article>
+
+      <article class="comp" id="label">
+        <div class="comp__head">
+          <h3>Label</h3><span class="comp__file mono">label.astro</span>
+        </div>
+        <div class="preview">
+          <div class="col field" style="max-width: 320px;">
+            <Label for="proj">Project name <span class="lbl-aux">· required</span></Label>
+            <Input id="proj" placeholder="my-site" />
+          </div>
+        </div>
+      </article>
+
+      <article class="comp" id="separator">
+        <div class="comp__head">
+          <h3>Separator</h3><span class="comp__file mono">separator.astro</span>
+        </div>
+        <div class="preview">
+          <div class="col" style="gap: 12px; max-width: 360px;">
+            <span class="mono small-muted">Account settings</span>
+            <Separator />
+            <span class="mono small-muted">API keys · billing · usage</span>
+          </div>
+          <div class="row"><span class="label mono">vertical</span>
+            <span>Docs</span><Separator orientation="vertical" />
+            <span>Plan</span><Separator orientation="vertical" />
+            <span>Changelog</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="comp" id="alert">
+        <div class="comp__head">
+          <h3>Alert</h3><span class="comp__file mono">alert.astro</span>
+        </div>
+        <div class="preview" style="max-width: 640px;">
+          <Alert>
+            <Fragment slot="title">Heads up</Fragment>
+            Astro 5 ships strict TypeScript by default. Your existing routes will type-check on build.
+          </Alert>
+          <Alert variant="destructive">
+            <Fragment slot="title">Build failed</Fragment>
+            JSON-LD schema validation error in /blog/[slug]. See logs.
+          </Alert>
+        </div>
+      </article>
+
+      <article class="comp" id="avatar">
+        <div class="comp__head">
+          <h3>Avatar</h3><span class="comp__file mono">avatar.astro</span>
+        </div>
+        <div class="preview">
+          <div class="row"><span class="label mono">size</span>
+            <Avatar size="sm" fallback="AI" />
+            <Avatar fallback="AI" />
+            <Avatar size="lg" fallback="AI" />
+          </div>
+          <div class="row"><span class="label mono">fallback</span>
+            <Avatar fallback="JD" />
+            <Avatar fallback="MK" />
+            <Avatar fallback="RS" />
+        </div>
+      </article>
+
+      <article class="comp" id="skeleton">
+        <div class="comp__head">
+          <h3>Skeleton</h3><span class="comp__file mono">skeleton.astro</span>
+        </div>
+        <div class="preview">
+          <div class="col" style="gap: 10px; max-width: 420px;">
+            <div class="row" style="gap: 12px;">
+              <Skeleton style="width:36px;height:36px;border-radius:99px;" />
+              <div class="col" style="gap: 6px; flex: 1;">
+                <Skeleton style="width: 65%; height: 12px;" />
+                <Skeleton style="width: 40%; height: 10px;" />
+              </div>
+            </div>
+            <Skeleton style="width: 100%; height: 14px;" />
+            <Skeleton style="width: 90%; height: 14px;" />
+            <Skeleton style="width: 60%; height: 14px;" />
+          </div>
+        </div>
+      </article>
+
+      <article class="comp" id="kbd">
+        <div class="comp__head">
+          <h3>Kbd</h3><span class="comp__file mono">kbd.astro</span>
+        </div>
+        <div class="preview">
+          <div class="row" style="gap: 8px;">
+            <span class="small-muted">Search</span>
+            <Kbd>⌘</Kbd><Kbd>K</Kbd>
+            <span class="vsep"></span>
+            <span class="small-muted">Toggle theme</span>
+            <Kbd>⌘</Kbd><Kbd>⇧</Kbd><Kbd>D</Kbd>
+            <span class="vsep"></span>
+            <span class="small-muted">Confirm</span>
+            <Kbd>↵</Kbd>
+          </div>
+        </div>
+      </article>
+
+      <article class="comp" id="tabs">
+        <div class="comp__head">
+          <h3>Tabs</h3><span class="comp__file mono">tabs/*.astro</span>
+        </div>
+        <div class="preview">
+          <Tabs defaultValue="preview">
+            <TabsList>
+              <TabsTrigger value="preview">Preview</TabsTrigger>
+              <TabsTrigger value="code">Code</TabsTrigger>
+              <TabsTrigger value="install">Install</TabsTrigger>
+            </TabsList>
+            <TabsContent value="preview">Live preview surface.</TabsContent>
+            <TabsContent value="code">Source snippet.</TabsContent>
+            <TabsContent value="install">npx astro-ignite add tabs</TabsContent>
+          </Tabs>
+        </div>
+      </article>
+
+      <article class="comp" id="accordion">
+        <div class="comp__head">
+          <h3>Accordion</h3><span class="comp__file mono">accordion/*.astro</span>
+        </div>
+        <div class="preview">
+          <Accordion>
+            <AccordionItem title="Does the CLI vendor framework code?">
+              No. Templates are owned by you — no runtime dependency on astro-ignite once scaffolded.
+            </AccordionItem>
+            <AccordionItem title="Can I add custom components after scaffolding?">
+              Yes. The registry is shadcn-style: source files copy into your project on demand.
+            </AccordionItem>
+          </Accordion>
+        </div>
+      </article>
+
+      <article class="comp" id="dialog">
+        <div class="comp__head">
+          <h3>Dialog</h3><span class="comp__file mono">dialog/*.astro</span>
+          <span class="comp__anno mono">native &lt;dialog&gt; element</span>
+        </div>
+        <div class="preview">
+          <p class="small-muted" style="margin:0 0 8px;">Open via the registry's <code class="mono">openDialog()</code> helper. Static preview:</p>
+          <div class="dialog-static">
+            <div class="dialog-static__title">Delete project?</div>
+            <div class="dialog-static__desc">This will permanently remove "my-site" and all its content. This action cannot be undone.</div>
+            <div class="dialog-static__actions">
+              <Button variant="ghost" size="sm">Cancel</Button>
+              <Button variant="destructive" size="sm">Delete</Button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="comp" id="dropdown-menu">
+        <div class="comp__head">
+          <h3>Dropdown menu</h3><span class="comp__file mono">dropdown-menu/*.astro</span>
+          <span class="comp__anno mono">popover API</span>
+        </div>
+        <div class="preview">
+          <div class="dd-static">
+            <div class="dd-static__menu">
+              <div class="dd-static__item">Profile <Kbd>⌘P</Kbd></div>
+              <div class="dd-static__item dd-static__item--hover">Settings <Kbd>⌘,</Kbd></div>
+              <div class="dd-static__item">Keyboard shortcuts <Kbd>⌘K</Kbd></div>
+              <div class="dd-static__sep"></div>
+              <div class="dd-static__item dd-static__item--danger">Sign out</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="comp" id="tooltip">
+        <div class="comp__head">
+          <h3>Tooltip</h3><span class="comp__file mono">tooltip.astro</span>
+          <span class="comp__anno mono">CSS-only</span>
+        </div>
+        <div class="preview">
+          <div class="row" style="gap: 24px;">
+            <Tooltip content="Save changes (⌘S)"><Button variant="outline" size="sm">Hover me</Button></Tooltip>
+            <Tooltip content="Open in new tab"><Button variant="ghost" size="sm">↗</Button></Tooltip>
+          </div>
+        </div>
+      </article>
+
+      <article class="comp" id="toast">
+        <div class="comp__head">
+          <h3>Toast</h3><span class="comp__file mono">toaster.astro + lib/toast.ts</span>
+        </div>
+        <div class="preview">
+          <div class="toast-static">
+            <span class="toast-static__icon">i</span>
+            <span class="toast-static__msg">Settings saved.</span>
+            <button class="toast-static__close" aria-label="Close">×</button>
+          </div>
+          <Toaster />
+        </div>
+      </article>
+    </section>
+
+    <!-- ============ BLOCKS ============ -->
+    <section class="grp" id="blocks">
+      <header class="grp__head">
+        <div>
+          <h2>Blocks</h2>
+          <p class="grp__lede">
+            Composed patterns built from the primitives. Source in <span class="mono">packages/registry/blocks</span>.
+          </p>
+        </div>
+        <span class="grp__count mono">14 blocks</span>
+      </header>
+
+      <article class="comp" id="page-hero">
+        <div class="comp__head"><h3>PageHero</h3><span class="comp__file mono">page-hero.astro</span></div>
+        <div class="preview"><PageHero eyebrow="GET STARTED" title="Astro sites, built for AI agents." lede="Scaffold a production-grade Astro project with one command. No framework lock-in." align="start" size="md" /></div>
+      </article>
+
+      <article class="comp" id="breadcrumb">
+        <div class="comp__head"><h3>Breadcrumb</h3><span class="comp__file mono">breadcrumb.astro</span></div>
+        <div class="preview"><Breadcrumb items={[{ label: 'Docs', href: '/' }, { label: 'Components', href: '/components' }, { label: 'Breadcrumb' }]} /></div>
+      </article>
+
+      <article class="comp" id="release-pill">
+        <div class="comp__head"><h3>ReleasePill</h3><span class="comp__file mono">release-pill.astro</span></div>
+        <div class="preview"><ReleasePill label="BETA" detail="v0.1.0 just shipped" /></div>
+      </article>
+
+      <article class="comp" id="command-block">
+        <div class="comp__head"><h3>CommandBlock</h3><span class="comp__file mono">command-block.astro</span></div>
+        <div class="preview"><CommandBlock command="npx astro-ignite@latest my-site" /></div>
+      </article>
+
+      <article class="comp" id="terminal-preview">
+        <div class="comp__head"><h3>TerminalPreview</h3><span class="comp__file mono">terminal-preview.astro</span></div>
+        <div class="preview">
+          <TerminalPreview path="~/code">
+            <span class="mt">$</span> npx astro-ignite@latest my-site<br />
+            <span class="mt">◇</span> Project name?  <span class="st">./my-site</span><br />
+            <span class="mt">◇</span> Languages?    <span class="st">en, es</span><br />
+            <span class="mt">◇</span> Email?        <span class="st">Resend</span><br />
+            <span class="mt">◆</span> Install deps? <span class="pick">● Yes</span> <span class="st">○ No</span><br />
+          </TerminalPreview>
+        </div>
+      </article>
+
+      <article class="comp" id="feature-grid">
+        <div class="comp__head"><h3>FeatureGrid</h3><span class="comp__file mono">feature-grid.astro</span></div>
+        <div class="preview">
+          <FeatureGrid
+            columns={3}
+            features={[
+              { index: '01', title: 'Lighthouse 100s', body: 'Mobile and desktop, CI-enforced.' },
+              { index: '02', title: 'Strict TS', body: 'Astro 5 type-checks every route on build.' },
+              { index: '03', title: 'Agent-readable', body: 'Small surface area, no magic abstractions.' },
+            ]}
+          />
+        </div>
+      </article>
+
+      <article class="comp" id="prev-next-nav">
+        <div class="comp__head"><h3>PrevNextNav</h3><span class="comp__file mono">prev-next-nav.astro</span></div>
+        <div class="preview">
+          <PrevNextNav
+            prev={{ title: 'Introduction', href: '/introduction' }}
+            next={{ title: 'Quick start', href: '/quick-start' }}
+          />
+        </div>
+      </article>
+
+      <article class="comp" id="author-card">
+        <div class="comp__head"><h3>AuthorCard</h3><span class="comp__file mono">author-card.astro</span></div>
+        <div class="preview">
+          <AuthorCard name="Jordi Parra" bio="Maintainer. Building astro-ignite — a small, owned, Lighthouse-100 scaffolder for Astro." />
+        </div>
+      </article>
+
+      <article class="comp" id="notice-banner">
+        <div class="comp__head"><h3>NoticeBanner</h3><span class="comp__file mono">notice-banner.astro</span></div>
+        <div class="preview" style="gap: 10px;">
+          <NoticeBanner>This is a template document. Review with legal counsel before publishing.</NoticeBanner>
+          <NoticeBanner variant="warning">Beta features are subject to change without notice.</NoticeBanner>
+        </div>
+      </article>
+
+      <p class="more-link mono">
+        More blocks: <a href="/blocks/post-list">post-list</a> ·
+        <a href="/blocks/project-card">project-card</a> ·
+        <a href="/blocks/metadata-grid">metadata-grid</a> ·
+        <a href="/blocks/toc-rail">toc-rail</a> ·
+        <a href="/blocks/not-found-state">not-found-state</a>
+      </p>
+    </section>
+
+    <!-- ============ CHROME ============ -->
+    <section class="grp" id="chrome">
+      <header class="grp__head">
+        <div>
+          <h2>Chrome</h2>
+          <p class="grp__lede">
+            Static previews of the site &amp; docs chrome elements. The live components ship with both templates.
+          </p>
+        </div>
+        <span class="grp__count mono">7 components</span>
+      </header>
+
+      <article class="comp" id="nav">
+        <div class="comp__head"><h3>Nav</h3><span class="comp__file mono">src/components/Header.astro</span></div>
+        <div class="preview">
+          <div class="ch-nav">
+            <span class="ch-nav__brand"><span class="mono ch-nav__glyph">&gt;_</span> astro-ignite</span>
+            <span class="ch-nav__links">
+              <a href="#">Docs</a>
+              <a href="#">Components</a>
+              <a href="#">Blog</a>
+            </span>
+            <span class="ch-nav__cta">
+              <Button size="sm" variant="outline">GitHub</Button>
+              <Button size="sm">Get started</Button>
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <article class="comp" id="footer">
+        <div class="comp__head"><h3>Footer</h3><span class="comp__file mono">src/components/Footer.astro</span></div>
+        <div class="preview">
+          <div class="ch-foot">
+            <div class="ch-foot__brand">
+              <div class="ch-foot__title"><span class="mono">&gt;_</span> astro-ignite</div>
+              <div>Astro sites, built for AI agents.</div>
+            </div>
+            <div class="ch-foot__cols">
+              <div class="ch-foot__col"><span class="ch-foot__head">Project</span><span>Docs</span><span>Roadmap</span><span>Changelog</span></div>
+              <div class="ch-foot__col"><span class="ch-foot__head">Community</span><span>GitHub</span><span>Discord</span></div>
+              <div class="ch-foot__col"><span class="ch-foot__head">Legal</span><span>Privacy</span><span>Terms</span></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="comp" id="locale-switcher">
+        <div class="comp__head"><h3>LocaleSwitcher</h3><span class="comp__file mono">src/components/LocaleSwitcher.astro</span></div>
+        <div class="preview">
+          <div class="loc-static">
+            <button class="loc-static__trig"><span class="loc-static__ic"></span> English <span class="mono small-muted">EN</span></button>
+            <div class="loc-static__menu">
+              <div class="loc-static__item loc-static__item--on">English <span class="mono small-muted">en</span></div>
+              <div class="loc-static__item">Español <span class="mono small-muted">es</span></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="comp" id="theme-toggle">
+        <div class="comp__head"><h3>ThemeToggle</h3><span class="comp__file mono">src/components/ThemeToggle.astro</span></div>
+        <div class="preview">
+          <div class="row" style="gap: 12px; align-items: center;">
+            <button class="theme-btn-static" aria-label="Toggle theme"><span class="theme-btn-static__gl"></span></button>
+            <span class="small-muted">Tri-state: light → dark → system.</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="comp" id="cookie-banner">
+        <div class="comp__head"><h3>CookieBanner</h3><span class="comp__file mono">src/components/CookieBanner.astro</span></div>
+        <div class="preview">
+          <div class="cookie">
+            <span class="cookie__copy">We use first-party cookies to remember your theme. Analytics is consent-gated — read our <a href="#">cookie policy</a>.</span>
+            <span class="cookie__acts">
+              <Button size="sm" variant="ghost">Decline</Button>
+              <Button size="sm">Allow analytics</Button>
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <article class="comp" id="sidebar-nav">
+        <div class="comp__head"><h3>SidebarNav</h3><span class="comp__file mono">src/components/docs/SidebarNav.astro</span></div>
+        <div class="preview">
+          <div class="ch-sidenav">
+            <div class="ch-sidenav__search"><span class="mono">⌕</span><span class="mono small-muted">Find component</span><Kbd>⌘K</Kbd></div>
+            <div class="ch-sidenav__grp">
+              <div class="ch-sidenav__gt mono">Start here</div>
+              <div class="ch-sidenav__it ch-sidenav__it--on">Introduction</div>
+              <div class="ch-sidenav__it">Quick start</div>
+              <div class="ch-sidenav__it">Features</div>
+            </div>
+            <div class="ch-sidenav__grp">
+              <div class="ch-sidenav__gt mono">Reference</div>
+              <div class="ch-sidenav__it">Benchmarks</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="comp" id="search-box">
+        <div class="comp__head"><h3>SearchBox</h3><span class="comp__file mono">src/components/docs/SearchBox.astro</span></div>
+        <div class="preview">
+          <div class="ch-search">
+            <span class="mono small-muted">⌕</span>
+            <span class="small-muted">Search docs…</span>
+            <Kbd>⌘K</Kbd>
+          </div>
+        </div>
+      </article>
+    </section>
+  </div>
 </ComponentsLayout>
 
 <style>
-  .page {
-    max-width: 1000px;
-    margin-inline: auto;
-    padding: 64px 24px 96px;
+  .cat {
+    max-width: 1200px;
   }
-  .page__head {
-    margin-bottom: 48px;
+  .mono {
+    font-family: var(--font-mono, ui-monospace, monospace);
   }
-  .page__eyebrow {
-    color: var(--color-fg-muted);
+  .small-muted {
     font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin: 0 0 8px;
-  }
-  .page__title {
-    font-size: 48px;
-    font-weight: 500;
-    letter-spacing: -0.045em;
-    margin: 0 0 16px;
-  }
-  .page__desc {
     color: var(--color-fg-muted);
-    font-size: 16px;
-    max-width: 60ch;
-    line-height: 1.5;
-    margin: 0;
-  }
-  .page__desc code {
-    font-family: var(--font-mono, monospace);
-    font-size: 13px;
-    padding: 2px 6px;
-    background: var(--color-surface-2);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-sm);
   }
 
-  .grid {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 12px;
+  .cat__head {
+    padding-bottom: 28px;
+    margin-bottom: 48px;
+    border-bottom: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
-  .card {
+  .cat__eyebrow {
     margin: 0;
+    font-size: 11px;
+    color: var(--color-fg-subtle);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
   }
-  .card__link {
-    display: block;
-    padding: 20px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    background: var(--color-surface);
+  .cat__title {
+    margin: 0;
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 500;
+    letter-spacing: -0.045em;
+    line-height: 1;
+  }
+  .cat__lede {
+    margin: 0;
+    font-size: 17px;
+    color: var(--color-fg-muted);
+    line-height: 1.55;
+    max-width: 64ch;
+  }
+  .cat__meta {
+    display: flex;
+    gap: 18px;
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--color-fg-subtle);
+    flex-wrap: wrap;
+  }
+  .cat__meta strong {
     color: var(--color-fg);
-    text-decoration: none;
-    transition:
-      border-color 120ms ease,
-      background 120ms ease;
-    height: 100%;
+    font-weight: 500;
   }
-  .card__link:hover {
+  .cat__jump {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    font-size: 12px;
+  }
+  .cat__jump a {
+    color: var(--color-fg-muted);
+    border: 1px solid var(--color-border);
+    padding: 4px 10px;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: border-color 120ms ease, color 120ms ease;
+  }
+  .cat__jump a:hover {
+    color: var(--color-fg);
     border-color: var(--color-border-strong);
+  }
+
+  .grp {
+    margin-bottom: 64px;
+    scroll-margin-top: 24px;
+  }
+  .grp__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .grp__head h2 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 500;
+    letter-spacing: -0.035em;
+  }
+  .grp__lede {
+    margin: 6px 0 0;
+    color: var(--color-fg-muted);
+    font-size: 14px;
+    max-width: 56ch;
+  }
+  .grp__count {
+    font-size: 11px;
+    color: var(--color-fg-subtle);
+  }
+
+  .comp {
+    margin-bottom: 28px;
+    scroll-margin-top: 24px;
+  }
+  .comp__head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .comp__head h3 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+  }
+  .comp__file {
+    font-size: 11px;
+    color: var(--color-fg-subtle);
+  }
+  .comp__anno {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--color-fg-subtle);
+  }
+
+  .preview {
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    background:
+      linear-gradient(var(--color-bg), var(--color-bg)) padding-box,
+      repeating-linear-gradient(45deg, transparent 0 7px, color-mix(in oklch, var(--color-fg) 1.5%, transparent) 7px 8px) padding-box;
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow: hidden;
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .field {
+    width: 200px;
+  }
+  .label {
+    font-size: 10px;
+    color: var(--color-fg-subtle);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    min-width: 72px;
+    display: inline-block;
+  }
+  .lbl-aux {
+    color: var(--color-fg-subtle);
+    font-weight: 400;
+    font-size: 12px;
+  }
+  .vsep {
+    width: 1px;
+    height: 18px;
+    background: var(--color-border);
+  }
+
+  .card-sample {
+    width: 360px;
+    max-width: 100%;
+  }
+
+  /* Brand */
+  .b-lockup {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .b-lockup__glyph {
+    font-size: 28px;
+    letter-spacing: -0.05em;
+  }
+  .b-lockup__name {
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.035em;
+  }
+  .b-mark {
+    font-size: 36px;
+    letter-spacing: -0.05em;
+  }
+
+  /* Static dialog preview */
+  .dialog-static {
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    background: var(--color-surface);
+    padding: 18px;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 18px 36px -10px rgb(0 0 0 / 0.45);
+  }
+  .dialog-static__title {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+  .dialog-static__desc {
+    font-size: 13px;
+    color: var(--color-fg-muted);
+    line-height: 1.5;
+  }
+  .dialog-static__actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  /* Static dropdown preview */
+  .dd-static {
+    display: flex;
+  }
+  .dd-static__menu {
+    width: 220px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--color-surface);
+    padding: 4px;
+    box-shadow: 0 18px 36px -10px rgb(0 0 0 / 0.45);
+  }
+  .dd-static__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 9px;
+    border-radius: 5px;
+    font-size: 13px;
+    color: var(--color-fg);
+  }
+  .dd-static__item :global(.kbd),
+  .dd-static__item :global(kbd) {
+    margin-left: auto;
+  }
+  .dd-static__item--hover {
     background: var(--color-surface-2);
   }
-  .card__title {
+  .dd-static__item--danger {
+    color: var(--color-danger, #fca5a5);
+  }
+  .dd-static__sep {
+    height: 1px;
+    background: var(--color-border);
+    margin: 4px 0;
+  }
+
+  /* Static toast preview */
+  .toast-static {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--color-surface);
+    min-width: 320px;
+  }
+  .toast-static__icon {
+    width: 16px;
+    height: 16px;
+    border-radius: 99px;
+    border: 1.5px solid var(--color-fg-muted);
+    display: grid;
+    place-items: center;
+    font-size: 10px;
+    color: var(--color-fg-muted);
     font-family: var(--font-mono, monospace);
+  }
+  .toast-static__msg {
+    font-size: 13px;
+    flex: 1;
+  }
+  .toast-static__close {
+    background: transparent;
+    border: 0;
+    color: var(--color-fg-subtle);
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0;
+  }
+
+  /* Chrome — Nav */
+  .ch-nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 12px 18px;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    background: color-mix(in oklch, var(--color-bg) 80%, transparent);
+    flex-wrap: wrap;
+  }
+  .ch-nav__brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .ch-nav__glyph {
+    font-size: 16px;
+    letter-spacing: -0.04em;
+  }
+  .ch-nav__links {
+    display: flex;
+    gap: 18px;
+    margin-left: 14px;
+    font-size: 13px;
+    color: var(--color-fg-muted);
+  }
+  .ch-nav__links a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .ch-nav__cta {
+    margin-left: auto;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  /* Chrome — Footer */
+  .ch-foot {
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 24px;
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: var(--color-fg-muted);
+  }
+  .ch-foot__brand {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-width: 28ch;
+  }
+  .ch-foot__title {
+    color: var(--color-fg);
     font-size: 15px;
     font-weight: 500;
-    margin: 0 0 8px;
-    text-transform: lowercase;
   }
-  .card__desc {
-    color: var(--color-fg-muted);
+  .ch-foot__cols {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    margin-left: auto;
+  }
+  .ch-foot__col {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-family: var(--font-mono, monospace);
+  }
+  .ch-foot__head {
+    color: var(--color-fg);
+    margin-bottom: 4px;
+  }
+
+  /* Chrome — locale switcher static */
+  .loc-static {
+    position: relative;
+  }
+  .loc-static__trig {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--color-fg);
+    font: inherit;
     font-size: 13px;
-    line-height: 1.5;
-    margin: 0;
+    cursor: pointer;
+  }
+  .loc-static__ic {
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid currentColor;
+    border-radius: 99px;
+    position: relative;
+  }
+  .loc-static__ic::before,
+  .loc-static__ic::after {
+    content: '';
+    position: absolute;
+    background: currentColor;
+  }
+  .loc-static__ic::before {
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 1.5px;
+    transform: translateY(-50%);
+  }
+  .loc-static__ic::after {
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1.5px;
+    transform: translateX(-50%);
+  }
+  .loc-static__menu {
+    margin-top: 6px;
+    width: 180px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: var(--color-surface);
+    padding: 4px;
+    box-shadow: 0 18px 36px -10px rgb(0 0 0 / 0.45);
+  }
+  .loc-static__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: var(--color-fg-muted);
+  }
+  .loc-static__item--on {
+    color: var(--color-fg);
+    background: var(--color-surface-2);
+  }
+
+  /* Chrome — theme toggle preview */
+  .theme-btn-static {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    border: 1px solid var(--color-border);
+    background: transparent;
+    color: var(--color-fg);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+  }
+  .theme-btn-static__gl {
+    width: 16px;
+    height: 16px;
+    border-radius: 99px;
+    background: linear-gradient(90deg, currentColor 50%, transparent 50%);
+    border: 1.5px solid currentColor;
+  }
+
+  /* Chrome — cookie banner */
+  .cookie {
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    background: var(--color-surface);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    box-shadow: 0 18px 36px -10px rgb(0 0 0 / 0.35);
+  }
+  .cookie__copy {
+    font-size: 13px;
+    color: var(--color-fg);
+    flex: 1;
+    min-width: 280px;
+  }
+  .cookie__copy a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .cookie__acts {
+    display: flex;
+    gap: 8px;
+  }
+
+  /* Chrome — sidebar nav */
+  .ch-sidenav {
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 14px;
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    background: var(--color-surface);
+  }
+  .ch-sidenav__search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 9px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+  }
+  .ch-sidenav__grp {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .ch-sidenav__gt {
+    font-size: 10px;
+    color: var(--color-fg-subtle);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 8px;
+  }
+  .ch-sidenav__it {
+    padding: 4px 8px;
+    font-size: 13px;
+    color: var(--color-fg-muted);
+    border-radius: 4px;
+  }
+  .ch-sidenav__it--on {
+    color: var(--color-fg);
+    background: var(--color-surface-2);
+    font-weight: 500;
+  }
+
+  /* Chrome — search box */
+  .ch-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: var(--color-surface);
+    width: 320px;
+  }
+
+  .more-link {
+    margin: 8px 0 0;
+    font-size: 12px;
+    color: var(--color-fg-muted);
+  }
+  .more-link a {
+    color: var(--color-fg);
   }
 </style>
