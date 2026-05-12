@@ -13,7 +13,8 @@ type Subcommand = 'bootstrap' | 'help';
 function parseSubcommand(argv: string[]): { command: Subcommand; rest: string[] } {
   const first = argv[0];
   if (!first || first === '--help' || first === '-h') return { command: 'help', rest: [] };
-  if (first === 'bootstrap' || first === 'init') return { command: 'bootstrap', rest: argv.slice(1) };
+  if (first === 'bootstrap' || first === 'init')
+    return { command: 'bootstrap', rest: argv.slice(1) };
   // Backwards compat with `create-astro-ignite`: bare positional/flag args go to bootstrap.
   return { command: 'bootstrap', rest: argv };
 }

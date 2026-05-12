@@ -41,23 +41,23 @@ npx astro-ignite --help                              # list commands
 
 ## Templates
 
-| Template | Use case |
-| --- | --- |
-| `starter` (default) | Marketing site + blog + projects, contact form, full i18n, legal pages |
-| `docs` | Documentation site built from primitives (no Starlight); search via Pagefind |
+| Template            | Use case                                                                     |
+| ------------------- | ---------------------------------------------------------------------------- |
+| `starter` (default) | Marketing site + blog + projects, contact form, full i18n, legal pages       |
+| `docs`              | Documentation site built from primitives (no Starlight); search via Pagefind |
 
 Pick one interactively or pass `--template=<kind>`.
 
 ## Bootstrap flags
 
-| Flag | What it does |
-| --- | --- |
-| `-y`, `--yes` | Skip prompts, use defaults |
-| `--no-install` | Skip dependency install |
-| `--no-git` | Skip `git init` |
-| `--pm=<npm\|pnpm\|yarn\|bun>` | Force a specific package manager |
-| `--template=<starter\|docs>` | Pick the template non-interactively |
-| `-h`, `--help` | Print help |
+| Flag                          | What it does                        |
+| ----------------------------- | ----------------------------------- |
+| `-y`, `--yes`                 | Skip prompts, use defaults          |
+| `--no-install`                | Skip dependency install             |
+| `--no-git`                    | Skip `git init`                     |
+| `--pm=<npm\|pnpm\|yarn\|bun>` | Force a specific package manager    |
+| `--template=<starter\|docs>`  | Pick the template non-interactively |
+| `-h`, `--help`                | Print help                          |
 
 ## Examples
 
