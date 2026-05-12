@@ -1,3 +1,16 @@
+# Changesets release workflow.
+#
+# This workflow opens a "Version Packages" PR whenever there are pending
+# changesets, then publishes to npm once that PR is merged. GitHub Actions
+# needs explicit permission to open PRs, controlled at the repo level:
+#
+#   Settings → Actions → General → Workflow permissions
+#     ✓ Allow GitHub Actions to create and approve pull requests
+#
+# Without that toggle the workflow fails with
+# "GitHub Actions is not permitted to create or approve pull requests."
+# (the workflow itself already grants the action `pull-requests: write`).
+
 name: Release
 
 on:

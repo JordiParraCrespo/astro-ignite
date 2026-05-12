@@ -74,6 +74,11 @@ jobs:
       fail-fast: false
       matrix:
         pm: [pnpm, npm, yarn, bun]
+    env:
+      # Stop corepack rejecting yarn / bun / npm because the monorepo root
+      # pins pnpm via the `packageManager` field — the scaffolded playground
+      # is being installed by a different package manager on purpose.
+      COREPACK_ENABLE_STRICT: '0'
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4

@@ -47,8 +47,10 @@ export default defineConfig({
     }),
   ],
   vite: {
-    // @ts-expect-error — @tailwindcss/vite pulls Vite 7 types; Astro is on Vite 6. Runtime is fine.
-    plugins: [tailwindcss()],
+    // JSDoc cast: @tailwindcss/vite resolves to Vite 7 types in some envs (e.g. the
+    // monorepo), but to Vite 6 in others (fresh scaffolds). Either way the runtime
+    // plugin works — silence the conditional type drift with a single any-cast.
+    plugins: [/** @type {any} */ (tailwindcss())],
   },
   experimental: {
     fonts: [

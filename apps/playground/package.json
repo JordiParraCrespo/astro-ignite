@@ -9,7 +9,8 @@
     "preview": "astro preview",
     "check": "astro check",
     "typecheck": "astro check",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.0.3",
