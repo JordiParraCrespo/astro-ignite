@@ -10,7 +10,9 @@
   "ignore": [
     "@astro-ignite/template-starter",
     "@astro-ignite/template-docs",
-    "@astro-ignite/playground",
-    "@astro-ignite/docs"
+    "@astro-ignite/site",
+    "@astro-ignite/docs",
+    "@astro-ignite/design-fetch",
+    "playground"
   ]
 }
