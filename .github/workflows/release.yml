@@ -1,32 +1,37 @@
-# Changesets release workflow.
+# Manual release workflow.
 #
-# This workflow opens a "Version Packages" PR whenever there are pending
-# changesets, then publishes to npm once that PR is merged. GitHub Actions
-# needs explicit permission to open PRs, controlled at the repo level:
+# Triggered from Actions → Release → Run workflow. The workflow:
+#   1. Applies any pending changesets (bumps versions, writes CHANGELOG).
+#   2. Commits the version bumps back to the branch it ran on.
+#   3. Builds the CLI.
+#   4. Publishes to npm via `changeset publish`.
 #
-#   Settings → Actions → General → Workflow permissions
-#     ✓ Allow GitHub Actions to create and approve pull requests
+# Prerelease mode is respected automatically — when `.changeset/pre.json`
+# exists, publishes go to the configured dist-tag (e.g. `beta`) instead
+# of `latest`.
 #
-# Without that toggle the workflow fails with
-# "GitHub Actions is not permitted to create or approve pull requests."
-# (the workflow itself already grants the action `pull-requests: write`).
+# The `dry_run` input runs steps 1 and 3 but skips the commit and the
+# npm publish, so you can sanity-check what would happen.
 
 name: Release
 
 on:
-  push:
-    branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (build only, no commit, no publish)'
+        type: boolean
+        default: false
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   release:
-    name: Changesets release
+    name: Release
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pull-requests: write
       id-token: write
     steps:
       - uses: actions/checkout@v4
@@ -43,16 +48,33 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - run: pnpm --filter create-astro-ignite build
+      - name: Apply pending changesets
+        run: pnpm changeset version
 
-      - name: Create release PR or publish
-        uses: changesets/action@v1
-        with:
-          publish: pnpm run release
-          version: pnpm run version
-          commit: 'chore(release): version packages'
-          title: 'chore(release): version packages'
+      - name: Commit version bumps
+        if: ${{ !inputs.dry_run }}
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add .
+            git commit -m "chore(release): version packages"
+            git push
+          else
+            echo "No version changes to commit."
+          fi
+
+      - name: Build
+        run: pnpm --filter create-astro-ignite build
+
+      - name: Publish to npm
+        if: ${{ !inputs.dry_run }}
+        run: pnpm changeset publish
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push tags
+        if: ${{ !inputs.dry_run }}
+        run: git push --tags
