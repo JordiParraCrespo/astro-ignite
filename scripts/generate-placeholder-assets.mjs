@@ -76,7 +76,7 @@ const ogSvg = `
     </g>
     <line x1="80" y1="430" x2="1120" y2="430" stroke="#27272a" stroke-width="1"/>
     <text x="80" y="490" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="22" fill="#a1a1aa" letter-spacing="-0.005em">shadcn-style CLI for production-grade Astro sites</text>
-    <text x="80" y="525" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="22" fill="#71717a" letter-spacing="-0.005em">SEO + i18n + perf, in five prompts.</text>
+    <text x="80" y="525" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="22" fill="#71717a" letter-spacing="-0.005em">SEO + i18n + perf, built for AI agents.</text>
   </svg>`;
 
 const targets = [
