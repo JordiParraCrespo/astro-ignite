@@ -10,7 +10,7 @@ import { siteConfig } from './src/config/site.ts';
 // https://astro.build/config
 export default defineConfig({
   site: siteConfig.url,
-  trailingSlash: 'never',
+  trailingSlash: 'ignore',
   output: 'static',
   adapter: node({ mode: 'standalone' }),
   build: {

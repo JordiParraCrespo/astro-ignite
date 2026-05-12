@@ -45,7 +45,7 @@ const {
 
 const locale = localeProp ?? Astro.currentLocale ?? siteConfig.defaultLocale;
 
-// Canonical URL — normalize trailing slash to match astro.config trailingSlash setting (`'never'`).
+// Canonical URL — emit the no-slash form regardless of how the route was hit (astro.config uses `trailingSlash: 'ignore'`).
 const canonicalUrl = canonical
   ? typeof canonical === 'string'
     ? new URL(canonical, siteConfig.url)
