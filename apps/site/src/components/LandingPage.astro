@@ -18,6 +18,7 @@
  */
 
 import { Image } from 'astro:assets';
+import { getRelativeLocaleUrl } from 'astro:i18n';
 import Brand from '@/components/Brand.astro';
 import ThemeToggle from '@/components/ThemeToggle.astro';
 import { siteConfig } from '@/config/site';
@@ -43,8 +44,7 @@ const FEATURE_IDS = [
 ] as const;
 
 const ghUrl = siteConfig.social.github ?? 'https://github.com/JordiParraCrespo/astro-ignite';
-const siteDescription =
-  siteConfig.description[locale] ?? siteConfig.description[siteConfig.defaultLocale]!;
+const blogHref = getRelativeLocaleUrl(locale, '/blog');
 ---
 
 <Fragment>
@@ -54,6 +54,7 @@ const siteDescription =
       <span class="pill mono"><span class="dot" aria-hidden="true"></span>v0.1.0 · pre-1.0</span>
       <div class="nav-cta">
         <a class="nav-link" href="/docs">{t('landing.nav.docs')}</a>
+        <a class="nav-link" href={blogHref}>{t('landing.nav.blog')}</a>
         <a class="nav-link" href="#templates">{t('landing.nav.templates')}</a>
         <a class="nav-link" href={ghUrl} rel="noopener">{t('landing.nav.github')}</a>
         <ThemeToggle />
@@ -327,6 +328,7 @@ const siteDescription =
         <div class="footer-col">
           <span class="footer-head">{t('landing.footer.productHead')}</span>
           <a href="#templates">{t('landing.nav.templates')}</a>
+          <a href={blogHref}>{t('landing.nav.blog')}</a>
           <a href="/docs">{t('landing.nav.docs')}</a>
           <a
             href="https://github.com/JordiParraCrespo/astro-ignite/blob/main/plan.md"

@@ -161,6 +161,7 @@
   "landing": {
     "nav": {
       "docs": "Docs",
+      "blog": "Blog",
       "templates": "Templates",
       "plan": "Plan",
       "changelog": "Changelog",
