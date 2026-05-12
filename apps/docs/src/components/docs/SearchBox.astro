@@ -413,18 +413,24 @@
     padding: 6px;
     min-height: 120px;
   }
-  .search-dialog__empty {
+
+  /*
+   * Dynamic result rows are injected via innerHTML, so Astro's scoped-CSS
+   * data-attribute won't match them. Use :global(...) under the scoped
+   * .search-dialog parent so the rules still apply without leaking outside.
+   */
+  .search-dialog :global(.search-dialog__empty) {
     padding: 28px 16px;
     text-align: center;
     color: var(--color-fg-subtle);
     font-size: 13px;
     line-height: 1.6;
   }
-  .search-dialog__empty strong {
+  .search-dialog :global(.search-dialog__empty strong) {
     color: var(--color-fg);
     font-weight: 500;
   }
-  .search-dialog__empty code {
+  .search-dialog :global(.search-dialog__empty code) {
     font-family: var(--font-mono);
     background: var(--color-surface-2);
     border: 1px solid var(--color-border);
@@ -434,16 +440,17 @@
     color: var(--color-fg);
   }
 
-  .sd-group {
+  .search-dialog :global(.sd-group) {
     display: flex;
     flex-direction: column;
     gap: 2px;
     padding: 6px 0;
   }
-  .sd-group + .sd-group {
+  .search-dialog :global(.sd-group + .sd-group) {
     border-top: 1px solid var(--color-border);
   }
-  .sd-group__label {
+  .search-dialog :global(.sd-group__label) {
+    font-family: var(--font-mono);
     font-size: 10px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -455,8 +462,8 @@
     white-space: nowrap;
   }
 
-  .sd-page,
-  .sd-sub {
+  .search-dialog :global(.sd-page),
+  .search-dialog :global(.sd-sub) {
     display: flex;
     align-items: flex-start;
     gap: 8px;
@@ -469,19 +476,19 @@
       background 0.12s var(--ease-out-soft),
       color 0.12s var(--ease-out-soft);
   }
-  .sd-page:hover,
-  .sd-sub:hover {
+  .search-dialog :global(.sd-page:hover),
+  .search-dialog :global(.sd-sub:hover) {
     color: var(--color-fg);
     background: var(--color-surface-2);
   }
-  .sd-page[aria-selected='true'],
-  .sd-sub[aria-selected='true'] {
+  .search-dialog :global(.sd-page[aria-selected='true']),
+  .search-dialog :global(.sd-sub[aria-selected='true']) {
     color: var(--color-fg);
     background: var(--color-surface-2);
     box-shadow: inset 2px 0 0 var(--color-fg);
   }
 
-  .sd-page__title {
+  .search-dialog :global(.sd-page__title) {
     font-size: 14px;
     font-weight: 500;
     color: inherit;
@@ -492,7 +499,7 @@
     flex: 1;
   }
 
-  .sd-subs {
+  .search-dialog :global(.sd-subs) {
     display: flex;
     flex-direction: column;
     gap: 0;
@@ -500,20 +507,21 @@
     padding-left: 10px;
     border-left: 1px solid var(--color-border);
   }
-  .sd-sub__hash {
+  .search-dialog :global(.sd-sub__hash) {
+    font-family: var(--font-mono);
     color: var(--color-fg-subtle);
     font-size: 12px;
     line-height: 1.45;
     flex-shrink: 0;
   }
-  .sd-sub__body {
+  .search-dialog :global(.sd-sub__body) {
     display: flex;
     flex-direction: column;
     gap: 1px;
     min-width: 0;
     flex: 1;
   }
-  .sd-sub__title {
+  .search-dialog :global(.sd-sub__title) {
     font-size: 13px;
     font-weight: 400;
     color: inherit;
@@ -522,7 +530,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .sd-sub__excerpt {
+  .search-dialog :global(.sd-sub__excerpt) {
     font-size: 12px;
     color: var(--color-fg-subtle);
     line-height: 1.4;
@@ -531,9 +539,7 @@
     white-space: nowrap;
   }
 
-  .sd-sub__excerpt :global(mark),
-  .sd-sub__title :global(mark),
-  .sd-page__title :global(mark) {
+  .search-dialog :global(mark) {
     background: color-mix(in oklch, var(--color-fg) 18%, transparent);
     color: var(--color-fg);
     padding: 0 2px;
