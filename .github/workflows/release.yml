@@ -39,6 +39,7 @@ jobs:
           && github.repository_owner == 'JordiParraCrespo'
           && contains(github.event.pull_request.labels.*.name, '🚀 autorelease') }}
     runs-on: ubuntu-latest
+    environment: Prod
     permissions:
       contents: read
       id-token: write
@@ -85,6 +86,7 @@ jobs:
       ${{ github.event_name == 'push'
           && github.repository_owner == 'JordiParraCrespo' }}
     runs-on: ubuntu-latest
+    environment: Prod
     permissions:
       contents: write
       pull-requests: write
