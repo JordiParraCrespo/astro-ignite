@@ -1,6 +1,6 @@
 {
   "name": "create-astro-ignite",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Bootstrap a production-grade Astro site with top-tier SEO and performance defaults",
   "license": "MIT",
   "type": "module",
