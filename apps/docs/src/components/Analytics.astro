@@ -17,9 +17,9 @@ const host = import.meta.env.PUBLIC_PLAUSIBLE_HOST ?? 'https://plausible.io';
 {
   domain && (
     <script is:inline define:vars={{ domain, host }}>
-      var __ig_plausible_inject = function () {
+      const __ig_plausible_inject = function () {
         if (document.querySelector('script[data-domain]')) return;
-        var s = document.createElement('script');
+        const s = document.createElement('script');
         s.defer = true;
         s.dataset.domain = domain;
         s.src = host + '/js/script.js';

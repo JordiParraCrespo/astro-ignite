@@ -9,7 +9,11 @@ export type Props = {
 const { position = 'bottom-right', class: className } = Astro.props;
 ---
 
-<ai-toaster data-position={position} class={cn('toaster', `toaster--${position}`, className)} aria-live="polite" aria-atomic="false"></ai-toaster>
+<ai-toaster
+  data-position={position}
+  class={cn('toaster', `toaster--${position}`, className)}
+  aria-live="polite"
+  aria-atomic="false"></ai-toaster>
 
 <style>
   .toaster {

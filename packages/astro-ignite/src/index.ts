@@ -39,7 +39,6 @@ function parseBootstrapFlags(argv: string[]): CliFlags {
       if (TEMPLATE_KINDS.includes(template as TemplateKind)) {
         flags.template = template as TemplateKind;
       } else {
-        // eslint-disable-next-line no-console
         console.error(`Unknown template "${template}". Available: ${TEMPLATE_KINDS.join(', ')}`);
         process.exit(1);
       }
@@ -54,7 +53,6 @@ function parseBootstrapFlags(argv: string[]): CliFlags {
 }
 
 function printTopHelp(): void {
-  // eslint-disable-next-line no-console
   console.log(`
 ${kleur.bold('astro-ignite')} — bootstrap and maintain production-grade Astro sites
 
@@ -77,7 +75,6 @@ Run ${kleur.cyan('npx astro-ignite bootstrap --help')} for the full flag list.
 }
 
 function printBootstrapHelp(): void {
-  // eslint-disable-next-line no-console
   console.log(`
 ${kleur.bold('astro-ignite bootstrap')} — scaffold a new Astro project
 
@@ -104,7 +101,6 @@ ${kleur.bold('Defaults (with --yes):')}
 export async function runBootstrap(argv: string[]): Promise<void> {
   const flags = parseBootstrapFlags(argv);
 
-  // eslint-disable-next-line no-console
   console.clear();
   p.intro(`${kleur.bgCyan().black(' astro-ignite ')} ${kleur.dim('— bootstrapping')}`);
 
@@ -205,7 +201,6 @@ async function main(): Promise<void> {
 }
 
 main().catch((err) => {
-  // eslint-disable-next-line no-console
   console.error(err);
   process.exit(1);
 });

@@ -134,13 +134,10 @@
       try {
         const path = url.split('#')[0]?.replace(/\/$/, '') ?? '';
         const parts = path.split('/').filter(Boolean);
-        if (parts.length === 0) return '/';
-        return (
-          '/ ' +
-          parts
-            .map((p) => decodeURIComponent(p).replace(/-/g, ' '))
-            .join(' / ')
-        );
+        if (parts.length === 0) return 'Docs';
+        return parts
+          .map((p) => decodeURIComponent(p).replace(/-/g, ' '))
+          .join(' / ');
       } catch {
         return url;
       }
@@ -193,6 +190,7 @@
             .join('');
           return `
             <div class="sd-group">
+              <div class="sd-group__label mono">${escapeHtml(group.breadcrumb)}</div>
               <a
                 href="${group.page.url}"
                 class="sd-page"
@@ -200,11 +198,7 @@
                 data-index="${pageIdx}"
                 aria-selected="${pageIdx === activeIndex ? 'true' : 'false'}"
               >
-                <span class="sd-page__icon mono" aria-hidden="true">⟶</span>
-                <span class="sd-page__body">
-                  <span class="sd-page__title">${escapeHtml(group.page.title)}</span>
-                  <span class="sd-page__crumb mono">${escapeHtml(group.breadcrumb)}</span>
-                </span>
+                <span class="sd-page__title">${escapeHtml(group.page.title)}</span>
               </a>
               ${group.subs.length > 0 ? `<div class="sd-subs">${subsHtml}</div>` : ''}
             </div>`;
@@ -419,18 +413,24 @@
     padding: 6px;
     min-height: 120px;
   }
-  .search-dialog__empty {
+
+  /*
+   * Dynamic result rows are injected via innerHTML, so Astro's scoped-CSS
+   * data-attribute won't match them. Use :global(...) under the scoped
+   * .search-dialog parent so the rules still apply without leaking outside.
+   */
+  .search-dialog :global(.search-dialog__empty) {
     padding: 28px 16px;
     text-align: center;
     color: var(--color-fg-subtle);
     font-size: 13px;
     line-height: 1.6;
   }
-  .search-dialog__empty strong {
+  .search-dialog :global(.search-dialog__empty strong) {
     color: var(--color-fg);
     font-weight: 500;
   }
-  .search-dialog__empty code {
+  .search-dialog :global(.search-dialog__empty code) {
     font-family: var(--font-mono);
     background: var(--color-surface-2);
     border: 1px solid var(--color-border);
@@ -440,122 +440,111 @@
     color: var(--color-fg);
   }
 
-  .sd-group + .sd-group {
-    margin-top: 6px;
-    padding-top: 6px;
+  .search-dialog :global(.sd-group) {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 6px 0;
+  }
+  .search-dialog :global(.sd-group + .sd-group) {
     border-top: 1px solid var(--color-border);
   }
-
-  .sd-page {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 10px;
-    border-radius: var(--radius);
-    text-decoration: none;
-    color: var(--color-fg);
-    cursor: pointer;
-  }
-  .sd-page:hover {
-    background: var(--color-surface-2);
-  }
-  .sd-page[aria-selected='true'] {
-    background: color-mix(in oklch, var(--color-primary) 18%, transparent);
-    outline: 1px solid color-mix(in oklch, var(--color-primary) 35%, transparent);
-  }
-  .sd-page__icon {
+  .search-dialog :global(.sd-group__label) {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     color: var(--color-fg-subtle);
-    font-size: 13px;
-    flex-shrink: 0;
-  }
-  .sd-page__body {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-    min-width: 0;
-    flex: 1;
-  }
-  .sd-page__title {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--color-fg);
-    line-height: 1.3;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .sd-page__crumb {
-    font-size: 11px;
-    color: var(--color-fg-subtle);
-    line-height: 1.3;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .sd-subs {
-    margin: 2px 0 2px 18px;
-    padding-left: 10px;
-    border-left: 1px solid var(--color-border);
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-  }
-
-  .sd-sub {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    padding: 6px 10px;
-    border-radius: var(--radius);
-    text-decoration: none;
-    color: var(--color-fg);
-    cursor: pointer;
-  }
-  .sd-sub:hover {
-    background: var(--color-surface-2);
-  }
-  .sd-sub[aria-selected='true'] {
-    background: color-mix(in oklch, var(--color-primary) 18%, transparent);
-    outline: 1px solid color-mix(in oklch, var(--color-primary) 35%, transparent);
-  }
-  .sd-sub__hash {
-    color: var(--color-fg-subtle);
-    font-size: 12px;
-    line-height: 1.45;
-    flex-shrink: 0;
-  }
-  .sd-sub__body {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-    min-width: 0;
-    flex: 1;
-  }
-  .sd-sub__title {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--color-fg);
-    line-height: 1.35;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .sd-sub__excerpt {
-    font-size: 12px;
-    color: var(--color-fg-muted);
+    padding: 2px 10px;
     line-height: 1.4;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  .sd-sub__excerpt :global(mark),
-  .sd-page__title :global(mark) {
-    background: color-mix(in oklch, var(--color-primary) 30%, transparent);
+  .search-dialog :global(.sd-page),
+  .search-dialog :global(.sd-sub) {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 5px 10px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: var(--color-fg-muted);
+    cursor: pointer;
+    transition:
+      background 0.12s var(--ease-out-soft),
+      color 0.12s var(--ease-out-soft);
+  }
+  .search-dialog :global(.sd-page:hover),
+  .search-dialog :global(.sd-sub:hover) {
+    color: var(--color-fg);
+    background: var(--color-surface-2);
+  }
+  .search-dialog :global(.sd-page[aria-selected='true']),
+  .search-dialog :global(.sd-sub[aria-selected='true']) {
+    color: var(--color-fg);
+    background: var(--color-surface-2);
+    box-shadow: inset 2px 0 0 var(--color-fg);
+  }
+
+  .search-dialog :global(.sd-page__title) {
+    font-size: 14px;
+    font-weight: 500;
+    color: inherit;
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+  }
+
+  .search-dialog :global(.sd-subs) {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 2px 0 0 14px;
+    padding-left: 10px;
+    border-left: 1px solid var(--color-border);
+  }
+  .search-dialog :global(.sd-sub__hash) {
+    font-family: var(--font-mono);
+    color: var(--color-fg-subtle);
+    font-size: 12px;
+    line-height: 1.45;
+    flex-shrink: 0;
+  }
+  .search-dialog :global(.sd-sub__body) {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+    flex: 1;
+  }
+  .search-dialog :global(.sd-sub__title) {
+    font-size: 13px;
+    font-weight: 400;
+    color: inherit;
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .search-dialog :global(.sd-sub__excerpt) {
+    font-size: 12px;
+    color: var(--color-fg-subtle);
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .search-dialog :global(mark) {
+    background: color-mix(in oklch, var(--color-fg) 18%, transparent);
     color: var(--color-fg);
     padding: 0 2px;
     border-radius: 2px;
+    font-weight: 500;
   }
 
   .search-dialog__footer {

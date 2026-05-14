@@ -23,6 +23,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm format:check
+      - run: pnpm lint
       - run: pnpm --filter create-astro-ignite typecheck
       - run: pnpm --filter @astro-ignite/template-starter typecheck
       - run: pnpm --filter @astro-ignite/template-docs typecheck
@@ -105,7 +106,7 @@ jobs:
       - if: matrix.pm == 'yarn'
         run: corepack enable && corepack prepare yarn@1.22.22 --activate
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter create-astro-ignite build
+      - run: pnpm --filter astro-ignite build
       - run: node ./scripts/scaffold-test.mjs --full --pm=${{ matrix.pm }}
 
   apps-build:

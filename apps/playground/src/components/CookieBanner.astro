@@ -20,10 +20,10 @@ const t = useTranslations(locale);
 const cookiesPolicyUrl = getRelativeLocaleUrl(locale, '/legal/cookies');
 ---
 
-<div
+<aside
   id="cookie-banner"
   class="cookie-banner"
-  role="dialog"
+  role="region"
   aria-labelledby="cookie-banner-title"
   aria-describedby="cookie-banner-description"
   hidden
@@ -41,7 +41,7 @@ const cookiesPolicyUrl = getRelativeLocaleUrl(locale, '/legal/cookies');
   <a href={cookiesPolicyUrl} class="cookie-banner-link">
     {t('cookies.banner.policyLink')}
   </a>
-</div>
+</aside>
 
 <script is:inline>
   (() => {

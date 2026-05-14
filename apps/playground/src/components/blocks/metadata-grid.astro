@@ -1,0 +1,78 @@
+---
+import { cn } from '@/lib/cn';
+
+export type MetadataItem = {
+  label: string;
+  value: string;
+};
+
+export type Props = {
+  items: MetadataItem[];
+  columns?: 2 | 3 | 4;
+  class?: string;
+};
+
+const { items, columns = 4, class: className } = Astro.props;
+---
+
+<dl class={cn('metadata-grid', `metadata-grid--${columns}`, className)}>
+  {
+    items.map((item) => (
+      <div class="metadata-grid__cell">
+        <dt class="metadata-grid__label mono">{item.label}</dt>
+        <dd class="metadata-grid__value">{item.value}</dd>
+      </div>
+    ))
+  }
+</dl>
+
+<style>
+  .metadata-grid {
+    display: grid;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin: 0;
+  }
+  .metadata-grid--2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .metadata-grid--3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .metadata-grid--4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .metadata-grid__cell {
+    padding: 14px 16px;
+    border-right: 1px solid var(--color-border);
+  }
+  .metadata-grid__cell:last-child {
+    border-right: 0;
+  }
+  .metadata-grid__label {
+    font-size: 10px;
+    color: var(--color-fg-subtle);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  .metadata-grid__value {
+    margin: 4px 0 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-fg);
+  }
+  @media (max-width: 720px) {
+    .metadata-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .metadata-grid__cell {
+      border-right: 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .metadata-grid__cell:nth-last-child(-n + 2) {
+      border-bottom: 0;
+    }
+  }
+</style>

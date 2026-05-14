@@ -9,8 +9,7 @@
     "preview": "astro preview",
     "check": "astro check",
     "typecheck": "astro check",
-    "lint": "eslint src",
-    "test": "vitest run --passWithNoTests"
+    "lint": "eslint src"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.0.3",
@@ -29,9 +28,15 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "@eslint/js": "^9.18.0",
     "@types/markdown-it": "^14.1.2",
     "@types/node": "^22.10.2",
     "@types/sanitize-html": "^2.16.1",
-    "typescript": "^5.7.2"
+    "eslint": "^9.18.0",
+    "eslint-plugin-astro": "^1.3.1",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "globals": "^15.14.0",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.20.0"
   }
 }

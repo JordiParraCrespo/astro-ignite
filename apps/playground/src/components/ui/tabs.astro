@@ -47,7 +47,8 @@ const { defaultValue, class: className } = Astro.props;
             const i = list.indexOf(t);
             if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
               e.preventDefault();
-              const next = list[(i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length]!;
+              const next =
+                list[(i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length]!;
               next.focus();
               activate(next.dataset.value!);
             }

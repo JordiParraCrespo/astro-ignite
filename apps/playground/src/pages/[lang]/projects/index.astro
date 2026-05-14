@@ -15,7 +15,6 @@ export async function getStaticPaths() {
     .map((lang) => ({ params: { lang } }));
 }
 
-
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const t = useTranslations(locale);
 

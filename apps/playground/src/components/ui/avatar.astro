@@ -22,11 +22,15 @@ const initials = (fallback ?? alt)
 ---
 
 <span class={cn('avatar', `avatar--${size}`, className)}>
-  {src ? (
-    <img src={src} alt={alt} loading="lazy" decoding="async" />
-  ) : (
-    <span class="avatar__fallback" aria-hidden="true">{initials || '?'}</span>
-  )}
+  {
+    src ? (
+      <img src={src} alt={alt} loading="lazy" decoding="async" />
+    ) : (
+      <span class="avatar__fallback" aria-hidden="true">
+        {initials || '?'}
+      </span>
+    )
+  }
 </span>
 
 <style>
