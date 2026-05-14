@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig, fontProviders } from 'astro/config';
+import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
 import cloudflare from '@astrojs/cloudflare';
@@ -56,41 +56,5 @@ export default defineConfig({
     // monorepo), but to Vite 6 in others (fresh scaffolds). Either way the runtime
     // plugin works — silence the conditional type drift with a single any-cast.
     plugins: [/** @type {any} */ (tailwindcss())],
-  },
-  experimental: {
-    fonts: [
-      {
-        provider: fontProviders.bunny(),
-        name: 'Geist',
-        cssVariable: '--font-display',
-        // Only the weights the design actually renders: 400 (body), 500 (h1/h2),
-        // 600 (release-pill tag). Dropping 700 + the "400-700" range halves the
-        // preloaded file count without changing any rendered glyph.
-        weights: [400, 500, 600],
-        styles: ['normal'],
-        // Spanish accents (á é í ó ú ñ ¿ ¡) are all in latin-1, which is covered
-        // by the `latin` subset. latin-ext is for Polish / Czech / Vietnamese
-        // diacritics — drop until a locale that needs it is added.
-        subsets: ['latin'],
-        fallbacks: ['system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
-        // `optional` lets the browser commit to either Geist or the size-adjusted
-        // Arial fallback at first paint — whichever is ready within ~100ms — and
-        // never swap. With `swap`, desktop loaded Geist fast enough to do a
-        // visible swap and the size-adjust metrics weren't a perfect match for
-        // weights 500/600, producing a 0.23 CLS on the features-section. Mobile
-        // was unaffected because slow 4G never delivered the font in the SI window.
-        display: 'optional',
-      },
-      {
-        provider: fontProviders.bunny(),
-        name: 'Geist Mono',
-        cssVariable: '--font-mono',
-        weights: [400, 600],
-        styles: ['normal'],
-        subsets: ['latin'],
-        fallbacks: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
-        display: 'optional',
-      },
-    ],
   },
 });
