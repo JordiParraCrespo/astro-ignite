@@ -1,6 +1,7 @@
 # Hermes PR Review — Setup
 
 ## What it does
+
 Runs free LLM (via OpenRouter) on every PR, posts review as comment.
 Default model: `openrouter/moonshotai/kimi-chat` (good quality/cost).
 Runs free LLM (via OpenRouter) on every PR, posts review as comment.
