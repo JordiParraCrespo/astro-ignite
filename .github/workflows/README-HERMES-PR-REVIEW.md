@@ -1,7 +1,8 @@
 # Hermes PR Review — Setup
 
 ## What it does
-Runs free LLM (via OpenRouter) on every PR, posts review as comment.
+Runs LLM (via OpenRouter) on every PR, posts review as comment.
+Default model: `openrouter/moonshotai/kimi-chat` (best quality/price).
 
 ## 1. Add Secrets to GitHub Repo
 
@@ -20,7 +21,7 @@ Settings → Secrets → Actions → New repository secret:
 ```bash
 export GITHUB_TOKEN=ghp_xxx
 export HERMES_API_KEY=your_key
-export HERMES_MODEL=openrouter/google/gemma-7b-it
+export HERMES_MODEL=openrouter/moonshotai/kimi-chat
 export PR_NUMBER=1
 export REPO=owner/repo
 

@@ -26,7 +26,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           HERMES_API_KEY: ${{ secrets.HERMES_API_KEY }}
-          HERMES_MODEL: ${{ secrets.HERMES_MODEL || 'openrouter/google/gemma-7b-it' }}
+          HERMES_MODEL: ${{ secrets.HERMES_MODEL || 'openrouter/moonshotai/kimi-chat' }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           REPO: ${{ github.repository }}
         run: node .github/workflows/hermes-review.js
