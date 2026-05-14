@@ -53,8 +53,7 @@ export async function getBlogCards(locale: string): Promise<BlogCardData[]> {
   const posts = (
     await getCollection(
       'blog',
-      (entry: CollectionEntry<'blog'>) =>
-        entry.id.startsWith(`${locale}/`) && !entry.data.draft
+      (entry: CollectionEntry<'blog'>) => entry.id.startsWith(`${locale}/`) && !entry.data.draft
     )
   ).sort(
     (a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) =>

@@ -1,7 +1,5 @@
 ---
 'astro-ignite': patch
-'@astro-ignite/template-starter': patch
-'@astro-ignite/template-docs': patch
 ---
 
 Wire up ESLint across the monorepo and ship a working lint setup in every scaffolded project.
