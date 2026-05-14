@@ -73,7 +73,13 @@ export default defineConfig({
         // diacritics — drop until a locale that needs it is added.
         subsets: ['latin'],
         fallbacks: ['system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
-        display: 'swap',
+        // `optional` lets the browser commit to either Geist or the size-adjusted
+        // Arial fallback at first paint — whichever is ready within ~100ms — and
+        // never swap. With `swap`, desktop loaded Geist fast enough to do a
+        // visible swap and the size-adjust metrics weren't a perfect match for
+        // weights 500/600, producing a 0.23 CLS on the features-section. Mobile
+        // was unaffected because slow 4G never delivered the font in the SI window.
+        display: 'optional',
       },
       {
         provider: fontProviders.bunny(),
@@ -83,7 +89,7 @@ export default defineConfig({
         styles: ['normal'],
         subsets: ['latin'],
         fallbacks: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
-        display: 'swap',
+        display: 'optional',
       },
     ],
   },
