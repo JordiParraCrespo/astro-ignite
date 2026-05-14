@@ -16,22 +16,34 @@ skills-lock.json
 # Documentation files with embedded code fragments that confuse prettier-plugin-astro
 plan.md
 
-# Templates' *.md guides (copied across templates, all share the same TS-fragment issue)
-packages/templates/*/BENCHMARKS.md
-packages/templates/*/OG.md
-packages/templates/*/ANALYTICS.md
-packages/templates/*/FONTS.md
-packages/templates/*/IMAGES.md
-packages/templates/*/LEGAL.md
+# Templates' *.md guides (copied across templates, all share the same TS-fragment issue).
+# The guides live under each template's docs/ subdirectory (e.g.
+# packages/templates/starter/docs/FONTS.md), so patterns target /docs/ not the
+# template root. README.md still lives at the template root.
+packages/templates/*/docs/BENCHMARKS.md
+packages/templates/*/docs/OG.md
+packages/templates/*/docs/ANALYTICS.md
+packages/templates/*/docs/FONTS.md
+packages/templates/*/docs/IMAGES.md
+packages/templates/*/docs/LEGAL.md
 packages/templates/*/README.md
 
+# Same guides bundled inside the astro-ignite CLI package (copied at prepack).
+packages/astro-ignite/templates/*/docs/BENCHMARKS.md
+packages/astro-ignite/templates/*/docs/OG.md
+packages/astro-ignite/templates/*/docs/ANALYTICS.md
+packages/astro-ignite/templates/*/docs/FONTS.md
+packages/astro-ignite/templates/*/docs/IMAGES.md
+packages/astro-ignite/templates/*/docs/LEGAL.md
+packages/astro-ignite/templates/*/README.md
+
 # Same guides scaffolded into apps/* (landing was scaffolded from starter)
-apps/*/BENCHMARKS.md
-apps/*/OG.md
-apps/*/ANALYTICS.md
-apps/*/FONTS.md
-apps/*/IMAGES.md
-apps/*/LEGAL.md
+apps/*/docs/BENCHMARKS.md
+apps/*/docs/OG.md
+apps/*/docs/ANALYTICS.md
+apps/*/docs/FONTS.md
+apps/*/docs/IMAGES.md
+apps/*/docs/LEGAL.md
 apps/*/README.md
 
 # Markdown content collections (their own markdown style)
@@ -39,6 +51,10 @@ packages/templates/*/src/content/blog/**
 packages/templates/*/src/content/legal/**
 packages/templates/*/src/content/projects/**
 packages/templates/*/src/content/docs/**
+packages/astro-ignite/templates/*/src/content/blog/**
+packages/astro-ignite/templates/*/src/content/legal/**
+packages/astro-ignite/templates/*/src/content/projects/**
+packages/astro-ignite/templates/*/src/content/docs/**
 apps/*/src/content/blog/**
 apps/*/src/content/legal/**
 apps/*/src/content/projects/**
@@ -51,6 +67,13 @@ packages/templates/*/src/components/ThemeToggle.astro
 packages/templates/*/src/components/Nav.astro
 packages/templates/*/src/components/LocaleSwitcher.astro
 packages/templates/*/src/layouts/BaseLayout.astro
+# Same files bundled inside the astro-ignite CLI package.
+packages/astro-ignite/templates/*/src/components/Analytics.astro
+packages/astro-ignite/templates/*/src/components/CookieBanner.astro
+packages/astro-ignite/templates/*/src/components/ThemeToggle.astro
+packages/astro-ignite/templates/*/src/components/Nav.astro
+packages/astro-ignite/templates/*/src/components/LocaleSwitcher.astro
+packages/astro-ignite/templates/*/src/layouts/BaseLayout.astro
 apps/*/src/components/Analytics.astro
 apps/*/src/components/CookieBanner.astro
 apps/*/src/components/ThemeToggle.astro

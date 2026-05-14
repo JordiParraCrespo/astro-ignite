@@ -57,310 +57,298 @@ const rssHref = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/r
 ---
 
 <Fragment>
-    <header class="hero">
-      <div class="hero-grid" aria-hidden="true"></div>
-      <div class="page hero-inner">
-        <div class="hero-split">
-          <div class="hero-copy">
-            <a class="pill pill--release" href={`${ghUrl}/releases`} rel="noopener" target="_blank">
-              <span class="dot" aria-hidden="true"></span>
-              <span class="pill-tag">{t('landing.hero.pillTag')}</span>
-              <span>{t('landing.hero.pillAnnouncement')}</span>
-              <span class="pill-arrow" aria-hidden="true">→</span>
-            </a>
-            <h1>
-              <span class="muted">{t('landing.hero.headlineMuted')}</span>{' '}
-              {t('landing.hero.headlineTail')}
-            </h1>
-            <p class="hero-lede">
-              {t('landing.hero.lede')}
-              {' '}
-              <span class="emph">{t('landing.hero.ledeEmph')}</span>
-            </p>
+  <header class="hero">
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="page hero-inner">
+      <div class="hero-split">
+        <div class="hero-copy">
+          <a class="pill pill--release" href={`${ghUrl}/releases`} rel="noopener" target="_blank">
+            <span class="dot" aria-hidden="true"></span>
+            <span class="pill-tag">{t('landing.hero.pillTag')}</span>
+            <span>{t('landing.hero.pillAnnouncement')}</span>
+            <span class="pill-arrow" aria-hidden="true">→</span>
+          </a>
+          <h1>
+            <span class="muted">{t('landing.hero.headlineMuted')}</span>{' '}
+            {t('landing.hero.headlineTail')}
+          </h1>
+          <p class="hero-lede">
+            {t('landing.hero.lede')}
+            {' '}
+            <span class="emph">{t('landing.hero.ledeEmph')}</span>
+          </p>
 
-            <div class="cmd" id="install">
-              <span
-                ><span class="cmd-prompt">$</span><span class="cmd-text mono"
-                  >npm create astro-ignite@latest my-site</span
-                ></span
-              >
-              <button
-                class="cmd-copy"
-                type="button"
-                data-copy="npm create astro-ignite@latest my-site"
-                >{t('landing.hero.copyLabel')}</button
-              >
-            </div>
-
-            <div class="hero-cta">
-              <a
-                class="btn btn-primary btn-lg"
-                href={quickStartUrl}
-                target="_blank"
-                rel="noopener">{t('landing.hero.primaryCta')}</a
-              >
-              <a class="btn btn-outline btn-lg" href={ghUrl} rel="noopener"
-                >{t('landing.hero.secondaryCta')}</a
-              >
-              <span class="mono hero-meta">MIT · Astro 5 · Tailwind v4</span>
-            </div>
-          </div>
-
-          <div class="term" aria-label="Scaffold flow preview">
-            <div class="term-bar">
-              <span class="term-dot" aria-hidden="true"></span>
-              <span class="term-dot" aria-hidden="true"></span>
-              <span class="term-dot" aria-hidden="true"></span>
-              <span class="term-path mono">~/code</span>
-              <span class="term-shell mono">zsh</span>
-            </div>
-            <div class="term-body mono">
-              <span class="t-muted">$</span> npm create astro-ignite my-site<br /><br />
-              <span class="t-muted">^</span>&nbsp; <span class="t-strong">astro-ignite</span>
-              <span class="t-subtle">v0.1.0</span><br />
-              <span class="t-subtle">│</span><br />
-              <span class="t-subtle">◇</span>&nbsp; Template? <span class="t-muted">starter</span
-              ><br />
-              <span class="t-subtle">◇</span>&nbsp; Project name? <span class="t-muted"
-                >./my-site</span
-              ><br />
-              <span class="t-subtle">◇</span>&nbsp; Languages? <span class="t-muted"
-                >en, es, ja</span
-              ><br />
-              <span class="t-subtle">◇</span>&nbsp; Email? <span class="t-muted">Resend</span><br />
-              ◆&nbsp; Install deps?<br />
-              <span class="t-subtle">│</span>&nbsp; <span class="t-pick">● Yes</span>&nbsp;<span
-                class="t-muted">○ No ○ pnpm ○ bun</span
-              ><br />
-              <span class="t-subtle">└</span>&nbsp; <span class="caret"></span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <div class="page">
-      <div class="meta-strip mono">
-        <div class="meta-item">
-          <span>Lighthouse</span><span class="meta-value">100 / 100 / 100 / 100</span>
-        </div>
-        <div class="meta-item"><span>Bundle</span><span class="meta-value">17.4 kB</span></div>
-        <div class="meta-item"><span>LCP</span><span class="meta-value">0.4 s</span></div>
-        <div class="meta-item"><span>CLS</span><span class="meta-value">0.00</span></div>
-        <div class="meta-item meta-spacer"><span>Astro 5</span></div>
-        <div class="meta-item"><span>Tailwind v4</span></div>
-        <div class="meta-item"><span>MIT</span></div>
-      </div>
-    </div>
-
-    <section class="features-section">
-      <div class="page">
-        <div class="section-head">
-          <div class="section-lead">
-            <span class="eyebrow mono">{t('landing.features.eyebrow')}</span>
-            <h2>{t('landing.features.headline')}</h2>
-          </div>
-          <p class="section-meta mono">{t('landing.features.meta')}</p>
-        </div>
-
-        <div class="features">
-          {
-            FEATURE_IDS.map((f) => (
-              <div class="feat">
-                <div class="feat-head">
-                  <span class="feat-num mono">{f.num}</span>
-                  <span class="feat-tag mono">{f.tag}</span>
-                </div>
-                <h3>{t(`landing.features.${f.id}.title` as const)}</h3>
-                <p>{t(`landing.features.${f.id}.body` as const)}</p>
-              </div>
-            ))
-          }
-        </div>
-      </div>
-    </section>
-
-    <section class="templates-section" id="templates">
-      <div class="page">
-        <div class="section-head">
-          <div class="section-lead">
-            <span class="eyebrow mono">{t('landing.templates.eyebrow')}</span>
-            <h2>{t('landing.templates.headline')}</h2>
-            <p>
-              {t('landing.templates.lede')}
-              <span class="mono inline-code">--template</span>{t('landing.templates.ledeTail')}
-            </p>
-          </div>
-          <p class="section-meta mono">{t('landing.templates.meta')}</p>
-        </div>
-
-        <div class="tpls">
-          <article class="tpl">
-            <div class="tpl-preview">
-              <Image
-                src={starterPreview}
-                alt={t('landing.templates.starter.name')}
-                widths={[640, 960, 1280]}
-                sizes="(max-width: 900px) 100vw, 50vw"
-                loading="lazy"
-                class="tpl-preview-img"
-              />
-            </div>
-            <div class="tpl-body">
-              <div class="tpl-row">
-                <h3>{t('landing.templates.starter.name')}</h3>
-                <span class="tpl-meta mono">{t('landing.templates.starter.meta')}</span>
-              </div>
-              <p class="tpl-desc">{t('landing.templates.starter.desc')}</p>
-              <div class="tpl-tags">
-                <span class="tag-chip mono">marketing</span>
-                <span class="tag-chip mono">blog</span>
-                <span class="tag-chip mono">i18n</span>
-                <span class="tag-chip mono">resend</span>
-                <span class="tag-chip mono">plausible</span>
-              </div>
-            </div>
-            <div class="tpl-foot">
-              <span class="tpl-install mono"
-                ><span class="tpl-flag">$</span> npm create astro-ignite my-site <span
-                  class="tpl-flag">--template</span
-                > starter</span
-              >
-              <a
-                class="btn btn-outline btn-sm"
-                href={starterPreviewUrl}
-                target="_blank"
-                rel="noopener">{t('landing.templates.preview')}</a
-              >
-            </div>
-          </article>
-
-          <article class="tpl">
-            <div class="tpl-preview">
-              <Image
-                src={docsPreview}
-                alt={t('landing.templates.docs.name')}
-                widths={[640, 960, 1280]}
-                sizes="(max-width: 900px) 100vw, 50vw"
-                loading="lazy"
-                class="tpl-preview-img"
-              />
-            </div>
-            <div class="tpl-body">
-              <div class="tpl-row">
-                <h3>{t('landing.templates.docs.name')}</h3>
-                <span class="tpl-meta mono">{t('landing.templates.docs.meta')}</span>
-              </div>
-              <p class="tpl-desc">{t('landing.templates.docs.desc')}</p>
-              <div class="tpl-tags">
-                <span class="tag-chip mono">docs</span>
-                <span class="tag-chip mono">mdx</span>
-                <span class="tag-chip mono">i18n</span>
-                <span class="tag-chip mono">callouts</span>
-                <span class="tag-chip mono">code-copy</span>
-              </div>
-            </div>
-            <div class="tpl-foot">
-              <span class="tpl-install mono"
-                ><span class="tpl-flag">$</span> npm create astro-ignite my-docs <span
-                  class="tpl-flag">--template</span
-                > docs</span
-              >
-              <a
-                class="btn btn-outline btn-sm"
-                href={docsPreviewUrl}
-                target="_blank"
-                rel="noopener">{t('landing.templates.preview')}</a
-              >
-            </div>
-          </article>
-        </div>
-
-        <div class="tpls-foot">
-          <span class="mono tpls-coming"
-            >{t('landing.templates.moreLead')}{' '}
-            <span class="emph">portfolio</span>, <span class="emph">commerce</span>, <span
-              class="emph">changelog</span
-            >.</span
-          >
-          <a class="btn btn-ghost btn-sm" href={ghUrl + '/blob/main/ROADMAP.md'} rel="noopener"
-            >{t('landing.templates.browseAll')}</a
-          >
-        </div>
-      </div>
-    </section>
-
-    {
-      recentCards.length > 0 && (
-        <section class="blog-section">
-          <div class="page">
-            <div class="section-head">
-              <div class="section-lead">
-                <span class="eyebrow mono">From the blog</span>
-                <h2>Notes from the build.</h2>
-              </div>
-              <p class="section-meta mono">
-                Writing on perf budgets, i18n, agent-friendly conventions, and the occasional rant
-                about modern web tooling.
-              </p>
-            </div>
-
-            <div class="blog-grid">
-              {recentCards.map((c) => (
-                <BlogCard card={c} />
-              ))}
-            </div>
-
-            <div class="blog-foot">
-              <span class="mono blog-foot-meta">
-                {blogCards.length} articles · <a href={rssHref}>RSS ↗</a>
-              </span>
-              <a class="btn btn-ghost btn-sm" href={blogHref}>
-                Browse all posts →
-              </a>
-            </div>
-          </div>
-        </section>
-      )
-    }
-
-    <section class="cta-section">
-      <div class="page">
-        <div class="cta-box">
-          <span class="pill"
-            ><span class="dot" aria-hidden="true"></span><span class="mono"
-              >{t('landing.cta.pill')}</span
-            ></span
-          >
-          <h2>
-            {t('landing.cta.headlineLead')}{' '}
-            <span class="muted">{t('landing.cta.headlineMuted')}</span>{
-              t('landing.cta.headlineTail')
-            }
-          </h2>
-          <p>{t('landing.cta.lede')}</p>
-          <div class="cmd">
+          <div class="cmd" id="install">
             <span
               ><span class="cmd-prompt">$</span><span class="cmd-text mono"
-                >npm create astro-ignite@latest</span
+                >npm create astro-ignite@latest my-site</span
               ></span
             >
-            <button class="cmd-copy" type="button" data-copy="npm create astro-ignite@latest"
+            <button
+              class="cmd-copy"
+              type="button"
+              data-copy="npm create astro-ignite@latest my-site"
               >{t('landing.hero.copyLabel')}</button
             >
           </div>
-          <div class="cta-actions">
-            <a
-              class="btn btn-primary btn-lg"
-              href={quickStartUrl}
-              target="_blank"
-              rel="noopener">Get started</a
+
+          <div class="hero-cta">
+            <a class="btn btn-primary btn-lg" href={quickStartUrl} target="_blank" rel="noopener"
+              >{t('landing.hero.primaryCta')}</a
             >
-            <a class="btn btn-outline btn-lg" href={ghUrl} rel="noopener">Star on GitHub ★</a>
+            <a class="btn btn-outline btn-lg" href={ghUrl} rel="noopener"
+              >{t('landing.hero.secondaryCta')}</a
+            >
+            <span class="mono hero-meta">MIT · Astro 5 · Tailwind v4</span>
+          </div>
+        </div>
+
+        <div class="term" aria-label="Scaffold flow preview">
+          <div class="term-bar">
+            <span class="term-dot" aria-hidden="true"></span>
+            <span class="term-dot" aria-hidden="true"></span>
+            <span class="term-dot" aria-hidden="true"></span>
+            <span class="term-path mono">~/code</span>
+            <span class="term-shell mono">zsh</span>
+          </div>
+          <div class="term-body mono">
+            <span class="t-muted">$</span> npm create astro-ignite my-site<br /><br />
+            <span class="t-muted">^</span>&nbsp; <span class="t-strong">astro-ignite</span>
+            <span class="t-subtle">v0.1.0</span><br />
+            <span class="t-subtle">│</span><br />
+            <span class="t-subtle">◇</span>&nbsp; Template? <span class="t-muted">starter</span><br
+            />
+            <span class="t-subtle">◇</span>&nbsp; Project name? <span class="t-muted"
+              >./my-site</span
+            ><br />
+            <span class="t-subtle">◇</span>&nbsp; Languages? <span class="t-muted">en, es, ja</span
+            ><br />
+            <span class="t-subtle">◇</span>&nbsp; Email? <span class="t-muted">Resend</span><br />
+            ◆&nbsp; Install deps?<br />
+            <span class="t-subtle">│</span>&nbsp; <span class="t-pick">● Yes</span>&nbsp;<span
+              class="t-muted">○ No ○ pnpm ○ bun</span
+            ><br />
+            <span class="t-subtle">└</span>&nbsp; <span class="caret"></span>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </header>
+
+  <div class="page">
+    <div class="meta-strip mono">
+      <div class="meta-item">
+        <span>Lighthouse</span><span class="meta-value">100 / 100 / 100 / 100</span>
+      </div>
+      <div class="meta-item"><span>Bundle</span><span class="meta-value">17.4 kB</span></div>
+      <div class="meta-item"><span>LCP</span><span class="meta-value">0.4 s</span></div>
+      <div class="meta-item"><span>CLS</span><span class="meta-value">0.00</span></div>
+      <div class="meta-item meta-spacer"><span>Astro 5</span></div>
+      <div class="meta-item"><span>Tailwind v4</span></div>
+      <div class="meta-item"><span>MIT</span></div>
+    </div>
+  </div>
+
+  <section class="features-section">
+    <div class="page">
+      <div class="section-head">
+        <div class="section-lead">
+          <span class="eyebrow mono">{t('landing.features.eyebrow')}</span>
+          <h2>{t('landing.features.headline')}</h2>
+        </div>
+        <p class="section-meta mono">{t('landing.features.meta')}</p>
+      </div>
+
+      <div class="features">
+        {
+          FEATURE_IDS.map((f) => (
+            <div class="feat">
+              <div class="feat-head">
+                <span class="feat-num mono">{f.num}</span>
+                <span class="feat-tag mono">{f.tag}</span>
+              </div>
+              <h3>{t(`landing.features.${f.id}.title` as const)}</h3>
+              <p>{t(`landing.features.${f.id}.body` as const)}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="templates-section" id="templates">
+    <div class="page">
+      <div class="section-head">
+        <div class="section-lead">
+          <span class="eyebrow mono">{t('landing.templates.eyebrow')}</span>
+          <h2>{t('landing.templates.headline')}</h2>
+          <p>
+            {t('landing.templates.lede')}
+            <span class="mono inline-code">--template</span>{t('landing.templates.ledeTail')}
+          </p>
+        </div>
+        <p class="section-meta mono">{t('landing.templates.meta')}</p>
+      </div>
+
+      <div class="tpls">
+        <article class="tpl">
+          <div class="tpl-preview">
+            <Image
+              src={starterPreview}
+              alt={t('landing.templates.starter.name')}
+              widths={[640, 960, 1280]}
+              sizes="(max-width: 900px) 100vw, 50vw"
+              loading="lazy"
+              class="tpl-preview-img"
+            />
+          </div>
+          <div class="tpl-body">
+            <div class="tpl-row">
+              <h3>{t('landing.templates.starter.name')}</h3>
+              <span class="tpl-meta mono">{t('landing.templates.starter.meta')}</span>
+            </div>
+            <p class="tpl-desc">{t('landing.templates.starter.desc')}</p>
+            <div class="tpl-tags">
+              <span class="tag-chip mono">marketing</span>
+              <span class="tag-chip mono">blog</span>
+              <span class="tag-chip mono">i18n</span>
+              <span class="tag-chip mono">resend</span>
+              <span class="tag-chip mono">plausible</span>
+            </div>
+          </div>
+          <div class="tpl-foot">
+            <span class="tpl-install mono"
+              ><span class="tpl-flag">$</span> npm create astro-ignite my-site <span
+                class="tpl-flag">--template</span
+              > starter</span
+            >
+            <a
+              class="btn btn-outline btn-sm"
+              href={starterPreviewUrl}
+              target="_blank"
+              rel="noopener">{t('landing.templates.preview')}</a
+            >
+          </div>
+        </article>
+
+        <article class="tpl">
+          <div class="tpl-preview">
+            <Image
+              src={docsPreview}
+              alt={t('landing.templates.docs.name')}
+              widths={[640, 960, 1280]}
+              sizes="(max-width: 900px) 100vw, 50vw"
+              loading="lazy"
+              class="tpl-preview-img"
+            />
+          </div>
+          <div class="tpl-body">
+            <div class="tpl-row">
+              <h3>{t('landing.templates.docs.name')}</h3>
+              <span class="tpl-meta mono">{t('landing.templates.docs.meta')}</span>
+            </div>
+            <p class="tpl-desc">{t('landing.templates.docs.desc')}</p>
+            <div class="tpl-tags">
+              <span class="tag-chip mono">docs</span>
+              <span class="tag-chip mono">mdx</span>
+              <span class="tag-chip mono">i18n</span>
+              <span class="tag-chip mono">callouts</span>
+              <span class="tag-chip mono">code-copy</span>
+            </div>
+          </div>
+          <div class="tpl-foot">
+            <span class="tpl-install mono"
+              ><span class="tpl-flag">$</span> npm create astro-ignite my-docs <span
+                class="tpl-flag">--template</span
+              > docs</span
+            >
+            <a class="btn btn-outline btn-sm" href={docsPreviewUrl} target="_blank" rel="noopener"
+              >{t('landing.templates.preview')}</a
+            >
+          </div>
+        </article>
+      </div>
+
+      <div class="tpls-foot">
+        <span class="mono tpls-coming"
+          >{t('landing.templates.moreLead')}{' '}
+          <span class="emph">portfolio</span>, <span class="emph">commerce</span>, <span
+            class="emph">changelog</span
+          >.</span
+        >
+        <a class="btn btn-ghost btn-sm" href={ghUrl + '/blob/main/ROADMAP.md'} rel="noopener"
+          >{t('landing.templates.browseAll')}</a
+        >
+      </div>
+    </div>
+  </section>
+
+  {
+    recentCards.length > 0 && (
+      <section class="blog-section">
+        <div class="page">
+          <div class="section-head">
+            <div class="section-lead">
+              <span class="eyebrow mono">From the blog</span>
+              <h2>Notes from the build.</h2>
+            </div>
+            <p class="section-meta mono">
+              Writing on perf budgets, i18n, agent-friendly conventions, and the occasional rant
+              about modern web tooling.
+            </p>
+          </div>
+
+          <div class="blog-grid">
+            {recentCards.map((c) => (
+              <BlogCard card={c} />
+            ))}
+          </div>
+
+          <div class="blog-foot">
+            <span class="mono blog-foot-meta">
+              {blogCards.length} articles · <a href={rssHref}>RSS ↗</a>
+            </span>
+            <a class="btn btn-ghost btn-sm" href={blogHref}>
+              Browse all posts →
+            </a>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="cta-section">
+    <div class="page">
+      <div class="cta-box">
+        <span class="pill"
+          ><span class="dot" aria-hidden="true"></span><span class="mono"
+            >{t('landing.cta.pill')}</span
+          ></span
+        >
+        <h2>
+          {t('landing.cta.headlineLead')}{' '}
+          <span class="muted">{t('landing.cta.headlineMuted')}</span>{t('landing.cta.headlineTail')}
+        </h2>
+        <p>{t('landing.cta.lede')}</p>
+        <div class="cmd">
+          <span
+            ><span class="cmd-prompt">$</span><span class="cmd-text mono"
+              >npm create astro-ignite@latest</span
+            ></span
+          >
+          <button class="cmd-copy" type="button" data-copy="npm create astro-ignite@latest"
+            >{t('landing.hero.copyLabel')}</button
+          >
+        </div>
+        <div class="cta-actions">
+          <a class="btn btn-primary btn-lg" href={quickStartUrl} target="_blank" rel="noopener"
+            >Get started</a
+          >
+          <a class="btn btn-outline btn-lg" href={ghUrl} rel="noopener">Star on GitHub ★</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <script>
     // Copy-to-clipboard for the .cmd-copy buttons.
@@ -1105,5 +1093,4 @@ const rssHref = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/r
       justify-content: center;
     }
   }
-
 </style>

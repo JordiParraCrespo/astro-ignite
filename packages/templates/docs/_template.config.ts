@@ -6,7 +6,18 @@
  * narrower than the starter's.
  */
 
-import type { ScaffoldContext } from '../../create-astro-ignite/src/types';
+// Mirrored locally so the docs template is self-contained — the CLI duck-types
+// against this shape, and the starter template declares the same interface
+// inline. Keep in sync with packages/astro-ignite/src/types.ts.
+export interface ScaffoldContext {
+  projectName: string;
+  siteName: string;
+  siteUrl: string;
+  defaultLocale: string;
+  additionalLocales: string[];
+  email: 'resend' | 'smtp' | 'none';
+  packageManager: 'npm' | 'pnpm' | 'yarn' | 'bun';
+}
 
 /** Files included only for certain prompt answers. None today — docs template
  *  doesn't conditionalize on email/etc. */
