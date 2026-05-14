@@ -27,7 +27,6 @@ export async function sendContactEmail(input: ContactEmailInput): Promise<void> 
     if (import.meta.env.PROD) {
       throw new Error('[astro-ignite] Contact form requires SMTP_* env vars in production.');
     }
-    // eslint-disable-next-line no-console
     console.log(
       '\n📧 [astro-ignite] SMTP env vars not set — would have sent:\n',
       JSON.stringify(input, null, 2),

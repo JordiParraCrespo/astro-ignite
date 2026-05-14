@@ -29,7 +29,6 @@ export async function sendContactEmail(input: ContactEmailInput): Promise<void> 
         '[astro-ignite] Contact form requires RESEND_API_KEY and CONTACT_TO_EMAIL in production.'
       );
     }
-    // eslint-disable-next-line no-console
     console.log(
       '\n📧 [astro-ignite] RESEND_API_KEY or CONTACT_TO_EMAIL not set — would have sent:\n',
       JSON.stringify(input, null, 2),

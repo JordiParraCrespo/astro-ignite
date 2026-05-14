@@ -10,11 +10,7 @@ export type Props = {
 const { id, class: className, labelledBy } = Astro.props;
 ---
 
-<dialog
-  id={id}
-  class={cn('dialog', className)}
-  aria-labelledby={labelledBy}
->
+<dialog id={id} class={cn('dialog', className)} aria-labelledby={labelledBy}>
   <div class="dialog__panel">
     <slot />
   </div>

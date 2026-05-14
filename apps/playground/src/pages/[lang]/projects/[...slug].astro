@@ -6,7 +6,10 @@ import ProjectLayout from '@/layouts/ProjectLayout.astro';
 import { siteConfig } from '@/config/site';
 
 export async function getStaticPaths() {
-  const projects = await getCollection('projects', (e: CollectionEntry<'projects'>) => !e.data.draft);
+  const projects = await getCollection(
+    'projects',
+    (e: CollectionEntry<'projects'>) => !e.data.draft
+  );
   return projects.flatMap((entry: CollectionEntry<'projects'>) => {
     const segments = entry.id.split('/');
     const lang = segments[0]!;
@@ -17,7 +20,9 @@ export async function getStaticPaths() {
   });
 }
 
-interface Props { entry: CollectionEntry<'projects'>; }
+interface Props {
+  entry: CollectionEntry<'projects'>;
+}
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 ---

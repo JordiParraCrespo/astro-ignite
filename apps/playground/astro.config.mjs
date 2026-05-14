@@ -10,7 +10,7 @@ import { siteConfig } from './src/config/site.ts';
 // https://astro.build/config
 export default defineConfig({
   site: siteConfig.url,
-  trailingSlash: 'never',
+  trailingSlash: 'ignore',
   output: 'static',
   adapter: node({ mode: 'standalone' }),
   build: {
@@ -44,7 +44,10 @@ export default defineConfig({
     }),
   ],
   vite: {
-    plugins: [tailwindcss()],
+    // JSDoc cast: @tailwindcss/vite resolves to Vite 7 types in some envs (e.g. the
+    // monorepo), but to Vite 6 in others (fresh scaffolds). Either way the runtime
+    // plugin works — silence the conditional type drift with a single any-cast.
+    plugins: [/** @type {any} */ (tailwindcss())],
   },
   experimental: {
     fonts: [

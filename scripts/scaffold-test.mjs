@@ -22,7 +22,10 @@ import { fileURLToPath } from 'node:url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(__dirname, '..');
 const playground = resolve(repoRoot, 'apps/playground');
-const cliEntry = resolve(repoRoot, 'packages/create-astro-ignite/dist/index.js');
+// Use the local `astro-ignite` CLI directly — the `create-astro-ignite` shim
+// just runs `npx astro-ignite@latest`, which would scaffold from the published
+// version instead of the PR's local templates.
+const cliEntry = resolve(repoRoot, 'packages/astro-ignite/dist/index.js');
 
 const args = process.argv.slice(2);
 const arg = (name) => args.find((a) => a.startsWith(`--${name}=`))?.split('=')[1];
@@ -42,14 +45,14 @@ mkdirSync(playground, { recursive: true });
 
 // 2. assert CLI is built
 if (!existsSync(cliEntry)) {
-  console.error(`  ✗ CLI not built. Run: pnpm --filter create-astro-ignite build`);
+  console.error(`  ✗ CLI not built. Run: pnpm --filter astro-ignite build`);
   process.exit(1);
 }
 
-// 3. run scaffold
+// 3. run scaffold (invoke `bootstrap` since we're using astro-ignite directly)
 console.log(`  → scaffolding ${playground}`);
 execSync(
-  `node ${cliEntry} ${playground} --yes --no-install --no-git --pm=${pm}`,
+  `node ${cliEntry} bootstrap ${playground} --yes --no-install --no-git --pm=${pm}`,
   { stdio: 'inherit', cwd: repoRoot }
 );
 
@@ -59,6 +62,7 @@ const expected = [
   '.gitignore',
   'tsconfig.json',
   'astro.config.mjs',
+  'eslint.config.js',
   'README.md',
   'docs/FONTS.md',
   'docs/OG.md',
@@ -68,8 +72,8 @@ const expected = [
   'docs/BENCHMARKS.md',
   'public/favicon.svg',
   'public/manifest.webmanifest',
-  'public/robots.txt',
   'public/og/og-default.png',
+  'src/pages/robots.txt.ts',
   'src/config/site.ts',
   'src/i18n/en.json',
   'src/i18n/index.ts',
@@ -171,6 +175,9 @@ execSync(`${pm} install`, { stdio: 'inherit', cwd: playground });
 
 console.log(`\n  → ${pm} run check`);
 execSync(`${pm} run check`, { stdio: 'inherit', cwd: playground });
+
+console.log(`\n  → ${pm} run lint`);
+execSync(`${pm} run lint`, { stdio: 'inherit', cwd: playground });
 
 console.log(`\n  → ${pm} run build`);
 execSync(`${pm} run build`, { stdio: 'inherit', cwd: playground });

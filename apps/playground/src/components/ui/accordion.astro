@@ -8,7 +8,8 @@ export type Props = {
 };
 
 const { type = 'single', name, class: className } = Astro.props;
-const groupName = type === 'single' ? (name ?? `accordion-${Math.random().toString(36).slice(2, 9)}`) : undefined;
+const groupName =
+  type === 'single' ? (name ?? `accordion-${Math.random().toString(36).slice(2, 9)}`) : undefined;
 ---
 
 <div class={cn('accordion', className)} data-group={groupName}>

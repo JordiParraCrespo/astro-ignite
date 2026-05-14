@@ -10,6 +10,6 @@ export function toast(message: string, options: ToastOptions = {}): void {
   window.dispatchEvent(
     new CustomEvent('ai-toast', {
       detail: { message, ...options },
-    }),
+    })
   );
 }

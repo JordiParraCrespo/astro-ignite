@@ -13,9 +13,21 @@ const { variant = 'default', class: className, ...rest } = Astro.props;
 ---
 
 <div role="alert" class={cn('alert', `alert--${variant}`, className)} {...rest}>
-  {Astro.slots.has('icon') && <div class="alert__icon"><slot name="icon" /></div>}
+  {
+    Astro.slots.has('icon') && (
+      <div class="alert__icon">
+        <slot name="icon" />
+      </div>
+    )
+  }
   <div class="alert__body">
-    {Astro.slots.has('title') && <div class="alert__title"><slot name="title" /></div>}
+    {
+      Astro.slots.has('title') && (
+        <div class="alert__title">
+          <slot name="title" />
+        </div>
+      )
+    }
     <div class="alert__desc"><slot /></div>
   </div>
 </div>
