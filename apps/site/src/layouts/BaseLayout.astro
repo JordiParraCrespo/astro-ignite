@@ -85,16 +85,26 @@ const allSchemas = [...siteSchemas(locale), ...schemas];
     -->
     <script is:inline>
       (() => {
+        const root = document.documentElement;
         const stored = localStorage.getItem('theme');
         const isLight =
           stored === 'light' || (!stored && !matchMedia('(prefers-color-scheme: dark)').matches);
-        if (isLight) document.documentElement.classList.add('light');
-        document.documentElement.dataset.theme = stored ?? 'system';
+        if (isLight) root.classList.add('light');
+        root.dataset.theme = stored ?? 'system';
+        // Stamp consent state so the cookie banner is visible from FCP for
+        // new visitors and stays hidden for returning ones — no mid-load
+        // visibility flip (which was the dominant Speed Index hit).
+        if (localStorage.getItem('cookie-consent')) root.dataset.consent = 'recorded';
       })();
     </script>
 
-    <!-- Fonts: preload display (LCP-critical), defer mono (below the fold) -->
-    <Font cssVariable="--font-display" preload />
+    <!-- Fonts: registered for size-adjusted Arial fallback (CLS protection)
+         but NOT preloaded. The `--font-display` token in global.css resolves
+         to "Geist", which doesn't match the @font-face family Astro generates
+         (`Geist-<hash>`), so the page renders in the metric-tuned fallback.
+         Preloading the file just consumed ~38 KiB of slow-4G bandwidth on
+         the critical path for a resource the browser never used. -->
+    <Font cssVariable="--font-display" />
     <Font cssVariable="--font-mono" />
 
     <!-- Hero image preload — pages with above-the-fold imagery pass these -->
