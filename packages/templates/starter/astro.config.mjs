@@ -15,6 +15,11 @@ export default defineConfig({
   adapter: node({ mode: 'standalone' }),
   build: {
     format: 'directory',
+    // Inline ALL stylesheets so the first paint never waits on a CSS round-trip.
+    // The largest bundle is ~25 KB (blog post route, Tailwind + tokens) — that
+    // adds ~25 KB to the HTML per page, but eliminates one render-blocking
+    // request and is a clear Speed-Index / FCP win for a content-light site.
+    inlineStylesheets: 'always',
   },
   i18n: {
     defaultLocale: siteConfig.defaultLocale,
@@ -55,9 +60,15 @@ export default defineConfig({
         provider: fontProviders.bunny(),
         name: 'Geist',
         cssVariable: '--font-display',
-        weights: ['400 700'],
+        // Only the weights the design actually renders: 400 (body), 500 (h1/h2),
+        // 600 (release-pill tag). Dropping 700 + the "400-700" range halves the
+        // preloaded file count without changing any rendered glyph.
+        weights: [400, 500, 600],
         styles: ['normal'],
-        subsets: ['latin', 'latin-ext'],
+        // Spanish accents (á é í ó ú ñ ¿ ¡) are all in latin-1, which is covered
+        // by the `latin` subset. latin-ext is for Polish / Czech / Vietnamese
+        // diacritics — drop until a locale that needs it is added.
+        subsets: ['latin'],
         fallbacks: ['system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
         display: 'swap',
       },
