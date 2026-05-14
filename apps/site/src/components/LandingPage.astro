@@ -17,7 +17,7 @@
  * to worry about).
  */
 
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 
 import { siteConfig } from '@/config/site';
@@ -193,12 +193,14 @@ const rssHref = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/r
       <div class="tpls">
         <article class="tpl">
           <div class="tpl-preview">
-            <Image
+            <Picture
               src={starterPreview}
               alt={t('landing.templates.starter.name')}
               widths={[640, 960, 1280]}
               sizes="(max-width: 900px) 100vw, 50vw"
+              formats={['avif', 'webp']}
               loading="lazy"
+              decoding="async"
               class="tpl-preview-img"
             />
           </div>
@@ -233,12 +235,14 @@ const rssHref = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/r
 
         <article class="tpl">
           <div class="tpl-preview">
-            <Image
+            <Picture
               src={docsPreview}
               alt={t('landing.templates.docs.name')}
               widths={[640, 960, 1280]}
               sizes="(max-width: 900px) 100vw, 50vw"
+              formats={['avif', 'webp']}
               loading="lazy"
+              decoding="async"
               class="tpl-preview-img"
             />
           </div>
@@ -576,7 +580,9 @@ const rssHref = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/r
     max-width: 100%;
   }
   .cmd-prompt {
-    color: var(--color-fg-muted);
+    /* fg-muted in light mode is zinc-500 → on zinc-100 = 4.33:1 (AA fail at <14px).
+       Use the page foreground so the $ glyph stays readable in both themes. */
+    color: var(--color-fg);
     margin-right: 6px;
   }
   .cmd-text {
@@ -594,7 +600,9 @@ const rssHref = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/r
     background: transparent;
     font-family: var(--font-mono);
     font-size: 11px;
-    color: var(--color-fg-muted);
+    /* Same reason as .cmd-prompt: at 11px the AA threshold is 4.5:1 and
+       fg-muted-on-surface-2 doesn't clear it in light mode. */
+    color: var(--color-fg);
     border: 1px solid var(--color-border);
     padding: 4px 8px;
     border-radius: 4px;
@@ -652,12 +660,14 @@ const rssHref = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/r
   }
   .term-path {
     font-size: 11px;
-    color: #71717a;
+    /* zinc-400 on zinc-900 = 6.99:1 (AA pass). Was zinc-500 = 3.79:1. */
+    color: #a1a1aa;
     margin-left: 8px;
   }
   .term-shell {
     font-size: 11px;
-    color: #52525b;
+    /* Same path as .term-path — was zinc-600 = 2.30:1, now zinc-400. */
+    color: #a1a1aa;
     margin-left: auto;
   }
   .term-body {
@@ -667,10 +677,13 @@ const rssHref = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/r
     color: #f4f4f5;
   }
   .t-muted {
-    color: #71717a;
+    /* Bumped to zinc-400 so .t-subtle (zinc-500) can also pass AA while still
+       reading dimmer than .t-muted — preserves the visual hierarchy. */
+    color: #a1a1aa;
   }
   .t-subtle {
-    color: #52525b;
+    /* zinc-500 on #000 = 4.52:1 (AA pass for normal text). Was zinc-600 = 2.74. */
+    color: #71717a;
   }
   .t-strong {
     font-weight: 500;
