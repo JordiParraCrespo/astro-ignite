@@ -135,9 +135,7 @@
         const path = url.split('#')[0]?.replace(/\/$/, '') ?? '';
         const parts = path.split('/').filter(Boolean);
         if (parts.length === 0) return 'Docs';
-        return parts
-          .map((p) => decodeURIComponent(p).replace(/-/g, ' '))
-          .join(' / ');
+        return parts.map((p) => decodeURIComponent(p).replace(/-/g, ' ')).join(' / ');
       } catch {
         return url;
       }

@@ -61,12 +61,16 @@ const schemas = [
                 <p class="ex">{featured.post.data.description}</p>
                 <div class="feat-meta mono">
                   <time datetime={featured.dateIso}>{featured.dateText}</time>
-                  <span class="dot" aria-hidden="true">·</span>
+                  <span class="dot" aria-hidden="true">
+                    ·
+                  </span>
                   <span class="author">
                     <span class="av">{featured.authorInitials}</span>
                     {featured.authorName}
                   </span>
-                  <span class="dot" aria-hidden="true">·</span>
+                  <span class="dot" aria-hidden="true">
+                    ·
+                  </span>
                   <span class="badge-mono">{featured.minutes} min read</span>
                 </div>
                 {featured.tags.length > 0 && (
