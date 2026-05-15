@@ -18,10 +18,20 @@ interface Props {
   width: number;
   height: number;
   sizes?: string;
+  /** Responsive width breakpoints — emits AVIF/WebP srcset entries. */
+  widths?: number[];
   class?: string;
 }
 
-const { src, alt, width, height, sizes = '100vw', class: className } = Astro.props;
+const {
+  src,
+  alt,
+  width,
+  height,
+  sizes = '100vw',
+  widths = [480, 720, 960, 1200],
+  class: className,
+} = Astro.props;
 ---
 
 <Picture
@@ -30,10 +40,11 @@ const { src, alt, width, height, sizes = '100vw', class: className } = Astro.pro
   width={width}
   height={height}
   sizes={sizes}
+  widths={widths}
   loading="eager"
   decoding="sync"
   fetchpriority="high"
   formats={['avif', 'webp']}
-  quality={85}
+  quality={78}
   class={className}
 />

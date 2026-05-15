@@ -1,4 +1,6 @@
 ---
+import { Picture } from 'astro:assets';
+
 import type { BlogCardData } from '@/lib/blog';
 import { siteConfig } from '@/config/site';
 import { useTranslations } from '@/i18n';
@@ -13,9 +15,21 @@ const t = useTranslations(locale);
 ---
 
 <a href={card.href} class="bcard">
-  <div class="bcard-top" aria-hidden="true">
-    <span class="num mono">{card.number}</span>
-    <span class="glyph mono">{card.glyph}</span>
+  <div class="bcard-top">
+    <Picture
+      src={card.heroImage}
+      alt={card.heroImageAlt}
+      width={1200}
+      height={630}
+      widths={[360, 540, 720, 960]}
+      sizes="(min-width: 920px) 33vw, (min-width: 620px) 50vw, 100vw"
+      formats={['avif', 'webp']}
+      quality={75}
+      loading="lazy"
+      decoding="async"
+    />
+    <span class="num mono" aria-hidden="true">{card.number}</span>
+    <span class="glyph mono" aria-hidden="true">{card.glyph}</span>
   </div>
   <div class="meta-row mono">
     <time datetime={card.dateIso}>{card.dateText}</time>
@@ -63,27 +77,38 @@ const t = useTranslations(locale);
   .bcard-top {
     aspect-ratio: 16 / 9;
     border-bottom: 1px solid var(--color-border);
-    background: radial-gradient(
-      ellipse 60% 100% at 30% 50%,
-      var(--color-surface-2) 0%,
-      var(--color-bg) 70%
-    );
+    background: var(--color-bg);
     position: relative;
     overflow: hidden;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    padding: 12px 14px;
+  }
+  .bcard-top :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .bcard-top .num,
+  .bcard-top .glyph {
+    position: absolute;
+    bottom: 10px;
+    font-family: var(--font-mono);
+    z-index: 1;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    color: var(--zinc-300, #d4d4d8);
+    border: 1px solid rgba(255, 255, 255, 0.08);
   }
   .bcard-top .num {
+    left: 12px;
     font-size: 10px;
-    color: var(--color-fg-subtle);
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
   }
   .bcard-top .glyph {
-    font-size: 13px;
-    color: var(--color-fg-muted);
+    right: 12px;
+    font-size: 11px;
   }
   .meta-row {
     display: flex;

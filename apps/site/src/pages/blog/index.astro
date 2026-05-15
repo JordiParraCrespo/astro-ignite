@@ -1,4 +1,6 @@
 ---
+import { Picture } from 'astro:assets';
+
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import BlogCard from '@/components/BlogCard.astro';
 import { useTranslations } from '@/i18n';
@@ -80,11 +82,23 @@ const schemas = [
                   <span class="btn btn-primary btn-sm">{t('blog.readArticle')}</span>
                 </div>
               </div>
-              <div class="feat-right" aria-hidden="true">
-                <div class="feat-ovl">
+              <div class="feat-right">
+                <Picture
+                  src={featured.heroImage}
+                  alt={featured.heroImageAlt}
+                  width={1200}
+                  height={630}
+                  widths={[640, 960, 1200]}
+                  sizes="(min-width: 900px) 50vw, 100vw"
+                  formats={['avif', 'webp']}
+                  quality={78}
+                  loading="eager"
+                  decoding="sync"
+                  fetchpriority="high"
+                />
+                <div class="feat-ovl" aria-hidden="true">
                   <div class="feat-top">
                     <span class="mono">{featured.glyph}</span>
-                    <span class="mono dim">cover · 4:3</span>
                   </div>
                   <div class="feat-bottom">
                     <span class="num mono">{featured.number}</span>
@@ -277,15 +291,17 @@ const schemas = [
   .feat-right {
     border: 1px solid var(--color-border);
     border-radius: 12px;
-    aspect-ratio: 4 / 3;
-    background: radial-gradient(
-      ellipse 60% 80% at 30% 50%,
-      var(--color-surface-2) 0%,
-      var(--color-bg) 70%
-    );
+    aspect-ratio: 16 / 9;
+    background: var(--color-bg);
     position: relative;
     overflow: hidden;
     transition: border-color 0.15s var(--ease-out-soft);
+  }
+  .feat-right :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
   .feat:hover .feat-right {
     border-color: var(--color-border-strong);
@@ -293,10 +309,11 @@ const schemas = [
   .feat-ovl {
     position: absolute;
     inset: 0;
-    padding: 22px;
+    padding: 18px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    pointer-events: none;
   }
   .feat-top {
     display: flex;
@@ -310,9 +327,17 @@ const schemas = [
     align-items: flex-end;
     justify-content: space-between;
   }
+  .feat-ovl .mono {
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    color: var(--zinc-300, #d4d4d8);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 11px;
+  }
   .feat .num {
     font-size: 11px;
-    color: var(--color-fg-subtle);
     letter-spacing: 0.1em;
     text-transform: uppercase;
   }
