@@ -1,0 +1,182 @@
+/*
+ * Blog OG banners (1200×630) — visuals lifted from the claude-design
+ * Banners.html GhBanner + Tw3 + Tw4 prototypes. Source of truth:
+ *   /tmp/claude-design-banner/astro-ignite/project/Banners.html
+ * Render with scripts/banners/generate.mjs (headless Chrome).
+ *
+ * Fonts: Geist + Geist Mono are copied locally into ./fonts/ so generation
+ * doesn't depend on network access (Google Fonts fetches stall headless
+ * Chrome). The woff2 binaries come from apps/site/dist/_astro/fonts/ — keep
+ * them in sync if Astro re-hashes the font cache.
+ */
+
+@font-face { font-family: 'Geist'; src: url('fonts/geist-400.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: block; }
+@font-face { font-family: 'Geist'; src: url('fonts/geist-500.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: block; }
+@font-face { font-family: 'Geist'; src: url('fonts/geist-600.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: block; }
+@font-face { font-family: 'Geist Mono'; src: url('fonts/geist-mono-400.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: block; }
+@font-face { font-family: 'Geist Mono'; src: url('fonts/geist-mono-600.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: block; }
+
+:root {
+  --zinc-50:  #fafafa;
+  --zinc-100: #f4f4f5;
+  --zinc-200: #e4e4e7;
+  --zinc-300: #d4d4d8;
+  --zinc-400: #a1a1aa;
+  --zinc-500: #71717a;
+  --zinc-600: #52525b;
+  --zinc-700: #3f3f46;
+  --zinc-800: #27272a;
+  --zinc-900: #18181b;
+  --zinc-950: #0a0a0a;
+}
+
+html, body { margin: 0; padding: 0; }
+body {
+  width: 1200px;
+  height: 630px;
+  font-family: 'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  background: var(--zinc-950);
+  color: var(--zinc-50);
+  overflow: hidden;
+}
+
+.bn {
+  width: 1200px;
+  height: 630px;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+.mono { font-family: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-feature-settings: 'zero','ss01'; }
+
+.grid-bg {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(to right, var(--zinc-900) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--zinc-900) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 90% 100% at 20% 50%, black 35%, transparent 85%);
+  opacity: 0.55;
+}
+
+.pill {
+  display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
+  padding: 5px 12px 5px 9px; font-size: 11px;
+  border: 1px solid var(--zinc-800); border-radius: 999px;
+  background: rgba(24,24,27,0.6); color: var(--zinc-300);
+}
+.pill .dot { width: 6px; height: 6px; border-radius: 99px; background: var(--zinc-50); }
+.pill .sep { color: var(--zinc-700); }
+
+.brand-glyph { font-family: 'Geist Mono', monospace; font-weight: 500; letter-spacing: -0.04em; }
+.brand { display: inline-flex; align-items: center; gap: 12px; }
+.brand .glyph { font-size: 22px; }
+.brand .name { font-size: 18px; font-weight: 500; letter-spacing: -0.025em; }
+
+/* ===== shared two-column GhBanner-style layout ===== */
+.split {
+  padding: 50px 56px;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 48px;
+  align-items: center;
+  height: 100%;
+  box-sizing: border-box;
+}
+.split .left {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; gap: 22px;
+  min-width: 0;
+}
+.split .left .wm { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.split .left .wm .name { display: inline-flex; align-items: baseline; gap: 10px; font-size: 18px; font-weight: 500; letter-spacing: -0.025em; }
+.split .left .wm .name .glyph { font-size: 22px; }
+.split .left h1 { margin: 0; font-size: 54px; font-weight: 500; letter-spacing: -0.045em; line-height: 0.98; text-wrap: balance; }
+.split .left h1 .muted { color: var(--zinc-500); }
+.split .left .sub { margin: 0; font-size: 16px; line-height: 1.5; color: var(--zinc-400); max-width: 38ch; text-wrap: pretty; }
+.split .left .meta-row {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  font-family: 'Geist Mono', monospace; font-size: 11px; color: var(--zinc-500);
+  border-top: 1px solid var(--zinc-800); padding-top: 14px; margin-top: 4px;
+}
+.split .left .meta-row strong { color: var(--zinc-50); font-weight: 500; }
+
+.terminal {
+  position: relative; z-index: 1;
+  border: 1px solid var(--zinc-800); border-radius: 12px; overflow: hidden; background: #000;
+  box-shadow: 0 30px 80px -20px rgba(0,0,0,.7), 0 0 0 1px var(--zinc-800);
+  align-self: stretch;
+  display: flex; flex-direction: column;
+}
+.terminal .bar {
+  display: flex; align-items: center; gap: 7px;
+  padding: 11px 14px; background: var(--zinc-900); border-bottom: 1px solid var(--zinc-800);
+  flex-shrink: 0;
+}
+.terminal .bar .d { width: 9px; height: 9px; border-radius: 99px; background: var(--zinc-700); }
+.terminal .bar .path { font-family: 'Geist Mono', monospace; font-size: 10px; color: var(--zinc-500); margin-left: 8px; }
+.terminal .bar .shell { font-family: 'Geist Mono', monospace; font-size: 10px; color: var(--zinc-600); margin-left: auto; }
+.terminal pre {
+  margin: 0; padding: 18px 16px; flex: 1;
+  font-family: 'Geist Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--zinc-100);
+}
+.terminal .muted { color: var(--zinc-500); }
+.terminal .subtle { color: var(--zinc-700); }
+.terminal .accent { color: var(--zinc-50); font-weight: 500; }
+.terminal .pick { display: inline-block; padding: 1px 7px; background: var(--zinc-50); color: #000; border-radius: 3px; font-weight: 500; }
+.terminal .caret { display: inline-block; background: var(--zinc-50); width: 7px; height: 13px; vertical-align: -2px; }
+
+/* ===== feature-pillars / listicle layout ===== */
+.cells {
+  padding: 50px 56px;
+  display: flex; flex-direction: column; gap: 22px;
+  height: 100%; box-sizing: border-box;
+  position: relative; z-index: 1;
+}
+.cells .head { display: flex; align-items: center; justify-content: space-between; }
+.cells h1 { margin: 0; font-size: 44px; font-weight: 500; letter-spacing: -0.045em; line-height: 1.0; text-wrap: balance; max-width: 24ch; }
+.cells h1 .muted { color: var(--zinc-500); }
+.cells .row {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--zinc-800); border-radius: 14px; overflow: hidden;
+  margin-top: 6px;
+}
+.cells .cell { padding: 22px 20px; display: flex; flex-direction: column; gap: 10px; border-right: 1px solid var(--zinc-800); }
+.cells .cell:last-child { border-right: none; }
+.cells .cell .num {
+  font-family: 'Geist Mono', monospace; font-size: 11px; color: var(--zinc-500);
+  border: 1px solid var(--zinc-800); padding: 2px 7px; border-radius: 4px; width: fit-content;
+}
+.cells .cell h3 { margin: 2px 0 0; font-size: 18px; font-weight: 500; letter-spacing: -0.025em; }
+.cells .cell p { margin: 0; font-size: 13px; line-height: 1.5; color: var(--zinc-400); }
+.cells .foot {
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: 'Geist Mono', monospace; font-size: 11px; color: var(--zinc-500);
+  padding-top: 10px; border-top: 1px solid var(--zinc-800);
+}
+.cells .foot strong { color: var(--zinc-50); font-weight: 500; }
+
+/* ===== full-bleed terminal (Tw3-style) ===== */
+.fullbleed { padding: 0; display: flex; flex-direction: column; height: 100%; background: #000; box-sizing: border-box; }
+.fullbleed .bar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 18px 28px; border-bottom: 1px solid var(--zinc-800); background: var(--zinc-900);
+  flex-shrink: 0;
+}
+.fullbleed .bar .d { width: 11px; height: 11px; border-radius: 99px; background: var(--zinc-700); }
+.fullbleed .bar .path { font-family: 'Geist Mono', monospace; font-size: 13px; color: var(--zinc-500); margin-left: 12px; }
+.fullbleed .bar .shell { font-family: 'Geist Mono', monospace; font-size: 13px; color: var(--zinc-600); margin-left: auto; }
+.fullbleed .body { padding: 36px 52px; font-family: 'Geist Mono', monospace; font-size: 19px; line-height: 1.65; color: var(--zinc-100); flex: 1; }
+.fullbleed .body .m { color: var(--zinc-500); }
+.fullbleed .body .s { color: var(--zinc-700); }
+.fullbleed .body .a { color: var(--zinc-50); font-weight: 500; }
+.fullbleed .body .pick { display: inline-block; padding: 2px 10px; background: var(--zinc-50); color: #000; border-radius: 4px; font-weight: 500; }
+.fullbleed .body .caret { display: inline-block; background: var(--zinc-50); width: 11px; height: 19px; vertical-align: -3px; }
+.fullbleed .footer {
+  padding: 14px 28px; border-top: 1px solid var(--zinc-800);
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: 'Geist Mono', monospace; font-size: 12px; color: var(--zinc-500);
+}

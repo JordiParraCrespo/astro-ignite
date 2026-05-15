@@ -93,6 +93,24 @@ Highlights:
 - `registryDependencies` resolves transitively: every UI item depends on `cn`.
 - Two layers, by intent: **base** (atoms — done) and **blocks** (compositions like PricingCard, FeatureGrid — not built yet).
 
+## Banner & hero images
+
+**Never hand-roll banner SVGs.** Every banner / OG / blog hero image must be generated from an HTML source that follows the claude-design language defined in the project's design bundle.
+
+Workflow:
+
+1. The design system lives in a Claude Design bundle. Fetch it once with the workspace's `@astro-ignite/design-fetch` CLI (in `packages/design-fetch/`), e.g. `node packages/design-fetch/dist/index.js <design-url> --out /tmp/claude-design`. The authoritative banner prototype is `astro-ignite/project/Banners.html` inside the extracted bundle; design tokens live in `tokens.css`.
+2. For a new banner, add an HTML source file under `apps/site/scripts/banners/<slug>.html` and reuse `banner.css` (which mirrors the design system's zinc-950 base, Geist + Geist Mono fonts loaded locally from `apps/site/scripts/banners/fonts/`, grid overlay, pill chips, terminal panel).
+3. Render to PNG with `node apps/site/scripts/banners/generate.mjs` (uses the installed Chrome for Testing binary). Output lands in `apps/site/src/content/blog/_assets/hero-<slug>.png`.
+4. Reference the generated PNG from the blog post's frontmatter `heroImage` field. The Zod schema validates dimensions via Astro's `image()` helper.
+
+Forbidden:
+
+- Inline SVGs hand-drawn in the MDX or repo. They never match the design.
+- Generating banners with text composition tools (satori, @vercel/og, resvg) without going through the claude-design HTML pipeline — the resulting type rendering drifts from the design tokens.
+
+If the Geist woff2 hash changes after an Astro build, recopy from `apps/site/dist/_astro/fonts/` into `apps/site/scripts/banners/fonts/` and re-run the generator.
+
 ## Style of work
 
 - The user is shipping a v1; default to including a feature unless it materially blocks the release. (See user feedback memory on scaffold completeness.)

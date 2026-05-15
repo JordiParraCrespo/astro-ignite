@@ -1,0 +1,125 @@
+---
+title: "Las 10 mejores plantillas Astro en 2026 (y cuándo un CLI gana)"
+description: "Lista curada de diez plantillas Astro que merecen la pena en 2026, con notas honestas sobre a quién encaja cada una — y cuándo un CLI las gana."
+datePublished: 2026-05-14
+author: jordi
+heroImage: ../_assets/hero-best-astro-starter-templates.png
+heroImageAlt: "Cuadrícula de diez tarjetas con plantillas Astro, una destacada para sugerir selecciones editoriales."
+tags: [astro, plantillas, temas, starter]
+translationKey: best-astro-starter-templates
+---
+
+[Astro](https://astro.build/) tiene un ecosistema sólido de plantillas. Para la mayoría de tipos de sitio — blog, portfolio, docs, landing page — existe un starter bien mantenido que te lleva a "sitio funcionando" en pocos minutos. El truco es que las plantillas son puntos de partida, no destinos: cuanto más cerca está tu proyecto de salir a producción, más cosas terminas reescribiendo.
+
+Este post hace dos cosas. Primero, lista diez plantillas Astro que merecen la pena en 2026, con notas honestas sobre para quién es cada una. Segundo, cubre cuándo crear el proyecto con un CLI gana a forkear una plantilla — porque para algunos proyectos, gana.
+
+## ¿Plantilla o CLI? Un árbol de decisión rápido
+
+- **Elige una plantilla** si quieres un diseño probado de fábrica y estás dispuesto a vivir dentro de sus decisiones visuales.
+- **Elige un CLI** (`create-astro` para el camino oficial, `astro-ignite` para uno con forma de producción) si quieres un scaffold cuya estructura y contenido ya encajen con la forma de tu proyecto.
+
+Las dos rutas producen proyectos Astro. La elección es sobre cuánto del punto de partida ibas a reescribir igualmente.
+
+## Las 10 plantillas
+
+> Las plantillas de abajo son reales y llevan años mantenidas, pero el software cambia. Vuelve a comprobar la fecha del último commit y la licencia de cada repo antes de forkear. Listadas sin un orden particular.
+
+### 1. Astro Paper — un blog
+
+Un blog minimalista y accesible con modo claro/oscuro, búsqueda fuzzy, páginas de tags y posts fijados. La plantilla de blog para Astro con más estrellas y la más forkeada.
+
+- Repo: [satnaing/astro-paper](https://github.com/satnaing/astro-paper)
+- Ideal para: gente que escribe y quiere valores por defecto que funcionen.
+
+### 2. Astrofy — un portfolio
+
+Un portfolio limpio con secciones para proyectos, blog, certificaciones y contacto. Diseñado para devs que quieren una sola página que resuma su carrera.
+
+- Repo: [manuelernestog/astrofy](https://github.com/manuelernestog/astrofy)
+- Ideal para: devs en solitario montando su sitio personal.
+
+### 3. Astrowind — una landing page
+
+Un starter de landing basado en Tailwind con secciones reutilizables (hero, features, pricing, FAQ). La forma más rápida de tener un sitio de marketing que no parezca una plantilla.
+
+- Repo: [onwidget/astrowind](https://github.com/onwidget/astrowind)
+- Ideal para: landings de SaaS y producto.
+
+### 4. Starlight — un sitio de documentación
+
+El framework oficial de docs para Astro, hecho por el equipo core y usado por proyectos como las docs de Cloudflare. Búsqueda, i18n y modo oscuro vienen integrados.
+
+- Repo: [withastro/starlight](https://github.com/withastro/starlight)
+- Ideal para: librerías open-source y docs de producto.
+
+### 5. Astroship — landing para SaaS
+
+Otro starter de landing con Tailwind, más opinionado que Astrowind. Trae blog y páginas de features. La versión Pro es de pago; la gratuita es suficiente para la mayoría de los lanzamientos.
+
+- Repo: [surjithctly/astroship](https://github.com/surjithctly/astroship)
+- Ideal para: lanzamientos de SaaS con poco tiempo para diseño.
+
+### 6. Astro Nano — un blog minimalista
+
+Le quita todo menos el texto. Sin imagen de cabecera, sin barra lateral, sin botones sociales. Bueno si tu blog va de palabras y no quieres pelear con decisiones tipográficas.
+
+- Repo: [markhorn-dev/astro-nano](https://github.com/markhorn-dev/astro-nano)
+- Ideal para: quien prefiere editar prosa antes que CSS.
+
+### 7. Accessible Astro Starter — accesibilidad primero
+
+Un starter de propósito general construido desde cero pensando en WCAG. Base útil si estás construyendo un sitio para una organización con requisitos de accesibilidad.
+
+- Repo: [incluud/accessible-astro-starter](https://github.com/incluud/accessible-astro-starter)
+- Ideal para: agencias y organizaciones con obligaciones de accesibilidad.
+
+### 8. Astro Boilerplate — un starter "todo incluido"
+
+Un boilerplate más completo con Tailwind, TypeScript, defaults de SEO y un blog. Más pesado que las opciones minimalistas, pero no tienes que enchufar lo básico tú.
+
+- Repo: [ixartz/Astro-boilerplate](https://github.com/ixartz/Astro-boilerplate)
+- Ideal para: devs que quieren un punto de partida completo y recortarán después.
+
+### 9. Dante — un sitio personal
+
+Un tema con estética de revista. Menos común que la estética de Astrofy, útil si quieres que tu portfolio destaque visualmente.
+
+- Repo: [JustGoodUI/dante-astro-theme](https://github.com/JustGoodUI/dante-astro-theme)
+- Ideal para: diseñadores y autores que quieren una identidad visual fuerte.
+
+### 10. El directorio oficial de plantillas de Astro
+
+No es una plantilla única — el catálogo oficial en [astro.build/themes](https://astro.build/themes/). Si ninguna de las anteriores encaja, este es el siguiente sitio donde mirar. Filtra por gratis vs. de pago y revisa la última fecha de actualización antes de comprometerte.
+
+## Los límites de las plantillas
+
+Las plantillas te llevan rápido a "sitio funcionando", pero tres cosas aparecen a medida que te acercas a publicar:
+
+1. **Deriva de diseño.** Empiezas con un sistema de diseño coherente. Añades un componente que la plantilla no incluía — una tabla de precios personalizada, un índice de blog único — y de repente el sitio tiene dos lenguajes visuales.
+2. **Deuda de personalización.** Las plantillas traen muchas funciones por defecto. Las que no necesitas siguen viviendo en el código. Quitarlas es más lento que construir desde menos.
+3. **Dependencias desactualizadas.** Una plantilla cuya última actualización fue hace ocho meses está en una versión vieja de Astro, una versión vieja de Tailwind y posiblemente con alguna integración deprecada. Forkear te deja partiendo en un hoyo.
+
+Ninguna de estas razones es para evitar plantillas. Son razones para elegir el punto de partida correcto para el trabajo que vas a hacer de todos modos.
+
+## Cuándo un CLI gana a una plantilla
+
+Para algunos proyectos, hacer el scaffolding gana:
+
+- **Necesitas lo básico de producción desde el día uno.** SEO, i18n, sitemap, páginas legales, cookie banner, imágenes OG — cablear todo eso en un fork de plantilla lleva horas. Un scaffold los trae listos.
+- **Haces scaffolding mucho.** Agencias, freelancers y equipos de hackathon construyen el mismo tipo de sitio una y otra vez. Los scaffolds reproducibles ganan a los flujos de forkear-y-recortar.
+- **Quieres superficie mínima.** Las plantillas tienden a lo completo. Los CLIs pueden tender a lo mínimo y dejarte opt-in.
+- **Quieres código propio.** Un CLI como `astro-ignite` copia el código a tu repo sin dependencia en runtime, lo que es más limpio que depender del ritmo de releases del autor de una plantilla.
+
+El `create-astro` oficial cubre bien el caso mínimo. Si quieres forma de producción encima — JSON-LD tipado, rutas i18n paralelas, plantillas legales, formulario de contacto y un registro de componentes estilo shadcn — [`astro-ignite`](https://github.com/JordiParraCrespo/astro-ignite) es el CLI open-source pensado para eso. El [post de comparación completo](/es/blog/create-astro-vs-astro-ignite) cubre ambas opciones en profundidad.
+
+## Prueba la ruta del CLI
+
+```bash
+npx create-astro-ignite@latest
+```
+
+Elegirás una plantilla (`starter` o `docs`) y responderás a unas pocas preguntas. La salida es un proyecto Astro estándar — sin lock-in, sin dependencia en tiempo de ejecución.
+
+Si prefieres verlo funcionar primero, el [tutorial de 5 minutos para crear un blog con Astro](/es/blog/crear-blog-astro-con-ia) recorre una construcción completa.
+
+Y si esta lista te ha resultado útil, [dale una estrella a astro-ignite en GitHub](https://github.com/JordiParraCrespo/astro-ignite) — así es como los proyectos open-source siguen adelante.

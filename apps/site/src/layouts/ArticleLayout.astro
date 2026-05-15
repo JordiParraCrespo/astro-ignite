@@ -14,7 +14,7 @@ import type { Thing } from 'schema-dts';
 
 import { siteConfig } from '@/config/site';
 import { useTranslations } from '@/i18n';
-import { blogPostingSchema, breadcrumbListSchema, personSchema } from '@/lib/jsonld';
+import { absoluteUrl, blogPostingSchema, breadcrumbListSchema, personSchema } from '@/lib/jsonld';
 
 import BaseLayout from './BaseLayout.astro';
 
@@ -124,6 +124,32 @@ const linkTo = (e: CollectionEntry<'blog'>) => {
   const s = e.id.split('/').slice(1).join('/');
   return getRelativeLocaleUrl(locale, `/blog/${s}`);
 };
+
+// Hreflang alternates — pair translations explicitly when slugs differ between
+// locales (e.g. /blog/best-astro-templates ↔ /es/blog/mejores-plantillas-astro).
+// Without this, BaseLayout auto-computes alternates by reusing the current
+// pathname across locales, which produces 404s for translated-slug posts.
+const translationKey = entry.data.translationKey;
+let alternates: Array<{ lang: string; href: string }> | undefined;
+if (translationKey) {
+  const siblings = await getCollection(
+    'blog',
+    (e: CollectionEntry<'blog'>) => e.data.translationKey === translationKey && !e.data.draft
+  );
+  const pairs = siblings
+    .map((e) => {
+      const segs = e.id.split('/');
+      const lang = segs[0]!;
+      if (!siteConfig.locales.includes(lang)) return null;
+      const s = segs.slice(1).join('/');
+      return {
+        lang: siteConfig.hreflang[lang] ?? lang,
+        href: absoluteUrl(getRelativeLocaleUrl(lang, `/blog/${s}`)),
+      };
+    })
+    .filter((p): p is { lang: string; href: string } => p !== null);
+  if (pairs.length > 0) alternates = pairs;
+}
 ---
 
 <BaseLayout
@@ -134,6 +160,7 @@ const linkTo = (e: CollectionEntry<'blog'>) => {
   type="article"
   noindex={entry.data.noindex}
   schemas={schemas}
+  alternates={alternates}
 >
   <article class="pp-shell">
     <header class="pp-header">

@@ -1,0 +1,163 @@
+---
+title: "Cómo crear un blog con Astro e IA en menos de 5 minutos"
+description: "Tutorial paso a paso para crear, personalizar y desplegar un blog Astro con IA en menos de cinco minutos — desde npx hasta una URL en Vercel."
+datePublished: 2026-05-14
+author: jordi
+heroImage: ../_assets/hero-build-astro-blog-with-ai.png
+heroImageAlt: "Recorrido por la terminal creando un blog Astro con el CLI astro-ignite y desplegándolo en una URL real."
+tags: [astro, blog, tutorial, ia, primeros-pasos]
+translationKey: build-astro-blog-with-ai
+---
+
+Puedes tener un blog Astro funcionando, con estilos y desplegado, en menos tiempo del que se tarda en leer el README de la mayoría de los starters. Este tutorial te lleva de una terminal vacía a un blog en vivo en Vercel en cuatro pasos, usando [`astro-ignite`](https://github.com/JordiParraCrespo/astro-ignite) para crear el proyecto y sembrar el contenido.
+
+Si nunca has tocado [Astro](https://astro.build/), tranquilo — en esta guía no vas a escribir código específico del framework.
+
+## Lo que vas a construir
+
+Un blog personal con:
+
+- Una ruta `/blog` funcionando, soportada por colecciones de contenido de Astro y MDX
+- Un layout limpio con toggle de modo claro/oscuro
+- Feed RSS, sitemap e imagen OG
+- Rutas i18n paralelas listas para traducir cuando añadas un segundo idioma
+- Desplegado en Vercel con una URL real
+
+## Requisitos previos
+
+- **Node.js 20 o superior.** Compruébalo con `node -v`.
+- **Un gestor de paquetes.** `pnpm`, `npm`, `yarn` o `bun` — el CLI detecta lo que tengas instalado.
+- **Una cuenta de Vercel.** El plan gratuito es suficiente.
+
+Eso es todo. Sin API keys, sin configuración de terceros.
+
+## Paso 1 — Crear el proyecto
+
+En una terminal nueva, ejecuta:
+
+```bash
+npx create-astro-ignite@latest my-blog
+```
+
+El CLI te hará cuatro preguntas:
+
+1. **Nombre del proyecto** — por defecto, la carpeta que indicaste.
+2. **Gestor de paquetes** — autodetectado; pulsa enter para aceptar.
+3. **¿Instalar dependencias ahora?** — sí (te ahorra un paso).
+4. **Plantilla** — elige `starter` para un sitio de marketing con blog + proyectos, o `docs` para un sitio tipo documentación. Para este tutorial, elige `starter`.
+
+Cuando termine, entra al proyecto y arranca el servidor de desarrollo:
+
+```bash
+cd my-blog
+pnpm dev
+```
+
+Abre `http://localhost:4321`. Deberías ver una landing con estilos, blog funcionando, borradores reales, toggle de modo oscuro y cookie banner — no un "hello world" de relleno.
+
+## Paso 2 — Revisa lo que se generó
+
+Antes de personalizar nada, mira lo que tienes. Los archivos interesantes:
+
+```
+my-blog/
+├── src/
+│   ├── config/
+│   │   └── site.ts                  # Config del sitio: nombre, locales, social, OG
+│   ├── content/
+│   │   ├── blog/{locale}/...        # Posts en Markdown / MDX por idioma
+│   │   ├── authors/                 # Perfiles de autor (referenciados por posts)
+│   │   └── legal/{locale}/...       # Plantillas de privacidad, términos y cookies
+│   ├── content.config.ts            # Esquemas Zod para cada colección
+│   ├── components/ui/               # Átomos estilo shadcn — tuyos para editar
+│   ├── layouts/
+│   │   ├── BaseLayout.astro         # Chrome universal + SEO + JSON-LD
+│   │   └── ArticleLayout.astro      # Layout de post con breadcrumbs
+│   └── pages/
+│       ├── blog/[...slug].astro
+│       └── [lang]/blog/[...slug].astro
+└── astro.config.mjs
+```
+
+Dos archivos que conviene leer primero:
+
+- `src/content.config.ts` — define el esquema de cada colección. El esquema `blog` requiere `title`, `description`, `datePublished`, `author`, `heroImage` y una lista de tags. Se valida en build time, así que un campo que falte rompe el build, no producción.
+- `src/config/site.ts` — la identidad de tu sitio. Edita aquí tu dominio, la lista de locales, las URLs sociales y la imagen OG por defecto, y los cambios cascadean por SEO, JSON-LD, sitemap, RSS y manifest.
+
+## Paso 3 — Personalizar
+
+Dos ediciones pequeñas hacen tuyo el blog.
+
+### Cambiar la identidad del sitio
+
+Abre `src/config/site.ts` y actualiza como mínimo:
+
+```ts
+export const siteConfig: SiteConfig = {
+  url: 'https://tu-dominio.com',
+  name: { en: 'Field Notes', es: 'Notas de campo' },
+  description: { es: 'Viajes de escalada, problemas de boulder y material que sobrevivió.' },
+  // ...
+};
+```
+
+El nombre del sitio fluye automáticamente a las etiquetas `<title>`, al manifest, al JSON-LD `Organization` y a los metadatos OG.
+
+### Añadir un post real
+
+Crea `src/content/blog/es/primera-via.mdx`:
+
+```mdx
+---
+title: "Por qué cambié a pies de gato de horma ancha"
+description: "Después de seis meses con horma estrecha, mis pies tenían algo que decir en cada vía."
+datePublished: 2026-05-14
+author: jordi
+heroImage: ../_assets/hero-welcome.svg
+heroImageAlt: "Hero de placeholder — reemplazar con foto de pies de gato sobre roca."
+tags: [escalada, material]
+---
+
+Lo primero que noté fue la hinchazón…
+```
+
+Guarda el archivo y el servidor de desarrollo lo recoge. El post aparece en `/es/blog/primera-via`, con el breadcrumb, el JSON-LD, la imagen OG y la franja de meta con tiempo de lectura generados automáticamente.
+
+## Paso 4 — Desplegar
+
+La plantilla `starter` viene con el adaptador de Cloudflare por defecto, pero Vercel también funciona — cambia el adaptador en `astro.config.mjs`:
+
+```bash
+pnpm add @astrojs/vercel
+```
+
+Actualiza la config:
+
+```ts
+import vercel from '@astrojs/vercel';
+export default defineConfig({
+  // ...
+  adapter: vercel(),
+});
+```
+
+Despliega con el [CLI de Vercel](https://vercel.com/docs/cli):
+
+```bash
+npm i -g vercel
+vercel
+```
+
+Aproximadamente un minuto después tienes una URL en vivo del estilo `https://my-blog-xyz.vercel.app`. Conecta un dominio personalizado desde el panel de Vercel cuando estés listo.
+
+## Y a partir de aquí
+
+Algunas direcciones desde este punto:
+
+- **Añade más posts.** Coloca archivos MDX en `src/content/blog/es/` y aparecerán automáticamente.
+- **Añade otro idioma.** Suma `'en'` a `siteConfig.locales`, crea `src/content/blog/en/` y las rutas i18n paralelas se activan sin más cableado.
+- **Edita el registro.** Los átomos en `src/components/ui/` son Astro + JS vanilla — sin dependencia de framework. Edita, borra, reemplaza.
+- **Compara opciones.** Si todavía estás decidiendo qué CLI encaja, la [comparación create-astro vs astro-ignite](/es/blog/create-astro-vs-astro-ignite) cubre ambas en profundidad.
+- **Mira alternativas.** [Las mejores plantillas Astro en 2026](/es/blog/mejores-plantillas-astro) lista diez temas forkeables para cuando un CLI no encaja.
+
+Eso es un blog real, en una URL real, en menos de cinco minutos. Si `astro-ignite` te ha resultado útil, [dale una estrella en GitHub](https://github.com/JordiParraCrespo/astro-ignite) — esa es la señal principal del proyecto.
