@@ -26,7 +26,6 @@ const cookiesPolicyUrl = getRelativeLocaleUrl(locale, '/legal/cookies');
   role="region"
   aria-labelledby="cookie-banner-title"
   aria-describedby="cookie-banner-description"
-  hidden
 >
   <h2 id="cookie-banner-title">{t('cookies.banner.title')}</h2>
   <p id="cookie-banner-description">{t('cookies.banner.description')}</p>
@@ -48,14 +47,12 @@ const cookiesPolicyUrl = getRelativeLocaleUrl(locale, '/legal/cookies');
     const KEY = 'cookie-consent';
     const banner = document.getElementById('cookie-banner');
     if (!banner) return;
-    if (!localStorage.getItem(KEY)) banner.hidden = false;
-
     banner.querySelectorAll('[data-cookie-action]').forEach((btn) => {
       btn.addEventListener('click', () => {
         const choice = btn.dataset.cookieAction;
         if (!choice) return;
         localStorage.setItem(KEY, choice);
-        banner.hidden = true;
+        document.documentElement.dataset.consent = 'recorded';
         window.dispatchEvent(new CustomEvent('consent-change', { detail: choice }));
       });
     });
@@ -63,6 +60,12 @@ const cookiesPolicyUrl = getRelativeLocaleUrl(locale, '/legal/cookies');
 </script>
 
 <style>
+  /* CSS-gate: banner is hidden whenever the anti-flash inline script has
+     stamped <html data-consent="recorded">. No JS toggle on load → no late
+     visible change in the viewport, which is what dragged Speed Index. */
+  :global(html[data-consent='recorded']) .cookie-banner {
+    display: none;
+  }
   .cookie-banner {
     position: fixed;
     bottom: 1.25rem;
