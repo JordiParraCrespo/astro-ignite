@@ -196,10 +196,11 @@ const rssHref = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/r
             <Picture
               src={starterPreview}
               alt={t('landing.templates.starter.name')}
-              widths={[640, 960, 1280]}
-              sizes="(max-width: 900px) 100vw, 50vw"
+              widths={[400, 600, 800, 1200]}
+              sizes="(max-width: 900px) 100vw, 600px"
               formats={['avif', 'webp']}
-              loading="lazy"
+              loading="eager"
+              fetchpriority="high"
               decoding="async"
               class="tpl-preview-img"
             />
@@ -238,8 +239,8 @@ const rssHref = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/r
             <Picture
               src={docsPreview}
               alt={t('landing.templates.docs.name')}
-              widths={[640, 960, 1280]}
-              sizes="(max-width: 900px) 100vw, 50vw"
+              widths={[400, 600, 800, 1200]}
+              sizes="(max-width: 900px) 100vw, 600px"
               formats={['avif', 'webp']}
               loading="lazy"
               decoding="async"
