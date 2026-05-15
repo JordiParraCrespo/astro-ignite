@@ -29,6 +29,10 @@ const blog = defineCollection({
       featured: z.boolean().default(false),
       canonical: z.string().url().optional(),
       noindex: z.boolean().default(false),
+      // Stable cross-locale identifier — shared across translations so hreflang
+      // can pair posts whose URL slugs were translated (e.g. EN
+      // /blog/best-astro-templates ↔ ES /es/blog/mejores-plantillas-astro).
+      translationKey: z.string().optional(),
     }),
 });
 

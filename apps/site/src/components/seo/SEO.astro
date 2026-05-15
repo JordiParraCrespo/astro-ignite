@@ -76,6 +76,14 @@ const computedAlternates: Array<{ lang: string; href: string }> = alternates
       href: absoluteUrl(getRelativeLocaleUrl(lang, Astro.url.pathname)),
     }));
 
+// x-default points to the default locale. When explicit alternates are passed
+// (translated slugs), pick the default-locale entry from them; otherwise fall
+// back to the auto-computed pathname (works when slugs match across locales).
+const defaultHreflang = siteConfig.hreflang[siteConfig.defaultLocale] ?? siteConfig.defaultLocale;
+const xDefaultHref =
+  computedAlternates.find((a) => a.lang === defaultHreflang || a.lang === siteConfig.defaultLocale)
+    ?.href ?? absoluteUrl(getRelativeLocaleUrl(siteConfig.defaultLocale, Astro.url.pathname));
+
 // og:locale_alternate values for non-current locales.
 const altLocales = siteConfig.locales
   .filter((l) => l !== locale)
@@ -121,12 +129,4 @@ const altLocales = siteConfig.locales
 
 <!-- Hreflang alternates -->
 {computedAlternates.map((alt) => <link rel="alternate" hreflang={alt.lang} href={alt.href} />)}
-{
-  computedAlternates.length > 1 && (
-    <link
-      rel="alternate"
-      hreflang="x-default"
-      href={absoluteUrl(getRelativeLocaleUrl(siteConfig.defaultLocale, Astro.url.pathname))}
-    />
-  )
-}
+{computedAlternates.length > 1 && <link rel="alternate" hreflang="x-default" href={xDefaultHref} />}

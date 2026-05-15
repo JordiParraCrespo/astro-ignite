@@ -1,0 +1,118 @@
+---
+title: "create-astro vs astro-ignite: ¿qué CLI usar en Astro?"
+description: "Comparación honesta entre create-astro, el CLI oficial, y astro-ignite. Diferencias, ventajas, contras y cuándo elegir cada uno para tu proyecto."
+datePublished: 2026-05-14
+author: jordi
+heroImage: ../_assets/hero-create-astro-vs-astro-ignite.png
+heroImageAlt: "Maqueta de terminal comparando los CLIs create-astro y astro-ignite uno al lado del otro."
+tags: [astro, cli, comparacion, create-astro]
+translationKey: create-astro-vs-astro-ignite
+featured: true
+---
+
+Si estás empezando un proyecto nuevo con Astro en 2026, tienes dos opciones reales: ejecutar [`create-astro`](https://docs.astro.build/en/install-and-setup/), el starter oficial del equipo core, o probar `astro-ignite`, un CLI open-source que crea un sitio Astro listo para producción con SEO, i18n, páginas legales y email ya cableados. Ambos producen proyectos Astro válidos. Optimizan para cosas distintas.
+
+Este artículo los compara con honestidad. Al terminar sabrás cuál ejecutar y no necesitarás cambiar más adelante.
+
+## Resumen rápido
+
+| | `create-astro` | `astro-ignite` |
+|---|---|---|
+| **Mantenedor** | Equipo core de Astro | Comunidad, licencia MIT |
+| **Estilo de scaffolding** | Eliges una plantilla de una lista curada | Eliges un scaffold completo y respondes a un setup |
+| **Funciones listas de salida** | Mínimo: páginas, colecciones de contenido | SEO, i18n, páginas legales, email, analytics, cookie banner |
+| **Librería de componentes** | Ninguna incluida | Registro estilo shadcn con primitivas Astro |
+| **Salida** | Proyecto Astro estándar | Proyecto Astro estándar (sin dependencia en runtime) |
+| **Ideal para** | Punto de partida estable y oficial | Publicar un sitio real rápido con código propio |
+
+Si quieres el punto de partida canónico y mínimo, ejecuta `create-astro`. Si quieres un scaffold que ya incluya lo básico de producción, prueba `astro-ignite`.
+
+## En qué destaca `create-astro`
+
+`create-astro` es la herramienta que el equipo de Astro recomienda, y se gana esa recomendación. Algunas cosas que hace bien:
+
+- **Es la fuente de verdad para la estructura del proyecto.** Cuando el equipo de Astro publica una versión nueva, los starters oficiales se actualizan al momento. No te quedarás con una estructura desactualizada.
+- **La lista de plantillas está curada.** Cada opción del prompt ha pasado por revisión del equipo. No hay sorpresas.
+- **Tiene pocas dependencias.** El CLI en sí es pequeño y rápido.
+- **Funciona completamente sin conexión.** Sin llamadas a terceros, sin entorno que configurar.
+
+Si tu objetivo es "quiero empezar un proyecto y me fío de los valores por defecto", esta es la herramienta correcta. La mayoría de los tutoriales de Astro asumen que la usaste, lo que hace que la documentación y las respuestas de Stack Overflow encajen directamente con tu proyecto.
+
+## En qué se diferencia `astro-ignite`
+
+`astro-ignite` no intenta reemplazar a `create-astro`. Intenta responder una pregunta distinta: *¿y si el starter ya tuviera forma de producción antes de escribir una sola línea de código?*
+
+Tres diferencias concretas:
+
+1. **Lo básico de producción viene cableado.** Un proyecto nuevo trae SEO (JSON-LD tipado, hreflang, sitemap, RSS, OG), i18n (rutas paralelas en `/` y `/[lang]/`), plantillas de páginas legales, consent de analytics + cookie banner y un formulario de contacto funcionando. Con `create-astro` lo enchufas tú.
+2. **Registro de componentes estilo shadcn.** Los átomos (`Button`, `Card`, `Dialog`, `Tabs`, `Toaster`) se copian a tu repo como Astro + JS vanilla — sin React, sin Radix, sin dependencias en runtime. Lees el código, lo editas, borras lo que no usas.
+3. **Las plantillas vienen completas.** La plantilla `starter` es un sitio de marketing real con colecciones de blog y proyectos. La plantilla `docs` es un sitio de documentación que no usa Starlight, así que tienes el control de cada página.
+
+Importante: la salida sigue siendo un proyecto Astro plano. Sin dependencia en tiempo de ejecución de `astro-ignite`, sin upgrades forzados. Puedes borrar el CLI de tu equipo en el mismo momento en que termina el scaffolding y el proyecto seguirá funcionando.
+
+## Lado a lado: el mismo proyecto con ambas herramientas
+
+Vamos a construir un sitio personal con blog usando cada herramienta.
+
+### Con `create-astro`
+
+```bash
+npm create astro@latest my-site
+```
+
+El CLI te pregunta qué plantilla quieres. Eligiendo "Blog" obtienes un proyecto mínimo con posts de relleno, un layout por defecto y una tipografía estándar. Tiempo de scaffolding: unos 30 segundos. Tiempo para dejarlo listo para producción: unas horas cableando SEO, sitemap, RSS, hreflang, páginas legales, cookie banner y consent de analytics.
+
+### Con `astro-ignite`
+
+```bash
+npx create-astro-ignite@latest my-site
+```
+
+Te pregunta el nombre del proyecto, el gestor de paquetes, si quieres instalar dependencias y qué plantilla (`starter` o `docs`). Aproximadamente un minuto después tienes un proyecto con SEO cableado, rutas i18n paralelas, borradores de blog, un caso de estudio de proyecto, plantillas legales, formulario de contacto y el registro de componentes ya copiado en `src/components/ui/`.
+
+La comparación honesta: `create-astro` te dio un proyecto Astro funcionando más rápido. `astro-ignite` te dejó más cerca de un proyecto *listo para publicar*. Si el cambio merece la pena depende de cuánto habrías configurado a mano de todos modos.
+
+## Cuándo elegir `create-astro`
+
+- Quieres el camino oficial y soportado. Tutoriales y docs encajan directamente con tu proyecto.
+- Ya sabes exactamente qué plantilla quieres.
+- Estás contribuyendo a Astro o enseñándolo — quien aprende debería empezar por el flujo canónico.
+- Prefieres una herramienta sin opiniones sobre cómo estructurar SEO, i18n o páginas legales.
+
+## Cuándo elegir `astro-ignite`
+
+- Quieres un scaffold que traiga SEO, i18n y páginas legales ya cableadas.
+- Valoras tener cada línea de código bajo control — sin dependencia de framework en runtime.
+- Creas muchos proyectos similares (agencia, sitios para clientes) y quieres la misma base cada vez.
+- Eres un dev solo y quieres valores por defecto de producción sin pasar la primera semana cableando boilerplate.
+
+## ¿Puedo usar las dos?
+
+Sí — no entran en conflicto. Algunos flujos que funcionan en la práctica:
+
+- Usa `create-astro` para prototipos puntuales donde no necesitas SEO ni páginas legales.
+- Usa `astro-ignite` para sitios que vas a publicar, y trata el resultado como cualquier otro repo Astro. Las dos herramientas quedan fuera de la ecuación una vez existe el proyecto; solo estás escribiendo Astro.
+
+## Preguntas frecuentes
+
+**¿`astro-ignite` reemplaza a `create-astro`?**
+No. Apunta a un caso de uso distinto (scaffolds con forma de producción) y produce proyectos Astro estándar, así que puedes seguir cualquier tutorial que asuma un starter de `create-astro`.
+
+**¿La salida tiene lock-in?**
+No. El CLI genera archivos Astro planos. Una vez terminado el scaffolding, el proyecto es idéntico en forma a cualquier otro proyecto Astro — mismo `astro.config.mjs`, mismas colecciones de contenido, misma carpeta de páginas.
+
+**¿Es gratis?**
+Sí. El CLI y las plantillas tienen licencia MIT. No hay versión de pago ni telemetría.
+
+**¿Va a seguir manteniéndose?**
+Se desarrolla activamente en [GitHub](https://github.com/JordiParraCrespo/astro-ignite). Dale una estrella al repo para seguir las versiones.
+
+## Pruébalo
+
+```bash
+npx create-astro-ignite@latest
+```
+
+Si te resulta útil, [dale una estrella al repo en GitHub](https://github.com/JordiParraCrespo/astro-ignite) — así sobreviven los proyectos open-source.
+
+Si quieres un recorrido más profundo, el [tutorial de 5 minutos para crear un blog con Astro](/es/blog/crear-blog-astro-con-ia) construye un blog completo desde cero con `astro-ignite`. ¿Sigues comparando? Revisa [las mejores plantillas Astro en 2026](/es/blog/mejores-plantillas-astro) para ver cómo se comparan los temas forkeables con un scaffold por CLI.
