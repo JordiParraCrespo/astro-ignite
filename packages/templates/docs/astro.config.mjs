@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig, fontProviders } from 'astro/config';
+import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
 import tailwindcss from '@tailwindcss/vite';
@@ -39,36 +39,5 @@ export default defineConfig({
     // monorepo), but to Vite 6 in others (fresh scaffolds). Either way the runtime
     // plugin works — silence the conditional type drift with a single any-cast.
     plugins: [/** @type {any} */ (tailwindcss())],
-  },
-  experimental: {
-    fonts: [
-      {
-        provider: fontProviders.bunny(),
-        name: 'Geist',
-        cssVariable: '--font-display',
-        weights: ['400 700'],
-        styles: ['normal'],
-        subsets: ['latin', 'latin-ext'],
-        fallbacks: ['system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
-        display: 'swap',
-      },
-      {
-        provider: fontProviders.bunny(),
-        name: 'Geist Mono',
-        cssVariable: '--font-mono',
-        weights: [400, 600],
-        styles: ['normal'],
-        subsets: ['latin'],
-        fallbacks: [
-          'ui-monospace',
-          'SFMono-Regular',
-          'Menlo',
-          'Monaco',
-          'Consolas',
-          'monospace',
-        ],
-        display: 'swap',
-      },
-    ],
   },
 });
