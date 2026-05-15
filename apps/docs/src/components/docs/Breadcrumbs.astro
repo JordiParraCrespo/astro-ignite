@@ -11,6 +11,7 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 
 import { sidebar } from '@/config/sidebar';
 import { siteConfig } from '@/config/site';
+import { useTranslations } from '@/i18n';
 
 interface Props {
   /** Bare slug, e.g. "introduction" (no locale prefix). */
@@ -20,18 +21,19 @@ interface Props {
 
 const { currentSlug, currentTitle } = Astro.props;
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
 
 // Find the sidebar group this slug belongs to (if any).
 const owningGroup = sidebar.find((g) => g.items.some((it) => it.slug === currentSlug));
 
 const crumbs = [
-  { label: 'Docs', href: getRelativeLocaleUrl(locale, '/') },
+  { label: t('search.docsRoot'), href: getRelativeLocaleUrl(locale, '/') },
   ...(owningGroup ? [{ label: owningGroup.group, href: undefined }] : []),
   { label: currentTitle, href: undefined },
 ];
 ---
 
-<nav class="breadcrumbs mono" aria-label="Breadcrumbs">
+<nav class="breadcrumbs mono" aria-label={t('nav.breadcrumbs')}>
   {
     crumbs.map((c, i) => (
       <>

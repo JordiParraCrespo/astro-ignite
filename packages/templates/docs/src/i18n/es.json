@@ -8,7 +8,12 @@
     "menu": "Menú",
     "openMenu": "Abrir menú",
     "closeMenu": "Cerrar menú",
-    "skipToContent": "Saltar al contenido principal"
+    "skipToContent": "Saltar al contenido principal",
+    "breadcrumbs": "Migas de pan",
+    "primary": "Principal",
+    "pageNavigation": "Navegación de página",
+    "documentation": "Documentación",
+    "sidebar": "Barra lateral"
   },
   "footer": {
     "rights": "Todos los derechos reservados.",
@@ -61,7 +66,9 @@
     "readingTime": "{minutes} min de lectura",
     "morePosts": "Más entradas",
     "backToBlog": "Volver al blog",
-    "noPosts": "Aún no hay entradas."
+    "noPosts": "Aún no hay entradas.",
+    "previousPost": "Anterior",
+    "nextPost": "Siguiente"
   },
   "projects": {
     "viewProject": "Ver proyecto",
@@ -120,6 +127,20 @@
     "startHere": "Empieza aquí",
     "reference": "Referencia",
     "project": "Proyecto"
+  },
+  "search": {
+    "label": "Buscar en la documentación",
+    "placeholder": "Buscar en la documentación…",
+    "query": "Consulta de búsqueda",
+    "navigate": "navegar",
+    "open": "abrir",
+    "close": "cerrar",
+    "esc": "Esc",
+    "empty": "Empieza a escribir para buscar en la documentación.",
+    "noResults": "Sin resultados para",
+    "unavailable": "La búsqueda solo está disponible en un sitio compilado.",
+    "unavailableHint": "Ejecuta <code>pnpm build &amp;&amp; pnpm preview</code>.",
+    "docsRoot": "Documentación"
   },
   "components": {
     "back": "← Todos los componentes",

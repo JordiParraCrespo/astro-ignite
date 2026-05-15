@@ -97,7 +97,7 @@ const dateFmt = new Intl.DateTimeFormat(locale, {
 >
   <article class="article">
     <header class="article-header">
-      <nav class="breadcrumbs" aria-label="Breadcrumbs">
+      <nav class="breadcrumbs" aria-label={t('nav.breadcrumbs')}>
         <a href={getRelativeLocaleUrl(locale, '/blog')}>← {t('blog.backToBlog')}</a>
       </nav>
       <h1>{entry.data.title}</h1>

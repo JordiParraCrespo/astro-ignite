@@ -31,7 +31,7 @@ const slug = slugSegments.slice(1).join('/');
 
 const author = await getEntry(entry.data.author);
 const authorBio = author?.data.bio[locale] ?? author?.data.bio[siteConfig.defaultLocale] ?? '';
-const authorName = author?.data.name ?? 'Anonymous';
+const authorName = author?.data.name ?? t('blog.anonymous');
 
 const url = `/blog/${slug}`;
 const blogHref = getRelativeLocaleUrl(locale, '/blog');
@@ -164,7 +164,7 @@ if (translationKey) {
 >
   <article class="pp-shell">
     <header class="pp-header">
-      <nav class="pp-crumb mono" aria-label="Breadcrumbs">
+      <nav class="pp-crumb mono" aria-label={t('nav.breadcrumbs')}>
         <a href={homeHref}>{t('nav.home')}</a>
         <span class="sep" aria-hidden="true">/</span>
         <a href={blogHref}>{t('nav.blog')}</a>
@@ -205,7 +205,7 @@ if (translationKey) {
           )
         }
         <span class="dot" aria-hidden="true">·</span>
-        <span class="badge-mono">{minutes} min read</span>
+        <span class="badge-mono">{t('blog.readingTime', { minutes })}</span>
       </div>
     </header>
 
@@ -232,10 +232,10 @@ if (translationKey) {
 
         {
           (prevEntry || nextEntry) && (
-            <nav class="pp-pn" aria-label="Adjacent posts">
+            <nav class="pp-pn" aria-label={t('nav.adjacentPosts')}>
               {prevEntry ? (
                 <a class="pn-block" href={linkTo(prevEntry)}>
-                  <span class="l mono">← {t('blog.morePosts')}</span>
+                  <span class="l mono">← {t('blog.previousPost')}</span>
                   <span class="t">{prevEntry.data.title}</span>
                 </a>
               ) : (
@@ -243,7 +243,7 @@ if (translationKey) {
               )}
               {nextEntry ? (
                 <a class="pn-block next" href={linkTo(nextEntry)}>
-                  <span class="l mono">{t('blog.readMore')} →</span>
+                  <span class="l mono">{t('blog.nextPost')} →</span>
                   <span class="t">{nextEntry.data.title}</span>
                 </a>
               ) : (

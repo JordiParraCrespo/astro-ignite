@@ -40,7 +40,7 @@ const navLinks = siteConfig.nav.links;
 const cta = siteConfig.nav.cta ?? null;
 ---
 
-<header class="nav" aria-label="Primary">
+<header class="nav" aria-label={t('nav.primary')}>
   <div class="nav-inner">
     <Brand href={homeUrl} variant="lockup" size={0.34} label={siteName} />
     <span class="pill mono"><span class="dot" aria-hidden="true"></span>v0.1.0 · pre-1.0</span>

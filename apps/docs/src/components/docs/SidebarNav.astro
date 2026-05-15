@@ -63,14 +63,14 @@ const isActive = (slug: string) => {
 };
 ---
 
-<aside class="sidebar" aria-label="Documentation">
+<aside class="sidebar" aria-label={t('nav.documentation')}>
   <header class="sidebar-header">
     <Brand href="/" variant="lockup" size={0.42} />
   </header>
 
   <SearchBox />
 
-  <nav class="sidebar-nav" aria-label="Sidebar">
+  <nav class="sidebar-nav" aria-label={t('nav.sidebar')}>
     {
       sidebar.map((group) => {
         // Render external links, direct paths, and doc-collection entries that
