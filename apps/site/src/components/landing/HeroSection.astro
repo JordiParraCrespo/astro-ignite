@@ -66,11 +66,15 @@ const t = useTranslations(locale);
           <span class="t-subtle">v0.1.0</span><br />
           <span class="t-subtle">│</span><br />
           <span class="t-subtle">◇</span>&nbsp; Template? <span class="t-muted">starter</span><br />
-          <span class="t-subtle">◇</span>&nbsp; Project name? <span class="t-muted">./my-site</span><br />
-          <span class="t-subtle">◇</span>&nbsp; Languages? <span class="t-muted">en, es, ja</span><br />
+          <span class="t-subtle">◇</span>&nbsp; Project name? <span class="t-muted">./my-site</span
+          ><br />
+          <span class="t-subtle">◇</span>&nbsp; Languages? <span class="t-muted">en, es, ja</span
+          ><br />
           <span class="t-subtle">◇</span>&nbsp; Email? <span class="t-muted">Resend</span><br />
           ◆&nbsp; Install deps?<br />
-          <span class="t-subtle">│</span>&nbsp; <span class="t-pick">● Yes</span>&nbsp;<span class="t-muted">○ No ○ pnpm ○ bun</span><br />
+          <span class="t-subtle">│</span>&nbsp; <span class="t-pick">● Yes</span>&nbsp;<span
+            class="t-muted">○ No ○ pnpm ○ bun</span
+          ><br />
           <span class="t-subtle">└</span>&nbsp; <span class="caret"></span>
         </div>
       </div>
@@ -150,12 +154,24 @@ const t = useTranslations(locale);
     color: var(--color-fg);
   }
   @keyframes release-pulse {
-    0%, 100% { opacity: 0.4; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.25); }
+    0%,
+    100% {
+      opacity: 0.4;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.25);
+    }
   }
   @media (prefers-reduced-motion: reduce) {
-    .pill--release .dot { animation: none; opacity: 0.7; }
-    .pill--release:hover .pill-arrow { transform: none; }
+    .pill--release .dot {
+      animation: none;
+      opacity: 0.7;
+    }
+    .pill--release:hover .pill-arrow {
+      transform: none;
+    }
   }
 
   /* Hero */
@@ -280,9 +296,16 @@ const t = useTranslations(locale);
     color: #a1a1aa;
     margin-left: auto;
   }
-  .t-muted { color: #a1a1aa; }
-  .t-subtle { color: #71717a; }
-  .t-strong { font-weight: 500; color: #fafafa; }
+  .t-muted {
+    color: #a1a1aa;
+  }
+  .t-subtle {
+    color: #71717a;
+  }
+  .t-strong {
+    font-weight: 500;
+    color: #fafafa;
+  }
   .t-pick {
     display: inline-block;
     padding: 1px 8px;
