@@ -1,11 +1,15 @@
 ---
 import type { BlogCardData } from '@/lib/blog';
+import { siteConfig } from '@/config/site';
+import { useTranslations } from '@/i18n';
 
 interface Props {
   card: BlogCardData;
 }
 
 const { card } = Astro.props;
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
 ---
 
 <a href={card.href} class="bcard">
@@ -16,7 +20,7 @@ const { card } = Astro.props;
   <div class="meta-row mono">
     <time datetime={card.dateIso}>{card.dateText}</time>
     <span class="dot" aria-hidden="true">·</span>
-    <span class="badge-mono">{card.minutes} min</span>
+    <span class="badge-mono">{t('blog.readingTimeShort', { minutes: card.minutes })}</span>
   </div>
   <h3>{card.post.data.title}</h3>
   <p class="ex">{card.post.data.description}</p>

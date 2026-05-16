@@ -13,6 +13,7 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 
 import { sidebar } from '@/config/sidebar';
 import { siteConfig } from '@/config/site';
+import { useTranslations } from '@/i18n';
 
 interface Props {
   /** Bare slug, e.g. "introduction" (no locale prefix). */
@@ -21,6 +22,7 @@ interface Props {
 
 const { currentSlug } = Astro.props;
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
 
 const allDocs = await getCollection('docs', (e: CollectionEntry<'docs'>) => !e.data.draft);
 
@@ -41,10 +43,10 @@ const titleForSlug = (slug: string): string =>
 
 {
   (prev || next) && (
-    <nav class="prev-next" aria-label="Page navigation">
+    <nav class="prev-next" aria-label={t('nav.pageNavigation')}>
       {prev ? (
         <a class="prev-next-link" href={getRelativeLocaleUrl(locale, `/${prev.slug}`)}>
-          <span class="prev-next-label mono">← Previous</span>
+          <span class="prev-next-label mono">← {t('blog.previousPost')}</span>
           <span class="prev-next-title">{prev.label ?? titleForSlug(prev.slug)}</span>
         </a>
       ) : (
@@ -55,7 +57,7 @@ const titleForSlug = (slug: string): string =>
           class="prev-next-link prev-next-link-right"
           href={getRelativeLocaleUrl(locale, `/${next.slug}`)}
         >
-          <span class="prev-next-label mono">Next →</span>
+          <span class="prev-next-label mono">{t('blog.nextPost')} →</span>
           <span class="prev-next-title">{next.label ?? titleForSlug(next.slug)}</span>
         </a>
       )}

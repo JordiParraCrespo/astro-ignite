@@ -28,22 +28,13 @@ const schemas = [
       <p class="lede">{t('seo.about.description')}</p>
     </header>
     <div class="prose">
-      <p>
-        Replace this content with your story. The page is a regular Astro component using <code
-          >BaseLayout</code
-        > directly — no separate layout is needed for static pages like this one.
-      </p>
-      <p>
-        Pages that don't fit a content collection live as <code>.astro</code>
-        files in <code>src/pages/[...lang]/</code>. They call <code>t()</code>
-        for translated copy and pass the result to <code>BaseLayout</code> for SEO. Specialized layouts
-        (Article, Project, Legal) handle the collection-driven pages.
-      </p>
-      <h2>What goes here</h2>
+      <p>{t('about.body.p1')}</p>
+      <p>{t('about.body.p2')}</p>
+      <h2>{t('about.body.heading')}</h2>
       <ul>
-        <li>Who you are or what your team does</li>
-        <li>Why you built the thing</li>
-        <li>How to get in touch (the contact form lives at <code>/contact</code>)</li>
+        <li>{t('about.body.li1')}</li>
+        <li>{t('about.body.li2')}</li>
+        <li>{t('about.body.li3')}</li>
       </ul>
     </div>
   </article>

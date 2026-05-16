@@ -88,7 +88,7 @@ const rssHref = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/r
               class="cmd-copy"
               type="button"
               data-copy="npm create astro-ignite@latest my-site"
-              >{t('landing.hero.copyLabel')}</button
+              data-copied={t('blog.copied')}>{t('landing.hero.copyLabel')}</button
             >
           </div>
 
@@ -103,7 +103,7 @@ const rssHref = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/r
           </div>
         </div>
 
-        <div class="term" aria-label="Scaffold flow preview">
+        <div class="term" aria-label={t('nav.scaffoldFlow')}>
           <div class="term-bar">
             <span class="term-dot" aria-hidden="true"></span>
             <span class="term-dot" aria-hidden="true"></span>
@@ -294,13 +294,10 @@ const rssHref = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/r
         <div class="page">
           <div class="section-head">
             <div class="section-lead">
-              <span class="eyebrow mono">From the blog</span>
-              <h2>Notes from the build.</h2>
+              <span class="eyebrow mono">{t('landing.blog.eyebrow')}</span>
+              <h2>{t('landing.blog.headline')}</h2>
             </div>
-            <p class="section-meta mono">
-              Writing on perf budgets, i18n, agent-friendly conventions, and the occasional rant
-              about modern web tooling.
-            </p>
+            <p class="section-meta mono">{t('landing.blog.meta')}</p>
           </div>
 
           <div class="blog-grid">
@@ -311,10 +308,11 @@ const rssHref = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/r
 
           <div class="blog-foot">
             <span class="mono blog-foot-meta">
-              {blogCards.length} articles · <a href={rssHref}>RSS ↗</a>
+              {t('landing.blog.articles', { count: blogCards.length })} ·{' '}
+              <a href={rssHref}>RSS ↗</a>
             </span>
             <a class="btn btn-ghost btn-sm" href={blogHref}>
-              Browse all posts →
+              {t('landing.blog.browseAll')}
             </a>
           </div>
         </div>
@@ -341,15 +339,19 @@ const rssHref = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/r
               >npm create astro-ignite@latest</span
             ></span
           >
-          <button class="cmd-copy" type="button" data-copy="npm create astro-ignite@latest"
-            >{t('landing.hero.copyLabel')}</button
+          <button
+            class="cmd-copy"
+            type="button"
+            data-copy="npm create astro-ignite@latest"
+            data-copied={t('blog.copied')}>{t('landing.hero.copyLabel')}</button
           >
         </div>
         <div class="cta-actions">
           <a class="btn btn-primary btn-lg" href={quickStartUrl} target="_blank" rel="noopener"
-            >Get started</a
+            >{t('landing.cta.getStarted')}</a
           >
-          <a class="btn btn-outline btn-lg" href={ghUrl} rel="noopener">Star on GitHub ★</a>
+          <a class="btn btn-outline btn-lg" href={ghUrl} rel="noopener">{t('landing.cta.github')}</a
+          >
         </div>
       </div>
     </div>
@@ -364,7 +366,7 @@ const rssHref = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/r
         try {
           await navigator.clipboard.writeText(text);
           const original = btn.textContent;
-          btn.textContent = 'copied';
+          btn.textContent = btn.dataset.copied ?? 'copied';
           setTimeout(() => {
             btn.textContent = original;
           }, 1200);

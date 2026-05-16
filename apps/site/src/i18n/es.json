@@ -8,7 +8,11 @@
     "menu": "Menú",
     "openMenu": "Abrir menú",
     "closeMenu": "Cerrar menú",
-    "skipToContent": "Saltar al contenido principal"
+    "skipToContent": "Saltar al contenido principal",
+    "primary": "Principal",
+    "breadcrumbs": "Migas de pan",
+    "adjacentPosts": "Entradas adyacentes",
+    "scaffoldFlow": "Vista previa del flujo de instalación"
   },
   "footer": {
     "rights": "Todos los derechos reservados.",
@@ -59,9 +63,17 @@
     "updatedOn": "Actualizado el",
     "readMore": "Leer más",
     "readingTime": "{minutes} min de lectura",
+    "readingTimeShort": "{minutes} min",
     "morePosts": "Más entradas",
     "backToBlog": "Volver al blog",
-    "noPosts": "Aún no hay entradas."
+    "noPosts": "Aún no hay entradas.",
+    "anonymous": "Anónimo",
+    "copied": "copiado",
+    "totalPosts": "{count} entradas · desde {year}",
+    "featured": "Destacada · más reciente",
+    "readArticle": "Leer artículo →",
+    "previousPost": "Entrada anterior",
+    "nextPost": "Siguiente entrada"
   },
   "projects": {
     "viewProject": "Ver proyecto",
@@ -72,6 +84,8 @@
     "techStack": "Tecnologías",
     "role": "Rol",
     "client": "Cliente",
+    "statusLabel": "Estado",
+    "dateLabel": "Fecha",
     "status": {
       "shipped": "Publicado",
       "in-progress": "En progreso",
@@ -88,6 +102,7 @@
     "sending": "Enviando…",
     "success": "Gracias — te responderemos pronto.",
     "error": "Algo salió mal. Inténtalo de nuevo o escríbenos directamente.",
+    "honeypot": "Deja este campo vacío",
     "validation": {
       "nameRequired": "Por favor ingresa tu nombre.",
       "emailInvalid": "Por favor ingresa un correo válido.",
@@ -248,23 +263,31 @@
     },
     "cta": {
       "pill": "listo en 90 segundos",
-      "headlineLead": "Deja de afeitar yaks en el",
+      "headlineLead": "Deja de perder tiempo con el",
       "headlineMuted": "primer 30%",
       "headlineTail": ".",
       "lede": "Una instalación, un sitio Astro terminado que es totalmente tuyo. Hazle eject cuando quieras — no hay de qué hacer eject.",
       "getStarted": "Empezar",
-      "github": "Star en GitHub ★"
+      "github": "Dale una estrella en GitHub ★"
     },
     "footer": {
-      "lede": "Sitios Astro listos para producción , hechos para agentes de IA. MIT · pre-1.0.",
+      "lede": "Sitios Astro listos para producción, hechos para agentes de IA. MIT · pre-1.0.",
       "productHead": "Producto",
       "resourcesHead": "Recursos",
       "legalHead": "Legal",
       "license": "Licencia",
       "privacy": "Privacidad",
+      "terms": "Términos",
       "cookies": "Cookies",
       "issues": "Issues",
-      "discussions": "Discussions"
+      "discussions": "Discusiones"
+    },
+    "blog": {
+      "eyebrow": "Desde el blog",
+      "headline": "Notas desde el desarrollo.",
+      "meta": "Escribimos sobre presupuestos de rendimiento, i18n, convenciones amigables para agentes y algún ocasional desahogo sobre las herramientas web modernas.",
+      "articles": "{count} artículos",
+      "browseAll": "Ver todas las entradas →"
     }
   }
 }

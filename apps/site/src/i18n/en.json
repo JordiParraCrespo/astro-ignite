@@ -8,7 +8,11 @@
     "menu": "Menu",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
-    "skipToContent": "Skip to main content"
+    "skipToContent": "Skip to main content",
+    "primary": "Primary",
+    "breadcrumbs": "Breadcrumbs",
+    "adjacentPosts": "Adjacent posts",
+    "scaffoldFlow": "Scaffold flow preview"
   },
   "footer": {
     "rights": "All rights reserved.",
@@ -59,9 +63,17 @@
     "updatedOn": "Updated on",
     "readMore": "Read more",
     "readingTime": "{minutes} min read",
+    "readingTimeShort": "{minutes} min",
     "morePosts": "More posts",
     "backToBlog": "Back to blog",
-    "noPosts": "No posts yet."
+    "noPosts": "No posts yet.",
+    "anonymous": "Anonymous",
+    "copied": "copied",
+    "totalPosts": "{count} posts · since {year}",
+    "featured": "Featured · most recent",
+    "readArticle": "Read article →",
+    "previousPost": "Previous post",
+    "nextPost": "Next post"
   },
   "projects": {
     "viewProject": "View project",
@@ -72,6 +84,8 @@
     "techStack": "Tech stack",
     "role": "Role",
     "client": "Client",
+    "statusLabel": "Status",
+    "dateLabel": "Date",
     "status": {
       "shipped": "Shipped",
       "in-progress": "In progress",
@@ -88,6 +102,7 @@
     "sending": "Sending…",
     "success": "Thanks — we'll get back to you soon.",
     "error": "Something went wrong. Please try again or email us directly.",
+    "honeypot": "Leave this field blank",
     "validation": {
       "nameRequired": "Please enter your name.",
       "emailInvalid": "Please enter a valid email address.",
@@ -256,15 +271,23 @@
       "github": "Star on GitHub ★"
     },
     "footer": {
-      "lede": "Production-grade Astro sites , built for AI agents. MIT · pre-1.0.",
+      "lede": "Production-grade Astro sites, built for AI agents. MIT · pre-1.0.",
       "productHead": "Product",
       "resourcesHead": "Resources",
       "legalHead": "Legal",
       "license": "License",
       "privacy": "Privacy",
+      "terms": "Terms",
       "cookies": "Cookies",
       "issues": "Issues",
       "discussions": "Discussions"
+    },
+    "blog": {
+      "eyebrow": "From the blog",
+      "headline": "Notes from the build.",
+      "meta": "Writing on perf budgets, i18n, agent-friendly conventions, and the occasional rant about modern web tooling.",
+      "articles": "{count} articles",
+      "browseAll": "Browse all posts →"
     }
   }
 }
