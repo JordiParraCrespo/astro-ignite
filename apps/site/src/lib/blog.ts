@@ -1,5 +1,6 @@
 import { getCollection, getEntry } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
+import type { ImageMetadata } from 'astro';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 
 export const GLYPH_MAP: Record<string, string> = {
@@ -47,6 +48,8 @@ export type BlogCardData = {
   glyph: string;
   minutes: number;
   tags: readonly string[];
+  heroImage: ImageMetadata;
+  heroImageAlt: string;
 };
 
 export async function getBlogCards(locale: string): Promise<BlogCardData[]> {
@@ -84,6 +87,8 @@ export async function getBlogCards(locale: string): Promise<BlogCardData[]> {
         glyph: glyphFor(tags),
         minutes: readingTime(post.body),
         tags,
+        heroImage: post.data.heroImage,
+        heroImageAlt: post.data.heroImageAlt,
       };
     })
   );
