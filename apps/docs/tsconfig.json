@@ -3,8 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@registry/*": ["../../packages/registry/*"]
+      "@/*": ["src/*"]
     },
     "jsx": "preserve",
     "noUncheckedIndexedAccess": true,

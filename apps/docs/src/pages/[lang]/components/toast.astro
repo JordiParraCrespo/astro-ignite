@@ -7,8 +7,8 @@ export function getStaticPaths() {
 }
 import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
 import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
-import Toaster from '@registry/base/toaster.astro';
-import Button from '@registry/base/button.astro';
+import Toaster from '@/components/ui/toaster.astro';
+import Button from '@/components/ui/button.astro';
 import { useTranslations } from '@/i18n';
 
 const t = useTranslations(Astro.currentLocale);
@@ -41,7 +41,7 @@ const messages = {
 </ComponentsLayout>
 
 <script>
-  import { toast } from '@registry/lib/toast';
+  import { toast } from '@/lib/toast';
 
   document.addEventListener('click', (e) => {
     const target = e.target as HTMLElement;

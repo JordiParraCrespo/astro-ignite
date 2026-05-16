@@ -7,10 +7,10 @@ export function getStaticPaths() {
 }
 import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
 import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
-import Tabs from '@registry/base/tabs/tabs.astro';
-import TabsList from '@registry/base/tabs/tabs-list.astro';
-import TabsTrigger from '@registry/base/tabs/tabs-trigger.astro';
-import TabsContent from '@registry/base/tabs/tabs-content.astro';
+import Tabs from '@/components/ui/tabs.astro';
+import TabsList from '@/components/ui/tabs-list.astro';
+import TabsTrigger from '@/components/ui/tabs-trigger.astro';
+import TabsContent from '@/components/ui/tabs-content.astro';
 import { useTranslations } from '@/i18n';
 
 const t = useTranslations(Astro.currentLocale);

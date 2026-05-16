@@ -1,0 +1,26 @@
+---
+import { cn } from '@/lib/cn';
+import type { HTMLAttributes } from 'astro/types';
+
+export type Props = HTMLAttributes<'label'> & { class?: string };
+const { class: className, ...rest } = Astro.props;
+---
+
+<label class={cn('label', className)} {...rest}><slot /></label>
+
+<style>
+  .label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-fg);
+    line-height: 1.4;
+    user-select: none;
+  }
+  .label:has(+ :disabled),
+  .label[aria-disabled='true'] {
+    opacity: 0.6;
+  }
+</style>

@@ -7,10 +7,10 @@ export function getStaticPaths() {
 }
 import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
 import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
-import Dialog from '@registry/base/dialog/dialog.astro';
-import DialogTitle from '@registry/base/dialog/dialog-title.astro';
-import DialogDescription from '@registry/base/dialog/dialog-description.astro';
-import Button from '@registry/base/button.astro';
+import Dialog from '@/components/ui/dialog.astro';
+import DialogTitle from '@/components/ui/dialog-title.astro';
+import DialogDescription from '@/components/ui/dialog-description.astro';
+import Button from '@/components/ui/button.astro';
 import { useTranslations } from '@/i18n';
 
 const t = useTranslations(Astro.currentLocale);
