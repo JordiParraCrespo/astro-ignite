@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>What is astro-ignite — banner</title>
+<link rel="stylesheet" href="banner.css" />
+<style>
+  /* GhBanner overrides — taller hero copy, wider terminal, slightly looser
+     padding than the default .split. Mirrors astro-ignite/project/Banners.html
+     `GhBanner` so the post hero matches the github social preview. */
+  .gh.split { padding: 56px 60px; gap: 52px; grid-template-columns: 1.05fr 1fr; }
+  .gh .left h1 { font-size: 62px; }
+  .gh .left .sub { font-size: 17px; max-width: 40ch; }
+  .gh .left .meta-row { font-size: 12px; gap: 14px; }
+  .gh .terminal { box-shadow: 0 30px 80px -20px rgba(0,0,0,.7), 0 0 0 1px var(--zinc-800); }
+  .gh .terminal pre { font-size: 13.5px; line-height: 1.7; padding: 20px 18px; }
+</style>
+</head>
+<body>
+<div class="bn">
+  <div class="grid-bg"></div>
+  <div class="split gh">
+    <div class="left">
+      <div class="wm">
+        <span class="name"><span class="brand-glyph glyph">&gt;_</span> astro-ignite</span>
+        <span class="pill"><span class="dot"></span><span class="mono">BETA</span><span class="sep">|</span><span class="mono" style="color:var(--zinc-300)">v0.1.0 just shipped</span></span>
+      </div>
+      <h1><span class="muted">Astro sites,</span><br/>built for AI agents.</h1>
+      <p class="sub">Pre-wired SEO, i18n, perf, legal &amp; email. Structured for agents to read, edit, and extend — just code you own.</p>
+      <div class="meta-row">
+        <span>★ <strong>2.4k</strong></span><span>·</span>
+        <span><strong>MIT</strong></span><span>·</span>
+        <span>Astro 5 · Tailwind v4</span><span>·</span>
+        <span>Lighthouse <strong>100/100/100/100</strong></span>
+      </div>
+    </div>
+    <div class="terminal">
+      <div class="bar">
+        <span class="d"></span><span class="d"></span><span class="d"></span>
+        <span class="path">~/code</span><span class="shell">zsh</span>
+      </div>
+<pre>
+<span class="muted">$</span> npm create astro-ignite my-site
+
+<span class="muted">^</span>  <span class="accent">astro-ignite</span> <span class="subtle">v0.1.0</span>
+<span class="subtle">│</span>
+<span class="subtle">◇</span>  Template?    <span class="muted">starter</span>
+<span class="subtle">◇</span>  Project?     <span class="muted">./my-site</span>
+<span class="subtle">◇</span>  Languages?   <span class="muted">en, es, ja</span>
+<span class="subtle">◇</span>  Email?       <span class="muted">Resend</span>
+◆  Install? <span class="pick">● Yes</span> <span class="muted">○ No</span>
+<span class="subtle">└</span>  <span class="caret"></span>
+</pre>
+    </div>
+  </div>
+</div>
+</body>
+</html>
