@@ -32,9 +32,12 @@ const {
     <Picture
       src={preview}
       alt={name}
-      widths={[400, 600, 800, 1200]}
-      sizes="(max-width: 900px) 100vw, 600px"
+      width={1120}
+      height={630}
+      widths={[400, 560, 1120]}
+      sizes="(min-width: 900px) 560px, 100vw"
       formats={['avif', 'webp']}
+      quality={70}
       loading={eager ? 'eager' : 'lazy'}
       {...eager ? { fetchpriority: 'high' as const } : {}}
       decoding="async"
@@ -53,7 +56,8 @@ const {
   </div>
   <div class="tpl-foot">
     <span class="tpl-install mono">
-      <span class="tpl-flag">$</span> {installCommand}
+      <span class="tpl-flag">$</span>
+      {installCommand}
     </span>
     <a class="btn btn-outline btn-sm" href={previewUrl} target="_blank" rel="noopener">
       {previewLabel}

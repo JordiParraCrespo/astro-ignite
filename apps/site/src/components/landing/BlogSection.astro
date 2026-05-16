@@ -33,8 +33,7 @@ const rssHref = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/r
 
         <div class="blog-foot">
           <span class="mono blog-foot-meta">
-            {t('landing.blog.articles', { count: blogCards.length })} ·{' '}
-            <a href={rssHref}>RSS ↗</a>
+            {t('landing.blog.articles', { count: blogCards.length })} · <a href={rssHref}>RSS ↗</a>
           </span>
           <a class="btn btn-ghost btn-sm" href={blogHref}>
             {t('landing.blog.browseAll')}
