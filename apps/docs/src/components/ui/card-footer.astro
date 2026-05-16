@@ -1,0 +1,18 @@
+---
+import { cn } from '@/lib/cn';
+import type { HTMLAttributes } from 'astro/types';
+
+export type Props = HTMLAttributes<'div'> & { class?: string };
+const { class: className, ...rest } = Astro.props;
+---
+
+<div class={cn('card-footer', className)} {...rest}><slot /></div>
+
+<style>
+  .card-footer {
+    padding: 0 24px 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+</style>

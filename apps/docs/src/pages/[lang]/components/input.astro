@@ -7,8 +7,8 @@ export function getStaticPaths() {
 }
 import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
 import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
-import Input from '@registry/base/input.astro';
-import Label from '@registry/base/label.astro';
+import Input from '@/components/ui/input.astro';
+import Label from '@/components/ui/label.astro';
 import { useTranslations } from '@/i18n';
 
 const t = useTranslations(Astro.currentLocale);

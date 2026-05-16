@@ -8,7 +8,7 @@ export function getStaticPaths() {
 
 import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
 import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
-import Breadcrumb from '@registry/blocks/breadcrumb.astro';
+import Breadcrumb from '@/components/blocks/breadcrumb.astro';
 import { useTranslations } from '@/i18n';
 
 const t = useTranslations(Astro.currentLocale);

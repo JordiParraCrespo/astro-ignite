@@ -8,8 +8,8 @@ export function getStaticPaths() {
 
 import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
 import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
-import PostList from '@registry/blocks/post-list/post-list.astro';
-import PostListItem from '@registry/blocks/post-list/post-list-item.astro';
+import PostList from '@/components/blocks/post-list.astro';
+import PostListItem from '@/components/blocks/post-list-item.astro';
 import { useTranslations } from '@/i18n';
 
 const t = useTranslations(Astro.currentLocale);

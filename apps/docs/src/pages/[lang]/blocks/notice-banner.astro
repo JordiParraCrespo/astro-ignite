@@ -8,7 +8,7 @@ export function getStaticPaths() {
 
 import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
 import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
-import NoticeBanner from '@registry/blocks/notice-banner.astro';
+import NoticeBanner from '@/components/blocks/notice-banner.astro';
 import { useTranslations } from '@/i18n';
 
 const t = useTranslations(Astro.currentLocale);
