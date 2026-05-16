@@ -1,0 +1,101 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { siteConfig } from '@/config/site';
+import { useTranslations } from '@/i18n';
+import { getBlogCards } from '@/lib/blog';
+import BlogCard from '@/components/BlogCard.astro';
+import SectionHead from './SectionHead.astro';
+
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
+
+const blogCards = await getBlogCards(locale);
+const recentCards = blogCards.slice(0, 3);
+const blogHref = getRelativeLocaleUrl(locale, '/blog');
+const rssHref = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/rss.xml`;
+---
+
+{
+  recentCards.length > 0 && (
+    <section class="blog-section">
+      <div class="page">
+        <SectionHead
+          eyebrow={t('landing.blog.eyebrow')}
+          heading={t('landing.blog.headline')}
+          meta={t('landing.blog.meta')}
+        />
+
+        <div class="blog-grid">
+          {recentCards.map((c) => (
+            <BlogCard card={c} />
+          ))}
+        </div>
+
+        <div class="blog-foot">
+          <span class="mono blog-foot-meta">
+            {t('landing.blog.articles', { count: blogCards.length })} · <a href={rssHref}>RSS ↗</a>
+          </span>
+          <a class="btn btn-ghost btn-sm" href={blogHref}>
+            {t('landing.blog.browseAll')}
+          </a>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+  @media (max-width: 720px) {
+    .page {
+      padding: 0 24px;
+    }
+  }
+  .blog-section {
+    padding: 0 0 96px;
+  }
+  @media (max-width: 720px) {
+    .blog-section {
+      padding: 0 0 64px;
+    }
+  }
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 920px) {
+    .blog-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 620px) {
+    .blog-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .blog-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 24px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .blog-foot-meta {
+    font-size: 12px;
+    color: var(--color-fg-muted);
+  }
+  .blog-foot-meta a {
+    color: var(--color-fg-muted);
+    text-decoration: none;
+    transition: color 0.12s var(--ease-out-soft);
+  }
+  .blog-foot-meta a:hover {
+    color: var(--color-fg);
+  }
+</style>

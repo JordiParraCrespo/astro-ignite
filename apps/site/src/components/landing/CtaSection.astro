@@ -1,0 +1,141 @@
+---
+import { siteConfig } from '@/config/site';
+import { useTranslations } from '@/i18n';
+import CommandLine from './CommandLine.astro';
+
+interface Props {
+  ghUrl: string;
+  quickStartUrl: string;
+}
+
+const { ghUrl, quickStartUrl } = Astro.props;
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
+---
+
+<section class="cta-section">
+  <div class="page">
+    <div class="cta-box">
+      <span class="pill">
+        <span class="dot" aria-hidden="true"></span>
+        <span class="mono">{t('landing.cta.pill')}</span>
+      </span>
+      <h2>
+        {t('landing.cta.headlineLead')}{' '}
+        <span class="muted">{t('landing.cta.headlineMuted')}</span>{t('landing.cta.headlineTail')}
+      </h2>
+      <p>{t('landing.cta.lede')}</p>
+      <CommandLine
+        command="npm create astro-ignite@latest"
+        copyLabel={t('landing.hero.copyLabel')}
+        copiedLabel={t('blog.copied')}
+      />
+      <div class="cta-actions">
+        <a class="btn btn-primary btn-lg" href={quickStartUrl} target="_blank" rel="noopener">
+          {t('landing.cta.getStarted')}
+        </a>
+        <a class="btn btn-outline btn-lg" href={ghUrl} rel="noopener">
+          {t('landing.cta.github')}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+  @media (max-width: 720px) {
+    .page {
+      padding: 0 24px;
+    }
+  }
+  .muted {
+    color: var(--color-fg-muted);
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px 5px 8px;
+    font-size: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-surface-2);
+    color: var(--color-fg);
+  }
+  .pill .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 99px;
+    background: var(--color-fg);
+  }
+
+  .cta-section {
+    padding: 0 0 96px;
+  }
+  @media (max-width: 720px) {
+    .cta-section {
+      padding: 0 0 64px;
+    }
+  }
+  .cta-box {
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    padding: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: center;
+    text-align: center;
+    background: radial-gradient(
+      ellipse 60% 100% at 50% 0%,
+      var(--color-surface-2) 0%,
+      var(--color-bg) 70%
+    );
+  }
+  .cta-box h2 {
+    font-size: clamp(28px, 4.4vw, 56px);
+    font-weight: 500;
+    letter-spacing: -0.045em;
+    line-height: 1.05;
+    margin: 0;
+    max-width: 18ch;
+    text-wrap: balance;
+  }
+  .cta-box p {
+    margin: 0;
+    max-width: 52ch;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--color-fg-muted);
+  }
+  .cta-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  @media (max-width: 560px) {
+    .cta-box {
+      padding: 32px 20px;
+      gap: 18px;
+      border-radius: 14px;
+    }
+    .cta-actions {
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+      max-width: 280px;
+    }
+    .cta-actions :global(.btn) {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
