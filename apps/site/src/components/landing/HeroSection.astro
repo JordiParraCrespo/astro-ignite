@@ -1,0 +1,300 @@
+---
+import { siteConfig } from '@/config/site';
+import { useTranslations } from '@/i18n';
+import CommandLine from './CommandLine.astro';
+
+interface Props {
+  ghUrl: string;
+  quickStartUrl: string;
+}
+
+const { ghUrl, quickStartUrl } = Astro.props;
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
+---
+
+<header class="hero">
+  <div class="hero-grid" aria-hidden="true"></div>
+  <div class="page hero-inner">
+    <div class="hero-split">
+      <div class="hero-copy">
+        <a class="pill pill--release" href={`${ghUrl}/releases`} rel="noopener" target="_blank">
+          <span class="dot" aria-hidden="true"></span>
+          <span class="pill-tag">{t('landing.hero.pillTag')}</span>
+          <span>{t('landing.hero.pillAnnouncement')}</span>
+          <span class="pill-arrow" aria-hidden="true">→</span>
+        </a>
+        <h1>
+          <span class="muted">{t('landing.hero.headlineMuted')}</span>{' '}
+          {t('landing.hero.headlineTail')}
+        </h1>
+        <p class="hero-lede">
+          {t('landing.hero.lede')}
+          {' '}
+          <span class="emph">{t('landing.hero.ledeEmph')}</span>
+        </p>
+
+        <CommandLine
+          id="install"
+          command="npm create astro-ignite@latest my-site"
+          copyLabel={t('landing.hero.copyLabel')}
+          copiedLabel={t('blog.copied')}
+        />
+
+        <div class="hero-cta">
+          <a class="btn btn-primary btn-lg" href={quickStartUrl} target="_blank" rel="noopener">
+            {t('landing.hero.primaryCta')}
+          </a>
+          <a class="btn btn-outline btn-lg" href={ghUrl} rel="noopener">
+            {t('landing.hero.secondaryCta')}
+          </a>
+          <span class="mono hero-meta">MIT · Astro 5 · Tailwind v4</span>
+        </div>
+      </div>
+
+      <div class="term" aria-label={t('nav.scaffoldFlow')}>
+        <div class="term-bar">
+          <span class="term-dot" aria-hidden="true"></span>
+          <span class="term-dot" aria-hidden="true"></span>
+          <span class="term-dot" aria-hidden="true"></span>
+          <span class="term-path mono">~/code</span>
+          <span class="term-shell mono">zsh</span>
+        </div>
+        <div class="term-body mono">
+          <span class="t-muted">$</span> npm create astro-ignite my-site<br /><br />
+          <span class="t-muted">^</span>&nbsp; <span class="t-strong">astro-ignite</span>
+          <span class="t-subtle">v0.1.0</span><br />
+          <span class="t-subtle">│</span><br />
+          <span class="t-subtle">◇</span>&nbsp; Template? <span class="t-muted">starter</span><br />
+          <span class="t-subtle">◇</span>&nbsp; Project name? <span class="t-muted">./my-site</span><br />
+          <span class="t-subtle">◇</span>&nbsp; Languages? <span class="t-muted">en, es, ja</span><br />
+          <span class="t-subtle">◇</span>&nbsp; Email? <span class="t-muted">Resend</span><br />
+          ◆&nbsp; Install deps?<br />
+          <span class="t-subtle">│</span>&nbsp; <span class="t-pick">● Yes</span>&nbsp;<span class="t-muted">○ No ○ pnpm ○ bun</span><br />
+          <span class="t-subtle">└</span>&nbsp; <span class="caret"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+  @media (max-width: 720px) {
+    .page {
+      padding: 0 24px;
+    }
+  }
+  .muted {
+    color: var(--color-fg-muted);
+  }
+  .emph {
+    color: var(--color-fg);
+  }
+
+  /* Release pill (variant of the neutral .pill living in Nav) */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px 5px 8px;
+    font-size: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-surface-2);
+    color: var(--color-fg);
+  }
+  .pill .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 99px;
+    background: var(--color-fg);
+  }
+  .pill--release {
+    text-decoration: none;
+    padding-block: 6px;
+    font-size: 13px;
+    transition:
+      border-color 120ms ease,
+      background 120ms ease;
+  }
+  .pill--release:hover {
+    border-color: var(--color-border-strong, var(--color-fg-muted));
+    background: var(--color-surface);
+  }
+  .pill--release .pill-tag {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-fg);
+    padding-right: 8px;
+    border-right: 1px solid var(--color-border);
+  }
+  .pill--release .dot {
+    background: var(--color-primary, var(--color-fg));
+    animation: release-pulse 2.2s ease-in-out infinite;
+  }
+  .pill--release .pill-arrow {
+    color: var(--color-fg-muted);
+    transition:
+      transform 160ms ease,
+      color 160ms ease;
+  }
+  .pill--release:hover .pill-arrow {
+    transform: translateX(2px);
+    color: var(--color-fg);
+  }
+  @keyframes release-pulse {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.25); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pill--release .dot { animation: none; opacity: 0.7; }
+    .pill--release:hover .pill-arrow { transform: none; }
+  }
+
+  /* Hero */
+  .hero {
+    padding: 80px 0 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(to right, var(--color-border) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--color-border) 1px, transparent 1px);
+    background-size: 56px 56px;
+    opacity: 0.5;
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 30%, transparent 80%);
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 30%, transparent 80%);
+  }
+  :global(html.light) .hero-grid {
+    opacity: 0.65;
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+  }
+  .hero-split {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 56px;
+    align-items: center;
+  }
+  @media (max-width: 920px) {
+    .hero-split {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+  }
+  .hero-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .hero h1 {
+    font-size: clamp(40px, 5.6vw, 80px);
+    font-weight: 500;
+    letter-spacing: -0.05em;
+    line-height: 0.95;
+    margin: 0;
+    text-wrap: balance;
+    hyphens: none;
+    word-break: normal;
+    overflow-wrap: normal;
+  }
+  .hero-lede {
+    margin: 0;
+    font-size: clamp(16px, 1.4vw, 19px);
+    line-height: 1.55;
+    color: var(--color-fg-muted);
+    max-width: 60ch;
+    text-wrap: pretty;
+  }
+  .hero-cta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .hero-meta {
+    font-size: 12px;
+    color: var(--color-fg-muted);
+  }
+
+  /* Terminal preview — theme-invariant dark */
+  .term {
+    border: 1px solid #27272a;
+    border-radius: 12px;
+    background: #000;
+    overflow: hidden;
+    box-shadow:
+      0 30px 60px -20px rgba(0, 0, 0, 0.8),
+      0 0 0 1px #27272a;
+    max-width: 100%;
+    min-width: 0;
+  }
+  .term-body {
+    overflow-x: auto;
+    padding: 18px 16px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #f4f4f5;
+  }
+  @media (max-width: 480px) {
+    .term-body {
+      font-size: 11px;
+      padding: 14px 12px;
+    }
+  }
+  .term-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    border-bottom: 1px solid #27272a;
+    background: #18181b;
+  }
+  .term-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 99px;
+    background: #3f3f46;
+  }
+  .term-path {
+    font-size: 11px;
+    color: #a1a1aa;
+    margin-left: 8px;
+  }
+  .term-shell {
+    font-size: 11px;
+    color: #a1a1aa;
+    margin-left: auto;
+  }
+  .t-muted { color: #a1a1aa; }
+  .t-subtle { color: #71717a; }
+  .t-strong { font-weight: 500; color: #fafafa; }
+  .t-pick {
+    display: inline-block;
+    padding: 1px 8px;
+    background: #fafafa;
+    color: #000;
+    border-radius: 3px;
+  }
+  .caret {
+    display: inline-block;
+    width: 8px;
+    height: 14px;
+    background: #fafafa;
+    vertical-align: -2px;
+  }
+</style>

@@ -1,0 +1,68 @@
+---
+interface Props {
+  eyebrow: string;
+  heading: string;
+  meta?: string;
+}
+
+const { eyebrow, heading, meta } = Astro.props;
+---
+
+<div class="section-head">
+  <div class="section-lead">
+    <span class="eyebrow mono">{eyebrow}</span>
+    <h2>{heading}</h2>
+    <slot />
+  </div>
+  {meta && <p class="section-meta mono">{meta}</p>}
+</div>
+
+<style>
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+  .section-lead {
+    max-width: 32ch;
+  }
+  .section-lead :global(p) {
+    margin-top: 12px;
+    color: var(--color-fg-muted);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  .section-lead h2 {
+    font-size: clamp(32px, 4.4vw, 56px);
+    font-weight: 500;
+    letter-spacing: -0.045em;
+    line-height: 1.05;
+    margin: 12px 0 0;
+    text-wrap: balance;
+  }
+  .section-meta {
+    font-size: 12px;
+    color: var(--color-fg-muted);
+    max-width: 30ch;
+    text-align: right;
+    line-height: 1.6;
+    margin: 0;
+  }
+  .eyebrow {
+    font-size: 11px;
+    color: var(--color-fg-muted);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  @media (max-width: 720px) {
+    .section-head {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .section-meta {
+      text-align: left;
+    }
+  }
+</style>

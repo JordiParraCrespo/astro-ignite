@@ -1,0 +1,113 @@
+---
+import { siteConfig } from '@/config/site';
+import { useTranslations } from '@/i18n';
+import SectionHead from './SectionHead.astro';
+import FeatureCell from './FeatureCell.astro';
+
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
+
+// Numeric IDs (01..09) drive the i18n key lookups: t('landing.features.f01.title') etc.
+// Tags ('perf', 'core', 'css', ...) are technical labels — kept English across locales.
+const FEATURE_IDS = [
+  { id: 'f01', num: '01', tag: 'perf' },
+  { id: 'f02', num: '02', tag: 'core' },
+  { id: 'f03', num: '03', tag: 'css' },
+  { id: 'f04', num: '04', tag: 'seo' },
+  { id: 'f05', num: '05', tag: 'media' },
+  { id: 'f06', num: '06', tag: 'type' },
+  { id: 'f07', num: '07', tag: 'ux' },
+  { id: 'f08', num: '08', tag: 'email' },
+  { id: 'f09', num: '09', tag: 'legal' },
+] as const;
+---
+
+<section class="features-section">
+  <div class="page">
+    <SectionHead
+      eyebrow={t('landing.features.eyebrow')}
+      heading={t('landing.features.headline')}
+      meta={t('landing.features.meta')}
+    />
+    <div class="features">
+      {
+        FEATURE_IDS.map((f) => (
+          <FeatureCell
+            num={f.num}
+            tag={f.tag}
+            title={t(`landing.features.${f.id}.title` as const)}
+            body={t(`landing.features.${f.id}.body` as const)}
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+  @media (max-width: 720px) {
+    .page {
+      padding: 0 24px;
+    }
+  }
+  .features-section {
+    padding: 96px 0;
+  }
+  @media (max-width: 720px) {
+    .features-section {
+      padding: 64px 0;
+    }
+  }
+  .features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  @media (max-width: 920px) {
+    .features {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 560px) {
+    .features {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Trim outer borders on the grid edges. FeatureCell owns its own scoped
+     borders; the :global() escape hatch is how Astro reaches into a child
+     component's scope. */
+  .features :global(.feat:nth-child(3n)) {
+    border-right: none;
+  }
+  .features :global(.feat:nth-last-child(-n + 3)) {
+    border-bottom: none;
+  }
+  @media (max-width: 920px) {
+    .features :global(.feat) {
+      border-right: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .features :global(.feat:nth-child(2n)) {
+      border-right: none;
+    }
+    .features :global(.feat:nth-last-child(-n + 2)) {
+      border-bottom: none;
+    }
+  }
+  @media (max-width: 560px) {
+    .features :global(.feat) {
+      border-right: none;
+    }
+    .features :global(.feat:not(:last-child)) {
+      border-bottom: 1px solid var(--color-border);
+    }
+  }
+</style>
