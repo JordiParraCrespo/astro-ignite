@@ -3,7 +3,7 @@
 This change targets `apps/site/` (a manual mirror of the `starter`
 template), not `packages/templates/<kind>/`. The long-lived `templates-i18n`
 spec is the inherited contract (see `apps/site/CLAUDE.md`: _"Specs
-(inherited from starter): openspec/specs/templates-*/spec.md (all of
+(inherited from starter): openspec/specs/templates-\*/spec.md (all of
 them)"_), so the delta is filed against it.
 
 The change removes one i18n key (`landing.hero.headlineMuted`) from both
@@ -34,7 +34,7 @@ _None._
   `Dictionary = typeof en` in `apps/site/src/i18n/index.ts:20` plus
   `TranslationKey = Path<Dictionary>` at line 39 is the effective
   invariant that catches stray uses of the removed key. `pnpm
-  typecheck` enforces it.
+typecheck` enforces it.
 - **Audit coverage.** `scripts/audit/i18n-parallels.mjs` and
   `scripts/audit/internal-links-localized.mjs` both scope to
   `packages/templates/<kind>/` and do not run against `apps/site/`, so

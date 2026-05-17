@@ -18,17 +18,23 @@ changes.
 `HeroSection.astro` (lines 48–53):
 
 ```astro
--        <h1
--          class="m-0 hyphens-none break-normal text-[clamp(40px,5.6vw,80px)] font-medium leading-[0.95] tracking-[-0.05em] text-fg [overflow-wrap:normal] [text-wrap:balance]"
--        >
--          <span class="text-fg-muted">{t('landing.hero.headlineMuted')}</span>{' '}
--          {t('landing.hero.headlineTail')}
--        </h1>
-+        <h1
-+          class="m-0 hyphens-none break-normal text-[clamp(40px,5.6vw,80px)] font-medium leading-[0.95] tracking-[-0.05em] text-fg [overflow-wrap:normal] [text-wrap:balance]"
-+        >
-+          {t('landing.hero.headlineTail')}
-+        </h1>
+- <h1
+  -
+  class="m-0 hyphens-none break-normal text-[clamp(40px,5.6vw,80px)] font-medium leading-[0.95] tracking-[-0.05em] text-fg [overflow-wrap:normal] [text-wrap:balance]"
+  -
+>
+  - <span class="text-fg-muted">{t('landing.hero.headlineMuted')}</span>{' '}
+  - {t('landing.hero.headlineTail')}
+  -
+</h1>
++ <h1
+  +
+  class="m-0 hyphens-none break-normal text-[clamp(40px,5.6vw,80px)] font-medium leading-[0.95] tracking-[-0.05em] text-fg [overflow-wrap:normal] [text-wrap:balance]"
+  +
+>
+  + {t('landing.hero.headlineTail')}
+  +
+</h1>
 ```
 
 `en.json` and `es.json`: remove the `"headlineMuted": "..."` line from the
