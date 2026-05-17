@@ -17,6 +17,7 @@ import Brand from '../Brand.astro';
 import SearchBox from './SearchBox.astro';
 import { sidebar } from '@/config/sidebar';
 import { siteConfig } from '@/config/site';
+import { useTranslations } from '@/i18n';
 
 interface Props {
   /** Path of the current page; used to mark the active item. */
@@ -25,6 +26,7 @@ interface Props {
 
 const { currentPath } = Astro.props;
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
 
 // Resolve labels from the current-locale entry's frontmatter. Sidebar config
 // uses bare slugs (`introduction`); the collection id is `<locale>/<slug>`.
@@ -57,14 +59,14 @@ const isActive = (slug: string) => {
 };
 ---
 
-<aside class="sidebar" aria-label="Documentation">
+<aside class="sidebar" aria-label={t('nav.documentation')}>
   <header class="sidebar-header">
     <Brand href="/" variant="lockup" size={0.42} />
   </header>
 
   <SearchBox />
 
-  <nav class="sidebar-nav" aria-label="Sidebar">
+  <nav class="sidebar-nav" aria-label={t('nav.sidebar')}>
     {
       sidebar.map((group) => {
         // Only render items that exist in the current locale (or are external links).

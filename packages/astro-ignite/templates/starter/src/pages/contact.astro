@@ -2,6 +2,7 @@
 import { actions, isInputError } from 'astro:actions';
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import Button from '@/components/ui/button.astro';
 import { useTranslations } from '@/i18n';
 import { siteConfig } from '@/config/site';
 import { breadcrumbListSchema, contactPageSchema } from '@/lib/jsonld';
@@ -116,13 +117,13 @@ const schemas = [
 
       {/* Honeypot — bots fill this, humans don't */}
       <div class="honeypot" aria-hidden="true">
-        <label for="_website">Leave this field blank</label>
+        <label for="_website">{t('contact.honeypot')}</label>
         <input id="_website" name="_website" type="text" tabindex="-1" autocomplete="off" />
       </div>
 
-      <button type="submit" class="btn btn-primary">
+      <Button type="submit" variant="default" class="contact-submit">
         {t('contact.send')}
-      </button>
+      </Button>
     </form>
   </section>
 </BaseLayout>
@@ -213,25 +214,10 @@ const schemas = [
     overflow: hidden;
   }
 
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.625rem 1.125rem;
-    border-radius: 0.5rem;
-    font-size: 0.9375rem;
-    font-weight: 500;
-    border: 1px solid transparent;
-    cursor: pointer;
+  /* `align-self: flex-start` pins the submit Button to the left edge of the
+     flex column. The Button atom owns colors / hover / sizing — only layout
+     belongs here. */
+  .contact-submit {
     align-self: flex-start;
-    font-family: inherit;
-    transition: opacity 0.15s var(--ease-out-soft);
-  }
-  .btn-primary {
-    background: var(--color-fg);
-    color: var(--color-bg);
-  }
-  .btn-primary:hover {
-    opacity: 0.9;
   }
 </style>

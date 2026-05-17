@@ -4,7 +4,7 @@
  *
  * Lighter than the starter's BaseLayout: no Nav (the docs sidebar replaces
  * it), no Footer (each page renders its own prev/next + edit link), but
- * still wires SEO, JsonLd, anti-flash theme, fonts, analytics, and the
+ * still wires SEO, JsonLd, anti-flash theme, analytics, and the
  * cookie banner.
  *
  * Defaults to LIGHT theme on first visit (`siteConfig.defaultTheme`) — docs
@@ -12,7 +12,6 @@
  * persists across visits.
  */
 
-import { Font } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import type { Thing } from 'schema-dts';
 
@@ -67,6 +66,7 @@ const allSchemas = [...siteSchemas(locale), ...schemas];
     -->
     <script is:inline define:vars={{ defaultTheme: siteConfig.defaultTheme }}>
       (() => {
+        const root = document.documentElement;
         const stored = localStorage.getItem('theme');
         const systemPrefersDark = matchMedia('(prefers-color-scheme: dark)').matches;
         let isLight;
@@ -75,13 +75,26 @@ const allSchemas = [...siteSchemas(locale), ...schemas];
         else if (defaultTheme === 'light') isLight = true;
         else if (defaultTheme === 'dark') isLight = false;
         else isLight = !systemPrefersDark;
-        if (isLight) document.documentElement.classList.add('light');
-        document.documentElement.dataset.theme = stored ?? 'system';
+        if (isLight) root.classList.add('light');
+        root.dataset.theme = stored ?? 'system';
+        // Stamp consent state so the cookie banner is visible from FCP for
+        // new visitors and stays hidden for returning ones — no mid-load
+        // visibility flip (which was the dominant Speed Index hit).
+        if (localStorage.getItem('cookie-consent')) root.dataset.consent = 'recorded';
       })();
     </script>
 
-    <Font cssVariable="--font-display" preload />
-    <Font cssVariable="--font-mono" />
+    <!-- No remote font is shipped. The token chain in global.css already lists
+         system fallbacks (ui-sans-serif / ui-monospace) which render
+         instantly. The Astro experimental Font integration was emitting
+         woff2 fetches into the inlined critical CSS, but the page never
+         painted them: the @theme rule in global.css redefines
+         --font-display / --font-mono to plain "Geist" / "Geist Mono",
+         overriding the hashed family names Astro generates, so no element
+         matched any @font-face. To enable Geist (or any custom font), either
+         change the token in global.css to the family Astro emits, or drop
+         in your own self-hosted @font-face block. -->
+
 
     <SEO
       title={title}

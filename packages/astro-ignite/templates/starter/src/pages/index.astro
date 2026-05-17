@@ -1,59 +1,41 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Hero from '@/components/Hero.astro';
-import FeatureGrid from '@/components/FeatureGrid.astro';
+import FeatureGrid from '@/components/blocks/feature-grid.astro';
 import { useTranslations } from '@/i18n';
 import { siteConfig } from '@/config/site';
 
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const t = useTranslations(locale);
 
+// Numeric `index` + technical English `tag` stay across locales; only title/body
+// are translated. Matches the convention used in marketing site landings.
 const features = [
-  {
-    title: 'Lighthouse 100s on mobile',
-    description:
-      'Layered CSS with above-the-fold scoped styles, Tailwind below the fold, and Beasties critical-CSS extraction. CI-enforced.',
-    icon: '🚀',
-  },
-  {
-    title: 'Typed Schema.org JSON-LD',
-    description:
-      'schema-dts builders compose into a single @graph. Catch malformed structured data at build, not in Search Console.',
-    icon: '🔗',
-  },
-  {
-    title: 'Native i18n',
-    description:
-      'Astro 5 i18n routing with one code path for monolingual and multilingual sites. Hreflang auto-computed.',
-    icon: '🌍',
-  },
-  {
-    title: 'Working contact form',
-    description:
-      'Astro Actions + Zod validation + honeypot + your choice of Resend or SMTP. Dev mode logs to console.',
-    icon: '✉️',
-  },
-  {
-    title: 'Cookie banner + legal templates',
-    description:
-      'Privacy, terms, cookies — translated, with a "review with counsel" disclaimer baked in.',
-    icon: '📜',
-  },
-  {
-    title: 'You own the code',
-    description: 'No runtime dependency. Edit anything. Forever. Yours, line by line.',
-    icon: '🧰',
-  },
+  { index: '01', tag: 'perf', title: t('home.features.f01.title'), body: t('home.features.f01.body') },
+  { index: '02', tag: 'seo', title: t('home.features.f02.title'), body: t('home.features.f02.body') },
+  { index: '03', tag: 'i18n', title: t('home.features.f03.title'), body: t('home.features.f03.body') },
+  { index: '04', tag: 'form', title: t('home.features.f04.title'), body: t('home.features.f04.body') },
+  { index: '05', tag: 'legal', title: t('home.features.f05.title'), body: t('home.features.f05.body') },
+  { index: '06', tag: 'core', title: t('home.features.f06.title'), body: t('home.features.f06.body') },
 ];
 ---
 
 <BaseLayout title={t('seo.home.title')} description={t('seo.home.description')}>
   <Hero
-    eyebrow="Pre-1.0 — bootstrapped with astro-ignite"
+    eyebrow={t('home.eyebrow')}
     title={siteConfig.name[locale] ?? siteConfig.name[siteConfig.defaultLocale]!}
     description={t('seo.home.description')}
-    primaryCta={{ label: 'Read the blog', href: '/blog' }}
-    secondaryCta={{ label: 'See projects', href: '/projects' }}
+    primaryCta={{ label: t('home.primaryCta'), href: '/blog' }}
+    secondaryCta={{ label: t('home.secondaryCta'), href: '/projects' }}
   />
-  <FeatureGrid heading="What ships out of the box" features={features} />
+  <section class="px-5 pt-12 pb-16">
+    <div class="mx-auto max-w-7xl">
+      <h2
+        class="mb-6 text-center text-[clamp(1.5rem,3vw,2rem)] font-semibold tracking-[-0.02em] text-fg"
+      >
+        {t('home.featuresHeading')}
+      </h2>
+      <FeatureGrid features={features} />
+    </div>
+  </section>
 </BaseLayout>

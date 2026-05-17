@@ -12,15 +12,29 @@
  * sub-results (one per matching heading), with anchors that scroll directly
  * to the section.
  */
+import { siteConfig } from '@/config/site';
+import { useTranslations } from '@/i18n';
+
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
 ---
 
-<button type="button" class="search-box" data-search-open aria-label="Search docs">
+<button type="button" class="search-box" data-search-open aria-label={t('search.label')}>
   <span class="search-icon mono" aria-hidden="true">⌕</span>
-  <span class="search-label mono">Search docs</span>
+  <span class="search-label mono">{t('search.label')}</span>
   <span class="search-kbd mono"><kbd>⌘</kbd><kbd>K</kbd></span>
 </button>
 
-<dialog class="search-dialog" id="search-dialog" aria-label="Search docs">
+<dialog
+  class="search-dialog"
+  id="search-dialog"
+  aria-label={t('search.label')}
+  data-i18n-empty={t('search.empty')}
+  data-i18n-no-results={t('search.noResults')}
+  data-i18n-unavailable={t('search.unavailable')}
+  data-i18n-unavailable-hint={t('search.unavailableHint')}
+  data-i18n-docs-root={t('search.docsRoot')}
+>
   <form method="dialog" class="search-dialog__form" autocomplete="off">
     <div class="search-dialog__field">
       <span class="search-dialog__icon mono" aria-hidden="true">⌕</span>
@@ -28,23 +42,23 @@
         type="search"
         name="q"
         class="search-dialog__input"
-        placeholder="Search docs…"
-        aria-label="Search query"
+        placeholder={t('search.placeholder')}
+        aria-label={t('search.query')}
         autocomplete="off"
         spellcheck="false"
       />
-      <kbd class="search-dialog__esc mono">Esc</kbd>
+      <kbd class="search-dialog__esc mono">{t('search.esc')}</kbd>
     </div>
     <div class="search-dialog__results" data-search-results aria-live="polite"></div>
     <div class="search-dialog__footer mono">
       <span>
-        <kbd>↑</kbd><kbd>↓</kbd> navigate
+        <kbd>↑</kbd><kbd>↓</kbd>{' '}{t('search.navigate')}
       </span>
       <span>
-        <kbd>↵</kbd> open
+        <kbd>↵</kbd>{' '}{t('search.open')}
       </span>
       <span>
-        <kbd>Esc</kbd> close
+        <kbd>Esc</kbd>{' '}{t('search.close')}
       </span>
     </div>
   </form>
@@ -130,11 +144,21 @@
         (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c] ?? c
       );
 
+    const i18n = {
+      empty: dialog.dataset.i18nEmpty ?? 'Start typing to search the docs.',
+      noResults: dialog.dataset.i18nNoResults ?? 'No results for',
+      unavailable: dialog.dataset.i18nUnavailable ?? 'Search is only available on a built site.',
+      unavailableHint:
+        dialog.dataset.i18nUnavailableHint ??
+        'Run <code>pnpm build &amp;&amp; pnpm preview</code>.',
+      docsRoot: dialog.dataset.i18nDocsRoot ?? 'Docs',
+    };
+
     const breadcrumbFromUrl = (url: string): string => {
       try {
         const path = url.split('#')[0]?.replace(/\/$/, '') ?? '';
         const parts = path.split('/').filter(Boolean);
-        if (parts.length === 0) return 'Docs';
+        if (parts.length === 0) return i18n.docsRoot;
         return parts.map((p) => decodeURIComponent(p).replace(/-/g, ' ')).join(' / ');
       } catch {
         return url;
@@ -144,8 +168,8 @@
     const renderUnavailable = () => {
       resultsEl.innerHTML = `
         <div class="search-dialog__empty">
-          Search is only available on a built site.<br />
-          Run <code>pnpm build &amp;&amp; pnpm preview</code>.
+          ${i18n.unavailable}<br />
+          ${i18n.unavailableHint}
         </div>`;
     };
 
@@ -155,12 +179,11 @@
         return;
       }
       if (!query) {
-        resultsEl.innerHTML =
-          '<div class="search-dialog__empty">Start typing to search the docs.</div>';
+        resultsEl.innerHTML = `<div class="search-dialog__empty">${i18n.empty}</div>`;
         return;
       }
       if (groups.length === 0) {
-        resultsEl.innerHTML = `<div class="search-dialog__empty">No results for <strong>${escapeHtml(query)}</strong>.</div>`;
+        resultsEl.innerHTML = `<div class="search-dialog__empty">${i18n.noResults} <strong>${escapeHtml(query)}</strong>.</div>`;
         return;
       }
       let cursor = 0;

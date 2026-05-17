@@ -1,6 +1,6 @@
 /**
  * RSS feed for the default locale, served at /rss.xml.
- * Per-locale feeds for other locales live at /[locale]/rss.xml (sibling file).
+ * Per-locale feeds for other locales live at /[lang]/rss.xml (sibling file).
  */
 
 import rss from '@astrojs/rss';

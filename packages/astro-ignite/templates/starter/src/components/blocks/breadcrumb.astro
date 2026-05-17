@@ -9,13 +9,14 @@ export type Crumb = {
 export type Props = {
   items: Crumb[];
   separator?: string;
+  ariaLabel?: string;
   class?: string;
 };
 
-const { items, separator = '/', class: className } = Astro.props;
+const { items, separator = '/', ariaLabel = 'Breadcrumb', class: className } = Astro.props;
 ---
 
-<nav aria-label="Breadcrumb" class={cn('breadcrumb mono', className)}>
+<nav aria-label={ariaLabel} class={cn('breadcrumb mono', className)}>
   <ol>
     {
       items.map((item, i) => {

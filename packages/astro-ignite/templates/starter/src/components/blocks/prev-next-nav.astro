@@ -4,27 +4,26 @@ import { cn } from '@/lib/cn';
 export type PrevNextItem = {
   href: string;
   title: string;
+  /** Per-link override for the small "previous"/"next" label. */
   label?: string;
 };
 
 export type Props = {
   prev?: PrevNextItem;
   next?: PrevNextItem;
-  prevLabel?: string;
-  nextLabel?: string;
+  /** Default label for the "previous" link. e.g. t('nav.prev'). */
+  prevLabel: string;
+  /** Default label for the "next" link. e.g. t('nav.next'). */
+  nextLabel: string;
+  /** Accessible label for the surrounding nav. e.g. t('nav.prevNextAria'). */
+  ariaLabel: string;
   class?: string;
 };
 
-const {
-  prev,
-  next,
-  prevLabel = '← Previous',
-  nextLabel = 'Next →',
-  class: className,
-} = Astro.props;
+const { prev, next, prevLabel, nextLabel, ariaLabel, class: className } = Astro.props;
 ---
 
-<nav class={cn('prev-next', className)} aria-label="Previous and next">
+<nav class={cn('prev-next', className)} aria-label={ariaLabel}>
   {
     prev ? (
       <a href={prev.href} class="prev-next__box">

@@ -153,4 +153,19 @@ describe('scaffoldProject', () => {
     expect(gi.isFile()).toBe(true);
     await expect(fs.stat(path.join(target, '_gitignore'))).rejects.toThrow();
   });
+
+  it('preserves CLAUDE.md → AGENTS.md as a symlink (not a duplicate file)', async () => {
+    const ctx = makeCtx({ targetDir: target });
+    await ensureEmptyTarget(target);
+    await scaffoldProject(ctx);
+
+    const claudePath = path.join(target, 'CLAUDE.md');
+    const lstat = await fs.lstat(claudePath);
+    expect(lstat.isSymbolicLink(), 'CLAUDE.md should be a symlink').toBe(true);
+    const target_ = await fs.readlink(claudePath);
+    expect(target_).toBe('AGENTS.md');
+
+    const agents = await fs.stat(path.join(target, 'AGENTS.md'));
+    expect(agents.isFile()).toBe(true);
+  });
 });

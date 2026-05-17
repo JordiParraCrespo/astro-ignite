@@ -134,6 +134,14 @@ async function walkAndCopy(
     const destName = RENAMES[entry.name] ?? entry.name;
     const destPath = path.join(destRoot, rel, destName);
 
+    if (entry.isSymbolicLink()) {
+      // Preserve symlinks verbatim (e.g. CLAUDE.md → AGENTS.md). Don't read
+      // through to the target — that would scaffold a duplicate file instead.
+      const link = await fs.readlink(srcPath);
+      await fs.symlink(link, destPath);
+      continue;
+    }
+
     const ext = path.extname(entry.name);
     if (SUBSTITUTABLE_EXTENSIONS.has(ext)) {
       const raw = await fs.readFile(srcPath, 'utf8');

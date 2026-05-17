@@ -8,7 +8,12 @@
     "menu": "Menu",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
-    "skipToContent": "Skip to main content"
+    "skipToContent": "Skip to main content",
+    "breadcrumbs": "Breadcrumbs",
+    "primary": "Primary",
+    "pageNavigation": "Page navigation",
+    "documentation": "Documentation",
+    "sidebar": "Sidebar"
   },
   "footer": {
     "rights": "All rights reserved.",
@@ -61,7 +66,9 @@
     "readingTime": "{minutes} min read",
     "morePosts": "More posts",
     "backToBlog": "Back to blog",
-    "noPosts": "No posts yet."
+    "noPosts": "No posts yet.",
+    "previousPost": "Previous",
+    "nextPost": "Next"
   },
   "projects": {
     "viewProject": "View project",
@@ -120,6 +127,20 @@
     "startHere": "Start here",
     "reference": "Reference",
     "project": "Project"
+  },
+  "search": {
+    "label": "Search docs",
+    "placeholder": "Search docs…",
+    "query": "Search query",
+    "navigate": "navigate",
+    "open": "open",
+    "close": "close",
+    "esc": "Esc",
+    "empty": "Start typing to search the docs.",
+    "noResults": "No results for",
+    "unavailable": "Search is only available on a built site.",
+    "unavailableHint": "Run <code>pnpm build &amp;&amp; pnpm preview</code>.",
+    "docsRoot": "Docs"
   },
   "components": {
     "back": "← All components",
@@ -291,7 +312,8 @@
         "messageWarning": "Storage is running low.",
         "messageDestructive": "Failed to reach the upstream server."
       }
-    }
+    },
+    "previewAria": "Preview"
   },
   "blocks": {
     "group": "Blocks",
@@ -364,6 +386,7 @@
       "notice-banner": {
         "description": "Inline notice with icon and four variants: info, warning, success, danger. Slot accepts the message."
       }
-    }
+    },
+    "previewAria": "Preview"
   }
 }

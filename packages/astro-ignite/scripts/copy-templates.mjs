@@ -41,6 +41,9 @@ for (const ent of templates) {
 
   await cp(from, to, {
     recursive: true,
+    // Preserve symlinks (e.g. CLAUDE.md → AGENTS.md) byte-for-byte instead of
+    // rewriting their targets when resolving against the destination dir.
+    verbatimSymlinks: true,
     filter: (path) => {
       const segments = path.split('/').filter(Boolean);
       return !segments.some((s) => SKIP.has(s));
