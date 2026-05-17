@@ -25,6 +25,7 @@ Card, Button, or Badge inside a block is forbidden — depend on the atom
 and compose.
 
 #### Scenario: PricingCard uses Card + Button
+
 - **GIVEN** PricingCard needs a card surface and a CTA button
 - **WHEN** it's implemented
 - **THEN** the source imports from `base/card/*` and `base/button/*`;
@@ -36,6 +37,7 @@ Blocks SHALL also be Astro + vanilla JS. No React, no Radix, no
 headless-UI in `packages/registry/blocks/*`.
 
 #### Scenario: Adding a Testimonials carousel
+
 - **GIVEN** the contributor wants a carousel
 - **WHEN** they reach for embla-carousel-react
 - **THEN** the audit rejects; a custom element or pure CSS scroll-snap
@@ -48,6 +50,7 @@ Every block SHALL ship with a demo `.astro` (or `.mdx`) in
 live. The demo page meets the `templates-perf` budget.
 
 #### Scenario: A new block ships
+
 - **GIVEN** a new PricingCard
 - **WHEN** the PR opens
 - **THEN** `apps/site/src/pages/blocks/pricing-card.astro` exists,
@@ -60,15 +63,16 @@ A block's entry in `registry.json` SHALL list every atom it composes,
 so `npx <future-cli> add pricing-card` pulls atoms transitively.
 
 #### Scenario: Adding PricingCard
+
 - **GIVEN** PricingCard composes Card + Button
 - **WHEN** the registry entry is written
 - **THEN** `registryDependencies: ["cn", "card", "button"]`.
 
 ## Invariants (audit table)
 
-| Id | Statement | Audit |
-|----|-----------|-------|
-| I1 | No React / Vue / Svelte / Radix in `blocks/` | `node scripts/audit/no-react-in-atoms.mjs --include-blocks` |
-| I2 | Every block has a demo under `apps/site/src/pages/blocks/` | manual until automated |
-| I3 | Blocks import from `base/*` for atoms; no inline reimplementation | `node scripts/audit/no-react-in-atoms.mjs --no-reimpl` |
-| I4 | `registry.json` block entries declare atom deps | `node scripts/audit/no-react-in-atoms.mjs --block-deps` |
+| Id  | Statement                                                         | Audit                                                       |
+| --- | ----------------------------------------------------------------- | ----------------------------------------------------------- |
+| I1  | No React / Vue / Svelte / Radix in `blocks/`                      | `node scripts/audit/no-react-in-atoms.mjs --include-blocks` |
+| I2  | Every block has a demo under `apps/site/src/pages/blocks/`        | manual until automated                                      |
+| I3  | Blocks import from `base/*` for atoms; no inline reimplementation | `node scripts/audit/no-react-in-atoms.mjs --no-reimpl`      |
+| I4  | `registry.json` block entries declare atom deps                   | `node scripts/audit/no-react-in-atoms.mjs --block-deps`     |

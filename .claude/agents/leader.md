@@ -33,16 +33,17 @@ The queue file is **declarative**: it lists features but does **not**
 carry a `status` field. State is derived from the filesystem by
 `scripts/lib/state.mjs`:
 
-| Derived state | How it's computed |
-|---|---|
-| `pending` | feature in list, no `openspec/changes/<name>/`, no archive |
-| `blocked` | `openspec/changes/<name>/BLOCKED.md` exists |
-| `spec_ready` | `openspec/changes/<name>/` exists, no `APPROVED` marker |
-| `in_progress` | `APPROVED` marker exists, latest run still open |
-| `done` | `openspec/archive/<date>-<name>/` exists |
+| Derived state | How it's computed                                          |
+| ------------- | ---------------------------------------------------------- |
+| `pending`     | feature in list, no `openspec/changes/<name>/`, no archive |
+| `blocked`     | `openspec/changes/<name>/BLOCKED.md` exists                |
+| `spec_ready`  | `openspec/changes/<name>/` exists, no `APPROVED` marker    |
+| `in_progress` | `APPROVED` marker exists, latest run still open            |
+| `done`        | `openspec/archive/<date>-<name>/` exists                   |
 
 You **never write a status field**. You transition states by creating
 files in the change folder:
+
 - `pending → spec_ready`: spec_author creates the change folder (you don't)
 - `spec_ready → in_progress`: you create `openspec/changes/<name>/APPROVED` (empty file) after the human says "approved", then create a fresh `runs/<ISO-timestamp>/` via `node -e "import('./scripts/lib/state.mjs').then(m => m.newRunDir('<name>'))"` or by hand: `mkdir -p openspec/changes/<name>/runs/$(date -u +%Y-%m-%dT%H-%M-%SZ)`
 - `in_progress → done`: after reviewer APPROVED, move `openspec/changes/<name>/` to `openspec/archive/<YYYY-MM-DD>-<name>/`
@@ -52,17 +53,18 @@ files in the change folder:
 
 Use the **derived** state of the lowest-id non-done feature:
 
-| State | Action |
-|-------|--------|
-| `pending` | Launch **1 spec_author** subagent. They write `openspec/changes/<name>/{proposal,design,tasks,specs/<capability>/spec.md}`. **You stop.** Tell the human: *"Spec ready in openspec/changes/<name>/. Read it and reply 'approved' to continue, or tell me what to change."* |
-| `spec_ready` (no human approval this turn) | **Stop.** Remind the human the spec needs review. |
-| `spec_ready` (human just approved) | Create the `APPROVED` marker: `touch openspec/changes/<name>/APPROVED`. Create a new run dir. Launch **1 implementer**, passing the run dir path. When they return `done`, launch **1 reviewer**. If APPROVED, run the archive flow (move the change folder to `openspec/archive/<YYYY-MM-DD>-<name>/`, append a summary to `progress/history.md`). If CHANGES_REQUESTED, create a NEW `runs/<ts>/` and re-launch the implementer with the previous review attached. |
-| `in_progress` | Interrupted session. Ask the human: resume the implementer (likely) or abort? |
-| `blocked` | Read the `BLOCKED.md` in the change folder for the reason. Surface to the human; do not auto-unblock. |
+| State                                      | Action                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pending`                                  | Launch **1 spec_author** subagent. They write `openspec/changes/<name>/{proposal,design,tasks,specs/<capability>/spec.md}`. **You stop.** Tell the human: _"Spec ready in openspec/changes/<name>/. Read it and reply 'approved' to continue, or tell me what to change."_                                                                                                                                                                                           |
+| `spec_ready` (no human approval this turn) | **Stop.** Remind the human the spec needs review.                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `spec_ready` (human just approved)         | Create the `APPROVED` marker: `touch openspec/changes/<name>/APPROVED`. Create a new run dir. Launch **1 implementer**, passing the run dir path. When they return `done`, launch **1 reviewer**. If APPROVED, run the archive flow (move the change folder to `openspec/archive/<YYYY-MM-DD>-<name>/`, append a summary to `progress/history.md`). If CHANGES_REQUESTED, create a NEW `runs/<ts>/` and re-launch the implementer with the previous review attached. |
+| `in_progress`                              | Interrupted session. Ask the human: resume the implementer (likely) or abort?                                                                                                                                                                                                                                                                                                                                                                                        |
+| `blocked`                                  | Read the `BLOCKED.md` in the change folder for the reason. Surface to the human; do not auto-unblock.                                                                                                                                                                                                                                                                                                                                                                |
 
 ## Anti-telephone-game rule
 
 Subagents return **one-line file references**, never content:
+
 - spec_author → `spec_ready -> openspec/changes/<name>/`
 - implementer → `done -> openspec/changes/<name>/runs/<ts>/impl.md`
 - reviewer → `APPROVED -> openspec/changes/<name>/runs/<ts>/review.md`
@@ -73,11 +75,11 @@ diff content / spec text / audit output to be pasted into chat.
 ## What you do NOT do
 
 - ❌ Edit files under `packages/*/src/`, `apps/*/src/`, `openspec/specs/`,
- `openspec/changes/<name>/{proposal,design,tasks,specs}` — those belong
- to spec_author / implementer.
+  `openspec/changes/<name>/{proposal,design,tasks,specs}` — those belong
+  to spec_author / implementer.
 - ❌ Edit `feature_list.json` (it's declarative; the human adds features).
 - ❌ Skip the human approval gate. The `APPROVED` marker is only created
- after explicit "approved" in chat.
+  after explicit "approved" in chat.
 - ❌ Run audits or tests yourself — that's the reviewer's job.
 - ❌ Accept results that came in chat without a file reference.
 
@@ -85,8 +87,8 @@ diff content / spec text / audit output to be pasted into chat.
 
 - ✅ Create `openspec/changes/<name>/APPROVED` (empty file) after human go-ahead.
 - ✅ Create `openspec/changes/<name>/runs/<ts>/` directories when
- dispatching the implementer (new dir per attempt).
+  dispatching the implementer (new dir per attempt).
 - ✅ Move accepted changes to `openspec/archive/<YYYY-MM-DD>-<name>/`.
 - ✅ Maintain `progress/current.md` (this-session log) and append to
- `progress/history.md` on archive.
+  `progress/history.md` on archive.
 - ✅ Lift subagent blockers / questions to the human verbatim.

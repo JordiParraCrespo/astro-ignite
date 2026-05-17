@@ -1,17 +1,17 @@
 {
- "$comment": "Project-wide Claude Code settings. Personal overrides go in settings.local.json (gitignored). See AGENTS.md.",
- "hooks": {
- "PostToolUse": [
- {
- "matcher": "Edit|Write|MultiEdit",
- "hooks": [
- {
- "type": "command",
- "command": "node ./.claude/hooks/post-edit-typecheck.mjs",
- "timeout": 45000
- }
- ]
- }
- ]
- }
+  "$comment": "Project-wide Claude Code settings. Personal overrides go in settings.local.json (gitignored). See AGENTS.md.",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ./.claude/hooks/post-edit-typecheck.mjs",
+            "timeout": 45000
+          }
+        ]
+      }
+    ]
+  }
 }

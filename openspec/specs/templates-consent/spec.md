@@ -26,12 +26,14 @@ user has granted consent. Before consent, no network request to the
 analytics endpoint is made.
 
 #### Scenario: Fresh visit
+
 - **GIVEN** a visitor lands on the home page with no prior consent
 - **WHEN** the page loads
 - **THEN** no request to `plausible.io` (or the configured endpoint) is
   fired.
 
 #### Scenario: Consent granted
+
 - **GIVEN** the visitor clicks "Accept" in the cookie banner
 - **WHEN** the next navigation happens
 - **THEN** `Analytics.astro` injects the Plausible script and pageview
@@ -43,6 +45,7 @@ analytics endpoint is made.
 hidden once consent has been recorded.
 
 #### Scenario: Visitor on a deep blog post
+
 - **GIVEN** the visitor has not yet given consent
 - **WHEN** they land on `/blog/some-post`
 - **THEN** the cookie banner is visible.
@@ -53,6 +56,7 @@ The cookie banner SHALL link to a cookie policy page that lives in the
 template (`/legal/cookies` or equivalent).
 
 #### Scenario: A new template ships
+
 - **GIVEN** a contributor adds a new template
 - **WHEN** the audit runs
 - **THEN** the audit fails if `CookieBanner.astro` exists but
@@ -64,15 +68,16 @@ The third-party tag SHALL be encapsulated in `Analytics.astro`. Switching
 Plausible → Umami / Fathom / GA is a single-file edit.
 
 #### Scenario: Swapping providers
+
 - **GIVEN** a user wants Umami instead of Plausible
 - **WHEN** they edit `Analytics.astro`
 - **THEN** no other file needs to change.
 
 ## Invariants (audit table)
 
-| Id | Statement | Audit |
-|----|-----------|-------|
-| I1 | Analytics scripts gated behind consent guard | `node scripts/audit/consent-gated-analytics.mjs` |
-| I2 | `CookieBanner.astro` rendered in base layout | `node scripts/audit/consent-gated-analytics.mjs --banner` |
-| I3 | Cookie policy page exists and is linked from the banner | `node scripts/audit/consent-gated-analytics.mjs --policy` |
-| I4 | Analytics tag lives only in `Analytics.astro` (no other file injects it) | `node scripts/audit/consent-gated-analytics.mjs --boundary` |
+| Id  | Statement                                                                | Audit                                                       |
+| --- | ------------------------------------------------------------------------ | ----------------------------------------------------------- |
+| I1  | Analytics scripts gated behind consent guard                             | `node scripts/audit/consent-gated-analytics.mjs`            |
+| I2  | `CookieBanner.astro` rendered in base layout                             | `node scripts/audit/consent-gated-analytics.mjs --banner`   |
+| I3  | Cookie policy page exists and is linked from the banner                  | `node scripts/audit/consent-gated-analytics.mjs --policy`   |
+| I4  | Analytics tag lives only in `Analytics.astro` (no other file injects it) | `node scripts/audit/consent-gated-analytics.mjs --boundary` |

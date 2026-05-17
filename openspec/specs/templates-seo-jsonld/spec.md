@@ -22,6 +22,7 @@ block whose payload is `{ "@context": "https://schema.org", "@graph": [
 ... nodes ] }`. No page emits its own JSON-LD block independently.
 
 #### Scenario: A blog post renders
+
 - **GIVEN** a blog post page contributes a `BlogPosting` node
 - **WHEN** the layout renders
 - **THEN** the page has exactly one JSON-LD script, and it contains the
@@ -34,6 +35,7 @@ Every node added to the graph SHALL be typed against `schema-dts` types
 etc.). `any`, `unknown`, or untyped object literals are forbidden.
 
 #### Scenario: A page contributes a custom node
+
 - **GIVEN** a page wants to add a `Product` node
 - **WHEN** the type-check runs
 - **THEN** the node satisfies `Product` from `schema-dts` or the build
@@ -46,14 +48,15 @@ an `Organization`), the reference SHALL be `{ "@id": "<url>" }`, not an
 inlined duplicate.
 
 #### Scenario: BlogPosting references Organization
+
 - **GIVEN** the site Organization has `@id: "https://example.com/#org"`
 - **WHEN** a BlogPosting sets `author`
 - **THEN** the value is `{ "@id": "https://example.com/#org" }`.
 
 ## Invariants (audit table)
 
-| Id | Statement | Audit |
-|----|-----------|-------|
-| I1 | Layout emits exactly one JSON-LD `@graph` script | `node scripts/audit/jsonld-graph.mjs` |
-| I2 | No page emits standalone JSON-LD outside the layout | `node scripts/audit/jsonld-graph.mjs --strict` |
-| I3 | All graph nodes are typed via `schema-dts` | `node scripts/audit/jsonld-graph.mjs --typed` |
+| Id  | Statement                                           | Audit                                          |
+| --- | --------------------------------------------------- | ---------------------------------------------- |
+| I1  | Layout emits exactly one JSON-LD `@graph` script    | `node scripts/audit/jsonld-graph.mjs`          |
+| I2  | No page emits standalone JSON-LD outside the layout | `node scripts/audit/jsonld-graph.mjs --strict` |
+| I3  | All graph nodes are typed via `schema-dts`          | `node scripts/audit/jsonld-graph.mjs --typed`  |

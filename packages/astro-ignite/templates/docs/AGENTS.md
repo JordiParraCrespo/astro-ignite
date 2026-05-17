@@ -51,7 +51,7 @@ The `[lang]` directory is the canonical name — never use `[locale]` or `[langu
    ---
    title: Getting started
    description: Install astro-ignite and run the CLI.
-   order: 1   # sidebar ordering within a section
+   order: 1 # sidebar ordering within a section
    ---
    ```
 2. To group pages in the sidebar, use folder structure: `src/content/docs/{locale}/guide/install.mdx` → appears under "Guide".

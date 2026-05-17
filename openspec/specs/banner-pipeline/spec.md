@@ -23,6 +23,7 @@ layout config SHALL be produced by
 `apps/site/scripts/banners/<slug>.html`.
 
 #### Scenario: Adding a new blog post
+
 - **GIVEN** the post needs a hero image
 - **WHEN** the author creates the asset
 - **THEN** the HTML source lives at
@@ -36,6 +37,7 @@ imagery, nor imports from `satori`, `@vercel/og`, `resvg-js`, or
 `@resvg/resvg-js`.
 
 #### Scenario: A contributor reaches for satori
+
 - **GIVEN** the contributor adds `import satori from 'satori'`
 - **WHEN** the audit runs
 - **THEN** it rejects.
@@ -47,6 +49,7 @@ the design tokens (zinc-950 base, Geist + Geist Mono fonts loaded
 locally, grid overlay, pill chips, terminal panel).
 
 #### Scenario: Auditing a new banner HTML file
+
 - **GIVEN** a contributor adds `apps/site/scripts/banners/foo.html`
 - **WHEN** the audit inspects it
 - **THEN** the file imports `banner.css` and references token variables,
@@ -62,9 +65,9 @@ should refuse to render with stale fonts. Not a harness-wide concern.
 
 ## Invariants (audit table)
 
-| Id | Statement | Audit |
-|----|-----------|-------|
-| I1 | No inline SVG hero imagery in MDX | `node scripts/audit/banner-pipeline.mjs` |
-| I2 | No imports from satori / @vercel/og / resvg | `node scripts/audit/banner-pipeline.mjs --no-text-to-image` |
-| I3 | Every `heroImage` reference has a matching HTML source under `apps/site/scripts/banners/` | `node scripts/audit/banner-pipeline.mjs --html-source` |
-| I4 | Banner CSS uses design tokens, not raw hex | `node scripts/audit/banner-pipeline.mjs --tokens` |
+| Id  | Statement                                                                                 | Audit                                                       |
+| --- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| I1  | No inline SVG hero imagery in MDX                                                         | `node scripts/audit/banner-pipeline.mjs`                    |
+| I2  | No imports from satori / @vercel/og / resvg                                               | `node scripts/audit/banner-pipeline.mjs --no-text-to-image` |
+| I3  | Every `heroImage` reference has a matching HTML source under `apps/site/scripts/banners/` | `node scripts/audit/banner-pipeline.mjs --html-source`      |
+| I4  | Banner CSS uses design tokens, not raw hex                                                | `node scripts/audit/banner-pipeline.mjs --tokens`           |

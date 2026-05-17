@@ -78,7 +78,8 @@ const t = useTranslations(Astro.currentLocale);
       <span class="label">{t('components.label.weight')}</span>
       <div class="row-stack">
         <span class="tag">weight="normal"</span>
-        <Text variant="h2" as="p" weight="normal">The quick brown fox jumps over the lazy dog.</Text>
+        <Text variant="h2" as="p" weight="normal">The quick brown fox jumps over the lazy dog.</Text
+        >
       </div>
       <div class="row-stack">
         <span class="tag">weight="medium" (default for h2)</span>
@@ -86,7 +87,9 @@ const t = useTranslations(Astro.currentLocale);
       </div>
       <div class="row-stack">
         <span class="tag">weight="semibold"</span>
-        <Text variant="h2" as="p" weight="semibold">The quick brown fox jumps over the lazy dog.</Text>
+        <Text variant="h2" as="p" weight="semibold"
+          >The quick brown fox jumps over the lazy dog.</Text
+        >
       </div>
       <div class="row-stack">
         <span class="tag">weight="bold"</span>

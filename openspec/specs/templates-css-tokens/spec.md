@@ -26,6 +26,7 @@ utilities that map to those variables. Raw `bg-zinc-*`, `text-zinc-*`,
 or hex literals like `#0a0a0a` are forbidden in components.
 
 #### Scenario: A new component renders a background
+
 - **GIVEN** a new `<Card>` component
 - **WHEN** it sets a background color
 - **THEN** the audit passes only if the value is `var(--color-bg)`,
@@ -39,6 +40,7 @@ The zinc scale (or any raw color palette) SHALL only appear in
 `--color-*` token values.
 
 #### Scenario: Auditing global.css
+
 - **GIVEN** `global.css` contains zinc references
 - **WHEN** the audit runs
 - **THEN** the file is exempt from the no-zinc rule.
@@ -51,6 +53,7 @@ system). The class flips token values; no component reads
 `prefers-color-scheme` directly.
 
 #### Scenario: Toggling theme
+
 - **GIVEN** the user clicks the theme toggle
 - **WHEN** the toggle adds `.light` to `<html>`
 - **THEN** every `--color-*` resolves to its light value; no component
@@ -63,6 +66,7 @@ SHALL use Tailwind v4 utilities. Beasties extracts critical CSS at
 build time.
 
 #### Scenario: A new hero component is added
+
 - **GIVEN** a hero on the landing page (above the fold)
 - **WHEN** the author writes its styles
 - **THEN** they go in a `<style>` block inside `Hero.astro`, not in a
@@ -70,9 +74,9 @@ build time.
 
 ## Invariants (audit table)
 
-| Id | Statement | Audit |
-|----|-----------|-------|
-| I1 | No raw zinc / hex in component files | `node scripts/audit/tokens-only.mjs` |
-| I2 | `global.css` defines `--color-*` tokens | `node scripts/audit/tokens-only.mjs --config` |
-| I3 | Tri-state dark mode wired (`.light` class flips tokens) | `node scripts/audit/tokens-only.mjs --darkmode` |
-| I4 | Above-the-fold uses scoped `<style>` (heuristic — flag overuse of Tailwind in `Hero.astro`, `Header.astro`) | `node scripts/audit/tokens-only.mjs --layered` |
+| Id  | Statement                                                                                                   | Audit                                           |
+| --- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| I1  | No raw zinc / hex in component files                                                                        | `node scripts/audit/tokens-only.mjs`            |
+| I2  | `global.css` defines `--color-*` tokens                                                                     | `node scripts/audit/tokens-only.mjs --config`   |
+| I3  | Tri-state dark mode wired (`.light` class flips tokens)                                                     | `node scripts/audit/tokens-only.mjs --darkmode` |
+| I4  | Above-the-fold uses scoped `<style>` (heuristic — flag overuse of Tailwind in `Hero.astro`, `Header.astro`) | `node scripts/audit/tokens-only.mjs --layered`  |

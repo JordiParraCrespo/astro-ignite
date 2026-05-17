@@ -9,13 +9,9 @@ interface Props {
 const { num, tag, title, body } = Astro.props;
 ---
 
-<div
-  class="feat flex flex-col gap-2.5 border-r border-b border-border bg-bg px-6 py-7"
->
+<div class="feat flex flex-col gap-2.5 border-r border-b border-border bg-bg px-6 py-7">
   <div class="flex items-center gap-2.5">
-    <span
-      class="mono rounded-sm border border-border px-1.5 py-0.5 text-[10px] text-fg-muted"
-    >
+    <span class="mono rounded-sm border border-border px-1.5 py-0.5 text-[10px] text-fg-muted">
       {num}
     </span>
     <span class="mono text-[10px] uppercase tracking-[0.08em] text-fg-subtle">{tag}</span>

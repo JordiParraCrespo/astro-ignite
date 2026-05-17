@@ -12,7 +12,7 @@ for native HTML first; custom elements only when native won't do it.
 Owned by: `packages/registry/base/*`, `packages/registry/lib/cn.ts`,
 `packages/registry/lib/toast.ts`.
 
-Touched by: every template that ships a UI surface. Atoms are *copied*
+Touched by: every template that ships a UI surface. Atoms are _copied_
 into `src/components/ui/` at scaffold time; users own them after that.
 
 ## Requirements
@@ -24,6 +24,7 @@ Radix UI, headless-ui, or any other client-side framework / component
 library. The only allowed runtime is the browser.
 
 #### Scenario: A contributor wants a tooltip
+
 - **GIVEN** a new tooltip component is being added
 - **WHEN** the audit runs
 - **THEN** the audit fails if any import resolves to `react`, `radix`,
@@ -36,6 +37,7 @@ Interactive primitives SHALL use native HTML wherever it works:
 dropdown, CSS-only `:hover` + `:focus-visible` for tooltip.
 
 #### Scenario: Adding a new accordion
+
 - **GIVEN** a new accordion atom
 - **WHEN** the implementation is reviewed
 - **THEN** the markup is `<details name="...">` and the `name` attribute
@@ -48,6 +50,7 @@ implementation SHALL be a custom element (`<ai-tabs>`, `<ai-toaster>`)
 defined in the same file as the markup, registered idempotently.
 
 #### Scenario: Building tabs
+
 - **GIVEN** native HTML can't express selected/unselected tab state
   cleanly
 - **WHEN** the contributor implements tabs
@@ -60,6 +63,7 @@ Compound families (card, tabs, accordion, dialog, dropdown-menu) live in
 `base/<family>/` with one file per part. Default exports are forbidden.
 
 #### Scenario: Adding a Card
+
 - **GIVEN** Card has Header / Body / Footer
 - **WHEN** the family is added
 - **THEN** the source lives in `base/card/Card.astro`,
@@ -72,15 +76,16 @@ graph resolves transitively. The root dependency is always `cn` from
 `lib/cn.ts`.
 
 #### Scenario: A new atom is registered
+
 - **GIVEN** the new atom uses `cn` to merge classes
 - **WHEN** `registry.json` is updated
 - **THEN** the new entry includes `"registryDependencies": ["cn"]`.
 
 ## Invariants (audit table)
 
-| Id | Statement | Audit |
-|----|-----------|-------|
-| I1 | No React / Vue / Svelte / Radix imports in `base/` | `node scripts/audit/no-react-in-atoms.mjs` |
-| I2 | No default exports in atom source files | `node scripts/audit/no-react-in-atoms.mjs --named-only` |
-| I3 | Every atom in `registry.json` has at least `cn` in `registryDependencies` | `node scripts/audit/no-react-in-atoms.mjs --registry` |
-| I4 | Compound families live in `base/<family>/` (no single mega-file) | `node scripts/audit/no-react-in-atoms.mjs --family-layout` |
+| Id  | Statement                                                                 | Audit                                                      |
+| --- | ------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| I1  | No React / Vue / Svelte / Radix imports in `base/`                        | `node scripts/audit/no-react-in-atoms.mjs`                 |
+| I2  | No default exports in atom source files                                   | `node scripts/audit/no-react-in-atoms.mjs --named-only`    |
+| I3  | Every atom in `registry.json` has at least `cn` in `registryDependencies` | `node scripts/audit/no-react-in-atoms.mjs --registry`      |
+| I4  | Compound families live in `base/<family>/` (no single mega-file)          | `node scripts/audit/no-react-in-atoms.mjs --family-layout` |

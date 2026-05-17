@@ -12,9 +12,10 @@ broken, you say what's broken and where; the implementer fixes it.
 ## Your input
 
 The leader passes you:
+
 - The feature name
 - The path to the **current run directory**:
- `openspec/changes/<name>/runs/<ISO-timestamp>/`
+  `openspec/changes/<name>/runs/<ISO-timestamp>/`
 
 The implementer just wrote `<run-dir>/impl.md`. The audit and perf
 dispatchers wrote `<run-dir>/audit.md` and (if applicable) `<run-dir>/perf.md`.
@@ -29,11 +30,11 @@ You write `<run-dir>/review.md`.
 ## Read first
 
 1. `openspec/changes/<name>/proposal.md` — the `S<n>` scenarios you'll
- check are tested
+   check are tested
 2. `openspec/changes/<name>/design.md` — the `I<n>` invariants and the
- "Files touched" list
+   "Files touched" list
 3. `openspec/changes/<name>/tasks.md` — verify every task is `[x]` or
- justified
+   justified
 4. `<run-dir>/impl.md` — the implementer's traceability table (verify it)
 5. `<run-dir>/audit.md` if present — pre-computed audit report
 6. `<run-dir>/perf.md` if present — pre-computed perf report
@@ -44,9 +45,11 @@ You write `<run-dir>/review.md`.
 Re-run everything; do not blindly trust the implementer's report.
 
 ### T1 — Tests
+
 ```bash
 pnpm typecheck && pnpm test
 ```
+
 Verify every `S<n>` in `proposal.md` has a test that exercises it.
 Re-derive the `S<n> → test` map.
 Verify every commit on this feature's branch went through
@@ -54,18 +57,23 @@ Verify every commit on this feature's branch went through
 line, or check the diff's paths against `design.md`'s "Files touched").
 
 ### T2 — Invariant audits
+
 ```bash
 pnpm audit:invariants --change <name>
 ```
+
 This overwrites `<run-dir>/audit.md` with a fresh run. Verify every
 `I<n>` in `design.md` is checked and PASS.
 
 ### T3 — Perf budget (conditional)
+
 If `design.md` says the budget applies (capabilities include
 `templates-*` or `registry-*`):
+
 ```bash
 pnpm perf:budget --change <name>
 ```
+
 Overwrites `<run-dir>/perf.md`. Verify every threshold met.
 
 ## Verdict criteria
@@ -79,10 +87,10 @@ Fail (CHANGES_REQUESTED) if any of these hold:
 5. `pnpm audit:invariants` returns non-zero.
 6. `pnpm perf:budget` required and red.
 7. The change touches files outside `design.md`'s "Files touched" list
- without an amendment.
+   without an amendment.
 8. A commit bypassed `scripts/committer --design`.
 9. No changeset entry under `.changeset/` for a change that ships in
- the CLI or a template.
+   the CLI or a template.
 
 Approve (APPROVED) only if none of the above hold AND every applicable
 `CHECKPOINTS.md` criterion is `[x]`.
@@ -97,29 +105,37 @@ Write `<run-dir>/review.md`:
 Verdict: **APPROVED** | **CHANGES_REQUESTED**
 
 ## T1 — Tests
+
 pnpm test: ✅ green (N passed) | ❌ red (failure summary)
 Scenario coverage:
+
 - S1 → test_name @ file:line ✅
 - S2 → ❌ no test found ← BLOCKER
 
 ## T2 — Invariant audits
+
 pnpm audit:invariants: ✅ all PASS | ❌ N failures (see audit.md)
 
 ## T3 — Perf budget
+
 applicable: yes | no
 pnpm perf:budget: ✅ all metrics within threshold | ❌ (details)
 
 ## Tasks
+
 - T1 [x]
 - T2 [ ] ← unchecked, no justification ← BLOCKER
 
 ## CHECKPOINTS
+
 - C1 [x] ... C23 [x]
 
 ## Commits scoped to design.md
+
 all commits go through scripts/committer: yes | no (see commits X, Y)
 
 ## Changes requested (if any)
+
 1. ...
 2. ...
 ```

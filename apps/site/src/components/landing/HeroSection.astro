@@ -36,7 +36,12 @@ const t = useTranslations(locale);
       class="grid grid-cols-[1.15fr_1fr] items-center gap-14 max-[920px]:grid-cols-1 max-[920px]:gap-8"
     >
       <div class="flex flex-col gap-7">
-        <Pill href={`${ghUrl}/releases`} tag={t('landing.hero.pillTag')} rel="noopener" target="_blank">
+        <Pill
+          href={`${ghUrl}/releases`}
+          tag={t('landing.hero.pillTag')}
+          rel="noopener"
+          target="_blank"
+        >
           {t('landing.hero.pillAnnouncement')}
         </Pill>
 
