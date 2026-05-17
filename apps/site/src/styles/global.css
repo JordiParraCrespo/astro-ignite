@@ -45,6 +45,9 @@
   --color-success: oklch(70% 0.15 145);
   --color-warning: oklch(78% 0.16 75);
   --color-danger: oklch(70% 0.2 28);
+  --color-danger-fg: var(--color-zinc-50);
+  --color-success-fg: var(--color-zinc-950);
+  --color-warning-fg: var(--color-zinc-950);
 
   /* Terminal mock — theme-invariant role tokens for the hero CLI preview.
      These never flip with .light because a terminal is always dark. */

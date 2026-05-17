@@ -13,7 +13,7 @@ const { path = '~/code', shell = 'zsh', caret = true, class: className } = Astro
 
 <div
   class={cn(
-    'border border-border rounded-lg bg-black overflow-hidden',
+    'border border-border rounded-lg bg-bg overflow-hidden',
     className,
   )}
 >
@@ -25,6 +25,6 @@ const { path = '~/code', shell = 'zsh', caret = true, class: className } = Astro
     <span class="mono text-[10px] text-fg-subtle ml-auto">{shell}</span>
   </div>
   <pre
-    class="mono m-0 py-3.5 px-4 text-[11.5px] leading-[1.65] text-zinc-100 whitespace-pre-wrap"
+    class="mono m-0 py-3.5 px-4 text-[11.5px] leading-[1.65] text-fg whitespace-pre-wrap"
   ><slot />{caret && <span class="caret inline-block w-[7px] h-3 bg-fg align-[-1px]" aria-hidden="true" />}</pre>
 </div>
