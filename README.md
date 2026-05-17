@@ -1,8 +1,8 @@
-![astro-ignite banner](.github/assets/banner.png)
-
 # Astro Ignite
 
-> Astro sites, built for AI agents.
+![astro-ignite banner](.github/assets/banner.png)
+
+Production-grade Astro sites that AI agents can read, edit, and extend. SEO, i18n, performance, legal, and email are pre-wired with sane defaults, every line is code you own. No runtime dependency on this tool once you've scaffolded.
 
 ```bash
 npm create astro-ignite@latest my-site
@@ -10,17 +10,13 @@ npm create astro-ignite@latest my-site
 npx astro-ignite bootstrap my-site
 ```
 
-Production-grade Astro sites that AI agents can read, edit, and extend. SEO, i18n, performance, legal, and email — pre-wired with sane defaults, every line is code you own. No runtime dependency on this tool once you've scaffolded.
-
 ## Quickstart
 
 ```bash
-npx astro-ignite bootstrap my-site --yes
+npx astro-ignite bootstrap my-site
 cd my-site
 pnpm dev
 ```
-
-`--yes` skips the prompts and takes the defaults (starter template, `pnpm`, English locale, no email provider). Drop it for the interactive flow (project name, locales, package manager, template, email provider).
 
 The CLI scaffolds the chosen template, installs deps with your preferred package manager, and runs `git init`. From there it's a normal Astro project you own outright — `astro-ignite` is not a runtime dependency.
 
