@@ -20,7 +20,7 @@ const { entries, title = 'On this page', class: className } = Astro.props;
   aria-label={title}
   class={cn(
     'sticky top-4 self-start p-3.5 border border-border rounded-lg flex flex-col gap-1',
-    className,
+    className
   )}
 >
   <span class="mono text-[10px] text-fg-subtle tracking-[0.12em] uppercase mb-1">
@@ -37,7 +37,7 @@ const { entries, title = 'On this page', class: className } = Astro.props;
               data-target={entry.id}
               class={cn(
                 'block text-xs text-fg-subtle py-[3px] pr-0 border-l-2 border-transparent no-underline transition-[color,border-color] duration-150 hover:text-fg aria-[current=true]:text-fg aria-[current=true]:border-l-fg aria-[current=true]:font-medium',
-                entry.depth && entry.depth > 2 ? 'pl-5' : 'pl-2.5',
+                entry.depth && entry.depth > 2 ? 'pl-5' : 'pl-2.5'
               )}
             >
               {entry.label}

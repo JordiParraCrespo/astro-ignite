@@ -26,7 +26,7 @@ const gridCols =
   class={cn(
     'grid grid-cols-1 border border-border rounded-lg overflow-hidden',
     gridCols,
-    className,
+    className
   )}
 >
   {
@@ -46,9 +46,7 @@ const gridCols =
             )}
           </div>
         )}
-        <h4 class="mt-0.5 mb-0 text-sm font-medium tracking-[-0.02em] text-fg">
-          {f.title}
-        </h4>
+        <h4 class="mt-0.5 mb-0 text-sm font-medium tracking-[-0.02em] text-fg">{f.title}</h4>
         <p class="m-0 text-xs leading-[1.55] text-fg-subtle">{f.body}</p>
       </div>
     ))

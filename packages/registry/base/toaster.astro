@@ -21,7 +21,7 @@ const positions: Record<NonNullable<Props['position']>, string> = {
   class={cn(
     'fixed z-[100] flex flex-col gap-2 p-4 max-w-[min(420px,calc(100vw-32px))] pointer-events-none',
     positions[position],
-    className,
+    className
   )}
   aria-live="polite"
   aria-atomic="false"></ai-toaster>

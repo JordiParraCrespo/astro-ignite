@@ -10,10 +10,7 @@ export type Props = {
 const { title, open = false, class: className } = Astro.props;
 ---
 
-<details
-  class={cn('group border-b border-border', className)}
-  open={open}
->
+<details class={cn('group border-b border-border', className)} open={open}>
   <summary
     class="flex items-center justify-between gap-4 py-4 cursor-pointer font-medium text-fg select-none list-none [&::-webkit-details-marker]:hidden focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring focus-visible:rounded-[2px]"
   >

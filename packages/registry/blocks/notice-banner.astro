@@ -20,12 +20,9 @@ const displayIcon = icon ?? defaultIcons[variant];
 
 const borderByVariant: Record<Variant, string> = {
   info: 'border-border',
-  warning:
-    'border-[color-mix(in_oklch,var(--color-warning)_50%,var(--color-border))]',
-  success:
-    'border-[color-mix(in_oklch,var(--color-success)_50%,var(--color-border))]',
-  danger:
-    'border-[color-mix(in_oklch,var(--color-danger)_50%,var(--color-border))]',
+  warning: 'border-[color-mix(in_oklch,var(--color-warning)_50%,var(--color-border))]',
+  success: 'border-[color-mix(in_oklch,var(--color-success)_50%,var(--color-border))]',
+  danger: 'border-[color-mix(in_oklch,var(--color-danger)_50%,var(--color-border))]',
 };
 
 const iconColor: Record<Variant, string> = {
@@ -41,12 +38,11 @@ const iconColor: Record<Variant, string> = {
   class={cn(
     'flex items-center gap-2.5 py-2.5 px-3.5 rounded-md border bg-[color-mix(in_oklch,var(--color-surface-2)_50%,transparent)] text-fg-muted text-xs leading-normal',
     borderByVariant[variant],
-    className,
+    className
   )}
 >
-  <span
-    class={cn('mono shrink-0 text-sm', iconColor[variant])}
-    aria-hidden="true"
-  >{displayIcon}</span>
+  <span class={cn('mono shrink-0 text-sm', iconColor[variant])} aria-hidden="true"
+    >{displayIcon}</span
+  >
   <span><slot /></span>
 </div>

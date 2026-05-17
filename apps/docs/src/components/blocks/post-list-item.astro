@@ -29,7 +29,7 @@ const dateStr = date instanceof Date ? date.toISOString().slice(0, 10) : (date ?
 <article
   class={cn(
     'py-5 border-t border-border last:border-b last:border-b-border flex flex-col gap-2',
-    className,
+    className
   )}
 >
   <div class="mono flex items-center flex-wrap gap-2 text-[11px] text-fg-subtle">
@@ -37,7 +37,9 @@ const dateStr = date instanceof Date ? date.toISOString().slice(0, 10) : (date ?
     {
       author && (
         <>
-          <span class="text-border-strong" aria-hidden="true">·</span>
+          <span class="text-border-strong" aria-hidden="true">
+            ·
+          </span>
           <span>by {author}</span>
         </>
       )
@@ -45,7 +47,9 @@ const dateStr = date instanceof Date ? date.toISOString().slice(0, 10) : (date ?
     {
       readingTime && (
         <>
-          <span class="text-border-strong" aria-hidden="true">·</span>
+          <span class="text-border-strong" aria-hidden="true">
+            ·
+          </span>
           <span class="text-[11px] py-[3px] px-[7px] rounded-sm bg-surface-2 text-fg-muted border border-border">
             {readingTime}
           </span>
@@ -54,14 +58,9 @@ const dateStr = date instanceof Date ? date.toISOString().slice(0, 10) : (date ?
     }
   </div>
   <h3 class="m-0 text-[22px] font-medium tracking-[-0.025em]">
-    <a
-      href={href}
-      class="text-fg no-underline hover:text-fg-muted"
-    >{title}</a>
+    <a href={href} class="text-fg no-underline hover:text-fg-muted">{title}</a>
   </h3>
-  {excerpt && (
-    <p class="m-0 text-sm text-fg-muted leading-[1.55]">{excerpt}</p>
-  )}
+  {excerpt && <p class="m-0 text-sm text-fg-muted leading-[1.55]">{excerpt}</p>}
   {
     tags.length > 0 && (
       <div class="flex gap-1.5 flex-wrap">

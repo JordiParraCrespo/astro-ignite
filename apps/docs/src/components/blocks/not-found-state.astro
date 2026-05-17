@@ -12,20 +12,17 @@ const { code = 'Error · 404', title, description, class: className } = Astro.pr
 ---
 
 <section
-  class={cn(
-    'max-w-[480px] mx-auto mt-16 text-center flex flex-col gap-4 items-center',
-    className,
-  )}
+  class={cn('max-w-[480px] mx-auto mt-16 text-center flex flex-col gap-4 items-center', className)}
 >
   <span class="mono text-xs tracking-[0.2em] uppercase text-fg-subtle">{code}</span>
   <h1 class="m-0 text-[clamp(40px,6vw,56px)] font-medium tracking-[-0.045em] leading-none text-fg">
     {title}
   </h1>
-  {description && (
-    <p class="m-0 text-[15px] text-fg-muted leading-relaxed max-w-[36ch]">
-      {description}
-    </p>
-  )}
+  {
+    description && (
+      <p class="m-0 text-[15px] text-fg-muted leading-relaxed max-w-[36ch]">{description}</p>
+    )
+  }
   {
     Astro.slots.has('default') && (
       <div class="flex gap-2.5 mt-2 flex-wrap justify-center">

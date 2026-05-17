@@ -25,7 +25,7 @@ const Wrapper = href ? 'a' : 'div';
   class={cn(
     'flex gap-3 p-4 border border-border rounded-lg no-underline text-inherit bg-surface',
     href && 'transition-colors duration-150 hover:border-border-strong',
-    className,
+    className
   )}
   href={href}
 >
@@ -43,9 +43,7 @@ const Wrapper = href ? 'a' : 'div';
   </span>
   <div class="flex flex-col gap-0.5 min-w-0">
     <h4 class="m-0 text-sm font-medium text-fg">{name}</h4>
-    {bio && (
-      <p class="m-0 text-xs text-fg-subtle leading-[1.5]">{bio}</p>
-    )}
+    {bio && <p class="m-0 text-xs text-fg-subtle leading-[1.5]">{bio}</p>}
     <slot />
   </div>
 </Wrapper>
