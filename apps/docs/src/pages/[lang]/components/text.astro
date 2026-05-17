@@ -1,0 +1,33 @@
+---
+import { siteConfig } from '@/config/site';
+export function getStaticPaths() {
+  return siteConfig.locales
+    .filter((lang) => lang !== siteConfig.defaultLocale)
+    .map((lang) => ({ params: { lang } }));
+}
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import Text from '@/components/ui/text.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<ComponentsLayout
+  title={`text | ${t('seo.home.title')}`}
+  description={t('components.summary.text')}
+>
+  <ComponentShowcase name="text" description={t('components.detail.text.description')}>
+    <Text variant="display" as="p">{t('components.detail.text.displaySample')}</Text>
+    <Text variant="h1" as="p">{t('components.detail.text.h1Sample')}</Text>
+    <Text variant="h2" as="p">{t('components.detail.text.h2Sample')}</Text>
+    <Text variant="h3" as="p">{t('components.detail.text.h3Sample')}</Text>
+    <Text variant="h4" as="p">{t('components.detail.text.h4Sample')}</Text>
+    <Text variant="lead">{t('components.detail.text.leadSample')}</Text>
+    <Text variant="body">{t('components.detail.text.bodySample')}</Text>
+    <Text variant="small">{t('components.detail.text.smallSample')}</Text>
+    <Text variant="muted">{t('components.detail.text.mutedSample')}</Text>
+    <Text variant="eyebrow">{t('components.detail.text.eyebrowSample')}</Text>
+    <p><Text variant="code">{t('components.detail.text.codeSample')}</Text></p>
+  </ComponentShowcase>
+</ComponentsLayout>

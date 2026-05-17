@@ -21,6 +21,12 @@
       "files": [{ "path": "base/link.astro", "target": "src/components/ui/link.astro" }]
     },
     {
+      "name": "text",
+      "type": "registry:ui",
+      "registryDependencies": ["cn"],
+      "files": [{ "path": "base/text.astro", "target": "src/components/ui/text.astro" }]
+    },
+    {
       "name": "badge",
       "type": "registry:ui",
       "registryDependencies": ["cn"],

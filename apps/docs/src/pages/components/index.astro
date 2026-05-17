@@ -4,6 +4,7 @@ import { useTranslations } from '@/i18n';
 
 import Button from '@/components/ui/button.astro';
 import Link from '@/components/ui/link.astro';
+import Text from '@/components/ui/text.astro';
 import Badge from '@/components/ui/badge.astro';
 import Input from '@/components/ui/input.astro';
 import Textarea from '@/components/ui/textarea.astro';
@@ -54,8 +55,8 @@ const t = useTranslations(Astro.currentLocale);
         chrome, and the landing composites. All built on a single zinc scale and Geist type pairing.
       </p>
       <div class="cat__meta mono">
-        <span><strong>33</strong> components</span>
-        <span><strong>18</strong> registry primitives</span>
+        <span><strong>34</strong> components</span>
+        <span><strong>19</strong> registry primitives</span>
         <span><strong>14</strong> blocks</span>
         <span><strong>1</strong> brand mark</span>
       </div>
@@ -122,7 +123,7 @@ const t = useTranslations(Astro.currentLocale);
             <span class="mono">packages/registry/base</span>.
           </p>
         </div>
-        <span class="grp__count mono">18 components</span>
+        <span class="grp__count mono">19 components</span>
       </header>
 
       <article class="comp" id="button">
@@ -160,6 +161,31 @@ const t = useTranslations(Astro.currentLocale);
             <Link href="#" variant="muted">Muted link</Link>
             <span class="vsep"></span>
             <Link href="#" variant="underline">Underline link</Link>
+          </div>
+        </div>
+      </article>
+
+      <article class="comp" id="text">
+        <div class="comp__head">
+          <h3>Text</h3><span class="comp__file mono">text.astro</span>
+          <span class="comp__anno mono">11 variants · polymorphic</span>
+        </div>
+        <div class="preview">
+          <div class="row">
+            <span class="label mono">variant</span>
+            <div class="col" style="gap: 12px; min-width: 100%;">
+              <Text variant="display" as="p">Display</Text>
+              <Text variant="h1" as="p">Heading h1</Text>
+              <Text variant="h2" as="p">Heading h2</Text>
+              <Text variant="h3" as="p">Heading h3</Text>
+              <Text variant="h4" as="p">Heading h4</Text>
+              <Text variant="lead">Lead paragraph for intros and ledes.</Text>
+              <Text variant="body">Body copy, the default scale.</Text>
+              <Text variant="small">Small caption text.</Text>
+              <Text variant="muted">Muted de-emphasis text.</Text>
+              <Text variant="eyebrow">Eyebrow label</Text>
+              <p style="margin: 0;"><Text variant="code">npx astro-ignite</Text></p>
+            </div>
           </div>
         </div>
       </article>

@@ -151,6 +151,9 @@
       "variant": "Variant",
       "size": "Size",
       "state": "State",
+      "tone": "Tone",
+      "as": "As",
+      "weight": "Weight",
       "withDot": "With dot",
       "fallback": "Fallback",
       "image": "Image",
@@ -168,6 +171,7 @@
     "summary": {
       "button": "Trigger actions. Supports variants and sizes.",
       "link": "Inline navigation with default, muted and underline variants.",
+      "text": "Typography primitive — display, h1–h4, lead, body, small, muted, eyebrow, code.",
       "badge": "Compact status indicator.",
       "card": "Surface container with header / content / footer slots.",
       "input": "Single-line text field.",
@@ -205,6 +209,23 @@
         "defaultExample": "Default link example",
         "mutedExample": "Muted link example",
         "underlineExample": "Underlined link example"
+      },
+      "text": {
+        "description": "Typography primitive that decouples style from semantic tag. Pick a visual variant (display, h1–h4, lead, body, small, muted, eyebrow, code) and optionally override the rendered tag with `as`. Use `tone` for default | muted | subtle colour.",
+        "displaySample": "Astro sites, built for AI agents.",
+        "h1Sample": "The full type scale, in one component.",
+        "h2Sample": "Section heading at h2 size.",
+        "h3Sample": "Card title at h3 size.",
+        "h4Sample": "Compact heading at h4 size.",
+        "leadSample": "A larger paragraph for intros and ledes — sits between a heading and body copy.",
+        "bodySample": "Body copy. Default size, optimised for long-form reading at comfortable line height.",
+        "smallSample": "Smaller copy for captions, footnotes, and metadata.",
+        "mutedSample": "Muted copy — same scale as small, dimmer colour for de-emphasis.",
+        "eyebrowSample": "Section eyebrow",
+        "codeSample": "npx astro-ignite",
+        "asLabel": "<p> styled as display",
+        "asSample": "Same display style, semantic <p> tag.",
+        "toneLabel": "Tone override"
       },
       "badge": {
         "description": "Compact status indicator. Variants: default, secondary, outline, destructive, success, warning.",

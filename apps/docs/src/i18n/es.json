@@ -151,6 +151,9 @@
       "variant": "Variante",
       "size": "Tamaño",
       "state": "Estado",
+      "tone": "Tono",
+      "as": "Como",
+      "weight": "Peso",
       "withDot": "Con punto",
       "fallback": "Iniciales",
       "image": "Imagen",
@@ -168,6 +171,7 @@
     "summary": {
       "button": "Dispara acciones. Soporta variantes y tamaños.",
       "link": "Navegación en línea con variantes default, muted y underline.",
+      "text": "Primitiva tipográfica — display, h1–h4, lead, body, small, muted, eyebrow, code.",
       "badge": "Indicador de estado compacto.",
       "card": "Contenedor de superficie con slots de encabezado / contenido / pie.",
       "input": "Campo de texto de una línea.",
@@ -205,6 +209,23 @@
         "defaultExample": "Ejemplo de enlace predeterminado",
         "mutedExample": "Ejemplo de enlace atenuado",
         "underlineExample": "Ejemplo de enlace subrayado"
+      },
+      "text": {
+        "description": "Primitiva tipográfica que desacopla el estilo de la etiqueta semántica. Elige una variante visual (display, h1–h4, lead, body, small, muted, eyebrow, code) y opcionalmente sobrescribe la etiqueta renderizada con `as`. Usa `tone` para color default | muted | subtle.",
+        "displaySample": "Sitios Astro, hechos para agentes de IA.",
+        "h1Sample": "La escala tipográfica completa, en un solo componente.",
+        "h2Sample": "Encabezado de sección en tamaño h2.",
+        "h3Sample": "Título de tarjeta en tamaño h3.",
+        "h4Sample": "Encabezado compacto en tamaño h4.",
+        "leadSample": "Un párrafo más grande para introducciones — vive entre un encabezado y el cuerpo del texto.",
+        "bodySample": "Cuerpo del texto. Tamaño por defecto, optimizado para lectura larga con interlineado cómodo.",
+        "smallSample": "Texto pequeño para pies de foto, notas al pie y metadatos.",
+        "mutedSample": "Texto atenuado — mismo tamaño que small, color más tenue para desénfasis.",
+        "eyebrowSample": "Antetítulo de sección",
+        "codeSample": "npx astro-ignite",
+        "asLabel": "<p> con estilo display",
+        "asSample": "Mismo estilo display, etiqueta <p> semántica.",
+        "toneLabel": "Sobrescritura de tono"
       },
       "badge": {
         "description": "Indicador de estado compacto. Variantes: default, secondary, outline, destructive, success, warning.",

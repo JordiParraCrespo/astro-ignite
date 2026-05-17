@@ -59,6 +59,7 @@ export const sidebar: SidebarGroup[] = [
       { slug: '/components', labelKey: 'components.overview' },
       { slug: '/components/button', label: 'button' },
       { slug: '/components/link', label: 'link' },
+      { slug: '/components/text', label: 'text' },
       { slug: '/components/badge', label: 'badge' },
       { slug: '/components/card', label: 'card' },
       { slug: '/components/input', label: 'input' },

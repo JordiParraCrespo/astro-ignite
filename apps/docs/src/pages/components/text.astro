@@ -1,0 +1,139 @@
+---
+import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
+import Text from '@/components/ui/text.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<ComponentsLayout
+  title={`text | ${t('seo.home.title')}`}
+  description={t('components.summary.text')}
+>
+  <ComponentShowcase
+    name="text"
+    description={t('components.detail.text.description')}
+    file="text.astro"
+    anno="11 variants · 4 weights · polymorphic"
+  >
+    <div class="stack">
+      <span class="label">{t('components.label.variant')}</span>
+
+      <div class="row-stack">
+        <span class="tag">display</span>
+        <Text variant="display" as="p">{t('components.detail.text.displaySample')}</Text>
+      </div>
+      <div class="row-stack">
+        <span class="tag">h1</span>
+        <Text variant="h1" as="p">{t('components.detail.text.h1Sample')}</Text>
+      </div>
+      <div class="row-stack">
+        <span class="tag">h2</span>
+        <Text variant="h2" as="p">{t('components.detail.text.h2Sample')}</Text>
+      </div>
+      <div class="row-stack">
+        <span class="tag">h3</span>
+        <Text variant="h3" as="p">{t('components.detail.text.h3Sample')}</Text>
+      </div>
+      <div class="row-stack">
+        <span class="tag">h4</span>
+        <Text variant="h4" as="p">{t('components.detail.text.h4Sample')}</Text>
+      </div>
+      <div class="row-stack">
+        <span class="tag">lead</span>
+        <Text variant="lead">{t('components.detail.text.leadSample')}</Text>
+      </div>
+      <div class="row-stack">
+        <span class="tag">body</span>
+        <Text variant="body">{t('components.detail.text.bodySample')}</Text>
+      </div>
+      <div class="row-stack">
+        <span class="tag">small</span>
+        <Text variant="small">{t('components.detail.text.smallSample')}</Text>
+      </div>
+      <div class="row-stack">
+        <span class="tag">muted</span>
+        <Text variant="muted">{t('components.detail.text.mutedSample')}</Text>
+      </div>
+      <div class="row-stack">
+        <span class="tag">eyebrow</span>
+        <Text variant="eyebrow">{t('components.detail.text.eyebrowSample')}</Text>
+      </div>
+      <div class="row-stack">
+        <span class="tag">code</span>
+        <Text variant="code">{t('components.detail.text.codeSample')}</Text>
+      </div>
+    </div>
+
+    <div class="stack">
+      <span class="label">{t('components.label.as')}</span>
+      <div class="row-stack">
+        <span class="tag">variant="display" as="p"</span>
+        <Text variant="display" as="p">{t('components.detail.text.asSample')}</Text>
+      </div>
+    </div>
+
+    <div class="stack">
+      <span class="label">{t('components.label.weight')}</span>
+      <div class="row-stack">
+        <span class="tag">weight="normal"</span>
+        <Text variant="h2" as="p" weight="normal">The quick brown fox jumps over the lazy dog.</Text>
+      </div>
+      <div class="row-stack">
+        <span class="tag">weight="medium" (default for h2)</span>
+        <Text variant="h2" as="p">The quick brown fox jumps over the lazy dog.</Text>
+      </div>
+      <div class="row-stack">
+        <span class="tag">weight="semibold"</span>
+        <Text variant="h2" as="p" weight="semibold">The quick brown fox jumps over the lazy dog.</Text>
+      </div>
+      <div class="row-stack">
+        <span class="tag">weight="bold"</span>
+        <Text variant="h2" as="p" weight="bold">The quick brown fox jumps over the lazy dog.</Text>
+      </div>
+    </div>
+
+    <div class="stack">
+      <span class="label">{t('components.label.tone')}</span>
+      <div class="row-stack">
+        <span class="tag">tone="default"</span>
+        <Text variant="body" tone="default">{t('components.detail.text.bodySample')}</Text>
+      </div>
+      <div class="row-stack">
+        <span class="tag">tone="muted"</span>
+        <Text variant="body" tone="muted">{t('components.detail.text.bodySample')}</Text>
+      </div>
+      <div class="row-stack">
+        <span class="tag">tone="subtle"</span>
+        <Text variant="body" tone="subtle">{t('components.detail.text.bodySample')}</Text>
+      </div>
+    </div>
+  </ComponentShowcase>
+</ComponentsLayout>
+
+<style>
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding-block: 4px;
+  }
+  .stack + .stack {
+    border-top: 1px solid var(--color-border);
+    padding-top: 24px;
+    margin-top: 8px;
+  }
+  .row-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-fg-subtle);
+  }
+</style>
