@@ -4,31 +4,43 @@ import { cn } from '@/lib/cn';
 export type PrevNextItem = {
   href: string;
   title: string;
-  /** Per-link override for the small "previous"/"next" label. */
   label?: string;
 };
 
 export type Props = {
   prev?: PrevNextItem;
   next?: PrevNextItem;
-  /** Default label for the "previous" link. e.g. t('nav.prev'). */
-  prevLabel: string;
-  /** Default label for the "next" link. e.g. t('nav.next'). */
-  nextLabel: string;
-  /** Accessible label for the surrounding nav. e.g. t('nav.prevNextAria'). */
-  ariaLabel: string;
+  prevLabel?: string;
+  nextLabel?: string;
   class?: string;
 };
 
-const { prev, next, prevLabel, nextLabel, ariaLabel, class: className } = Astro.props;
+const {
+  prev,
+  next,
+  prevLabel = '← Previous',
+  nextLabel = 'Next →',
+  class: className,
+} = Astro.props;
+
+const boxClass =
+  'border border-border rounded-md py-3 px-3.5 flex flex-col gap-[3px] no-underline text-fg transition-colors duration-150 hover:border-border-strong';
 ---
 
-<nav class={cn('prev-next', className)} aria-label={ariaLabel}>
+<nav
+  aria-label="Previous and next"
+  class={cn(
+    'grid grid-cols-1 sm:grid-cols-2 gap-2.5',
+    className,
+  )}
+>
   {
     prev ? (
-      <a href={prev.href} class="prev-next__box">
-        <span class="prev-next__label mono">{prev.label ?? prevLabel}</span>
-        <span class="prev-next__title">{prev.title}</span>
+      <a href={prev.href} class={boxClass}>
+        <span class="mono text-[10px] text-fg-subtle">
+          {prev.label ?? prevLabel}
+        </span>
+        <span class="text-[13px] font-medium">{prev.title}</span>
       </a>
     ) : (
       <span aria-hidden="true" />
@@ -36,50 +48,14 @@ const { prev, next, prevLabel, nextLabel, ariaLabel, class: className } = Astro.
   }
   {
     next ? (
-      <a href={next.href} class="prev-next__box prev-next__box--end">
-        <span class="prev-next__label mono">{next.label ?? nextLabel}</span>
-        <span class="prev-next__title">{next.title}</span>
+      <a href={next.href} class={cn(boxClass, 'text-right')}>
+        <span class="mono text-[10px] text-fg-subtle">
+          {next.label ?? nextLabel}
+        </span>
+        <span class="text-[13px] font-medium">{next.title}</span>
       </a>
     ) : (
       <span aria-hidden="true" />
     )
   }
 </nav>
-
-<style>
-  .prev-next {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-  .prev-next__box {
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    padding: 12px 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    text-decoration: none;
-    color: var(--color-fg);
-    transition: border-color 120ms ease;
-  }
-  .prev-next__box:hover {
-    border-color: var(--color-border-strong);
-  }
-  .prev-next__box--end {
-    text-align: right;
-  }
-  .prev-next__label {
-    font-size: 10px;
-    color: var(--color-fg-subtle);
-  }
-  .prev-next__title {
-    font-size: 13px;
-    font-weight: 500;
-  }
-  @media (max-width: 640px) {
-    .prev-next {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>

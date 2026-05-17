@@ -12,20 +12,16 @@ const groupName =
   type === 'single' ? (name ?? `accordion-${Math.random().toString(36).slice(2, 9)}`) : undefined;
 ---
 
-<div class={cn('accordion', className)} data-group={groupName}>
+<div
+  class={cn('flex flex-col border-t border-border', className)}
+  data-group={groupName}
+  data-accordion
+>
   <slot />
 </div>
 
-<style>
-  .accordion {
-    display: flex;
-    flex-direction: column;
-    border-top: 1px solid var(--color-border);
-  }
-</style>
-
 <script>
-  document.querySelectorAll<HTMLElement>('.accordion[data-group]').forEach((el) => {
+  document.querySelectorAll<HTMLElement>('[data-accordion][data-group]').forEach((el) => {
     const group = el.dataset.group;
     if (!group) return;
     el.querySelectorAll<HTMLDetailsElement>('details').forEach((d) => {

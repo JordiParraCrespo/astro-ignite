@@ -9,15 +9,9 @@ export type Props = {
 const { defaultValue, class: className } = Astro.props;
 ---
 
-<ai-tabs data-default={defaultValue} class={cn('tabs', className)}>
+<ai-tabs data-default={defaultValue} class={cn('block', className)}>
   <slot />
 </ai-tabs>
-
-<style>
-  .tabs {
-    display: block;
-  }
-</style>
 
 <script>
   if (!customElements.get('ai-tabs')) {

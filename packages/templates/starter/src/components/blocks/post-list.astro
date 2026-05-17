@@ -5,15 +5,6 @@ export type Props = { class?: string };
 const { class: className } = Astro.props;
 ---
 
-<div class={cn('post-list', className)}>
+<div class={cn('flex flex-col max-w-[720px] mx-auto', className)}>
   <slot />
 </div>
-
-<style>
-  .post-list {
-    display: flex;
-    flex-direction: column;
-    max-width: 720px;
-    margin-inline: auto;
-  }
-</style>

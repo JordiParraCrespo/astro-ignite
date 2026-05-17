@@ -21,74 +21,31 @@ const initials = name
 const Wrapper = href ? 'a' : 'div';
 ---
 
-<Wrapper class={cn('author-card', href && 'author-card--link', className)} href={href}>
-  <span class="author-card__avatar" aria-hidden="true">
+<Wrapper
+  class={cn(
+    'flex gap-3 p-4 border border-border rounded-lg no-underline text-inherit bg-surface',
+    href && 'transition-colors duration-150 hover:border-border-strong',
+    className,
+  )}
+  href={href}
+>
+  <span
+    class="w-11 h-11 rounded-full bg-surface-2 text-fg grid place-items-center text-[13px] font-medium shrink-0 overflow-hidden"
+    aria-hidden="true"
+  >
     {
       src ? (
-        <img src={src} alt="" loading="lazy" decoding="async" />
+        <img src={src} alt="" loading="lazy" decoding="async" class="w-full h-full object-cover" />
       ) : (
         <span>{initials || '?'}</span>
       )
     }
   </span>
-  <div class="author-card__body">
-    <h4 class="author-card__name">{name}</h4>
-    {bio && <p class="author-card__bio">{bio}</p>}
+  <div class="flex flex-col gap-0.5 min-w-0">
+    <h4 class="m-0 text-sm font-medium text-fg">{name}</h4>
+    {bio && (
+      <p class="m-0 text-xs text-fg-subtle leading-[1.5]">{bio}</p>
+    )}
     <slot />
   </div>
 </Wrapper>
-
-<style>
-  .author-card {
-    display: flex;
-    gap: 12px;
-    padding: 16px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    text-decoration: none;
-    color: inherit;
-    background: var(--color-surface);
-  }
-  .author-card--link {
-    transition: border-color 120ms ease;
-  }
-  .author-card--link:hover {
-    border-color: var(--color-border-strong);
-  }
-  .author-card__avatar {
-    width: 44px;
-    height: 44px;
-    border-radius: 999px;
-    background: var(--color-surface-2);
-    color: var(--color-fg);
-    display: grid;
-    place-items: center;
-    font-size: 13px;
-    font-weight: 500;
-    flex-shrink: 0;
-    overflow: hidden;
-  }
-  .author-card__avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .author-card__body {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
-  }
-  .author-card__name {
-    margin: 0;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--color-fg);
-  }
-  .author-card__bio {
-    margin: 0;
-    font-size: 12px;
-    color: var(--color-fg-subtle);
-    line-height: 1.5;
-  }
-</style>

@@ -48,18 +48,19 @@ const variantClasses: Record<Variant, string> = {
   h2: 'text-[clamp(24px,3vw,36px)] font-medium tracking-[-0.035em] leading-[1.15] text-balance',
   h3: 'text-[clamp(19px,2vw,24px)] font-medium tracking-[-0.025em] leading-[1.25] text-balance',
   h4: 'text-base font-semibold tracking-[-0.015em] leading-[1.35]',
-  lead: 'text-[clamp(16px,1.4vw,19px)] font-normal leading-[1.55] text-[var(--color-fg-muted)]',
+  lead: 'text-[clamp(16px,1.4vw,19px)] font-normal leading-[1.55] text-fg-muted',
   body: 'text-[14px] leading-[1.6]',
   small: 'text-[12px] leading-[1.5]',
-  muted: 'text-[13px] leading-[1.55] text-[var(--color-fg-muted)]',
-  eyebrow: 'text-[11px] font-semibold tracking-[0.12em] uppercase text-[var(--color-fg-muted)]',
-  code: 'font-[var(--font-mono)] text-[0.92em] px-[0.35em] py-[0.125em] bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-[var(--radius-sm)]',
+  muted: 'text-[13px] leading-[1.55] text-fg-muted',
+  eyebrow:
+    'text-[11px] font-semibold tracking-[0.12em] uppercase text-fg-muted',
+  code: 'font-mono text-[0.92em] px-[0.35em] py-[0.125em] bg-surface-2 border border-border rounded-sm',
 };
 
 const toneClasses: Record<Tone, string> = {
-  default: 'text-[var(--color-fg)]',
-  muted: 'text-[var(--color-fg-muted)]',
-  subtle: 'text-[var(--color-fg-subtle)]',
+  default: 'text-fg',
+  muted: 'text-fg-muted',
+  subtle: 'text-fg-subtle',
 };
 
 const weightClasses: Record<Weight, string> = {
@@ -69,7 +70,14 @@ const weightClasses: Record<Weight, string> = {
   bold: 'font-bold',
 };
 
-const { variant = 'body', as, tone, weight, class: className, ...rest } = Astro.props;
+const {
+  variant = 'body',
+  as,
+  tone,
+  weight,
+  class: className,
+  ...rest
+} = Astro.props;
 
 const Tag = (as ?? defaultTag[variant]) as HTMLTag;
 ---
@@ -80,7 +88,7 @@ const Tag = (as ?? defaultTag[variant]) as HTMLTag;
     variantClasses[variant],
     tone && toneClasses[tone],
     weight && weightClasses[weight],
-    className
+    className,
   )}
-  {...rest}><slot /></Tag
->
+  {...rest}
+><slot /></Tag>

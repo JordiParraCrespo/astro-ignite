@@ -11,68 +11,30 @@ export type Props = {
 const { command, prompt = '$', copy = true, class: className } = Astro.props;
 ---
 
-<div class={cn('command-block mono', className)} data-command={command}>
-  <span class="command-block__text">
-    <span class="command-block__prompt" aria-hidden="true">{prompt}</span>
+<div
+  class={cn(
+    'mono inline-flex items-center gap-3 pr-2 pl-3.5 py-2 border border-border rounded-md bg-[color-mix(in_oklch,var(--color-surface-2)_50%,transparent)] text-[13px] text-fg max-w-full w-fit',
+    className,
+  )}
+  data-command={command}
+>
+  <span class="inline-flex items-center gap-2 overflow-hidden text-ellipsis whitespace-nowrap">
+    <span class="text-fg-subtle" aria-hidden="true">{prompt}</span>
     <span>{command}</span>
   </span>
   {
     copy && (
-      <button type="button" class="command-block__copy" data-command-copy aria-label="Copy command">
-        <span class="command-block__copy-label">Copy</span>
+      <button
+        type="button"
+        data-command-copy
+        aria-label="Copy command"
+        class="appearance-none border-0 py-1 px-2 rounded-sm bg-border text-fg-muted text-[11px] cursor-pointer shrink-0 transition-[background-color,color] duration-150 hover:bg-border-strong hover:text-fg data-[copied=true]:[&>.cmd-label]:text-success"
+      >
+        <span class="cmd-label">Copy</span>
       </button>
     )
   }
 </div>
-
-<style>
-  .command-block {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    padding: 8px 8px 8px 14px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    background: color-mix(in oklch, var(--color-surface-2) 50%, transparent);
-    font-size: 13px;
-    color: var(--color-fg);
-    max-width: 100%;
-    width: fit-content;
-  }
-  .command-block__text {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .command-block__prompt {
-    color: var(--color-fg-subtle);
-  }
-  .command-block__copy {
-    appearance: none;
-    border: 0;
-    padding: 4px 8px;
-    border-radius: var(--radius-sm);
-    background: var(--color-border);
-    color: var(--color-fg-muted);
-    font: inherit;
-    font-size: 11px;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition:
-      background 120ms ease,
-      color 120ms ease;
-  }
-  .command-block__copy:hover {
-    background: var(--color-border-strong);
-    color: var(--color-fg);
-  }
-  .command-block__copy[data-copied='true'] .command-block__copy-label {
-    color: var(--color-success);
-  }
-</style>
 
 <script>
   document.querySelectorAll<HTMLElement>('[data-command]').forEach((el) => {
@@ -83,7 +45,7 @@ const { command, prompt = '$', copy = true, class: className } = Astro.props;
       try {
         await navigator.clipboard.writeText(cmd);
         btn.dataset.copied = 'true';
-        const label = btn.querySelector('.command-block__copy-label');
+        const label = btn.querySelector('.cmd-label');
         const prev = label?.textContent ?? 'Copy';
         if (label) label.textContent = 'Copied';
         setTimeout(() => {

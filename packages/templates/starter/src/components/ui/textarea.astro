@@ -6,39 +6,10 @@ export type Props = HTMLAttributes<'textarea'> & { class?: string };
 const { class: className, rows = 4, ...rest } = Astro.props;
 ---
 
-<textarea rows={rows} class={cn('textarea', className)} {...rest}><slot /></textarea>
-
-<style>
-  .textarea {
-    display: block;
-    width: 100%;
-    min-height: 96px;
-    padding: 10px 12px;
-    background: var(--color-surface);
-    color: var(--color-fg);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    font: inherit;
-    font-size: 14px;
-    line-height: 1.5;
-    resize: vertical;
-    transition:
-      border-color 120ms ease,
-      box-shadow 120ms ease;
-  }
-  .textarea::placeholder {
-    color: var(--color-fg-subtle);
-  }
-  .textarea:focus-visible {
-    outline: none;
-    border-color: var(--color-ring);
-    box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-ring) 25%, transparent);
-  }
-  .textarea:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  .textarea[aria-invalid='true'] {
-    border-color: var(--color-danger);
-  }
-</style>
+<textarea
+  rows={rows}
+  class={cn(
+    'block w-full min-h-20 px-3 py-2 bg-transparent text-fg border border-border rounded-md text-sm leading-normal resize-y transition-[border-color,box-shadow] duration-150 placeholder:text-fg-subtle focus:outline-none focus:border-ring focus:[box-shadow:0_0_0_1px_var(--color-ring)] focus-visible:outline-none focus-visible:border-ring focus-visible:[box-shadow:0_0_0_1px_var(--color-ring)] disabled:opacity-50 disabled:cursor-not-allowed aria-invalid:border-danger',
+    className,
+  )}
+  {...rest}><slot /></textarea>

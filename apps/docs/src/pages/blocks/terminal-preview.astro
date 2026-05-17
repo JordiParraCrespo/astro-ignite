@@ -17,15 +17,15 @@ const t = useTranslations(Astro.currentLocale);
     description={t('blocks.detail.terminal-preview.description')}
   >
     <TerminalPreview path="~/code">
-      <span class="mt">$</span> npm create astro-ignite my-site<br /><br />
-      <span class="mt">^</span> astro-ignite <span class="st">v0.1.0</span><br />
-      <span class="st">│</span><br />
-      <span class="st">◇</span> Template? <span class="mt">starter</span><br />
-      <span class="st">◇</span> Languages? <span class="mt">en, es, ja</span><br />
-      <span class="st">◇</span> Email? <span class="mt">Resend</span><br />
-      ◆ Install deps? <span class="pick">● Yes</span>
-      <span class="mt">○ No</span><br />
-      <span class="st">└</span>{' '}
+      <span class="text-fg-subtle">$</span> npm create astro-ignite my-site<br /><br />
+      <span class="text-fg-subtle">^</span> astro-ignite <span class="text-border-strong">v0.1.0</span><br />
+      <span class="text-border-strong">│</span><br />
+      <span class="text-border-strong">◇</span> Template? <span class="text-fg-subtle">starter</span><br />
+      <span class="text-border-strong">◇</span> Languages? <span class="text-fg-subtle">en, es, ja</span><br />
+      <span class="text-border-strong">◇</span> Email? <span class="text-fg-subtle">Resend</span><br />
+      ◆ Install deps? <span class="inline-block px-1.5 py-px bg-fg text-bg rounded-[3px]">● Yes</span>
+      <span class="text-fg-subtle">○ No</span><br />
+      <span class="text-border-strong">└</span>{' '}
     </TerminalPreview>
   </ComponentShowcase>
 </ComponentsLayout>

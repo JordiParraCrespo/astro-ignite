@@ -15,91 +15,42 @@ export type Props = {
 };
 
 const { features, columns = 3, class: className } = Astro.props;
+
+const gridCols =
+  columns === 2
+    ? 'md:grid-cols-2 [&>*:nth-child(2n)]:md:border-r-0'
+    : 'md:grid-cols-3 [&>*:nth-child(3n)]:md:border-r-0';
 ---
 
-<div class={cn('feature-grid', `feature-grid--${columns}`, className)}>
+<div
+  class={cn(
+    'grid grid-cols-1 border border-border rounded-lg overflow-hidden',
+    gridCols,
+    className,
+  )}
+>
   {
     features.map((f, i) => (
-      <div class="feature-grid__item">
+      <div class="flex flex-col gap-2 px-5 py-4 border-b border-border md:border-r md:border-r-border max-md:border-r-0">
         {(f.index || f.tag) && (
-          <div class="feature-grid__row">
+          <div class="flex items-center gap-2.5">
             {f.index !== undefined && (
-              <span class="feature-grid__index mono">
+              <span class="mono text-[10px] text-fg-muted border border-border px-1.5 py-px rounded-[3px]">
                 {f.index || String(i + 1).padStart(2, '0')}
               </span>
             )}
-            {f.tag && <span class="feature-grid__tag mono">{f.tag}</span>}
+            {f.tag && (
+              <span class="mono text-[10px] text-fg-subtle tracking-[0.08em] uppercase">
+                {f.tag}
+              </span>
+            )}
           </div>
         )}
-        <h4 class="feature-grid__title">{f.title}</h4>
-        <p class="feature-grid__body">{f.body}</p>
+        <h4 class="mt-0.5 mb-0 text-sm font-medium tracking-[-0.02em] text-fg">
+          {f.title}
+        </h4>
+        <p class="m-0 text-xs leading-[1.55] text-fg-subtle">{f.body}</p>
       </div>
     ))
   }
 </div>
-
-<style>
-  .feature-grid {
-    display: grid;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-  }
-  .feature-grid--2 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .feature-grid--3 {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .feature-grid__item {
-    padding: 18px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    border-right: 1px solid var(--color-border);
-    border-bottom: 1px solid var(--color-border);
-  }
-  .feature-grid--2 .feature-grid__item:nth-child(2n),
-  .feature-grid--3 .feature-grid__item:nth-child(3n) {
-    border-right: 0;
-  }
-  .feature-grid__row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .feature-grid__index {
-    font-size: 10px;
-    color: var(--color-fg-muted);
-    border: 1px solid var(--color-border);
-    padding: 1px 5px;
-    border-radius: 3px;
-  }
-  .feature-grid__tag {
-    font-size: 10px;
-    color: var(--color-fg-subtle);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  .feature-grid__title {
-    margin: 2px 0 0;
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    color: var(--color-fg);
-  }
-  .feature-grid__body {
-    margin: 0;
-    font-size: 12px;
-    line-height: 1.55;
-    color: var(--color-fg-subtle);
-  }
-  @media (max-width: 768px) {
-    .feature-grid {
-      grid-template-columns: 1fr;
-    }
-    .feature-grid__item {
-      border-right: 0;
-    }
-  }
-</style>

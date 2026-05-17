@@ -17,38 +17,10 @@ const { value, class: className } = Astro.props;
   data-active="false"
   aria-selected="false"
   tabindex="-1"
-  class={cn('tabs-trigger', className)}
+  class={cn(
+    'appearance-none bg-transparent border-none rounded-[calc(var(--radius)-2px)] px-3 py-1.5 text-[13px] font-medium text-fg-muted cursor-pointer leading-none transition-[background-color,color] duration-150 hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring data-[active=true]:bg-surface data-[active=true]:text-fg data-[active=true]:shadow-sm',
+    className,
+  )}
 >
   <slot />
 </button>
-
-<style>
-  .tabs-trigger {
-    appearance: none;
-    background: transparent;
-    border: none;
-    border-radius: calc(var(--radius) - 2px);
-    padding: 6px 12px;
-    font: inherit;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--color-fg-muted);
-    cursor: pointer;
-    line-height: 1;
-    transition:
-      background 120ms ease,
-      color 120ms ease;
-  }
-  .tabs-trigger:hover {
-    color: var(--color-fg);
-  }
-  .tabs-trigger:focus-visible {
-    outline: 2px solid var(--color-ring);
-    outline-offset: 2px;
-  }
-  .tabs-trigger[data-active='true'] {
-    background: var(--color-surface);
-    color: var(--color-fg);
-    box-shadow: 0 1px 2px rgb(0 0 0 / 0.1);
-  }
-</style>

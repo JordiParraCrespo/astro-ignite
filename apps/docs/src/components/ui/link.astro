@@ -10,36 +10,16 @@ export type Props = HTMLAttributes<'a'> & {
 };
 
 const { variant = 'default', class: className, ...rest } = Astro.props;
+
+const base =
+  'no-underline transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring focus-visible:rounded-[2px]';
+
+const variants: Record<Variant, string> = {
+  default: 'text-fg hover:text-fg-muted',
+  muted: 'text-fg-muted hover:text-fg',
+  underline:
+    'text-fg underline underline-offset-4 decoration-border-strong hover:decoration-fg',
+};
 ---
 
-<a class={cn('lnk', `lnk--${variant}`, className)} {...rest}><slot /></a>
-
-<style>
-  .lnk {
-    color: var(--color-fg);
-    text-decoration: none;
-    transition: color 120ms ease;
-  }
-  .lnk:focus-visible {
-    outline: 2px solid var(--color-ring);
-    outline-offset: 2px;
-    border-radius: 2px;
-  }
-  .lnk--default:hover {
-    color: var(--color-fg-muted);
-  }
-  .lnk--muted {
-    color: var(--color-fg-muted);
-  }
-  .lnk--muted:hover {
-    color: var(--color-fg);
-  }
-  .lnk--underline {
-    text-decoration: underline;
-    text-underline-offset: 4px;
-    text-decoration-color: var(--color-border-strong);
-  }
-  .lnk--underline:hover {
-    text-decoration-color: var(--color-fg);
-  }
-</style>
+<a class={cn(base, variants[variant], className)} {...rest}><slot /></a>

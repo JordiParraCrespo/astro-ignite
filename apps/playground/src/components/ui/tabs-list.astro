@@ -5,17 +5,12 @@ export type Props = { class?: string };
 const { class: className } = Astro.props;
 ---
 
-<div role="tablist" class={cn('tabs-list', className)}>
+<div
+  role="tablist"
+  class={cn(
+    'inline-flex gap-0.5 p-1 bg-surface-2 rounded-md border border-border',
+    className,
+  )}
+>
   <slot />
 </div>
-
-<style>
-  .tabs-list {
-    display: inline-flex;
-    gap: 2px;
-    padding: 4px;
-    background: var(--color-surface-2);
-    border-radius: var(--radius);
-    border: 1px solid var(--color-border);
-  }
-</style>

@@ -2,120 +2,55 @@
 import { cn } from '@/lib/cn';
 
 export type Props = {
-  /** Command rendered (and written to the clipboard on copy). */
   command: string;
-  /** Prompt sigil rendered to the left of the command. Defaults to `$`. */
   prompt?: string;
-  /** Whether to show the copy button. */
   copy?: boolean;
-  /** Button label while idle. e.g. t('commandBlock.copy'). */
-  copyLabel?: string;
-  /** Button label briefly shown after a successful copy. e.g. t('commandBlock.copied'). */
-  copiedLabel?: string;
-  /** Accessible label for the copy button. e.g. t('commandBlock.copyAria'). */
-  copyAriaLabel?: string;
   class?: string;
 };
 
-const {
-  command,
-  prompt = '$',
-  copy = true,
-  copyLabel,
-  copiedLabel,
-  copyAriaLabel,
-  class: className,
-} = Astro.props;
+const { command, prompt = '$', copy = true, class: className } = Astro.props;
 ---
 
-<div class={cn('command-block mono', className)} data-command={command}>
-  <span class="command-block__text">
-    <span class="command-block__prompt" aria-hidden="true">{prompt}</span>
+<div
+  class={cn(
+    'mono inline-flex items-center gap-3 pr-2 pl-3.5 py-2 border border-border rounded-md bg-[color-mix(in_oklch,var(--color-surface-2)_50%,transparent)] text-[13px] text-fg max-w-full w-fit',
+    className,
+  )}
+  data-command={command}
+>
+  <span class="inline-flex items-center gap-2 overflow-hidden text-ellipsis whitespace-nowrap">
+    <span class="text-fg-subtle" aria-hidden="true">{prompt}</span>
     <span>{command}</span>
   </span>
   {
-    copy && copyLabel && copiedLabel && (
+    copy && (
       <button
         type="button"
-        class="command-block__copy"
         data-command-copy
-        data-copy-label={copyLabel}
-        data-copied-label={copiedLabel}
-        aria-label={copyAriaLabel ?? copyLabel}
+        aria-label="Copy command"
+        class="appearance-none border-0 py-1 px-2 rounded-sm bg-border text-fg-muted text-[11px] cursor-pointer shrink-0 transition-[background-color,color] duration-150 hover:bg-border-strong hover:text-fg data-[copied=true]:[&>.cmd-label]:text-success"
       >
-        <span class="command-block__copy-label">{copyLabel}</span>
+        <span class="cmd-label">Copy</span>
       </button>
     )
   }
 </div>
 
-<style>
-  .command-block {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    padding: 8px 8px 8px 14px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    background: color-mix(in oklch, var(--color-surface-2) 50%, transparent);
-    font-size: 13px;
-    color: var(--color-fg);
-    max-width: 100%;
-    width: fit-content;
-  }
-  .command-block__text {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .command-block__prompt {
-    color: var(--color-fg-subtle);
-  }
-  .command-block__copy {
-    appearance: none;
-    border: 0;
-    padding: 4px 8px;
-    border-radius: var(--radius-sm);
-    background: var(--color-border);
-    color: var(--color-fg-muted);
-    font: inherit;
-    font-size: 11px;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition:
-      background 120ms ease,
-      color 120ms ease;
-  }
-  .command-block__copy:hover {
-    background: var(--color-border-strong);
-    color: var(--color-fg);
-  }
-  .command-block__copy[data-copied='true'] .command-block__copy-label {
-    color: var(--color-success);
-  }
-</style>
-
 <script>
-  // Labels come from data attributes set by the consumer's `copyLabel` /
-  // `copiedLabel` props — no English strings live in this script.
   document.querySelectorAll<HTMLElement>('[data-command]').forEach((el) => {
     const btn = el.querySelector<HTMLButtonElement>('[data-command-copy]');
     if (!btn) return;
     btn.addEventListener('click', async () => {
       const cmd = el.dataset.command ?? '';
-      const label = btn.querySelector<HTMLElement>('.command-block__copy-label');
-      const idle = btn.dataset.copyLabel ?? label?.textContent ?? '';
-      const copied = btn.dataset.copiedLabel ?? idle;
       try {
         await navigator.clipboard.writeText(cmd);
         btn.dataset.copied = 'true';
-        if (label) label.textContent = copied;
+        const label = btn.querySelector('.cmd-label');
+        const prev = label?.textContent ?? 'Copy';
+        if (label) label.textContent = 'Copied';
         setTimeout(() => {
           btn.dataset.copied = 'false';
-          if (label) label.textContent = idle;
+          if (label) label.textContent = prev;
         }, 1500);
       } catch {
         // Clipboard blocked — silently fail.

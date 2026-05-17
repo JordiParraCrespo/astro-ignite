@@ -7,111 +7,39 @@ export type Props = {
 };
 
 const { position = 'bottom-right', class: className } = Astro.props;
+
+const positions: Record<NonNullable<Props['position']>, string> = {
+  'top-right': 'top-0 right-0',
+  'top-left': 'top-0 left-0',
+  'bottom-right': 'bottom-0 right-0',
+  'bottom-left': 'bottom-0 left-0',
+};
 ---
 
 <ai-toaster
   data-position={position}
-  class={cn('toaster', `toaster--${position}`, className)}
+  class={cn(
+    'fixed z-[100] flex flex-col gap-2 p-4 max-w-[min(420px,calc(100vw-32px))] pointer-events-none',
+    positions[position],
+    className,
+  )}
   aria-live="polite"
   aria-atomic="false"></ai-toaster>
 
-<style>
-  .toaster {
-    position: fixed;
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 16px;
-    max-width: min(420px, calc(100vw - 32px));
-    pointer-events: none;
-  }
-  .toaster--top-right {
-    top: 0;
-    right: 0;
-  }
-  .toaster--top-left {
-    top: 0;
-    left: 0;
-  }
-  .toaster--bottom-right {
-    bottom: 0;
-    right: 0;
-  }
-  .toaster--bottom-left {
-    bottom: 0;
-    left: 0;
-  }
-  .toaster :global(.toast) {
-    pointer-events: auto;
-    background: var(--color-surface);
-    color: var(--color-fg);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    padding: 12px 14px;
-    box-shadow: 0 10px 30px -10px rgb(0 0 0 / 0.6);
-    font-size: 13px;
-    line-height: 1.4;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    min-width: 320px;
-    animation: toast-in 200ms ease-out;
-  }
-  .toaster :global(.toast__icon) {
-    width: 16px;
-    height: 16px;
-    flex-shrink: 0;
-    border-radius: 999px;
-    border: 1.5px solid var(--color-fg-muted);
-    color: var(--color-fg-muted);
-    display: grid;
-    place-items: center;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    line-height: 1;
-  }
-  .toaster :global(.toast__msg) {
-    flex: 1;
-  }
-  .toaster :global(.toast--destructive .toast__icon) {
-    border-color: var(--color-danger);
-    color: var(--color-danger);
-  }
-  .toaster :global(.toast--success .toast__icon) {
-    border-color: var(--color-success);
-    color: var(--color-success);
-  }
-  .toaster :global(.toast--warning .toast__icon) {
-    border-color: var(--color-warning);
-    color: var(--color-warning);
-  }
-  .toaster :global(.toast__close) {
-    margin-left: auto;
-    background: transparent;
-    border: none;
-    color: var(--color-fg-muted);
-    cursor: pointer;
-    padding: 0 4px;
-    font-size: 14px;
-    line-height: 1;
-  }
-  .toaster :global(.toast__close:hover) {
-    color: var(--color-fg);
-  }
-  @keyframes toast-in {
-    from {
-      opacity: 0;
-      transform: translateY(8px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-</style>
-
 <script>
+  const TOAST_CLASS =
+    'pointer-events-auto bg-surface text-fg border border-border rounded-md py-3 px-3.5 shadow-[0_10px_30px_-10px_rgb(0_0_0/0.6)] text-[13px] leading-snug flex items-center gap-3 min-w-[320px]';
+  const ICON_BASE_CLASS =
+    'w-4 h-4 shrink-0 rounded-full border-[1.5px] grid place-items-center font-mono text-[10px] leading-none';
+  const ICON_TONE: Record<string, string> = {
+    default: 'border-fg-muted text-fg-muted',
+    success: 'border-success text-success',
+    warning: 'border-warning text-warning',
+    destructive: 'border-danger text-danger',
+  };
+  const CLOSE_CLASS =
+    'ml-auto bg-transparent border-none text-fg-muted cursor-pointer px-1 text-sm leading-none hover:text-fg';
+
   if (!customElements.get('ai-toaster')) {
     class AiToaster extends HTMLElement {
       connectedCallback() {
@@ -133,18 +61,18 @@ const { position = 'bottom-right', class: className } = Astro.props;
           destructive: '×',
         };
         const el = document.createElement('div');
-        el.className = `toast toast--${variant}`;
+        el.className = TOAST_CLASS;
         el.setAttribute('role', variant === 'destructive' ? 'alert' : 'status');
         const icon = document.createElement('span');
-        icon.className = 'toast__icon';
+        icon.className = `${ICON_BASE_CLASS} ${ICON_TONE[variant] ?? ICON_TONE.default}`;
         icon.textContent = glyph[variant] ?? 'i';
         el.appendChild(icon);
         const text = document.createElement('span');
-        text.className = 'toast__msg';
+        text.className = 'flex-1';
         text.textContent = opts.message;
         el.appendChild(text);
         const close = document.createElement('button');
-        close.className = 'toast__close';
+        close.className = CLOSE_CLASS;
         close.setAttribute('aria-label', 'Close');
         close.textContent = '×';
         close.addEventListener('click', () => el.remove());

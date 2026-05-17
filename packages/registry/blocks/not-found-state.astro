@@ -11,55 +11,26 @@ export type Props = {
 const { code = 'Error · 404', title, description, class: className } = Astro.props;
 ---
 
-<section class={cn('not-found', className)}>
-  <span class="not-found__code mono">{code}</span>
-  <h1 class="not-found__title">{title}</h1>
-  {description && <p class="not-found__desc">{description}</p>}
+<section
+  class={cn(
+    'max-w-[480px] mx-auto mt-16 text-center flex flex-col gap-4 items-center',
+    className,
+  )}
+>
+  <span class="mono text-xs tracking-[0.2em] uppercase text-fg-subtle">{code}</span>
+  <h1 class="m-0 text-[clamp(40px,6vw,56px)] font-medium tracking-[-0.045em] leading-none text-fg">
+    {title}
+  </h1>
+  {description && (
+    <p class="m-0 text-[15px] text-fg-muted leading-relaxed max-w-[36ch]">
+      {description}
+    </p>
+  )}
   {
     Astro.slots.has('default') && (
-      <div class="not-found__actions">
+      <div class="flex gap-2.5 mt-2 flex-wrap justify-center">
         <slot />
       </div>
     )
   }
 </section>
-
-<style>
-  .not-found {
-    max-width: 480px;
-    margin: 64px auto 0;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    align-items: center;
-  }
-  .not-found__code {
-    font-size: 12px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--color-fg-subtle);
-  }
-  .not-found__title {
-    margin: 0;
-    font-size: clamp(40px, 6vw, 56px);
-    font-weight: 500;
-    letter-spacing: -0.045em;
-    line-height: 1;
-    color: var(--color-fg);
-  }
-  .not-found__desc {
-    margin: 0;
-    font-size: 15px;
-    color: var(--color-fg-muted);
-    line-height: 1.6;
-    max-width: 36ch;
-  }
-  .not-found__actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 8px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-</style>

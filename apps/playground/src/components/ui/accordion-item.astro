@@ -10,11 +10,16 @@ export type Props = {
 const { title, open = false, class: className } = Astro.props;
 ---
 
-<details class={cn('accordion-item', className)} open={open}>
-  <summary class="accordion-item__summary">
+<details
+  class={cn('group border-b border-border', className)}
+  open={open}
+>
+  <summary
+    class="flex items-center justify-between gap-4 py-4 cursor-pointer font-medium text-fg select-none list-none [&::-webkit-details-marker]:hidden focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring focus-visible:rounded-[2px]"
+  >
     <span>{title}</span>
     <svg
-      class="accordion-item__chevron"
+      class="text-fg-muted shrink-0 transition-transform duration-200 group-open:rotate-180"
       width="14"
       height="14"
       viewBox="0 0 14 14"
@@ -29,45 +34,5 @@ const { title, open = false, class: className } = Astro.props;
         stroke-linejoin="round"></path>
     </svg>
   </summary>
-  <div class="accordion-item__body"><slot /></div>
+  <div class="pb-4 text-fg-muted text-sm leading-relaxed"><slot /></div>
 </details>
-
-<style>
-  .accordion-item {
-    border-bottom: 1px solid var(--color-border);
-  }
-  .accordion-item__summary {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 16px 0;
-    cursor: pointer;
-    font-weight: 500;
-    color: var(--color-fg);
-    list-style: none;
-    user-select: none;
-  }
-  .accordion-item__summary::-webkit-details-marker {
-    display: none;
-  }
-  .accordion-item__summary:focus-visible {
-    outline: 2px solid var(--color-ring);
-    outline-offset: 4px;
-    border-radius: 2px;
-  }
-  .accordion-item__chevron {
-    color: var(--color-fg-muted);
-    transition: transform 200ms ease;
-    flex-shrink: 0;
-  }
-  .accordion-item[open] > .accordion-item__summary .accordion-item__chevron {
-    transform: rotate(180deg);
-  }
-  .accordion-item__body {
-    padding: 0 0 16px;
-    color: var(--color-fg-muted);
-    font-size: 14px;
-    line-height: 1.6;
-  }
-</style>

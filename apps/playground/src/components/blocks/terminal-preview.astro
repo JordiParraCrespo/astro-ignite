@@ -11,91 +11,20 @@ export type Props = {
 const { path = '~/code', shell = 'zsh', caret = true, class: className } = Astro.props;
 ---
 
-<div class={cn('terminal', className)}>
-  <div class="terminal__bar">
-    <span class="terminal__dot" aria-hidden="true"></span>
-    <span class="terminal__dot" aria-hidden="true"></span>
-    <span class="terminal__dot" aria-hidden="true"></span>
-    <span class="terminal__path mono">{path}</span>
-    <span class="terminal__shell mono">{shell}</span>
+<div
+  class={cn(
+    'border border-border rounded-lg bg-black overflow-hidden',
+    className,
+  )}
+>
+  <div class="flex items-center gap-1.5 px-3 py-2 bg-surface-2 border-b border-border">
+    <span class="w-[9px] h-[9px] rounded-full bg-border-strong" aria-hidden="true"></span>
+    <span class="w-[9px] h-[9px] rounded-full bg-border-strong" aria-hidden="true"></span>
+    <span class="w-[9px] h-[9px] rounded-full bg-border-strong" aria-hidden="true"></span>
+    <span class="mono text-[10px] text-fg-subtle ml-2">{path}</span>
+    <span class="mono text-[10px] text-fg-subtle ml-auto">{shell}</span>
   </div>
   <pre
-    class="terminal__body mono"><slot />{caret && <span class="terminal__caret" aria-hidden="true" />}</pre>
+    class="mono m-0 py-3.5 px-4 text-[11.5px] leading-[1.65] text-zinc-100 whitespace-pre-wrap"
+  ><slot />{caret && <span class="caret inline-block w-[7px] h-3 bg-fg align-[-1px]" aria-hidden="true" />}</pre>
 </div>
-
-<style>
-  .terminal {
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    background: #000;
-    overflow: hidden;
-  }
-  .terminal__bar {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 9px 12px;
-    background: var(--color-surface-2);
-    border-bottom: 1px solid var(--color-border);
-  }
-  .terminal__dot {
-    width: 9px;
-    height: 9px;
-    border-radius: 999px;
-    background: var(--color-border-strong);
-  }
-  .terminal__path {
-    font-size: 10px;
-    color: var(--color-fg-subtle);
-    margin-left: 8px;
-  }
-  .terminal__shell {
-    font-size: 10px;
-    color: var(--color-fg-subtle);
-    margin-left: auto;
-  }
-  .terminal__body {
-    margin: 0;
-    padding: 14px 16px;
-    font-size: 11.5px;
-    line-height: 1.65;
-    color: var(--color-zinc-100);
-    white-space: pre-wrap;
-  }
-  .terminal__body :global(.mt) {
-    color: var(--color-fg-subtle);
-  }
-  .terminal__body :global(.st) {
-    color: var(--color-border-strong);
-  }
-  .terminal__body :global(.pick) {
-    display: inline-block;
-    padding: 1px 7px;
-    background: var(--color-fg);
-    color: var(--color-bg);
-    border-radius: 3px;
-  }
-  .terminal__caret {
-    display: inline-block;
-    width: 7px;
-    height: 12px;
-    background: var(--color-fg);
-    vertical-align: -1px;
-    animation: terminal-blink 1s step-end infinite;
-  }
-  @keyframes terminal-blink {
-    0%,
-    49% {
-      opacity: 1;
-    }
-    50%,
-    100% {
-      opacity: 0;
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .terminal__caret {
-      animation: none;
-    }
-  }
-</style>

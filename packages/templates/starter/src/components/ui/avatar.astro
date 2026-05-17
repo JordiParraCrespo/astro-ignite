@@ -19,56 +19,37 @@ const initials = (fallback ?? alt)
   .slice(0, 2)
   .join('')
   .toUpperCase();
+
+const sizes: Record<Size, string> = {
+  sm: 'w-7 h-7 text-[28px]',
+  md: 'w-9 h-9 text-[36px]',
+  lg: 'w-[52px] h-[52px] text-[52px]',
+};
 ---
 
-<span class={cn('avatar', `avatar--${size}`, className)}>
+<span
+  class={cn(
+    'inline-flex items-center justify-center rounded-full overflow-hidden bg-surface-2 text-fg-muted shrink-0 select-none',
+    sizes[size],
+    className,
+  )}
+>
   {
     src ? (
-      <img src={src} alt={alt} loading="lazy" decoding="async" />
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        class="w-full h-full object-cover block"
+      />
     ) : (
-      <span class="avatar__fallback" aria-hidden="true">
+      <span
+        class="text-[0.4em] font-semibold tracking-[0.02em]"
+        aria-hidden="true"
+      >
         {initials || '?'}
       </span>
     )
   }
 </span>
-
-<style>
-  .avatar {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 999px;
-    overflow: hidden;
-    background: var(--color-surface-2);
-    color: var(--color-fg-muted);
-    flex-shrink: 0;
-    user-select: none;
-  }
-  .avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-  .avatar__fallback {
-    font-size: 0.4em;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .avatar--sm {
-    width: 28px;
-    height: 28px;
-    font-size: 28px;
-  }
-  .avatar--md {
-    width: 40px;
-    height: 40px;
-    font-size: 40px;
-  }
-  .avatar--lg {
-    width: 56px;
-    height: 56px;
-    font-size: 56px;
-  }
-</style>

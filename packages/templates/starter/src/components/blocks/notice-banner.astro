@@ -17,47 +17,36 @@ const defaultIcons: Record<Variant, string> = {
   danger: '!',
 };
 const displayIcon = icon ?? defaultIcons[variant];
+
+const borderByVariant: Record<Variant, string> = {
+  info: 'border-border',
+  warning:
+    'border-[color-mix(in_oklch,var(--color-warning)_50%,var(--color-border))]',
+  success:
+    'border-[color-mix(in_oklch,var(--color-success)_50%,var(--color-border))]',
+  danger:
+    'border-[color-mix(in_oklch,var(--color-danger)_50%,var(--color-border))]',
+};
+
+const iconColor: Record<Variant, string> = {
+  info: 'text-fg',
+  warning: 'text-warning',
+  success: 'text-success',
+  danger: 'text-danger',
+};
 ---
 
-<div class={cn('notice', `notice--${variant}`, className)} role="note">
-  <span class="notice__icon mono" aria-hidden="true">{displayIcon}</span>
-  <span class="notice__body"><slot /></span>
+<div
+  role="note"
+  class={cn(
+    'flex items-center gap-2.5 py-2.5 px-3.5 rounded-md border bg-[color-mix(in_oklch,var(--color-surface-2)_50%,transparent)] text-fg-muted text-xs leading-normal',
+    borderByVariant[variant],
+    className,
+  )}
+>
+  <span
+    class={cn('mono shrink-0 text-sm', iconColor[variant])}
+    aria-hidden="true"
+  >{displayIcon}</span>
+  <span><slot /></span>
 </div>
-
-<style>
-  .notice {
-    padding: 10px 14px;
-    border-radius: var(--radius);
-    border: 1px solid var(--color-border);
-    background: color-mix(in oklch, var(--color-surface-2) 50%, transparent);
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    font-size: 12px;
-    line-height: 1.5;
-    color: var(--color-fg-muted);
-  }
-  .notice__icon {
-    font-size: 14px;
-    flex-shrink: 0;
-    color: var(--color-fg);
-  }
-  .notice--warning {
-    border-color: color-mix(in oklch, var(--color-warning) 50%, var(--color-border));
-  }
-  .notice--warning .notice__icon {
-    color: var(--color-warning);
-  }
-  .notice--success {
-    border-color: color-mix(in oklch, var(--color-success) 50%, var(--color-border));
-  }
-  .notice--success .notice__icon {
-    color: var(--color-success);
-  }
-  .notice--danger {
-    border-color: color-mix(in oklch, var(--color-danger) 50%, var(--color-border));
-  }
-  .notice--danger .notice__icon {
-    color: var(--color-danger);
-  }
-</style>
