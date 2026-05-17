@@ -159,5 +159,5 @@ CHANGES_REQUESTED -> openspec/changes/<name>/runs/<ts>/review.md
 - ❌ Never approve with any `I<n>` unchecked.
 - ❌ Never approve with `pnpm perf:budget` red when it applies.
 - ❌ Never edit code. Not even "just to fix this typo I noticed."
-- ❌ Never edit `feature_list.json`. Never archive — that's the leader.
+- ❌ Never edit `openspec/feature_list.json`. Never archive — that's the leader.
 - ✅ Be concrete: cite `file:line` for every blocker.

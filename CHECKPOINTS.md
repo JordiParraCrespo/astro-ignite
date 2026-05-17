@@ -15,7 +15,7 @@ checkpoint is `[x]`.
       `I<n>` in `design.md` is checked and its audit passed.
 - [ ] **C6** — `openspec validate <change-name>` is green.
 - [ ] **C7** — Every task in `tasks.md` is `[x]`, or has a documented
-      justification in `progress/impl_<name>.md`.
+      justification in `openspec/progress/impl_<name>.md`.
 - [ ] **C8** — A changeset entry exists under `.changeset/` for any
       change that ships in the CLI or a template.
 - [ ] **C9** — Every commit on the branch was made via
@@ -36,10 +36,10 @@ checkpoint is `[x]`.
 
 - [ ] **C13** — `new-template` skill's 15-item audit is walked. Items the
       audit script can't check yet are walked manually and recorded in
-      `progress/impl_<name>.md`.
+      `openspec/progress/impl_<name>.md`.
 - [ ] **C14** — `apps/site` and `apps/docs` (manual mirrors) are
       audited for whether the same change applies. If yes, mirror it in
-      the same PR; if no, document why in `progress/impl_<name>.md`.
+      the same PR; if no, document why in `openspec/progress/impl_<name>.md`.
 
 ### When the change touches `packages/registry/`
 
@@ -73,5 +73,5 @@ checkpoint is `[x]`.
 - [ ] **C22** — Deltas under `openspec/changes/<name>/specs/<capability>/spec.md`
       were merged into the long-lived `openspec/specs/<capability>/spec.md`
       before the move (manual until the OpenSpec CLI's archive step is wired).
-- [ ] **C23** — `progress/current.md` summary moved to
-      `progress/history.md`; `progress/current.md` reset to template.
+- [ ] **C23** — `openspec/progress/current.md` summary moved to
+      `openspec/progress/history.md`; `openspec/progress/current.md` reset to template.

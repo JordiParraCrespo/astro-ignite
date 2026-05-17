@@ -1,7 +1,7 @@
 # Session history
 
 Append-only log of completed sessions. Each entry is moved here from
-`progress/current.md` by the leader after a feature is archived.
+`openspec/progress/current.md` by the leader after a feature is archived.
 
 ## 2026-05-17 — Harness bootstrap (Phase 1)
 
@@ -18,7 +18,7 @@ Built the spec-driven harness end-to-end per `AGENTS.md`. Files added:
 - `.claude/settings.json` + `.claude/hooks/post-edit-typecheck.mjs`
 - 8 boundary `AGENTS.md` files (5 written; starter + docs already had
   end-user-facing ones; `CLAUDE.md` symlinks set everywhere)
-- `feature_list.json`, `CHECKPOINTS.md`, `.env.example`,
+- `openspec/feature_list.json`, `CHECKPOINTS.md`, `.env.example`,
   `package.json` scripts
 
 Friction / open items:

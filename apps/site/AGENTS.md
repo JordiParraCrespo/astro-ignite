@@ -15,7 +15,7 @@ The marketing landing for astro-ignite itself. **Manual mirror of the
 
 - **This directory is a mirror, not a source.** When you fix a bug here,
   mirror it back to `packages/templates/starter/` in the same PR, or
-  document why it doesn't belong there in `progress/impl_<name>.md`.
+  document why it doesn't belong there in `openspec/progress/impl_<name>.md`.
 - All the starter rules apply: tokens, no framework JS, i18n parallels,
   consent-gated analytics, layered CSS, `@graph` JSON-LD, perf budget.
 - The blog under `src/content/blog/` is real content (release notes,
@@ -29,7 +29,7 @@ The marketing landing for astro-ignite itself. **Manual mirror of the
 - Adding a new page only relevant to the marketing site (e.g., a
   `/launch` event page) → fine to live only here; do **not** add it to
   `packages/templates/starter/`. Note the rationale in
-  `progress/impl_<name>.md`.
+  `openspec/progress/impl_<name>.md`.
 - Adding a new chrome component (header item, footer link, etc.) → add
   to `packages/templates/starter/` first, then mirror here.
 - Audits run against starter, not against this app. The `i18n-parallels`

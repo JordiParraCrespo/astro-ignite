@@ -83,7 +83,7 @@ export async function newRunDir(name) {
  * Pick the lowest-id non-done feature.
  */
 export async function nextFeature() {
- const fl = JSON.parse(await readFile(join(ROOT, 'feature_list.json'), 'utf8'));
+ const fl = JSON.parse(await readFile(join(ROOT, 'openspec/feature_list.json'), 'utf8'));
  const features = (fl.features ?? []).slice().sort((a, b) => a.id - b.id);
  for (const f of features) {
  const s = await featureState(f.name);
@@ -96,7 +96,7 @@ export async function nextFeature() {
  * Snapshot of every feature with its derived state. Used by `pnpm queue`.
  */
 export async function queueSnapshot() {
- const fl = JSON.parse(await readFile(join(ROOT, 'feature_list.json'), 'utf8'));
+ const fl = JSON.parse(await readFile(join(ROOT, 'openspec/feature_list.json'), 'utf8'));
  const features = (fl.features ?? []).slice().sort((a, b) => a.id - b.id);
  return Promise.all(features.map(async (f) => ({ ...f, state: await featureState(f.name) })));
 }

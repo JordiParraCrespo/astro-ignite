@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// `pnpm queue` — print the derived state of every feature in feature_list.json.
+// `pnpm queue` — print the derived state of every feature in openspec/feature_list.json.
 
 import { queueSnapshot } from './lib/state.mjs';
 

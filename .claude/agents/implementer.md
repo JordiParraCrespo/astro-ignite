@@ -48,7 +48,7 @@ Expected: `in_progress`.
 
 ## Protocol
 
-1. Note in `progress/current.md`:
+1. Note in `openspec/progress/current.md`:
 
 - `Feature: <id> — <name>`
 - `Spec: openspec/changes/<name>/`
@@ -94,7 +94,7 @@ audit_command PASS`
   and the question for the human. Don't invent design decisions.
 - ❌ Never commit with `git add` / `git commit` directly. Always
   `scripts/committer --design`. The reviewer flags bypasses.
-- ❌ Never edit `feature_list.json` (declarative; no status field).
+- ❌ Never edit `openspec/feature_list.json` (declarative; no status field).
 - ❌ Never edit `openspec/specs/<capability>/spec.md` (the long-lived
   ones). Edit deltas under `openspec/changes/<name>/specs/<capability>/spec.md`.
 - ❌ If a tool fails unexpectedly, do not improvise. Stop, write

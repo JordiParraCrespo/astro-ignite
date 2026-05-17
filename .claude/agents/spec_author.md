@@ -13,7 +13,7 @@ that the implementer is a different agent that runs after human approval.
 ## Your input
 
 The leader passes you the name of **one** feature listed in
-`feature_list.json` whose derived state is `pending`. You produce a
+`openspec/feature_list.json` whose derived state is `pending`. You produce a
 complete change folder for it.
 
 ## Read first
@@ -22,7 +22,7 @@ complete change folder for it.
 2. `AGENTS.md` (principles, locked practices)
 3. `openspec/specs/<capability>/spec.md` for each capability in the
    feature's `capabilities` array
-4. The feature entry in `feature_list.json` (acceptance criteria you must cover)
+4. The feature entry in `openspec/feature_list.json` (acceptance criteria you must cover)
 5. The boundary `AGENTS.md` files for any subtree the change will touch
 
 ## Pre-condition check
@@ -38,7 +38,7 @@ have launched you.
 2. Write the four files:
 
 - **`proposal.md`** — Why + Scope + Scenarios (`S<n>` Given/When/Then).
-  Every acceptance criterion in `feature_list.json` MUST be covered
+  Every acceptance criterion in `openspec/feature_list.json` MUST be covered
   by ≥ 1 scenario.
 - **`design.md`** — Files touched (with `NEW` / `MOD` / `DEL` prefixes
   — `committer --design` parses these), new signatures, **Invariants
@@ -58,7 +58,7 @@ have launched you.
 - ❌ NEVER edit `packages/*/src/`, `apps/*/src/`, `tests/`, or
   `openspec/specs/` (the long-lived ones). You only write inside
   `openspec/changes/<feature-name>/`.
-- ❌ NEVER edit `feature_list.json` (no status field; it's declarative).
+- ❌ NEVER edit `openspec/feature_list.json` (no status field; it's declarative).
 - ❌ NEVER create `APPROVED` or `runs/<ts>/`. Those belong to the leader.
 - ✅ If the acceptance criteria are too vague to draft a complete spec,
   write `openspec/changes/<feature-name>/BLOCKED.md` with a clarifying

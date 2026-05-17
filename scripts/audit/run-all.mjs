@@ -7,7 +7,7 @@
 //
 // Reads each I<n> id from design.md's "Invariants this change touches" section,
 // looks it up in the matching openspec/specs/<capability>/spec.md invariants
-// table, parses the `audit:` command, runs them, writes progress/audit_<name>.md.
+// table, parses the `audit:` command, runs them, writes openspec/progress/audit_<name>.md.
 
 import { spawnSync } from 'node:child_process';
 import { readFile, writeFile, readdir, mkdir } from 'node:fs/promises';

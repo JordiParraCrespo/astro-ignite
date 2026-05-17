@@ -1,4 +1,4 @@
-// doctor check: feature_list.json declarative shape + filesystem coherence.
+// doctor check: openspec/feature_list.json declarative shape + filesystem coherence.
 // In the derived-state model there is no `status` field to validate — instead
 // we check that every spec_ready / in_progress feature has a valid change
 // folder structure.
@@ -11,9 +11,9 @@ import { featureState, latestRunDir } from '../lib/state.mjs';
 
 export async function check() {
  const findings = [];
- const flPath = join(ROOT, 'feature_list.json');
+ const flPath = join(ROOT, 'openspec/feature_list.json');
  if (!existsSync(flPath)) {
- findings.push(error('feature-list', 'feature_list.json missing at repo root', 'Create it; see AGENTS.md for the declarative-only schema.'));
+ findings.push(error('feature-list', 'openspec/feature_list.json missing at repo root', 'Create it; see AGENTS.md for the declarative-only schema.'));
  return findings;
  }
  const fl = JSON.parse(await readFile(flPath, 'utf8'));
@@ -25,7 +25,7 @@ export async function check() {
  findings.push(warn(
  'feature-list',
  `${stale.length} feature(s) still have a 'status' field: ${stale.join(', ')}. State is now derived; the field is ignored and should be removed.`,
- `Edit feature_list.json and delete every "status" key on feature entries.`,
+ `Edit openspec/feature_list.json and delete every "status" key on feature entries.`,
  ));
  }
 
@@ -33,8 +33,8 @@ export async function check() {
  if (fl.rules && Object.prototype.hasOwnProperty.call(fl.rules, 'valid_status')) {
  findings.push(warn(
  'feature-list',
- `feature_list.json rules.valid_status is obsolete — remove it. States are derived (see scripts/lib/state.mjs).`,
- `Edit feature_list.json and delete rules.valid_status.`,
+ `openspec/feature_list.json rules.valid_status is obsolete — remove it. States are derived (see scripts/lib/state.mjs).`,
+ `Edit openspec/feature_list.json and delete rules.valid_status.`,
  ));
  }
 

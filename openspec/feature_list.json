@@ -53,7 +53,7 @@
       "description": "Phase 2 of the harness — when the CLI user opts into harness scaffolding, scripts/doctor/ + scripts/committer + .claude/agents/ + openspec/ land in their repo.",
       "acceptance": [
         "create-astro-ignite prompts ask 'Include AI harness scaffolding?' (default: false)",
-        "When yes: the scaffolded repo has scripts/doctor/, scripts/committer, scripts/audit/, openspec/, .claude/agents/, feature_list.json, progress/",
+        "When yes: the scaffolded repo has scripts/doctor/, scripts/committer, scripts/audit/, openspec/, .claude/agents/, openspec/feature_list.json, openspec/progress/",
         "When no: scaffold.ts strips all of the above and the relevant package.json scripts",
         "pnpm scaffold:test covers both branches"
       ]

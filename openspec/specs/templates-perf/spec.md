@@ -71,7 +71,7 @@ step) so the first paint doesn't block on a stylesheet round-trip.
 
 > These are the **floor**, not the target. Templates are expected to
 > ship at 100s wherever possible. The day-1 baseline is captured in
-> `progress/history.md` under "perf baseline". Thresholds tighten as
+> `openspec/progress/history.md` under "perf baseline". Thresholds tighten as
 > the baseline improves; loosening requires a documented incident.
 
 ## Invariants (audit table)

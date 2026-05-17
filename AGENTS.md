@@ -10,7 +10,7 @@ This file provides guidance to AI Agents when working with code in this reposito
 
 Non-trivial work in this repo goes through a spec-driven, file-mediated subagent harness. **Read this whole section before adding anything substantial.** TL;DR:
 
-- The backlog is `feature_list.json` (declarative — no status field). State is derived from the filesystem; run `pnpm queue` to see it.
+- The backlog is `openspec/feature_list.json` (declarative — no status field). State is derived from the filesystem; run `pnpm queue` to see it.
 - For each pending feature, the `spec_author` subagent (`.claude/agents/spec_author.md`) writes `openspec/changes/<name>/{proposal,design,tasks,specs/<capability>/spec.md}` and stops. **A human approves before code starts** by creating `openspec/changes/<name>/APPROVED`.
 - Then `implementer` writes code + tests in a fresh `openspec/changes/<name>/runs/<ISO-timestamp>/` and commits exclusively via `scripts/committer --design openspec/changes/<name>/design.md` (which rejects out-of-scope paths).
 - Then `reviewer` runs the three-tier verification: `pnpm test`, `pnpm audit:invariants`, `pnpm perf:budget`. Emits `APPROVED` / `CHANGES_REQUESTED` into `runs/<ts>/review.md`.

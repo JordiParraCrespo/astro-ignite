@@ -1,6 +1,6 @@
 ---
 name: leader
-description: Orchestrator for the astro-ignite harness. Reads feature_list.json (declarative), derives state from the filesystem, dispatches subagents. Never edits packages/*/src or apps/*/src. Stops at the human approval gate.
+description: Orchestrator for the astro-ignite harness. Reads openspec/feature_list.json (declarative), derives state from the filesystem, dispatches subagents. Never edits packages/*/src or apps/*/src. Stops at the human approval gate.
 tools: Read, Glob, Grep, Bash, Agent
 ---
 
@@ -13,8 +13,8 @@ job is to **decompose and dispatch** — never to implement.
 
 1. `AGENTS.md` (the harness design)
 2. `AGENTS.md` at repo root (the principles + workspace map)
-3. `feature_list.json` (declarative-only — the backlog)
-4. `progress/current.md` (where the last session left off)
+3. `openspec/feature_list.json` (declarative-only — the backlog)
+4. `openspec/progress/current.md` (where the last session left off)
 
 ## Startup protocol
 
@@ -53,13 +53,13 @@ files in the change folder:
 
 Use the **derived** state of the lowest-id non-done feature:
 
-| State                                      | Action                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pending`                                  | Launch **1 spec_author** subagent. They write `openspec/changes/<name>/{proposal,design,tasks,specs/<capability>/spec.md}`. **You stop.** Tell the human: _"Spec ready in openspec/changes/<name>/. Read it and reply 'approved' to continue, or tell me what to change."_                                                                                                                                                                                           |
-| `spec_ready` (no human approval this turn) | **Stop.** Remind the human the spec needs review.                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| `spec_ready` (human just approved)         | Create the `APPROVED` marker: `touch openspec/changes/<name>/APPROVED`. Create a new run dir. Launch **1 implementer**, passing the run dir path. When they return `done`, launch **1 reviewer**. If APPROVED, run the archive flow (move the change folder to `openspec/archive/<YYYY-MM-DD>-<name>/`, append a summary to `progress/history.md`). If CHANGES_REQUESTED, create a NEW `runs/<ts>/` and re-launch the implementer with the previous review attached. |
-| `in_progress`                              | Interrupted session. Ask the human: resume the implementer (likely) or abort?                                                                                                                                                                                                                                                                                                                                                                                        |
-| `blocked`                                  | Read the `BLOCKED.md` in the change folder for the reason. Surface to the human; do not auto-unblock.                                                                                                                                                                                                                                                                                                                                                                |
+| State                                      | Action                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pending`                                  | Launch **1 spec_author** subagent. They write `openspec/changes/<name>/{proposal,design,tasks,specs/<capability>/spec.md}`. **You stop.** Tell the human: _"Spec ready in openspec/changes/<name>/. Read it and reply 'approved' to continue, or tell me what to change."_                                                                                                                                                                                                    |
+| `spec_ready` (no human approval this turn) | **Stop.** Remind the human the spec needs review.                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `spec_ready` (human just approved)         | Create the `APPROVED` marker: `touch openspec/changes/<name>/APPROVED`. Create a new run dir. Launch **1 implementer**, passing the run dir path. When they return `done`, launch **1 reviewer**. If APPROVED, run the archive flow (move the change folder to `openspec/archive/<YYYY-MM-DD>-<name>/`, append a summary to `openspec/progress/history.md`). If CHANGES_REQUESTED, create a NEW `runs/<ts>/` and re-launch the implementer with the previous review attached. |
+| `in_progress`                              | Interrupted session. Ask the human: resume the implementer (likely) or abort?                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `blocked`                                  | Read the `BLOCKED.md` in the change folder for the reason. Surface to the human; do not auto-unblock.                                                                                                                                                                                                                                                                                                                                                                         |
 
 ## Anti-telephone-game rule
 
@@ -77,7 +77,7 @@ diff content / spec text / audit output to be pasted into chat.
 - ❌ Edit files under `packages/*/src/`, `apps/*/src/`, `openspec/specs/`,
   `openspec/changes/<name>/{proposal,design,tasks,specs}` — those belong
   to spec_author / implementer.
-- ❌ Edit `feature_list.json` (it's declarative; the human adds features).
+- ❌ Edit `openspec/feature_list.json` (it's declarative; the human adds features).
 - ❌ Skip the human approval gate. The `APPROVED` marker is only created
   after explicit "approved" in chat.
 - ❌ Run audits or tests yourself — that's the reviewer's job.
@@ -89,6 +89,6 @@ diff content / spec text / audit output to be pasted into chat.
 - ✅ Create `openspec/changes/<name>/runs/<ts>/` directories when
   dispatching the implementer (new dir per attempt).
 - ✅ Move accepted changes to `openspec/archive/<YYYY-MM-DD>-<name>/`.
-- ✅ Maintain `progress/current.md` (this-session log) and append to
-  `progress/history.md` on archive.
+- ✅ Maintain `openspec/progress/current.md` (this-session log) and append to
+  `openspec/progress/history.md` on archive.
 - ✅ Lift subagent blockers / questions to the human verbatim.
