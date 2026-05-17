@@ -30,14 +30,14 @@ npx astro-ignite --help                              # list commands
 - **Tailwind v4** with a layered CSS strategy — scoped above-the-fold, utilities below, critical CSS extracted at build time
 - **Typed Schema.org JSON-LD** via `schema-dts`, composed per-page into one `@graph`
 - **Image components** with AVIF + WebP, responsive `srcset`, and LQIP placeholders
-- **Geist Sans + Geist Mono** through `astro:fonts` — self-hosted, zero CLS
+- **System font stack via design tokens** — no font fetches on first paint, swap in Geist (or any custom face) by editing a single CSS token
 - **Tri-state dark mode** (light / dark / system) with an anti-flash inline script
 - **Working contact form** built on Astro Actions, Zod-validated, with Resend or SMTP
 - **Cookie banner + legal pages** (privacy, terms, cookies) — i18n-aware templates you adapt
 - **Plausible analytics**, env-gated and consent-gated
 - **Sitemap, RSS, robots, manifest** — all i18n-aware
 - **Blog and projects** as content collections with strict Zod schemas
-- **A copy-paste component registry** — 18 atoms + 14 blocks
+- **A copy-paste component registry** — 18 atoms + 14 blocks, pre-installed in the starter template (an `astro-ignite add <name>` subcommand is on the roadmap)
 
 ## Templates
 
