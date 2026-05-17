@@ -186,7 +186,7 @@
     },
     "hero": {
       "headlineMuted": "Astro sites,",
-      "headlineTail": "built for AI agents.",
+      "headlineTail": "built for AI Agents.",
       "lede": "SEO, i18n, perf, legal, and email — pre-wired with sane defaults you actually own. No runtime dependency. No lock-in.",
       "ledeEmph": "Just code.",
       "copyLabel": "copy",
