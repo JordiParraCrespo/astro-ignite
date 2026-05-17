@@ -1,14 +1,28 @@
-# astro-ignite
-
 ![astro-ignite banner](.github/assets/banner.png)
+
+# Astro Ignite
 
 > Astro sites, built for AI agents.
 
 ```bash
 npm create astro-ignite@latest my-site
+# or, directly:
+npx astro-ignite bootstrap my-site
 ```
 
 Production-grade Astro sites that AI agents can read, edit, and extend. SEO, i18n, performance, legal, and email — pre-wired with sane defaults, every line is code you own. No runtime dependency on this tool once you've scaffolded.
+
+## Quickstart
+
+```bash
+npx astro-ignite bootstrap my-site --yes
+cd my-site
+pnpm dev
+```
+
+`--yes` skips the prompts and takes the defaults (starter template, `pnpm`, English locale, no email provider). Drop it for the interactive flow (project name, locales, package manager, template, email provider).
+
+The CLI scaffolds the chosen template, installs deps with your preferred package manager, and runs `git init`. From there it's a normal Astro project you own outright — `astro-ignite` is not a runtime dependency.
 
 ## Templates
 
@@ -24,14 +38,14 @@ Production-grade Astro sites that AI agents can read, edit, and extend. SEO, i18
 - **Tailwind v4** with a layered CSS strategy — scoped styles above the fold, utilities below, critical CSS extracted at build time
 - **Typed Schema.org JSON-LD** via `schema-dts`, composed per-page into one `@graph`
 - **Image components** with AVIF + WebP, responsive `srcset`, and LQIP placeholders
-- **Geist Sans + Geist Mono** through `astro:fonts` — self-hosted, zero CLS
+- **System font stack via design tokens** — no font fetches on first paint, swap in Geist (or any custom face) by editing a single CSS token
 - **Tri-state dark mode** (light / dark / system) with an anti-flash inline script
 - **Working contact form** built on Astro Actions, Zod-validated, with Resend or SMTP
 - **Cookie banner + legal pages** (privacy, terms, cookies) — i18n-aware templates you adapt
 - **Plausible analytics**, env-gated and consent-gated (easy swap to Umami / Fathom / GA)
 - **Sitemap, RSS, robots, manifest** — all i18n-aware
 - **Blog and projects** as content collections with strict Zod schemas
-- **A copy-paste component registry** — 18 atoms + 14 blocks, installed with `npx astro-ignite add <name>`
+- **A copy-paste component registry** — 18 atoms + 14 blocks, pre-installed in the starter template (an `astro-ignite add <name>` subcommand is on the roadmap)
 
 ## Development
 
