@@ -20,6 +20,25 @@ pnpm dev
 
 The CLI scaffolds the chosen template, installs deps with your preferred package manager, and runs `git init`. From there it's a normal Astro project you own outright — `astro-ignite` is not a runtime dependency.
 
+## Architecture
+
+- **Shadcn-style CLI, not a framework.** `create-astro-ignite` is a one-shot scaffolder. After install it's gone from `node_modules` — zero imports, no plugin, no auto-update, no telemetry.
+- **Three concerns, three packages.** The CLI in `packages/create-astro-ignite/`, real Astro projects in `packages/templates/<kind>/` (`starter`, `docs`, …), and a shadcn-style component registry in `packages/registry/`. The CLI assembles a template; the registry's atoms ship pre-installed.
+- **Apps are canonical scaffolded outputs.** `apps/site` and `apps/docs` are mirrors generated from the templates, not sources.
+
+## Tech stack
+
+- **Astro 5** with native i18n, content collections, and Astro Actions (`@astrojs/node@^9` adapter)
+- **Tailwind v4** below the fold + scoped `<style>` above; **Beasties** extracts critical CSS at build time
+- **CSS variables for design tokens**; tri-state dark mode via class flip
+- **Astro + vanilla JS for every component** — no React/Vue/Svelte/Radix anywhere. Native HTML primitives first (`<details>`, `<dialog>`, popover API); custom elements when native won't do
+- **`schema-dts`** typed JSON-LD composed via `@graph`
+- **Astro Actions + Zod** + Resend or SMTP for the contact form
+- **Plausible**, env- and consent-gated; **self-hosted Geist Sans + Mono**
+- **pnpm@9.15.0** workspaces, **tsup** for the CLI, **vitest**, **changesets**, **Lighthouse CI** (mobile + desktop, hard gate)
+
+See [`AGENTS.md`](./AGENTS.md) for the full set of rules that fall out of these choices.
+
 ## Templates
 
 | Template            | Use case                                                                     | Live preview                                                           |

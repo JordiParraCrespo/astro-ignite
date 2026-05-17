@@ -1,0 +1,157 @@
+#!/usr/bin/env bash
+# committer — scoped staging wrapper.
+#
+# Adapted from openclaw's scripts/committer; adds the --design flag that
+# validates every staged path against design.md's "Files touched" list.
+#
+# Usage:
+#   scripts/committer "fix(x): msg" path1 path2 ...
+#   scripts/committer --design openspec/changes/<name>/design.md "msg" path1 path2 ...
+#   scripts/committer --force "msg" path1 ...   # also removes stale .git/index.lock
+#
+# See plan.md §1.14.3.
+
+set -euo pipefail
+
+usage() {
+  cat >&2 <<'EOF'
+usage:
+  scripts/committer [--force] [--design <path>] "<msg>" <file>...
+EOF
+  exit 2
+}
+
+FORCE=0
+DESIGN=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --force) FORCE=1; shift ;;
+    --design)
+      [[ $# -ge 2 ]] || usage
+      DESIGN="$2"; shift 2 ;;
+    --help|-h) usage ;;
+    *) break ;;
+  esac
+done
+
+[[ $# -ge 2 ]] || usage
+
+MSG="$1"; shift
+
+if [[ -z "$MSG" ]]; then
+  echo "committer: empty commit message" >&2
+  exit 1
+fi
+
+# First-arg-looks-like-a-file detector
+if [[ -e "$MSG" ]] || git ls-files --error-unmatch -- "$MSG" >/dev/null 2>&1; then
+  echo "committer: first arg '$MSG' looks like a file — did you forget the commit message?" >&2
+  exit 1
+fi
+
+# Validate path arguments
+FILES=()
+for arg in "$@"; do
+  case "$arg" in
+    .)
+      echo "committer: '.' is not allowed (the whole point — no git add .)" >&2
+      exit 1
+      ;;
+    *node_modules*|*dist/*|*.astro/*|*.turbo/*|apps/playground/*|apps/playground)
+      echo "committer: forbidden path '$arg'" >&2
+      exit 1
+      ;;
+  esac
+  if [[ ! -e "$arg" ]] && ! git ls-files --error-unmatch -- "$arg" >/dev/null 2>&1; then
+    echo "committer: not found and not tracked: $arg" >&2
+    exit 1
+  fi
+  FILES+=("$arg")
+done
+
+# --design validation: every staged path must appear in design.md's
+# "Files touched" section.
+if [[ -n "$DESIGN" ]]; then
+  if [[ ! -f "$DESIGN" ]]; then
+    echo "committer: --design path not found: $DESIGN" >&2
+    exit 1
+  fi
+  # Extract entries from "## Files touched" through the next H2 (## Anything).
+  # Match lines like:
+  #   - NEW `path/to/file`
+  #   - MOD `path/to/file`
+  #   - DEL `path/to/file`
+  ALLOWED=$(awk '
+    /^## Files touched/ { inside=1; next }
+    /^## / && inside { inside=0 }
+    inside {
+      # capture backtick-wrapped paths
+      while (match($0, /`[^`]+`/)) {
+        s = substr($0, RSTART+1, RLENGTH-2)
+        print s
+        $0 = substr($0, RSTART + RLENGTH)
+      }
+    }
+  ' "$DESIGN")
+
+  if [[ -z "$ALLOWED" ]]; then
+    echo "committer: --design supplied but no 'Files touched' entries parsed from $DESIGN" >&2
+    exit 1
+  fi
+
+  REJECTED=()
+  for f in "${FILES[@]}"; do
+    # Normalize: strip leading ./
+    nf="${f#./}"
+    if ! grep -qxF "$nf" <<<"$ALLOWED"; then
+      # Also try matching with trailing wildcard semantics (e.g., "packages/templates/blog-only/" covers files inside)
+      hit=0
+      while IFS= read -r entry; do
+        ent="${entry%/}"
+        if [[ "$nf" == "$ent" || "$nf" == "$ent/"* ]]; then
+          hit=1; break
+        fi
+      done <<<"$ALLOWED"
+      if [[ $hit -eq 0 ]]; then
+        REJECTED+=("$nf")
+      fi
+    fi
+  done
+
+  if [[ ${#REJECTED[@]} -gt 0 ]]; then
+    echo "committer: the following staged paths are NOT in $DESIGN 'Files touched':" >&2
+    for r in "${REJECTED[@]}"; do echo "  - $r" >&2; done
+    echo "" >&2
+    echo "Either add them to design.md (and update the spec), or unstage them." >&2
+    exit 1
+  fi
+fi
+
+# Handle stale lock
+if [[ -f .git/index.lock ]]; then
+  if [[ $FORCE -eq 1 ]]; then
+    rm -f .git/index.lock
+  else
+    # Retry up to 5s
+    for _ in 1 2 3 4 5; do
+      [[ -f .git/index.lock ]] || break
+      sleep 1
+    done
+    if [[ -f .git/index.lock ]]; then
+      echo "committer: .git/index.lock still present; pass --force to remove it" >&2
+      exit 1
+    fi
+  fi
+fi
+
+git restore --staged :/ >/dev/null 2>&1 || true
+git add --force -- "${FILES[@]}"
+
+if git diff --staged --quiet; then
+  echo "committer: nothing staged after add — files unchanged or in .gitignore without --force" >&2
+  exit 1
+fi
+
+git commit -m "$MSG" -- "${FILES[@]}"
+echo "committer: committed ${#FILES[@]} file(s) — $MSG"

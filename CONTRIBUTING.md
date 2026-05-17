@@ -17,23 +17,29 @@ pnpm install
 
 ```
 packages/
-  create-astro-ignite/     # the CLI
-  template/                # the Astro template
+ create-astro-ignite/ # the CLI (tsup-built, ships as `create-astro-ignite` bin)
+ templates/
+ starter/ # marketing/blog/projects Astro template
+ docs/ # docs-site template (no Starlight; built from primitives)
+ registry/ # shadcn-style component source: registry.json + base/ + lib/
 apps/
-  playground/              # CI smoke target — gets recreated by CI
-  docs/                    # Starlight docs site
-plan.md                    # full design spec
+ site/ # marketing landing for astro-ignite itself
+ docs/ # the project's docs site
+ playground/ # CI smoke target — gets recreated by CI
 ```
+
+`AGENTS.md` at the repo root has the canonical architecture, tech stack, and locked practices. Read it before adding anything substantial.
 
 ## Dev loops
 
-### Iterate on the template
+### Iterate on a template
 
 ```bash
-pnpm dev
+pnpm dev:starter # packages/templates/starter
+pnpm dev:docs-template # packages/templates/docs
 ```
 
-This runs `astro dev` inside `packages/template/`. The template is a working Astro project — open the URL, see what users will see.
+Each runs `astro dev` inside the template directory. Templates are working Astro projects — open the URL and see what users will see.
 
 ### Iterate on the CLI
 
@@ -49,17 +55,20 @@ pnpm scaffold:test
 
 This wipes `apps/playground/`, runs the CLI with `--yes` against it, installs deps, builds, and runs Lighthouse.
 
-### Iterate on docs
+### Iterate on the public sites
 
 ```bash
-pnpm dev:docs
+pnpm dev:site # apps/site (marketing landing)
+pnpm dev:docs # apps/docs (the docs site you're reading)
 ```
+
+`apps/site` and `apps/docs` are manual mirrors of the templates — they don't auto-update when you change a template. Mirror the change yourself or rescaffold.
 
 ## Testing
 
 ```bash
-pnpm test                  # everything
-pnpm --filter create-astro-ignite test    # CLI unit tests only
+pnpm test # everything
+pnpm --filter create-astro-ignite test # CLI unit tests only
 ```
 
 CI runs the full e2e scaffold + build + Lighthouse on every PR. Local Lighthouse is optional but recommended for perf-touching changes.
@@ -69,7 +78,7 @@ CI runs the full e2e scaffold + build + Lighthouse on every PR. Local Lighthouse
 - **TypeScript everywhere.** Strict mode in both the CLI and template.
 - **Prettier** auto-formats on commit via `simple-git-hooks`.
 - **No new runtime dependencies in the template** without justification — the perf pitch depends on a small, owned codebase.
-- **Above-the-fold components use scoped `<style>` blocks**; below-the-fold uses Tailwind. See `plan.md` §6.
+- **Above-the-fold components use scoped `<style>` blocks**; below-the-fold uses Tailwind. See `AGENTS.md`.
 - **Comments only when the why is non-obvious.** Don't restate what the code says.
 
 ## Submitting changes

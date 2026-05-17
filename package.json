@@ -24,6 +24,10 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,astro,md,mdx,json,yaml,yml}\"",
     "typecheck": "pnpm -r typecheck",
     "scaffold:test": "node ./scripts/scaffold-test.mjs",
+    "audit:invariants": "node ./scripts/audit/run-all.mjs",
+    "perf:budget": "node ./scripts/perf/run.mjs",
+    "doctor": "node ./scripts/doctor/run-all.mjs",
+    "queue": "node ./scripts/queue.mjs",
     "changeset": "changeset",
     "version": "changeset version",
     "release": "pnpm build && changeset publish"
