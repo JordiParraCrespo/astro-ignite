@@ -8,14 +8,23 @@
     "menu": "Menú",
     "openMenu": "Abrir menú",
     "closeMenu": "Cerrar menú",
-    "skipToContent": "Saltar al contenido principal"
+    "skipToContent": "Saltar al contenido principal",
+    "primary": "Principal",
+    "breadcrumbs": "Migas de pan",
+    "adjacentPosts": "Entradas adyacentes",
+    "prev": "← Anterior",
+    "next": "Siguiente →",
+    "prevNextAria": "Anterior y siguiente"
   },
   "footer": {
     "rights": "Todos los derechos reservados.",
     "builtWith": "Hecho con astro-ignite.",
     "rss": "Feed RSS",
     "legal": "Legal",
-    "social": "Redes"
+    "social": "Redes",
+    "privacy": "Privacidad",
+    "terms": "Términos",
+    "cookies": "Cookies"
   },
   "theme": {
     "label": "Tema",
@@ -59,9 +68,16 @@
     "updatedOn": "Actualizado el",
     "readMore": "Leer más",
     "readingTime": "{minutes} min de lectura",
+    "readingTimeShort": "{minutes} min",
     "morePosts": "Más entradas",
     "backToBlog": "Volver al blog",
-    "noPosts": "Aún no hay entradas."
+    "noPosts": "Aún no hay entradas.",
+    "anonymous": "Anónimo",
+    "totalPosts": "{count} entradas · desde {year}",
+    "featured": "Destacada · más reciente",
+    "readArticle": "Leer artículo →",
+    "previousPost": "Entrada anterior",
+    "nextPost": "Siguiente entrada"
   },
   "projects": {
     "viewProject": "Ver proyecto",
@@ -72,6 +88,8 @@
     "techStack": "Tecnologías",
     "role": "Rol",
     "client": "Cliente",
+    "statusLabel": "Estado",
+    "dateLabel": "Fecha",
     "status": {
       "shipped": "Publicado",
       "in-progress": "En progreso",
@@ -88,6 +106,7 @@
     "sending": "Enviando…",
     "success": "Gracias — te responderemos pronto.",
     "error": "Algo salió mal. Inténtalo de nuevo o escríbenos directamente.",
+    "honeypot": "Deja este campo vacío",
     "validation": {
       "nameRequired": "Por favor ingresa tu nombre.",
       "emailInvalid": "Por favor ingresa un correo válido.",
@@ -157,5 +176,10 @@
       "li2": "Por qué construiste esto",
       "li3": "Cómo contactarte (el formulario vive en /contact)"
     }
+  },
+  "commandBlock": {
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "copyAria": "Copiar comando"
   }
 }

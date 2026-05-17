@@ -43,6 +43,10 @@ New section components (one section per file):
 - NEW `packages/templates/starter/src/components/sections/not-found/NotFoundHero.astro`
   — the `<section class="not-found">` from `404.astro`, plus its scoped
   `<style>` block.
+- NEW `.changeset/starter-section-split.md` — required by
+  `feature_list.json` rule `require_changeset_to_close`. Marks the
+  starter section-split refactor as a `patch` bump on `astro-ignite` and
+  `create-astro-ignite` (the only non-ignored packages).
 
 Unchanged (in this change):
 

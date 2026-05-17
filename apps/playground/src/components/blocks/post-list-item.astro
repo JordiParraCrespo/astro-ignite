@@ -1,0 +1,132 @@
+---
+import { cn } from '@/lib/cn';
+
+export type Props = {
+  href: string;
+  title: string;
+  excerpt?: string;
+  date?: string | Date;
+  author?: string;
+  readingTime?: string;
+  tags?: string[];
+  class?: string;
+};
+
+const {
+  href,
+  title,
+  excerpt,
+  date,
+  author,
+  readingTime,
+  tags = [],
+  class: className,
+} = Astro.props;
+
+const dateStr = date instanceof Date ? date.toISOString().slice(0, 10) : (date ?? null);
+---
+
+<article class={cn('post-item', className)}>
+  <div class="post-item__top mono">
+    {dateStr && <time datetime={dateStr}>{dateStr}</time>}
+    {
+      author && (
+        <>
+          <span class="post-item__sep" aria-hidden="true">
+            ·
+          </span>
+          <span>by {author}</span>
+        </>
+      )
+    }
+    {
+      readingTime && (
+        <>
+          <span class="post-item__sep" aria-hidden="true">
+            ·
+          </span>
+          <span class="post-item__time">{readingTime}</span>
+        </>
+      )
+    }
+  </div>
+  <h3 class="post-item__title">
+    <a href={href}>{title}</a>
+  </h3>
+  {excerpt && <p class="post-item__excerpt">{excerpt}</p>}
+  {
+    tags.length > 0 && (
+      <div class="post-item__tags">
+        {tags.map((t) => (
+          <span class="post-item__chip mono">{t}</span>
+        ))}
+      </div>
+    )
+  }
+</article>
+
+<style>
+  .post-item {
+    padding: 22px 0;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .post-item:last-child {
+    border-bottom: 1px solid var(--color-border);
+  }
+  .post-item__top {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--color-fg-subtle);
+  }
+  .post-item__sep {
+    color: var(--color-border-strong);
+  }
+  .post-item__time {
+    font-size: 11px;
+    padding: 3px 7px;
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-2);
+    color: var(--color-fg-muted);
+    border: 1px solid var(--color-border);
+  }
+  .post-item__title {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+  }
+  .post-item__title a {
+    color: var(--color-fg);
+    text-decoration: none;
+  }
+  .post-item__title a:hover {
+    color: var(--color-fg-muted);
+  }
+  .post-item__excerpt {
+    margin: 0;
+    font-size: 14px;
+    color: var(--color-fg-muted);
+    line-height: 1.55;
+  }
+  .post-item__tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .post-item__chip {
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 2px 7px;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    color: var(--color-fg-muted);
+    background: transparent;
+  }
+</style>

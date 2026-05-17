@@ -15,5 +15,7 @@ Status: idle
 
 ## State
 
-Feature: (none — idle)
-Status: idle
+Feature: 26 — reorganize-starter-split-pages-into-per
+Spec: openspec/changes/reorganize-starter-split-pages-into-per/
+Run: openspec/changes/reorganize-starter-split-pages-into-per/runs/2026-05-17T22-50-19Z/
+Status: in_progress

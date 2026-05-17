@@ -8,12 +8,7 @@ type AsAnchor = { href: string } & HTMLAttributes<'a'>;
 export type Props = (AsButton | AsAnchor) & { class?: string; destructive?: boolean };
 
 const { class: className, href, destructive = false, ...rest } = Astro.props;
-
-const classes = cn(
-  'flex items-center gap-2 w-full px-2 py-1.5 rounded-[calc(var(--radius)-2px)] bg-transparent border-none font-inherit text-[13px] leading-snug text-left no-underline cursor-pointer hover:bg-surface-2 focus-visible:bg-surface-2 focus-visible:outline-none',
-  destructive ? 'text-danger' : 'text-fg',
-  className,
-);
+const classes = cn('menu-item', destructive && 'menu-item--destructive', className);
 ---
 
 {
@@ -27,3 +22,31 @@ const classes = cn(
     </button>
   )
 }
+
+<style>
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 6px 8px;
+    border-radius: calc(var(--radius) - 2px);
+    background: transparent;
+    border: none;
+    color: var(--color-fg);
+    font: inherit;
+    font-size: 13px;
+    line-height: 1.4;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .menu-item:hover,
+  .menu-item:focus-visible {
+    background: var(--color-surface-2);
+    outline: none;
+  }
+  .menu-item--destructive {
+    color: var(--color-danger);
+  }
+</style>
