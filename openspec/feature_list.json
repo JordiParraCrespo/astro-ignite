@@ -67,9 +67,17 @@
       "id": 4,
       "name": "make-the-h1-contain-only-text",
       "title": "Make the h1 contain only text",
-      "capabilities": [],
+      "capabilities": [
+        "templates-i18n"
+      ],
       "description": "---\nname: hero-h1-text-only\ncapabilities:\n  - templates-i18n\n---\n\n## Why\n\nThe HeroSection in `apps/site` currently wraps a `<span class=\"text-fg-muted\">` prefix inside the `<h1>`, paired with a separate `headlineMuted` i18n key. The desired hero is a single plain-text headline; the muted prefix and its translations should be removed.\n\n> Note: `apps/site/` is a marketing mirror, not a template. Only files under `apps/site/` are in scope for this change — do **not** modify `packages/templates/starter/`.\n\n## Acceptance\n\n- `apps/site/src/components/landing/HeroSection.astro` renders only `{t('landing.hero.headlineTail')}` as the single child of the `<h1>` (no nested span, no muted prefix)\n- `apps/site/src/i18n/en.json` no longer contains a `landing.hero.headlineMuted` key\n- `apps/site/src/i18n/es.json` no longer contains a `landing.hero.headlineMuted` key\n- `pnpm typecheck` is green\n- `pnpm build --filter @astro-ignite/site` is green",
-      "acceptance": [],
+      "acceptance": [
+        "apps/site/src/components/landing/HeroSection.astro renders only {t('landing.hero.headlineTail')} as the single child of the <h1> (no nested span, no muted prefix)",
+        "apps/site/src/i18n/en.json no longer contains a landing.hero.headlineMuted key",
+        "apps/site/src/i18n/es.json no longer contains a landing.hero.headlineMuted key",
+        "pnpm typecheck is green",
+        "pnpm build --filter @astro-ignite/site is green"
+      ],
       "issue": 24
     }
   ]
