@@ -185,7 +185,6 @@
       "getStarted": "Empezar"
     },
     "hero": {
-      "headlineMuted": "Sitios Astro,",
       "headlineTail": "hechos para agentes de IA.",
       "lede": "SEO, i18n, rendimiento, páginas legales y email — preconfigurados con valores sensatos que realmente posees. Sin dependencias en tiempo de ejecución. Sin lock-in.",
       "ledeEmph": "Solo código.",
