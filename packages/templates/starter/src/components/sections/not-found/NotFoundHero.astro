@@ -1,17 +1,20 @@
 ---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
 import Button from '@/components/ui/button.astro';
 import { useTranslations } from '@/i18n';
 import { siteConfig } from '@/config/site';
 
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const t = useTranslations(locale);
+const homeHref = getRelativeLocaleUrl(locale, '/');
 ---
 
 <section class="not-found">
   <p class="code">404</p>
   <h1>{t('errors.404.heading')}</h1>
   <p class="message">{t('errors.404.body')}</p>
-  <Button href="/" variant="default">{t('errors.404.back')} →</Button>
+  <Button href={homeHref} variant="default">{t('errors.404.back')} →</Button>
 </section>
 
 <style>
