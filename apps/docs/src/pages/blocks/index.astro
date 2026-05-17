@@ -4,22 +4,7 @@ import { useTranslations, type TranslationKey } from '@/i18n';
 
 const t = useTranslations(Astro.currentLocale);
 
-const blockNames = [
-  'page-hero',
-  'breadcrumb',
-  'release-pill',
-  'command-block',
-  'terminal-preview',
-  'feature-grid',
-  'post-list',
-  'prev-next-nav',
-  'author-card',
-  'project-card',
-  'metadata-grid',
-  'toc-rail',
-  'not-found-state',
-  'notice-banner',
-] as const;
+const blockNames = ['not-found-state'] as const;
 ---
 
 <ComponentsLayout title={t('blocks.index.title')} description={t('blocks.index.description')}>

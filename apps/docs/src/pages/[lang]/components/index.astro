@@ -35,15 +35,6 @@ import AccordionItem from '@/components/ui/accordion-item.astro';
 import Tooltip from '@/components/ui/tooltip.astro';
 import Toaster from '@/components/ui/toaster.astro';
 
-import PageHero from '@/components/blocks/page-hero.astro';
-import Breadcrumb from '@/components/blocks/breadcrumb.astro';
-import ReleasePill from '@/components/blocks/release-pill.astro';
-import CommandBlock from '@/components/blocks/command-block.astro';
-import TerminalPreview from '@/components/blocks/terminal-preview.astro';
-import FeatureGrid from '@/components/blocks/feature-grid.astro';
-import PrevNextNav from '@/components/blocks/prev-next-nav.astro';
-import AuthorCard from '@/components/blocks/author-card.astro';
-import NoticeBanner from '@/components/blocks/notice-banner.astro';
 
 const t = useTranslations(Astro.currentLocale);
 ---
@@ -62,9 +53,7 @@ const t = useTranslations(Astro.currentLocale);
       </p>
       <div class="cat__meta mono">
         <span><strong>34</strong> components</span>
-        <span><strong>19</strong> registry primitives</span>
-        <span><strong>14</strong> blocks</span>
-        <span><strong>1</strong> brand mark</span>
+        <span><strong>19</strong> registry primitives</span>        <span><strong>1</strong> brand mark</span>
       </div>
 
       <nav class="cat__jump mono" aria-label="Jump to section">
@@ -478,149 +467,13 @@ const t = useTranslations(Astro.currentLocale);
           <div>
             <h2>Blocks</h2>
             <p class="grp__lede">
-              Composed patterns built from the primitives. Source in <span class="mono"
-                >packages/registry/blocks</span
-              >.
+              Drop-in feature blocks. Source in <span class="mono">packages/registry/blocks</span>.
             </p>
           </div>
-          <span class="grp__count mono">14 blocks</span>
+          <span class="grp__count mono">1 block</span>
         </header>
 
-        <article class="comp" id="page-hero">
-          <div class="comp__head">
-            <h3>PageHero</h3><span class="comp__file mono">page-hero.astro</span>
-          </div>
-          <div class="preview">
-            <PageHero
-              eyebrow="GET STARTED"
-              title="Astro sites, built for AI agents."
-              lede="Scaffold a production-grade Astro project with one command. No framework lock-in."
-              align="start"
-              size="md"
-            />
-          </div>
-        </article>
-
-        <article class="comp" id="breadcrumb">
-          <div class="comp__head">
-            <h3>Breadcrumb</h3><span class="comp__file mono">breadcrumb.astro</span>
-          </div>
-          <div class="preview">
-            <Breadcrumb
-              items={[
-                { label: 'Docs', href: '/' },
-                { label: 'Components', href: '/components' },
-                { label: 'Breadcrumb' },
-              ]}
-            />
-          </div>
-        </article>
-
-        <article class="comp" id="release-pill">
-          <div class="comp__head">
-            <h3>ReleasePill</h3><span class="comp__file mono">release-pill.astro</span>
-          </div>
-          <div class="preview"><ReleasePill label="BETA" detail="v0.1.0 just shipped" /></div>
-        </article>
-
-        <article class="comp" id="command-block">
-          <div class="comp__head">
-            <h3>CommandBlock</h3><span class="comp__file mono">command-block.astro</span>
-          </div>
-          <div class="preview"><CommandBlock command="npx astro-ignite@latest my-site" /></div>
-        </article>
-
-        <article class="comp" id="terminal-preview">
-          <div class="comp__head">
-            <h3>TerminalPreview</h3><span class="comp__file mono">terminal-preview.astro</span>
-          </div>
-          <div class="preview">
-            <TerminalPreview path="~/code">
-              <span class="text-fg-subtle">$</span> npx astro-ignite@latest my-site<br />
-              <span class="text-fg-subtle">◇</span> Project name? <span class="text-border-strong"
-                >./my-site</span
-              ><br />
-              <span class="text-fg-subtle">◇</span> Languages? <span class="text-border-strong"
-                >en, es</span
-              ><br />
-              <span class="text-fg-subtle">◇</span> Email? <span class="text-border-strong"
-                >Resend</span
-              ><br />
-              <span class="text-fg-subtle">◆</span> Install deps? <span
-                class="inline-block px-1.5 py-px bg-fg text-bg rounded-[3px]">● Yes</span
-              >
-              <span class="text-border-strong">○ No</span><br />
-            </TerminalPreview>
-          </div>
-        </article>
-
-        <article class="comp" id="feature-grid">
-          <div class="comp__head">
-            <h3>FeatureGrid</h3><span class="comp__file mono">feature-grid.astro</span>
-          </div>
-          <div class="preview">
-            <FeatureGrid
-              columns={3}
-              features={[
-                { index: '01', title: 'Lighthouse 100s', body: 'Mobile and desktop, CI-enforced.' },
-                {
-                  index: '02',
-                  title: 'Strict TS',
-                  body: 'Astro 5 type-checks every route on build.',
-                },
-                {
-                  index: '03',
-                  title: 'Agent-readable',
-                  body: 'Small surface area, no magic abstractions.',
-                },
-              ]}
-            />
-          </div>
-        </article>
-
-        <article class="comp" id="prev-next-nav">
-          <div class="comp__head">
-            <h3>PrevNextNav</h3><span class="comp__file mono">prev-next-nav.astro</span>
-          </div>
-          <div class="preview">
-            <PrevNextNav
-              prev={{ title: 'Introduction', href: '/' }}
-              next={{ title: 'Quick start', href: '/quick-start' }}
-            />
-          </div>
-        </article>
-
-        <article class="comp" id="author-card">
-          <div class="comp__head">
-            <h3>AuthorCard</h3><span class="comp__file mono">author-card.astro</span>
-          </div>
-          <div class="preview">
-            <AuthorCard
-              name="Jordi Parra"
-              bio="Maintainer. Building astro-ignite — a small, owned, Lighthouse-100 scaffolder for Astro."
-            />
-          </div>
-        </article>
-
-        <article class="comp" id="notice-banner">
-          <div class="comp__head">
-            <h3>NoticeBanner</h3><span class="comp__file mono">notice-banner.astro</span>
-          </div>
-          <div class="preview" style="gap: 10px;">
-            <NoticeBanner
-              >This is a template document. Review with legal counsel before publishing.</NoticeBanner
-            >
-            <NoticeBanner variant="warning"
-              >Beta features are subject to change without notice.</NoticeBanner
-            >
-          </div>
-        </article>
-
         <p class="more-link mono">
-          More blocks: <a href="/blocks/post-list">post-list</a> ·
-          <a href="/blocks/project-card">project-card</a> ·
-          <a href="/blocks/metadata-grid">metadata-grid</a> ·
-          <a href="/blocks/toc-rail">toc-rail</a> ·
           <a href="/blocks/not-found-state">not-found-state</a>
         </p>
       </section>
