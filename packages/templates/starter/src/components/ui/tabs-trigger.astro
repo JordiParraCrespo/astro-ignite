@@ -19,7 +19,7 @@ const { value, class: className } = Astro.props;
   tabindex="-1"
   class={cn(
     'appearance-none bg-transparent border-none rounded-[calc(var(--radius)-2px)] px-3 py-1.5 text-[13px] font-medium text-fg-muted cursor-pointer leading-none transition-[background-color,color] duration-150 hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring data-[active=true]:bg-surface data-[active=true]:text-fg data-[active=true]:shadow-sm',
-    className,
+    className
   )}
 >
   <slot />

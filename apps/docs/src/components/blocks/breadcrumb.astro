@@ -16,10 +16,7 @@ export type Props = {
 const { items, separator = '/', ariaLabel = 'Breadcrumb', class: className } = Astro.props;
 ---
 
-<nav
-  aria-label={ariaLabel}
-  class={cn('mono text-xs text-fg-subtle', className)}
->
+<nav aria-label={ariaLabel} class={cn('mono text-xs text-fg-subtle', className)}>
   <ol class="list-none m-0 p-0 flex items-center flex-wrap gap-1.5">
     {
       items.map((item, i) => {
@@ -34,10 +31,7 @@ const { items, separator = '/', ariaLabel = 'Breadcrumb', class: className } = A
                 {item.label}
               </a>
             ) : (
-              <span
-                aria-current={isLast ? 'page' : undefined}
-                class={isLast ? 'text-fg' : ''}
-              >
+              <span aria-current={isLast ? 'page' : undefined} class={isLast ? 'text-fg' : ''}>
                 {item.label}
               </span>
             )}

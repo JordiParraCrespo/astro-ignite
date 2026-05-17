@@ -22,18 +22,12 @@ const cols: Record<NonNullable<Props['columns']>, string> = {
 ---
 
 <dl
-  class={cn(
-    'grid border border-border rounded-md overflow-hidden m-0',
-    cols[columns],
-    className,
-  )}
+  class={cn('grid border border-border rounded-md overflow-hidden m-0', cols[columns], className)}
 >
   {
     items.map((item) => (
       <div class="py-3.5 px-4 border-b border-border sm:border-b-0 sm:border-r sm:border-r-border last:border-r-0 last:border-b-0">
-        <dt class="mono text-[10px] text-fg-subtle tracking-[0.1em] uppercase m-0">
-          {item.label}
-        </dt>
+        <dt class="mono text-[10px] text-fg-subtle tracking-[0.1em] uppercase m-0">{item.label}</dt>
         <dd class="mt-1 mb-0 ml-0 text-sm font-medium text-fg">{item.value}</dd>
       </div>
     ))

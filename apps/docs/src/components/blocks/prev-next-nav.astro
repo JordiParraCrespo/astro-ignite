@@ -29,17 +29,12 @@ const boxClass =
 
 <nav
   aria-label="Previous and next"
-  class={cn(
-    'grid grid-cols-1 sm:grid-cols-2 gap-2.5',
-    className,
-  )}
+  class={cn('grid grid-cols-1 sm:grid-cols-2 gap-2.5', className)}
 >
   {
     prev ? (
       <a href={prev.href} class={boxClass}>
-        <span class="mono text-[10px] text-fg-subtle">
-          {prev.label ?? prevLabel}
-        </span>
+        <span class="mono text-[10px] text-fg-subtle">{prev.label ?? prevLabel}</span>
         <span class="text-[13px] font-medium">{prev.title}</span>
       </a>
     ) : (
@@ -49,9 +44,7 @@ const boxClass =
   {
     next ? (
       <a href={next.href} class={cn(boxClass, 'text-right')}>
-        <span class="mono text-[10px] text-fg-subtle">
-          {next.label ?? nextLabel}
-        </span>
+        <span class="mono text-[10px] text-fg-subtle">{next.label ?? nextLabel}</span>
         <span class="text-[13px] font-medium">{next.title}</span>
       </a>
     ) : (

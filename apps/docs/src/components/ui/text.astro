@@ -52,8 +52,7 @@ const variantClasses: Record<Variant, string> = {
   body: 'text-[14px] leading-[1.6]',
   small: 'text-[12px] leading-[1.5]',
   muted: 'text-[13px] leading-[1.55] text-fg-muted',
-  eyebrow:
-    'text-[11px] font-semibold tracking-[0.12em] uppercase text-fg-muted',
+  eyebrow: 'text-[11px] font-semibold tracking-[0.12em] uppercase text-fg-muted',
   code: 'font-mono text-[0.92em] px-[0.35em] py-[0.125em] bg-surface-2 border border-border rounded-sm',
 };
 
@@ -70,14 +69,7 @@ const weightClasses: Record<Weight, string> = {
   bold: 'font-bold',
 };
 
-const {
-  variant = 'body',
-  as,
-  tone,
-  weight,
-  class: className,
-  ...rest
-} = Astro.props;
+const { variant = 'body', as, tone, weight, class: className, ...rest } = Astro.props;
 
 const Tag = (as ?? defaultTag[variant]) as HTMLTag;
 ---
@@ -88,7 +80,7 @@ const Tag = (as ?? defaultTag[variant]) as HTMLTag;
     variantClasses[variant],
     tone && toneClasses[tone],
     weight && weightClasses[weight],
-    className,
+    className
   )}
-  {...rest}
-><slot /></Tag>
+  {...rest}><slot /></Tag
+>

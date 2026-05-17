@@ -10,7 +10,6 @@ export type Props = HTMLAttributes<'h3'> & {
 const { as: Tag = 'h3', class: className, ...rest } = Astro.props;
 ---
 
-<Tag
-  class={cn('text-lg font-semibold leading-tight text-fg m-0', className)}
-  {...rest}
-><slot /></Tag>
+<Tag class={cn('text-lg font-semibold leading-tight text-fg m-0', className)} {...rest}
+  ><slot /></Tag
+>

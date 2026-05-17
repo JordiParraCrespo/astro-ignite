@@ -7,10 +7,7 @@ const { class: className } = Astro.props;
 
 <div
   role="tablist"
-  class={cn(
-    'inline-flex gap-0.5 p-1 bg-surface-2 rounded-md border border-border',
-    className,
-  )}
+  class={cn('inline-flex gap-0.5 p-1 bg-surface-2 rounded-md border border-border', className)}
 >
   <slot />
 </div>

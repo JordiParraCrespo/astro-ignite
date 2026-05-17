@@ -9,10 +9,7 @@ export type Props = HTMLAttributes<'div'> & {
 
 const { orientation = 'horizontal', class: className, ...rest } = Astro.props;
 
-const sizing =
-  orientation === 'horizontal'
-    ? 'h-px w-full'
-    : 'w-px h-full self-stretch';
+const sizing = orientation === 'horizontal' ? 'h-px w-full' : 'w-px h-full self-stretch';
 ---
 
 <div

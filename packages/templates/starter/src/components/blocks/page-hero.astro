@@ -12,8 +12,7 @@ export type Props = {
 
 const { eyebrow, title, lede, align = 'start', size = 'lg', class: className } = Astro.props;
 
-const alignClass =
-  align === 'center' ? 'mx-auto text-center' : '';
+const alignClass = align === 'center' ? 'mx-auto text-center' : '';
 const ledeAlignClass = align === 'center' ? 'mx-auto' : '';
 
 const titleSize: Record<NonNullable<Props['size']>, string> = {
@@ -23,31 +22,31 @@ const titleSize: Record<NonNullable<Props['size']>, string> = {
 };
 ---
 
-<header
-  class={cn(
-    'flex flex-col gap-2 max-w-[720px]',
-    alignClass,
-    className,
-  )}
->
-  {eyebrow && (
-    <span class="mono text-[11px] text-fg-subtle tracking-[0.18em] uppercase">
-      {eyebrow}
-    </span>
-  )}
+<header class={cn('flex flex-col gap-2 max-w-[720px]', alignClass, className)}>
+  {
+    eyebrow && (
+      <span class="mono text-[11px] text-fg-subtle tracking-[0.18em] uppercase">{eyebrow}</span>
+    )
+  }
   <h1
     class={cn(
       'm-0 font-medium tracking-[-0.04em] leading-none text-fg text-balance',
-      titleSize[size],
+      titleSize[size]
     )}
-  >{title}</h1>
-  {lede && (
-    <p
-      class={cn(
-        'mt-1 mb-0 text-lg leading-[1.55] text-fg-muted max-w-[60ch] text-pretty',
-        ledeAlignClass,
-      )}
-    >{lede}</p>
-  )}
+  >
+    {title}
+  </h1>
+  {
+    lede && (
+      <p
+        class={cn(
+          'mt-1 mb-0 text-lg leading-[1.55] text-fg-muted max-w-[60ch] text-pretty',
+          ledeAlignClass
+        )}
+      >
+        {lede}
+      </p>
+    )
+  }
   <slot />
 </header>
