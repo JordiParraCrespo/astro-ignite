@@ -312,7 +312,8 @@
         "messageWarning": "El almacenamiento se está agotando.",
         "messageDestructive": "No se pudo alcanzar el servidor remoto."
       }
-    }
+    },
+    "previewAria": "Vista previa"
   },
   "blocks": {
     "group": "Bloques",
@@ -385,6 +386,7 @@
       "notice-banner": {
         "description": "Aviso en línea con icono y cuatro variantes: info, warning, success, danger. El slot acepta el mensaje."
       }
-    }
+    },
+    "previewAria": "Vista previa"
   }
 }

@@ -11,7 +11,10 @@
     "skipToContent": "Saltar al contenido principal",
     "primary": "Principal",
     "breadcrumbs": "Migas de pan",
-    "adjacentPosts": "Entradas adyacentes"
+    "adjacentPosts": "Entradas adyacentes",
+    "prev": "← Anterior",
+    "next": "Siguiente →",
+    "prevNextAria": "Anterior y siguiente"
   },
   "footer": {
     "rights": "Todos los derechos reservados.",
@@ -173,5 +176,10 @@
       "li2": "Por qué construiste esto",
       "li3": "Cómo contactarte (el formulario vive en /contact)"
     }
+  },
+  "commandBlock": {
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "copyAria": "Copiar comando"
   }
 }

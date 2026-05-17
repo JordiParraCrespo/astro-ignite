@@ -312,7 +312,8 @@
         "messageWarning": "Storage is running low.",
         "messageDestructive": "Failed to reach the upstream server."
       }
-    }
+    },
+    "previewAria": "Preview"
   },
   "blocks": {
     "group": "Blocks",
@@ -385,6 +386,7 @@
       "notice-banner": {
         "description": "Inline notice with icon and four variants: info, warning, success, danger. Slot accepts the message."
       }
-    }
+    },
+    "previewAria": "Preview"
   }
 }

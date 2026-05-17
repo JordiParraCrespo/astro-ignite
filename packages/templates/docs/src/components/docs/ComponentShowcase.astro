@@ -13,6 +13,9 @@ const install = `npx astro-ignite add ${name}`;
 const root = kind === 'block' ? '/blocks' : '/components';
 const backKey = (kind === 'block' ? 'blocks.back' : 'components.back') as TranslationKey;
 const installKey = (kind === 'block' ? 'blocks.install' : 'components.install') as TranslationKey;
+const previewAriaKey = (kind === 'block'
+  ? 'blocks.previewAria'
+  : 'components.previewAria') as TranslationKey;
 ---
 
 <article class="showcase">
@@ -26,7 +29,7 @@ const installKey = (kind === 'block' ? 'blocks.install' : 'components.install') 
     </div>
   </header>
 
-  <section class="showcase__preview" aria-label="Preview">
+  <section class="showcase__preview" aria-label={t(previewAriaKey)}>
     <slot />
   </section>
 </article>

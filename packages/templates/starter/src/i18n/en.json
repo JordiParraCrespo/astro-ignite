@@ -11,7 +11,10 @@
     "skipToContent": "Skip to main content",
     "primary": "Primary",
     "breadcrumbs": "Breadcrumbs",
-    "adjacentPosts": "Adjacent posts"
+    "adjacentPosts": "Adjacent posts",
+    "prev": "← Previous",
+    "next": "Next →",
+    "prevNextAria": "Previous and next"
   },
   "footer": {
     "rights": "All rights reserved.",
@@ -173,5 +176,10 @@
       "li2": "Why you built the thing",
       "li3": "How to get in touch (the contact form lives at /contact)"
     }
+  },
+  "commandBlock": {
+    "copy": "Copy",
+    "copied": "Copied",
+    "copyAria": "Copy command"
   }
 }
