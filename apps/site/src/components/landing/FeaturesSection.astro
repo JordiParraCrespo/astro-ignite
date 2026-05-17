@@ -22,21 +22,23 @@ const FEATURE_IDS = [
 ] as const;
 ---
 
-<section class="features-section">
+<section class="py-24 max-[720px]:py-16">
   <div class="page">
     <SectionHead
       eyebrow={t('landing.features.eyebrow')}
       heading={t('landing.features.headline')}
       meta={t('landing.features.meta')}
     />
-    <div class="features">
+    <div
+      class="features grid grid-cols-3 max-[920px]:grid-cols-2 max-[560px]:grid-cols-1 overflow-hidden rounded-xl border border-border"
+    >
       {
         FEATURE_IDS.map((f) => (
           <FeatureCell
             num={f.num}
             tag={f.tag}
-            title={t(`landing.features.${f.id}.title` as const)}
-            body={t(`landing.features.${f.id}.body` as const)}
+            title={t(`landing.features.${f.id}.title`)}
+            body={t(`landing.features.${f.id}.body`)}
           />
         ))
       }
@@ -45,45 +47,10 @@ const FEATURE_IDS = [
 </section>
 
 <style>
-  .page {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 40px;
-  }
-  @media (max-width: 720px) {
-    .page {
-      padding: 0 24px;
-    }
-  }
-  .features-section {
-    padding: 96px 0;
-  }
-  @media (max-width: 720px) {
-    .features-section {
-      padding: 64px 0;
-    }
-  }
-  .features {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-    overflow: hidden;
-  }
-  @media (max-width: 920px) {
-    .features {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  @media (max-width: 560px) {
-    .features {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  /* Trim outer borders on the grid edges. FeatureCell owns its own scoped
-     borders; the :global() escape hatch is how Astro reaches into a child
-     component's scope. */
+  /* Trim outer borders on the grid edges. FeatureCell ships its own `border-r`
+     and `border-b`; we cancel those at the grid's right/bottom edge so the
+     outer container's rounded border is the only visible perimeter line.
+     :global() is Astro's escape hatch for reaching into a child's scope. */
   .features :global(.feat:nth-child(3n)) {
     border-right: none;
   }

@@ -1,0 +1,51 @@
+---
+import { cn } from '@/lib/cn';
+
+interface Props {
+  /** Text written to the clipboard on click. */
+  text: string;
+  /** Label shown when the button is idle. */
+  label: string;
+  /** Label shown briefly after a successful copy. */
+  copiedLabel?: string;
+  class?: string;
+}
+
+const { text, label, copiedLabel = 'Copied', class: className } = Astro.props;
+---
+
+<button
+  type="button"
+  class={cn(
+    'mono inline-flex cursor-pointer items-center gap-1 rounded-sm border border-border bg-transparent px-2 py-1 text-[11px] text-fg-muted transition-[color,border-color] duration-150 hover:border-border-strong hover:text-fg focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2',
+    className,
+  )}
+  data-copy-button
+  data-copy-text={text}
+  data-copy-label={label}
+  data-copy-copied={copiedLabel}
+>
+  {label}
+</button>
+
+<script>
+  import { copyToClipboard } from '@/lib/clipboard';
+
+  const RESET_MS = 1200;
+
+  document.querySelectorAll<HTMLButtonElement>('[data-copy-button]').forEach((btn) => {
+    if (btn.dataset.bound === '1') return;
+    btn.dataset.bound = '1';
+    btn.addEventListener('click', async () => {
+      const text = btn.dataset.copyText;
+      if (!text) return;
+      const ok = await copyToClipboard(text);
+      if (!ok) return;
+      const idle = btn.dataset.copyLabel ?? btn.textContent ?? '';
+      btn.textContent = btn.dataset.copyCopied ?? 'Copied';
+      window.setTimeout(() => {
+        btn.textContent = idle;
+      }, RESET_MS);
+    });
+  });
+</script>

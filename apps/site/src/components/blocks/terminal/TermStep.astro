@@ -1,0 +1,20 @@
+---
+import TermLine from '@/components/ui/terminal/TermLine.astro';
+import TermSigil from '@/components/ui/terminal/TermSigil.astro';
+import TermAnswer from '@/components/ui/terminal/TermAnswer.astro';
+
+interface Props {
+  /** The completed prompt, e.g. "Template?" */
+  question: string;
+  /** The user's chosen answer, e.g. "starter" */
+  answer: string;
+}
+
+const { question, answer } = Astro.props;
+---
+
+<TermLine>
+  <TermSigil>◇</TermSigil>
+  <span>{question}</span>
+  <TermAnswer>{answer}</TermAnswer>
+</TermLine>

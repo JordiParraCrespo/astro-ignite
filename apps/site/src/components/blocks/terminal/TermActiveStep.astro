@@ -1,0 +1,15 @@
+---
+import TermLine from '@/components/ui/terminal/TermLine.astro';
+
+interface Props {
+  /** The currently-active prompt, e.g. "Install deps?" */
+  question: string;
+}
+
+const { question } = Astro.props;
+---
+
+<TermLine>
+  <span>◆</span>
+  <span>{question}</span>
+</TermLine>

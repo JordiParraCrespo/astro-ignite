@@ -1,0 +1,15 @@
+---
+interface Props {
+  /**
+   * Visual weight. `subtle` is the box-drawing sigils (◇ │ └ ◆),
+   * `muted` is the slightly louder lead character (e.g. `^` in the header line).
+   */
+  variant?: 'subtle' | 'muted';
+}
+
+const { variant = 'subtle' } = Astro.props;
+
+const color = variant === 'muted' ? 'text-term-fg-muted' : 'text-term-fg-subtle';
+---
+
+<span class={color}><slot /></span>

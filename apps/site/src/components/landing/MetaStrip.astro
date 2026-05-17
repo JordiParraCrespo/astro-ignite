@@ -3,56 +3,23 @@
 ---
 
 <div class="page">
-  <div class="meta-strip mono">
-    <div class="meta-item">
-      <span>Lighthouse</span><span class="meta-value">100 / 100 / 100 / 100</span>
+  <div
+    class="mono flex flex-wrap items-center gap-8 border-y border-border py-[18px] text-xs text-fg-muted"
+  >
+    <div class="flex items-baseline gap-2">
+      <span>Lighthouse</span><span class="text-sm text-fg">100 / 100 / 100 / 100</span>
     </div>
-    <div class="meta-item"><span>Bundle</span><span class="meta-value">17.4 kB</span></div>
-    <div class="meta-item"><span>LCP</span><span class="meta-value">0.4 s</span></div>
-    <div class="meta-item"><span>CLS</span><span class="meta-value">0.00</span></div>
-    <div class="meta-item meta-spacer"><span>Astro 5</span></div>
-    <div class="meta-item"><span>Tailwind v4</span></div>
-    <div class="meta-item"><span>MIT</span></div>
+    <div class="flex items-baseline gap-2">
+      <span>Bundle</span><span class="text-sm text-fg">17.4 kB</span>
+    </div>
+    <div class="flex items-baseline gap-2">
+      <span>LCP</span><span class="text-sm text-fg">0.4 s</span>
+    </div>
+    <div class="flex items-baseline gap-2">
+      <span>CLS</span><span class="text-sm text-fg">0.00</span>
+    </div>
+    <div class="flex items-baseline gap-2 ml-auto max-[720px]:ml-0"><span>Astro 5</span></div>
+    <div class="flex items-baseline gap-2"><span>Tailwind v4</span></div>
+    <div class="flex items-baseline gap-2"><span>MIT</span></div>
   </div>
 </div>
-
-<style>
-  .page {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 40px;
-  }
-  @media (max-width: 720px) {
-    .page {
-      padding: 0 24px;
-    }
-  }
-  .meta-strip {
-    display: flex;
-    align-items: center;
-    gap: 32px;
-    flex-wrap: wrap;
-    padding: 18px 0;
-    border-top: 1px solid var(--color-border);
-    border-bottom: 1px solid var(--color-border);
-    font-size: 12px;
-    color: var(--color-fg-muted);
-  }
-  .meta-item {
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
-  }
-  .meta-value {
-    color: var(--color-fg);
-    font-size: 14px;
-  }
-  .meta-spacer {
-    margin-left: auto;
-  }
-  @media (max-width: 720px) {
-    .meta-spacer {
-      margin-left: 0;
-    }
-  }
-</style>

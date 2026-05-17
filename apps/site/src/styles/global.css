@@ -46,6 +46,19 @@
   --color-warning: oklch(78% 0.16 75);
   --color-danger: oklch(70% 0.2 28);
 
+  /* Terminal mock — theme-invariant role tokens for the hero CLI preview.
+     These never flip with .light because a terminal is always dark. */
+  --color-term-bg: var(--color-zinc-950);
+  --color-term-surface: var(--color-zinc-900);
+  --color-term-border: var(--color-zinc-800);
+  --color-term-dot: var(--color-zinc-700);
+  --color-term-fg: var(--color-zinc-100);
+  --color-term-fg-strong: var(--color-zinc-50);
+  --color-term-fg-muted: var(--color-zinc-400);
+  --color-term-fg-subtle: var(--color-zinc-500);
+  --color-term-pick-bg: var(--color-zinc-50);
+  --color-term-pick-fg: var(--color-zinc-950);
+
   /* Typography */
   --font-display: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
@@ -61,12 +74,19 @@
   --shadow:
     0 1px 3px 0 rgb(0 0 0 / 0.5), 0 1px 2px -1px rgb(0 0 0 / 0.4);
 
+  /* Terminal mock shadow — theme-invariant (used on the hero terminal mockup) */
+  --shadow-terminal:
+    0 30px 60px -20px rgb(0 0 0 / 0.8), 0 0 0 1px var(--color-zinc-800);
+
   /* Containers */
   --container-prose: 65ch;
   --container-narrow: 42rem;
 
   /* Motion */
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Animations — registered here so Tailwind generates `animate-*` utilities */
+  --animate-release-pulse: release-pulse 2.2s ease-in-out infinite;
 }
 
 /* Light mode — applied when .light class is on <html>.
@@ -95,6 +115,10 @@
  * Adding .dark on top of .light returns to dark (rare but supported).
  */
 @variant dark (&:where(:not(.light), :not(.light) *));
+
+/* Companion `light:` variant — opt-in overrides that only apply when <html>
+   carries the .light class. Useful for utilities that need to flip per theme. */
+@variant light (&:where(.light, .light *));
 
 /* =============================================================================
  * Base layer — minimal global resets and defaults
@@ -217,6 +241,44 @@
 }
 .caret {
   animation: ig-blink 1s step-end infinite;
+}
+
+/* Release pill pulse — see `animate-release-pulse` utility (registered in @theme) */
+@keyframes release-pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+}
+
+/* Page container — 1200px max-width with responsive horizontal padding. Every
+   landing/marketing section is wrapped in `.page` so the gutter stays consistent. */
+.page {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1200px;
+  padding-inline: 2.5rem;
+}
+@media (max-width: 720px) {
+  .page {
+    padding-inline: 1.5rem;
+  }
+}
+
+/* Hero grid backdrop — faint dot/line lattice with a radial mask. Lives globally
+   because the CSS is unwieldy as utility classes and we may reuse it. */
+.hero-grid {
+  background-image:
+    linear-gradient(to right, var(--color-border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-border) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 30%, transparent 80%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 30%, transparent 80%);
 }
 
 /* =============================================================================

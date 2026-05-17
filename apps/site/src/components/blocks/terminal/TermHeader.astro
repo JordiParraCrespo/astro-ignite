@@ -1,0 +1,19 @@
+---
+import TermLine from '@/components/ui/terminal/TermLine.astro';
+import TermSigil from '@/components/ui/terminal/TermSigil.astro';
+import TermStrong from '@/components/ui/terminal/TermStrong.astro';
+import TermSubtle from '@/components/ui/terminal/TermSubtle.astro';
+
+interface Props {
+  name: string;
+  version: string;
+}
+
+const { name, version } = Astro.props;
+---
+
+<TermLine>
+  <TermSigil variant="muted">^</TermSigil>
+  <TermStrong>{name}</TermStrong>
+  <TermSubtle>{version}</TermSubtle>
+</TermLine>

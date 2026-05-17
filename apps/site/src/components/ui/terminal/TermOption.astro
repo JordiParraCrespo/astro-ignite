@@ -1,0 +1,23 @@
+---
+interface Props {
+  /**
+   * Whether this option is the currently-picked one. Renders as a filled
+   * inverse pill; unselected options render as a muted `○ label` glyph pair.
+   */
+  selected?: boolean;
+}
+
+const { selected = false } = Astro.props;
+---
+
+{
+  selected ? (
+    <span class="inline-block rounded-sm bg-term-pick-bg px-2 py-px text-term-pick-fg">
+      ● <slot />
+    </span>
+  ) : (
+    <span class="text-term-fg-muted">
+      ○ <slot />
+    </span>
+  )
+}

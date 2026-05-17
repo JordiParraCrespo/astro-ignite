@@ -1,0 +1,36 @@
+---
+interface Props {
+  /** Title shown in the title bar (e.g., the working directory). */
+  path?: string;
+  /** Shell label shown right-aligned in the title bar. */
+  shell?: string;
+  /** Accessible label for the whole terminal mockup. */
+  label?: string;
+  class?: string;
+}
+
+const { path, shell, label, class: className } = Astro.props;
+---
+
+<div
+  class:list={[
+    'min-w-0 max-w-full overflow-hidden rounded-xl border border-term-border bg-term-bg shadow-terminal',
+    className,
+  ]}
+  aria-label={label}
+>
+  <div
+    class="flex items-center gap-1.5 border-b border-term-border bg-term-surface px-3.5 py-2.5"
+  >
+    <span class="h-2.5 w-2.5 rounded-full bg-term-dot" aria-hidden="true"></span>
+    <span class="h-2.5 w-2.5 rounded-full bg-term-dot" aria-hidden="true"></span>
+    <span class="h-2.5 w-2.5 rounded-full bg-term-dot" aria-hidden="true"></span>
+    {path && <span class="mono ml-2 text-[11px] text-term-fg-muted">{path}</span>}
+    {shell && <span class="mono ml-auto text-[11px] text-term-fg-muted">{shell}</span>}
+  </div>
+  <div
+    class="mono overflow-x-auto px-4 py-[18px] text-[13px] leading-[1.7] text-term-fg max-[480px]:px-3 max-[480px]:py-3.5 max-[480px]:text-[11px]"
+  >
+    <slot />
+  </div>
+</div>

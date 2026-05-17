@@ -1,0 +1,78 @@
+---
+import { cn } from '@/lib/cn';
+import type { HTMLAttributes } from 'astro/types';
+
+type AsAnchor = { href: string } & Omit<HTMLAttributes<'a'>, 'class'>;
+type AsSpan = { href?: undefined } & Omit<HTMLAttributes<'span'>, 'class'>;
+
+export type Props = (AsAnchor | AsSpan) & {
+  /** Uppercase short label rendered as a leading chip (e.g., version, "NEW"). */
+  tag?: string;
+  /** Show a pulsing dot before the tag. Defaults to true. */
+  pulse?: boolean;
+  /** Show an arrow on the right (and animate it on hover for anchors). */
+  arrow?: boolean;
+  class?: string;
+};
+
+const { tag, pulse = true, arrow = true, class: className, href, ...rest } = Astro.props;
+
+const base =
+  'group inline-flex items-center gap-2 self-start rounded-full border border-border bg-surface-2 py-1.5 pl-2 pr-2.5 text-[13px] text-fg no-underline transition-[border-color,background] duration-150';
+const interactive = href
+  ? 'hover:border-border-strong hover:bg-surface focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2'
+  : '';
+
+const classes = cn(base, interactive, className);
+---
+
+{
+  href ? (
+    <a href={href} class={classes} {...(rest as HTMLAttributes<'a'>)}>
+      {pulse && (
+        <span
+          class="h-1.5 w-1.5 rounded-full bg-primary motion-safe:animate-release-pulse motion-reduce:opacity-70"
+          aria-hidden="true"
+        />
+      )}
+      {tag && (
+        <span class="border-r border-border pr-2 text-[10px] font-semibold uppercase tracking-[0.08em] text-fg">
+          {tag}
+        </span>
+      )}
+      <span>
+        <slot />
+      </span>
+      {arrow && (
+        <span
+          class="text-fg-muted transition-[transform,color] duration-200 group-hover:translate-x-0.5 group-hover:text-fg motion-reduce:group-hover:translate-x-0"
+          aria-hidden="true"
+        >
+          →
+        </span>
+      )}
+    </a>
+  ) : (
+    <span class={classes} {...(rest as HTMLAttributes<'span'>)}>
+      {pulse && (
+        <span
+          class="h-1.5 w-1.5 rounded-full bg-primary motion-safe:animate-release-pulse motion-reduce:opacity-70"
+          aria-hidden="true"
+        />
+      )}
+      {tag && (
+        <span class="border-r border-border pr-2 text-[10px] font-semibold uppercase tracking-[0.08em] text-fg">
+          {tag}
+        </span>
+      )}
+      <span>
+        <slot />
+      </span>
+      {arrow && (
+        <span class="text-fg-muted" aria-hidden="true">
+          →
+        </span>
+      )}
+    </span>
+  )
+}
