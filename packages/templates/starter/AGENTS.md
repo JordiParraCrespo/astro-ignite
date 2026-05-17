@@ -2,8 +2,6 @@
 
 Orientation for AI agents working in this codebase. The human-facing tour is in [`README.md`](./README.md); subject-specific deep dives are under [`docs/`](./docs/).
 
-`CLAUDE.md` in this repo is a symlink to this file.
-
 ## What this project is
 
 An Astro 5 site scaffolded from [astro-ignite](https://github.com/JordiParraCrespo/astro-ignite). It is **not** a framework — every file is owned by this repo and editable. There is no runtime dependency on the scaffolder.
