@@ -3,6 +3,7 @@ import { actions, isInputError } from 'astro:actions';
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Button from '@/components/ui/button.astro';
+import Text from '@/components/ui/text.astro';
 import { useTranslations } from '@/i18n';
 import { siteConfig } from '@/config/site';
 import { breadcrumbListSchema, contactPageSchema } from '@/lib/jsonld';
@@ -42,8 +43,8 @@ const schemas = [
 >
   <section class="page">
     <header class="page-header">
-      <h1>{t('seo.contact.title')}</h1>
-      <p class="lede">{t('seo.contact.description')}</p>
+      <Text variant="h1">{t('seo.contact.title')}</Text>
+      <Text variant="lead" class="mt-3">{t('seo.contact.description')}</Text>
     </header>
 
     {
@@ -76,9 +77,9 @@ const schemas = [
         />
         {
           inputError?.fields.name && (
-            <p id="name-error" class="field-error">
+            <Text variant="small" id="name-error" class="field-error">
               {t('contact.validation.nameRequired')}
-            </p>
+            </Text>
           )
         }
       </div>
@@ -96,9 +97,9 @@ const schemas = [
         />
         {
           inputError?.fields.email && (
-            <p id="email-error" class="field-error">
+            <Text variant="small" id="email-error" class="field-error">
               {t('contact.validation.emailInvalid')}
-            </p>
+            </Text>
           )
         }
       </div>
@@ -114,9 +115,9 @@ const schemas = [
           aria-describedby={inputError?.fields.message ? 'message-error' : undefined}></textarea>
         {
           inputError?.fields.message && (
-            <p id="message-error" class="field-error">
+            <Text variant="small" id="message-error" class="field-error">
               {t('contact.validation.messageTooShort')}
-            </p>
+            </Text>
           )
         }
       </div>
@@ -142,18 +143,6 @@ const schemas = [
   }
   .page-header {
     margin-bottom: 2rem;
-  }
-  .page-header h1 {
-    font-size: clamp(2rem, 5vw, 2.75rem);
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    margin: 0 0 0.75rem;
-  }
-  .lede {
-    font-size: 1.125rem;
-    color: var(--color-fg-muted);
-    margin: 0;
   }
 
   .alert {
@@ -205,10 +194,10 @@ const schemas = [
     border-color: var(--color-primary);
     box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-primary) 25%, transparent);
   }
+  /* `.field-error` only carries the semantic danger color — the typography
+     comes from <Text variant="small">. */
   .field-error {
     color: var(--color-danger);
-    font-size: 0.8125rem;
-    margin: 0;
   }
 
   .honeypot {

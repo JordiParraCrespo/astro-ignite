@@ -42,13 +42,13 @@ The `committer --design` allow-list will reject any path not declared in
       Import `Text` from `@/components/ui/text.astro`. Drop the inline
       typography classes from the now-wrapped elements. Covers **S1**.
 
-- [ ] **T4.** `packages/templates/starter/src/pages/about.astro`:
+- [x] **T4.** `packages/templates/starter/src/pages/about.astro`:
       replace `.page-header h1` → `<Text variant="h1">`, `.lede` →
       `<Text variant="lead">`, and each `.prose` `<h2>` / `<p>` →
       `<Text>`. Shrink the scoped `<style>` block to layout rules only
       (`.page` width + padding). Covers **S1**.
 
-- [ ] **T5.** `packages/templates/starter/src/pages/contact.astro`:
+- [x] **T5.** `packages/templates/starter/src/pages/contact.astro`:
       page header → `<Text>`; `.field-error` `<p>` → `<Text
 variant="small" class="field-error">`. The `.field-error` class still
       provides the danger color (semantic error state, not typography).
