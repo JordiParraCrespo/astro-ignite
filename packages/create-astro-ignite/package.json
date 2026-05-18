@@ -1,6 +1,6 @@
 {
   "name": "create-astro-ignite",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "npm create shim for astro-ignite — delegates to `astro-ignite bootstrap`",
   "license": "MIT",
   "type": "module",
