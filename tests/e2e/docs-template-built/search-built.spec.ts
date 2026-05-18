@@ -41,7 +41,16 @@ test.describe('docs search built @docs-built', () => {
     }
     void resultsContainer;
 
-    await result.click();
-    await expect(page).toHaveURL(/introduction/i);
+    // Make sure the focused result has a real destination (pagefind sometimes
+    // renders a transient placeholder with an empty / hash-only href while the
+    // index finishes loading).
+    const href = await result.getAttribute('href');
+    expect(href, 'result link should have a real href').toBeTruthy();
+    expect(
+      href !== null && href !== '' && href !== '#' && !href.startsWith('javascript:'),
+      'result href must be a real navigation target'
+    ).toBeTruthy();
+
+    await Promise.all([page.waitForURL(/introduction/i, { timeout: 10_000 }), result.click()]);
   });
 });

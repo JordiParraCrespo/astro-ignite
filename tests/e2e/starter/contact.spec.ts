@@ -17,13 +17,21 @@ test.describe('contact form @starter', () => {
     await form.locator('input[name="email"]').fill('e2e@example.com');
     await form.locator('textarea[name="message"]').fill('Hello from Playwright');
 
-    await form.locator('button[type="submit"]').click();
+    // Astro Actions form submission posts to the action endpoint, gets a 303
+    // with a result cookie, then the browser redirects back to /contact and the
+    // server re-renders with Astro.getActionResult() populated. Wait for the
+    // network to settle so the second render has actually landed before we
+    // assert on the success element.
+    await Promise.all([
+      page.waitForLoadState('networkidle', { timeout: 15_000 }),
+      form.locator('button[type="submit"]').click(),
+    ]);
 
     const success = page
       .locator('[data-success], [role="status"], :text("Thanks"), :text("Gracias")')
       .first();
     await expect(success, 'success state should render after submit').toBeVisible({
-      timeout: 10_000,
+      timeout: 15_000,
     });
 
     expect(resend.hits(), 'api.resend.com must not be contacted').toBe(0);
