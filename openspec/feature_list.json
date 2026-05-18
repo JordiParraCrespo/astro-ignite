@@ -36,7 +36,10 @@
       "id": 2,
       "name": "registry-block-pricing-card",
       "title": "First block-tier registry item: PricingCard",
-      "capabilities": ["registry-blocks", "registry-atoms"],
+      "capabilities": [
+        "registry-blocks",
+        "registry-atoms"
+      ],
       "description": "Compose Card + Button + (new) PriceTag atom into a PricingCard block. First exercise of the blocks tier, which currently has no items.",
       "acceptance": [
         "packages/registry/blocks/pricing-card/ exists with PricingCard.astro + a demo .mdx",
@@ -49,7 +52,9 @@
       "id": 3,
       "name": "doctor-shipped-in-templates",
       "title": "Ship pnpm doctor inside the templates",
-      "capabilities": ["cli-scaffold"],
+      "capabilities": [
+        "cli-scaffold"
+      ],
       "description": "Phase 2 of the harness — when the CLI user opts into harness scaffolding, scripts/doctor/ + scripts/committer + .claude/agents/ + openspec/ land in their repo.",
       "acceptance": [
         "create-astro-ignite prompts ask 'Include AI harness scaffolding?' (default: false)",
@@ -62,7 +67,9 @@
       "id": 4,
       "name": "make-the-h1-contain-only-text",
       "title": "Make the h1 contain only text",
-      "capabilities": ["templates-i18n"],
+      "capabilities": [
+        "templates-i18n"
+      ],
       "description": "---\nname: hero-h1-text-only\ncapabilities:\n  - templates-i18n\n---\n\n## Why\n\nThe HeroSection in `apps/site` currently wraps a `<span class=\"text-fg-muted\">` prefix inside the `<h1>`, paired with a separate `headlineMuted` i18n key. The desired hero is a single plain-text headline; the muted prefix and its translations should be removed.\n\n> Note: `apps/site/` is a marketing mirror, not a template. Only files under `apps/site/` are in scope for this change — do **not** modify `packages/templates/starter/`.\n\n## Acceptance\n\n- `apps/site/src/components/landing/HeroSection.astro` renders only `{t('landing.hero.headlineTail')}` as the single child of the `<h1>` (no nested span, no muted prefix)\n- `apps/site/src/i18n/en.json` no longer contains a `landing.hero.headlineMuted` key\n- `apps/site/src/i18n/es.json` no longer contains a `landing.hero.headlineMuted` key\n- `pnpm typecheck` is green\n- `pnpm build --filter @astro-ignite/site` is green",
       "acceptance": [
         "apps/site/src/components/landing/HeroSection.astro renders only {t('landing.hero.headlineTail')} as the single child of the <h1> (no nested span, no muted prefix)",
@@ -72,6 +79,15 @@
         "pnpm build --filter @astro-ignite/site is green"
       ],
       "issue": 24
+    },
+    {
+      "id": 5,
+      "name": "starter-use-the-text-component-for-all-t",
+      "title": "Starter: use the Text component for all typography",
+      "capabilities": [],
+      "description": "## Problem\n\nThe `Text` atom exists in the registry (`packages/registry/base/text.astro`) and is shipped pre-installed in the starter (`packages/templates/starter/src/components/ui/text.astro`), but pages and sections across `packages/templates/starter/` still use raw `<p>`, `<h1>`–`<h6>`, and inline Tailwind typography classes instead of `<Text>`.\n\n## Proposal\n\nAudit `packages/templates/starter/` and replace ad-hoc typography with the `Text` component so:\n\n- Typography variants (size, weight, color, leading) are centralized in one atom.\n- Token-driven color/scale changes propagate from a single source.\n- Users editing the scaffolded site have a single place to customize prose styles.\n\n## Acceptance\n\n- [ ] Every page in `packages/templates/starter/src/pages/` (including `[lang]/` parallels) uses `<Text>` for body copy and headings, except where a section component already encapsulates its own typography.\n- [ ] Every section/component under `packages/templates/starter/src/components/` uses `<Text>` for text content.\n- [ ] No remaining inline typography utility soup (e.g. `class=\\\"text-lg leading-7 text-zinc-400\\\"`) where `<Text>` covers the case.\n- [ ] If `Text` is missing a needed v",
+      "acceptance": [],
+      "issue": 29
     }
   ]
 }
