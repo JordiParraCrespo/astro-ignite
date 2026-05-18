@@ -1,0 +1,120 @@
+---
+/**
+ * Site footer — shared across every layout.
+ *
+ * Below-the-fold component. Scoped <style> mirrors the landing design:
+ * brand block on the left, three link columns (Product / Resources / Legal)
+ * on the right, mono font throughout.
+ */
+
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
+import { siteConfig } from '@/config/site';
+import { useTranslations } from '@/i18n';
+import Brand from '@/components/common/Brand.astro';
+
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
+
+const homeUrl = getRelativeLocaleUrl(locale, '/');
+const homeRoot = homeUrl.replace(/\/$/, '');
+const blogHref = getRelativeLocaleUrl(locale, '/blog');
+const privacyHref = getRelativeLocaleUrl(locale, '/legal/privacy');
+const termsHref = getRelativeLocaleUrl(locale, '/legal/terms');
+const cookiesHref = getRelativeLocaleUrl(locale, '/legal/cookies');
+const rssUrl = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/rss.xml`;
+
+const docsUrl = siteConfig.urls.docs;
+const ghUrl = siteConfig.social.github ?? 'https://github.com/JordiParraCrespo/astro-ignite';
+---
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <Brand variant="lockup" size={0.32} />
+      <p class="footer-lede mono">{t('landing.footer.lede')}</p>
+    </div>
+    <div class="footer-cols">
+      <div class="footer-col">
+        <span class="footer-head">{t('landing.footer.productHead')}</span>
+        <a href={`${homeRoot}/#templates`}>{t('landing.nav.templates')}</a>
+        <a href={blogHref}>{t('landing.nav.blog')}</a>
+        <a href={docsUrl} target="_blank" rel="noopener">{t('landing.nav.docs')}</a>
+        <a href={`${ghUrl}/blob/main/plan.md`} rel="noopener">{t('landing.nav.plan')}</a>
+        <a href={`${ghUrl}/releases`} rel="noopener">{t('landing.nav.changelog')}</a>
+      </div>
+      <div class="footer-col">
+        <span class="footer-head">{t('landing.footer.resourcesHead')}</span>
+        <a href={ghUrl} rel="noopener">GitHub</a>
+        <a href={`${ghUrl}/issues`} rel="noopener">{t('landing.footer.issues')}</a>
+        <a href={`${ghUrl}/discussions`} rel="noopener">{t('landing.footer.discussions')}</a>
+        <a href="https://www.npmjs.com/package/create-astro-ignite" rel="noopener">npm</a>
+      </div>
+      <div class="footer-col">
+        <span class="footer-head">{t('landing.footer.legalHead')}</span>
+        <a href={`${ghUrl}/blob/main/LICENSE`} rel="noopener">{t('landing.footer.license')}</a>
+        <a href={privacyHref}>{t('landing.footer.privacy')}</a>
+        <a href={termsHref}>{t('landing.footer.terms')}</a>
+        <a href={cookiesHref}>{t('landing.footer.cookies')}</a>
+        <a href={rssUrl}>{t('footer.rss')}</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--color-border);
+    padding: 40px 0 56px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-fg-muted);
+  }
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  @media (max-width: 720px) {
+    .footer-inner {
+      padding: 0 24px;
+    }
+  }
+  .footer-inner a {
+    color: var(--color-fg-muted);
+    text-decoration: none;
+    transition: color 0.12s var(--ease-out-soft);
+  }
+  .footer-inner a:hover {
+    color: var(--color-fg);
+  }
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 36ch;
+  }
+  .footer-lede {
+    margin: 0;
+    font-size: 12px;
+    color: var(--color-fg-muted);
+  }
+  .footer-cols {
+    display: flex;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+  .footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .footer-head {
+    color: var(--color-fg);
+    margin-bottom: 4px;
+  }
+</style>

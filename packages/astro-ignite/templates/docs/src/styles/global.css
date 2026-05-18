@@ -45,6 +45,9 @@
   --color-success: oklch(70% 0.15 145);
   --color-warning: oklch(78% 0.16 75);
   --color-danger: oklch(70% 0.2 28);
+  --color-danger-fg: var(--color-zinc-50);
+  --color-success-fg: var(--color-zinc-950);
+  --color-warning-fg: var(--color-zinc-950);
 
   /* Typography */
   --font-display: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;

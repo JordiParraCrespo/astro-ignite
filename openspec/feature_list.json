@@ -137,6 +137,33 @@
         "pnpm scaffold:test passes and the starter Lighthouse budget is not regressed by the refactor"
       ],
       "issue": 29
+    },
+    {
+      "id": 8,
+      "name": "restructure-starter-template-component-o",
+      "title": "Restructure starter template component organization",
+      "capabilities": [
+        "templates-i18n",
+        "templates-css-tokens",
+        "templates-seo-jsonld",
+        "templates-consent",
+        "templates-perf",
+        "registry-blocks"
+      ],
+      "description": "# Restructure starter template component organization\n\n## Problem\n\n`packages/templates/starter/src/components/` currently has four overlapping buckets:\n\n- `ui/` — atoms mirrored from `packages/registry/base/`\n- `blocks/` — one file (`not-found-state.astro`) mirrored from `packages/registry/blocks/`\n- `sections/` — per-page composition pieces added by #28 (FeaturesGrid, AboutBody, BlogIndexList, ContactSection, NotFoundHero, ProjectsIndexList)\n- loose `*.astro` at the root (Nav, Footer, Brand, ThemeToggle, LocaleSwitcher, CookieBanner, Analytics)\n\nThe split is unclear: `blocks/not-found-state` and `sections/not-found/NotFoundHero` duplicate the 404 concept, and \"section vs block\" has no consistent rule. As the template grows (services pages, case studies, more marketing surfaces), this won't scale.\n\nThis issue collapses the model to **three buckets + a single rule** that matches shadcn-style scaffolding while staying Astro-idiomatic.\n\n## Proposed structure\n\n```\nsrc/components/\n├── ui/                          ← atoms (registry-distributed)\n├── common/                      ← shared structure + small chrome + cross-feature blocks\n│   ├── Header.astro             (renamed from Nav.astr",
+      "acceptance": [
+        "packages/templates/starter/src/components/ contains exactly these subdirectories — ui/, common/, blog/, projects/, about/, contact/, legal/, not-found/ — with no remaining sections/ or blocks/ folder and no loose *.astro files at the root of components/.",
+        "Every relocated component file uses PascalCase (Header.astro, Footer.astro, Brand.astro, ThemeToggle.astro, LocaleSwitcher.astro, Analytics.astro, Hero.astro, FeaturesGrid.astro, AboutBody.astro, BlogIndexList.astro, ContactSection.astro, ProjectsIndexList.astro, CookieBanner.astro, NotFoundHero.astro); files inside ui/ keep their existing kebab-case to match the registry convention.",
+        "The migration map is applied verbatim: Nav.astro → common/Header.astro; Footer/Brand/ThemeToggle/LocaleSwitcher/Analytics.astro → common/; sections/landing/FeaturesGrid.astro → common/FeaturesGrid.astro; sections/about/AboutBody.astro → about/AboutBody.astro; sections/blog/BlogIndexList.astro → blog/BlogIndexList.astro; sections/contact/ContactSection.astro → contact/ContactSection.astro; sections/projects/ProjectsIndexList.astro → projects/ProjectsIndexList.astro; sections/not-found/NotFoundHero.astro → not-found/NotFoundHero.astro; CookieBanner.astro → legal/CookieBanner.astro; sections/ and blocks/ directories are deleted; blocks/not-found-state.astro is merged into not-found/NotFoundHero.astro (no duplicate 404 surface remains).",
+        "packages/registry/blocks/ and the not-found-state registry:block entry are removed from packages/registry/registry.json; only registry:ui and registry:lib items remain.",
+        "Every starter page (default and [lang]/ parallels) follows the thin page contract: frontmatter (layout choice + i18n + schemas + data prep) plus a layout wrapper containing one or more <Composition /> imports — no inline section markup or scoped <style> block in any src/pages/*.astro.",
+        "Mirrored renames are applied to apps/site/src/components/, apps/docs/src/components/, apps/playground/src/components/, and packages/templates/docs/src/components/ for the components that exist in each tree; every import path in pages, layouts, and component bodies that referenced an old location is updated.",
+        "BaseLayout.astro (in every touched tree) imports Header from common/Header.astro (replacing Nav), Footer/CookieBanner/Analytics from their new homes; SEO/JsonLd imports continue to resolve to the same paths in src/components/seo/ or have been relocated together.",
+        "pnpm format:check, pnpm typecheck, pnpm test, pnpm audit:invariants --change restructure-starter-template-component-o, and pnpm scaffold:test all pass — in particular consent-gated-analytics, jsonld-graph, i18n-parallels, internal-links-localized, and tokens-only --layered remain green after the rename + relocation.",
+        "pnpm perf:budget against the starter is not regressed: Lighthouse mobile Performance / Accessibility / Best Practices / SEO ≥ 95 on /, /blog, /projects, /about, /contact; LCP/INP/CLS/TBT/total-transfer budgets in templates-perf hold.",
+        "A changeset under .changeset/ documents the restructure as a breaking change for end users who scaffolded an earlier version of the starter — listing the old → new component paths and noting that the registry:block tier is temporarily removed."
+      ],
+      "issue": 35
     }
   ]
 }

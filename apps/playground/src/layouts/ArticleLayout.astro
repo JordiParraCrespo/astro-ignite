@@ -21,6 +21,7 @@ import { blogPostingSchema, breadcrumbListSchema, personSchema } from '@/lib/jso
 
 import BaseLayout from './BaseLayout.astro';
 import HeroImage from '@/components/image/HeroImage.astro';
+import Text from '@/components/ui/text.astro';
 
 interface Props {
   entry: CollectionEntry<'blog'>;
@@ -100,8 +101,8 @@ const dateFmt = new Intl.DateTimeFormat(locale, {
       <nav class="breadcrumbs" aria-label={t('nav.breadcrumbs')}>
         <a href={getRelativeLocaleUrl(locale, '/blog')}>← {t('blog.backToBlog')}</a>
       </nav>
-      <h1>{entry.data.title}</h1>
-      <p class="article-meta">
+      <Text variant="h1" class="mb-4">{entry.data.title}</Text>
+      <Text variant="muted" class="article-meta">
         {
           author && (
             <>
@@ -117,7 +118,7 @@ const dateFmt = new Intl.DateTimeFormat(locale, {
         <time datetime={entry.data.datePublished.toISOString()}>
           {dateFmt.format(entry.data.datePublished)}
         </time>
-      </p>
+      </Text>
       <HeroImage
         src={entry.data.heroImage}
         alt={entry.data.heroImageAlt}
@@ -154,18 +155,10 @@ const dateFmt = new Intl.DateTimeFormat(locale, {
   .breadcrumbs a:hover {
     color: var(--color-fg);
   }
-  .article-header h1 {
-    font-size: clamp(2rem, 5vw, 3rem);
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    margin: 0 0 1rem;
-    color: var(--color-fg);
-  }
+  /* `.article-meta` keeps only the flex/gap layout — typography now comes
+     from <Text variant="muted">. */
   .article-meta {
-    color: var(--color-fg-muted);
-    font-size: 0.9375rem;
-    margin: 0 0 2rem;
+    margin-bottom: 2rem;
     display: flex;
     flex-wrap: wrap;
     align-items: center;

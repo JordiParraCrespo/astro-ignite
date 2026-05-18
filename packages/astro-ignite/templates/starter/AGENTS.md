@@ -2,8 +2,6 @@
 
 Orientation for AI agents working in this codebase. The human-facing tour is in [`README.md`](./README.md); subject-specific deep dives are under [`docs/`](./docs/).
 
-`CLAUDE.md` in this repo is a symlink to this file.
-
 ## What this project is
 
 An Astro 5 site scaffolded from [astro-ignite](https://github.com/JordiParraCrespo/astro-ignite). It is **not** a framework — every file is owned by this repo and editable. There is no runtime dependency on the scaffolder.
@@ -23,7 +21,7 @@ The site ships with: blog + projects content collections, contact form via Astro
 1. **i18n with parallel routes.** Default locale at `/`, non-default at `/[lang]/`. Every page that exists at `/foo` must also exist at `src/pages/[lang]/foo.astro` with `getStaticPaths` emitting one entry per `siteConfig.locales.filter(l => l !== siteConfig.defaultLocale)`. Content collections use `{locale}/{slug}.mdx` folder layout. Default `siteConfig.locales` ships as `['en']` — parallel routes stay dormant until a second locale is added.
 2. **Internal links go through `getRelativeLocaleUrl(lang, path)`** — never hardcode `/about`.
 3. **LocaleSwitcher in chrome** — hide nav items that have no localized entry.
-4. **Layered CSS.** Above-the-fold components (Hero, Nav, BaseLayout) use scoped `<style>` blocks to avoid render-blocking. Below-the-fold uses Tailwind v4. Beasties extracts critical CSS at build time.
+4. **Layered CSS.** Above-the-fold components (Hero, Header, BaseLayout) use scoped `<style>` blocks to avoid render-blocking. Below-the-fold uses Tailwind v4. Beasties extracts critical CSS at build time.
 5. **Design tokens only.** Components reference `--color-bg`, `--color-fg`, `--color-primary`, `--color-border`, etc. — never raw zinc scale. The zinc scale at the bottom of `global.css` is the source of token values; tri-state dark mode (`.light` class) flips them.
 6. **JSON-LD composes via `@graph`.** Each page contributes its node — don't emit standalone `<script type="application/ld+json">` blocks.
 7. **Astro Actions need an adapter.** The template pins `@astrojs/node@^9`. Swap adapters in `astro.config.mjs` for other targets — see README.
@@ -88,6 +86,18 @@ pnpm preview      # preview production build
 pnpm typecheck    # astro check
 pnpm test         # vitest
 pnpm format       # prettier --write
+```
+
+## End-to-end tests
+
+The workspace ships a Playwright e2e suite at `tests/e2e/`. The
+`starter` Playwright project boots this template via `astro dev` and
+runs every spec under `tests/e2e/common/` plus `tests/e2e/starter/`.
+See [`tests/e2e/AGENTS.md`](../../../tests/e2e/AGENTS.md). Scoped run
+from the workspace root:
+
+```bash
+pnpm test:e2e --project=starter
 ```
 
 ## Style of work

@@ -5,13 +5,4 @@ export type Props = { class?: string };
 const { class: className } = Astro.props;
 ---
 
-<p class={cn('dialog-description', className)}><slot /></p>
-
-<style>
-  .dialog-description {
-    color: var(--color-fg-muted);
-    font-size: 14px;
-    line-height: 1.5;
-    margin: 0;
-  }
-</style>
+<p class={cn('text-fg-muted text-sm leading-normal m-0', className)}><slot /></p>
