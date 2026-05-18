@@ -197,7 +197,8 @@ and `CookieBanner` into `legal/`. Update the layouts.
 - MOD `apps/docs/src/components/LocaleSwitcher.astro` → `apps/docs/src/components/common/LocaleSwitcher.astro`.
 - MOD `apps/docs/src/components/Analytics.astro` → `apps/docs/src/components/common/Analytics.astro`.
 - MOD `apps/docs/src/components/CookieBanner.astro` → `apps/docs/src/components/legal/CookieBanner.astro`.
-- MOD `apps/docs/src/layouts/*` import rewrites.
+- MOD `apps/docs/src/layouts/` import rewrites (BaseLayout, DocsLayout, ComponentsLayout).
+- MOD `apps/docs/src/pages/design.astro` (rewrites `@/components/Brand.astro` → `@/components/common/Brand.astro`).
 
 ### `apps/playground/` — scaffold smoke fixture
 
@@ -225,6 +226,14 @@ tree converges automatically.
 - DEL `apps/playground/src/components/blocks/` (and every file under
   it — the playground replays the starter's tree).
 - MOD `apps/playground/src/layouts/BaseLayout.astro` import rewrites.
+- MOD `apps/playground/src/pages/index.astro` (rewrites
+  `@/components/Hero.astro` → `@/components/common/Hero.astro`; the
+  `feature-grid` block import goes away when `blocks/` is removed —
+  replaced with `@/components/common/FeaturesGrid.astro` once the
+  starter mirror lands via T33's `scaffold:test`; the hand-mirror
+  swaps it in eagerly to keep typecheck green).
+- MOD `apps/playground/src/pages/[lang]/index.astro` (same rewrites
+  as the default-locale `index.astro`).
 
 ### Documentation
 
@@ -239,6 +248,14 @@ tree converges automatically.
   registry-blocks tier removal. Bumps `astro-ignite` and
   `create-astro-ignite` as `minor` (no behavioural change, but a
   visible source-tree restructure for anyone who scaffolded earlier).
+
+### Spec / change-dir artifacts
+
+- MOD `openspec/changes/restructure-starter-template-component-o/`
+  (covers `tasks.md` checkbox flips, this `design.md` itself as it
+  evolves during implementation, the spec deltas under
+  `specs/<capability>/spec.md`, and the run-directory artifacts
+  `runs/<ts>/{impl,audit,perf,review,notes}.md` / `perf.txt`).
 
 ## New signatures
 
