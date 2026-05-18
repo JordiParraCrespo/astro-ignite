@@ -121,6 +121,22 @@
         "The workflow is documented in the workspace `AGENTS.md`, each target's `AGENTS.md`, and a `tests/e2e/AGENTS.md` that explains how to add a spec without breaking the per-target Playwright project layout"
       ],
       "issue": 27
+    },
+    {
+      "id": 7,
+      "name": "starter-use-the-text-component-for-all-t",
+      "title": "Starter: use the Text component for all typography",
+      "capabilities": ["templates-css-tokens", "registry-atoms"],
+      "description": "## Problem\n\nThe `Text` atom exists in the registry (`packages/registry/base/text.astro`) and is shipped pre-installed in the starter (`packages/templates/starter/src/components/ui/text.astro`), but pages and sections across `packages/templates/starter/` still use raw `<p>`, `<h1>`–`<h6>`, and inline Tailwind typography classes instead of `<Text>`.\n\n## Proposal\n\nAudit `packages/templates/starter/` and replace ad-hoc typography with the `Text` component so:\n\n- Typography variants (size, weight, color, leading) are centralized in one atom.\n- Token-driven color/scale changes propagate from a single source.\n- Users editing the scaffolded site have a single place to customize prose styles.\n\n## Acceptance\n\n- [ ] Every page in `packages/templates/starter/src/pages/` (including `[lang]/` parallels) uses `<Text>` for body copy and headings, except where a section component already encapsulates its own typography.\n- [ ] Every section/component under `packages/templates/starter/src/components/` uses `<Text>` for text content.\n- [ ] No remaining inline typography utility soup (e.g. `class=\\\"text-lg leading-7 text-zinc-400\\\"`) where `<Text>` covers the case.\n- [ ] If `Text` is missing a needed v",
+      "acceptance": [
+        "Every page under packages/templates/starter/src/pages/ (default and [lang]/ parallels) uses <Text> for body copy and headings, except where a section component already encapsulates its own typography in a scoped <style> block",
+        "Every section/component under packages/templates/starter/src/components/ that renders body copy uses <Text> for text content (atoms in src/components/ui/ and above-the-fold chrome with scoped <style> blocks excepted)",
+        "No raw <h1>–<h6> or <p> with inline typography utility soup (e.g. class=\"text-lg leading-7 text-zinc-400\") remains in packages/templates/starter/ where <Text> covers the case",
+        "If <Text> is missing a needed variant, packages/registry/base/text.astro and packages/templates/starter/src/components/ui/text.astro are extended in lockstep (no fallback to raw heading/paragraph tags with inline typography classes)",
+        "pnpm audit:invariants --change starter-use-the-text-component-for-all-t passes (templates-css-tokens I1/I4 and registry-atoms I1–I4 stay green)",
+        "pnpm scaffold:test passes and the starter Lighthouse budget is not regressed by the refactor"
+      ],
+      "issue": 29
     }
   ]
 }
