@@ -170,17 +170,6 @@
         { "path": "base/toaster.astro", "target": "src/components/ui/toaster.astro" },
         { "path": "lib/toast.ts", "target": "src/lib/toast.ts" }
       ]
-    },
-    {
-      "name": "not-found-state",
-      "type": "registry:block",
-      "registryDependencies": ["cn"],
-      "files": [
-        {
-          "path": "blocks/not-found-state.astro",
-          "target": "src/components/blocks/not-found-state.astro"
-        }
-      ]
     }
   ]
 }
