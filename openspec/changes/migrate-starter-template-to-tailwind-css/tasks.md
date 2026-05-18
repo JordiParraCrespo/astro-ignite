@@ -17,10 +17,11 @@ step is reviewable as a standalone commit via `scripts/committer
 - [ ] **T1. Inventory scoped `<style>` blocks in the starter.** Run
       `grep -l '<style' packages/templates/starter/src/**/*.astro` and
       record the matrix of (component, tokens consumed, CSS features
-      used) in a comment block at the top of `design.md` (under
-      "Beasties decision"). Confirms whether any component uses
-      `clamp()`, container queries, or keyframes that Tailwind cannot
-      express. _(Covers: S1, S2 — discovery before edits.)_
+      used) in a brief inventory note inside the run dir (e.g. under
+      `openspec/changes/migrate-starter-template-to-tailwind-css/runs/<ts>/inventory.md`).
+      Confirms whether any component uses `clamp()`, container queries,
+      or keyframes that Tailwind cannot express. _(Covers: S1, S2 —
+      discovery before edits.)_
 - [ ] **T2. Verify the `--color-*` token surface is sufficient.** Walk
       the inventory from T1 and cross-check that every CSS variable
       referenced is already declared in `global.css`. If a component
@@ -45,12 +46,15 @@ step is reviewable as a standalone commit via `scripts/committer
 - [ ] **T5. Migrate `Footer.astro` + `FeaturesGrid.astro` + `Analytics.astro`.** Same shape.
       `Analytics.astro` rendering a `<script>` is unaffected; only the
       `<style>` block (if any) goes. _(Covers: S1, S3, templates-css-tokens I1, I3.)_
-- [ ] **T6. Run perf checkpoint #1.** With T3–T5 merged onto a branch,
-      run `pnpm build --filter @astro-ignite/template-starter` and then
-      `pnpm perf:budget --page / --page /blog`. Record LCP / CLS /
-      total-transfer in `design.md` under "Beasties measurement" Build B.
-      If any metric regresses past the budget, revert the offending
-      component and reshape the migration before continuing.
+- [ ] **T6. Run perf checkpoint #1 (advisory).** With T3–T5 merged
+      onto a branch, run `pnpm build --filter @astro-ignite/template-starter`
+      and then `pnpm perf:budget`. On the autopilot runner this skips
+      Lighthouse with a non-failing finding (Chrome / lighthouse not
+      available); the CI workflow `Lighthouse CI (mobile)` is the
+      authoritative gate and runs on every push. Record whatever the
+      local run emits in the run dir for traceability. If CI Lighthouse
+      regresses past the budget on subsequent pushes, revert the
+      offending component and reshape the migration before continuing.
       _(Covers: S4, templates-perf I1, I2, I3.)_
 
 ### Phase 3 — Migrate the rest of the components
@@ -77,26 +81,30 @@ step is reviewable as a standalone commit via `scripts/committer
       `.hairline`, `.mono`, `.caret` / `@keyframes ig-blink`. No token
       values change. _(Covers: S1, S3, templates-css-tokens I2, I3.)_
 
-### Phase 4 — Beasties decision & spec delta finalisation
+### Phase 4 — Beasties removal & spec delta finalisation (DROP by policy)
 
-- [ ] **T11. Run the Beasties A/B/C measurement.** Per the table in
-      `design.md`, measure LCP median-of-5 with Beasties enabled
-      pre-migration (Build A), with Beasties enabled post-migration
-      (Build B), and without Beasties post-migration (Build C). Fill
-      in the table. _(Covers: S4, S5, templates-perf I1, I4.)_
-- [ ] **T12. Apply the Beasties decision.** If DROP: remove the
-      Beasties integration from `astro.config.mjs` and the dep from
-      `package.json`; keep the spec delta as written (the
-      templates-perf delta in this change already deletes the Beasties
-      requirement + I4 row). If RETAIN: replace the templates-perf
-      spec delta with a MODIFIED Requirement that keeps Beasties but
-      drops the "above the fold" language. _(Covers: S5, templates-perf I4, I5.)_
+- [ ] **T11. Confirm DROP-by-policy is consistent.** No measurement
+      gate; the decision is recorded in `design.md` under "Beasties
+      decision — DROP by policy". Verify that (a) the Beasties
+      integration is gone from `packages/templates/starter/astro.config.mjs`,
+      (b) the `astro-beasties` (or equivalent) dep is gone from
+      `packages/templates/starter/package.json`, (c) `apps/site/`
+      mirrors both removals. _(Covers: S4, S5, templates-perf I4.)_
+- [ ] **T12. Apply the templates-perf spec delta.** The DROP-branch
+      delta at `openspec/changes/migrate-starter-template-to-tailwind-css/specs/templates-perf/spec.md`
+      is already written: it removes the Beasties requirement + I4
+      audit row. No edit needed unless the implementer discovers a
+      consistency issue between the delta and the code state.
+      _(Covers: S5, templates-perf I4, I5.)_
 - [ ] **T13. Drop the layered-CSS audit body.** Edit
       `scripts/audit/tokens-only.mjs` so the `--layered` flag becomes a
       deprecated no-op (accept the flag; print a one-line "deprecated"
-      notice on stderr; exit 0). Do not delete the flag entry — older
-      change `design.md` files may still list it in their `pnpm
-audit:invariants` invocation. _(Covers: S2, templates-css-tokens I4.)_
+      notice on stderr; exit 0). Do the same in `scripts/perf/run.mjs`
+      for the `--critical-css` flag, consistent with the templates-perf
+      spec delta. Do not delete the flag entries — older change
+      `design.md` files may still list them in their `pnpm
+audit:invariants` / `pnpm perf:budget` invocations.
+      _(Covers: S2, templates-css-tokens I4.)_
 
 ### Phase 5 — Mirror, refresh, document
 
@@ -126,20 +134,26 @@ packages/astro-ignite/scripts/copy-templates.mjs`. Commit the
       `.changeset/migrate-starter-template-to-tailwind-css.md`
       describing the styling-strategy switch as a breaking change for
       end users tracking the starter's component diff; include the
-      Beasties decision in one sentence. _(Covers: S10.)_
+      Beasties removal in one sentence (DROP by policy — Tailwind v4 + `inlineStylesheets: 'always'` removes Beasties' remaining
+      surface area). _(Covers: S10.)_
 
 ### Phase 6 — Full verification
 
-- [ ] **T19. Regenerate the playground.** Run `pnpm scaffold:test
---full`. The playground tree under `apps/playground/` is
-      regenerated by CI; verify locally that the scaffold builds clean.
+- [ ] **T19. Regenerate the playground.** Run `pnpm scaffold:test`
+      (without `--full`; the full variant is CI-only). The playground
+      tree under `apps/playground/` is regenerated by CI; verify
+      locally that the scaffold builds clean.
       _(Covers: S4, templates-perf I1.)_
-- [ ] **T20. Final invariant + perf + e2e sweep.** Run, in order:
-      `pnpm format && pnpm typecheck && pnpm test && pnpm
-audit:invariants --change migrate-starter-template-to-tailwind-css
-&& pnpm perf:budget && pnpm test:e2e --project=starter`. Every
-      command must exit 0. Attach the perf:budget JSON to the run
-      directory. _(Covers: S2, S3, S4, S9, templates-css-tokens I1, I2, I3; templates-perf I1, I2, I3, I5.)_
+- [ ] **T20. Final invariant + perf sweep (local).** Run, in order:
+      `pnpm format && pnpm typecheck && pnpm test && pnpm audit:invariants --change migrate-starter-template-to-tailwind-css && pnpm perf:budget`.
+      Every command must exit 0. `pnpm perf:budget` is advisory locally
+      and skips Lighthouse when Chrome/lighthouse aren't available;
+      that's expected on the autopilot runner. Attach the perf:budget
+      report to the run directory. The Playwright e2e sweep
+      (`pnpm test:e2e --project=starter`) requires Chromium and is
+      delegated to CI workflow "E2E (templates + apps)"; it already
+      passes on this PR.
+      _(Covers: S2, S3, S4, S9, templates-css-tokens I1, I2, I3; templates-perf I1, I2, I3, I5.)_
 - [ ] **T21. Walk the `new-template` 15-item audit checklist.** The
       skill at `.claude/skills/new-template/SKILL.md` ships a
       template-completeness checklist; the issue body explicitly
