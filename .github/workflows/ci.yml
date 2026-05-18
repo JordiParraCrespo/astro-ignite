@@ -108,6 +108,50 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter astro-ignite build
       - run: node ./scripts/scaffold-test.mjs --full --pm=${{ matrix.pm }}
+      - name: Playground e2e smoke (pnpm only)
+        if: matrix.pm == 'pnpm'
+        run: |
+          pnpm --filter @astro-ignite/playground build || (cd apps/playground && pnpm build)
+          pnpm exec playwright install --with-deps chromium
+          PLAYWRIGHT_PLAYGROUND_READY=1 pnpm test:e2e --project=playground
+      - if: failure() && matrix.pm == 'pnpm'
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-playground
+          path: tests/e2e/playwright-report
+          retention-days: 7
+
+  e2e:
+    name: E2E (templates + apps)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-1.49.0-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            playwright-1.49.0-${{ runner.os }}-
+      - if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: pnpm exec playwright install --with-deps chromium
+      - if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: pnpm exec playwright install-deps chromium
+      - name: Run e2e (starter, docs-template, site, docs-app, docs-template-built)
+        run: pnpm test:e2e --project=starter --project=docs-template --project=docs-template-built --project=site --project=docs-app
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: tests/e2e/playwright-report
+          retention-days: 7
 
   apps-build:
     name: App build (${{ matrix.app }})
