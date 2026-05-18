@@ -75,6 +75,29 @@
     },
     {
       "id": 5,
+      "name": "reorganize-starter-split-pages-into-per",
+      "title": "Reorganize starter: split pages into per-section components",
+      "capabilities": [
+        "templates-i18n",
+        "templates-css-tokens",
+        "templates-seo-jsonld",
+        "templates-perf"
+      ],
+      "description": "## Problem\n\nIn `packages/templates/starter/`, pages currently mix multiple sections inline in a single `.astro` file. This makes pages harder to scan, harder to reuse, and harder for users to customize after scaffolding.\n\n## Proposal\n\n1. **Organize all pages and components properly** under `packages/templates/starter/src/`:\n   - Pages in `src/pages/` stay thin — composition only.\n   - Section components live alongside (e.g. `src/components/sections/` or per-page folders).\n   - Atoms continue to live in `src/components/ui/` (registry-sourced).\n\n2. **One section = one component.** Every distinct page section (hero, features, pricing, testimonials, CTA, etc.) becomes its own `.astro` file. Pages become a short list of imported sections.\n\n## Acceptance\n\n- [ ] Audit every page in `packages/templates/starter/src/pages/` (including `[lang]/` parallels).\n- [ ] Extract each visual section into its own component file.\n- [ ] Pages are composition-only — no inline section markup.\n- [ ] No regression in Lighthouse scores or `pnpm scaffold:test`.\n\n## Scope\n\nOnly `packages/templates/starter/`. Do **not** touch `apps/site/` or other templates in this issue.",
+      "acceptance": [
+        "Every page under packages/templates/starter/src/pages/ (including [lang]/ parallels) imports its visual sections from section components instead of inlining their markup; pages contain composition only (layout wrapper + section imports + data preparation in frontmatter).",
+        "Each distinct visual section (landing hero, landing features grid, about body, contact form, blog index list, projects index list, 404 hero) lives in its own .astro file under packages/templates/starter/src/components/sections/ (or a sibling per-page folder) — one section per file.",
+        "Default-locale page and its [lang]/ parallel import the same section components — no duplicated inline section markup between /foo.astro and /[lang]/foo.astro.",
+        "Scoped <style> blocks for above-the-fold sections move with the section into the section component file (layered CSS strategy preserved); no raw zinc / hex literals introduced.",
+        "Per-page JSON-LD schema arrays remain assembled in the page frontmatter and passed to BaseLayout — no section component emits a standalone <script type=\"application/ld+json\"> tag.",
+        "No new runtime dependencies added to packages/templates/starter/package.json.",
+        "pnpm typecheck, pnpm audit:invariants --change reorganize-starter-split-pages-into-per, and pnpm scaffold:test all pass.",
+        "pnpm perf:budget passes against the starter — Lighthouse mobile thresholds (Performance/Accessibility/Best Practices/SEO ≥ 95) and total-transfer budget for /, /blog, /projects, /about, /contact are not regressed."
+      ],
+      "issue": 26
+    },
+    {
+      "id": 6,
       "name": "add-e2e-testing-to-all-templates-and-app",
       "title": "Add e2e testing to all templates and apps",
       "capabilities": [

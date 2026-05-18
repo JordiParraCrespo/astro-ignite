@@ -1,0 +1,63 @@
+---
+import { cn } from '@/lib/cn';
+
+type Variant = 'info' | 'warning' | 'success' | 'danger';
+
+export type Props = {
+  variant?: Variant;
+  icon?: string;
+  class?: string;
+};
+
+const { variant = 'info', icon, class: className } = Astro.props;
+const defaultIcons: Record<Variant, string> = {
+  info: 'ⓘ',
+  warning: '⚠',
+  success: '✓',
+  danger: '!',
+};
+const displayIcon = icon ?? defaultIcons[variant];
+---
+
+<div class={cn('notice', `notice--${variant}`, className)} role="note">
+  <span class="notice__icon mono" aria-hidden="true">{displayIcon}</span>
+  <span class="notice__body"><slot /></span>
+</div>
+
+<style>
+  .notice {
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    border: 1px solid var(--color-border);
+    background: color-mix(in oklch, var(--color-surface-2) 50%, transparent);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--color-fg-muted);
+  }
+  .notice__icon {
+    font-size: 14px;
+    flex-shrink: 0;
+    color: var(--color-fg);
+  }
+  .notice--warning {
+    border-color: color-mix(in oklch, var(--color-warning) 50%, var(--color-border));
+  }
+  .notice--warning .notice__icon {
+    color: var(--color-warning);
+  }
+  .notice--success {
+    border-color: color-mix(in oklch, var(--color-success) 50%, var(--color-border));
+  }
+  .notice--success .notice__icon {
+    color: var(--color-success);
+  }
+  .notice--danger {
+    border-color: color-mix(in oklch, var(--color-danger) 50%, var(--color-border));
+  }
+  .notice--danger .notice__icon {
+    color: var(--color-danger);
+  }
+</style>

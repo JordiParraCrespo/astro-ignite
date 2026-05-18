@@ -68,7 +68,7 @@ const statusLabels = {
 >
   <article class="project">
     <header class="project-header">
-      <nav class="breadcrumbs" aria-label="Breadcrumbs">
+      <nav class="breadcrumbs" aria-label={t('nav.breadcrumbs')}>
         <a href={getRelativeLocaleUrl(locale, '/projects')}>← {t('projects.backToProjects')}</a>
       </nav>
       <h1>{entry.data.title}</h1>
@@ -100,12 +100,12 @@ const statusLabels = {
               </>
             )
           }
-          <dt>Status</dt>
+          <dt>{t('projects.statusLabel')}</dt>
           <dd>{statusLabels[entry.data.status as keyof typeof statusLabels]}</dd>
           {
             entry.data.datePublished && (
               <>
-                <dt>Date</dt>
+                <dt>{t('projects.dateLabel')}</dt>
                 <dd>
                   <time datetime={entry.data.datePublished.toISOString()}>
                     {dateFmt.format(entry.data.datePublished)}

@@ -6,7 +6,13 @@ export type Props = HTMLAttributes<'p'> & { class?: string };
 const { class: className, ...rest } = Astro.props;
 ---
 
-<p
-  class={cn('text-fg-muted text-sm leading-normal m-0', className)}
-  {...rest}
-><slot /></p>
+<p class={cn('card-description', className)} {...rest}><slot /></p>
+
+<style>
+  .card-description {
+    color: var(--color-fg-muted);
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0;
+  }
+</style>
