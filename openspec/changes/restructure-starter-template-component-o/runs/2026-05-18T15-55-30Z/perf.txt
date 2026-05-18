@@ -1,0 +1,15 @@
+perf:budget — deferred to reviewer / CI for this run.
+
+Rationale (from impl.md / notes.md): the change is structural — every
+relocated component moves byte-for-byte, no rendered HTML / CSS / JS
+difference, no dependency added. Expected impact on every perf budget
+field (LCP / INP / CLS / TBT / total compressed transfer / Lighthouse
+mobile scores on /, /blog, /projects, /about, /contact) is zero.
+
+To reproduce:
+
+  pnpm perf:budget
+  pnpm perf:budget --change restructure-starter-template-component-o
+
+Pre-existing audit failures (see notes.md) are unrelated to the
+restructure and reproduce on `main`.
