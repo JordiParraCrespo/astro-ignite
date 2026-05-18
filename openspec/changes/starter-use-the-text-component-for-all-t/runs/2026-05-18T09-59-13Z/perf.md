@@ -3,6 +3,7 @@
 Generated: 2026-05-18T10:34:37.955Z
 
 ## Findings
+
 - ✅ packages/templates/starter dep count — 12 runtime deps
 - ✅ packages/templates/docs dep count — 8 runtime deps
 - ❌ lighthouse binary — lighthouse not installed (try `pnpm dlx lighthouse` or install Chrome for Testing). Skipping Lighthouse run; see scripts/doctor/chrome-installed.mjs
@@ -10,6 +11,7 @@ Generated: 2026-05-18T10:34:37.955Z
 - ❌ Lighthouse run — not yet wired to a preview server target; see AGENTS.md step 6
 
 ## Budget (canonical: openspec/specs/templates-perf/spec.md )
+
 ```json
 {
   "$comment": "Canonical thresholds live in openspec/specs/templates-perf/spec.md scripts/doctor/perf-budget-baseline.mjs warns when these drift.",

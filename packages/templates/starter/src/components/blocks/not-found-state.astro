@@ -17,7 +17,13 @@ const { code = 'Error · 404', title, description, class: className } = Astro.pr
 >
   <Text variant="eyebrow" class="mono">{code}</Text>
   <Text variant="h1">{title}</Text>
-  {description && <Text variant="muted" class="max-w-[36ch]">{description}</Text>}
+  {
+    description && (
+      <Text variant="muted" class="max-w-[36ch]">
+        {description}
+      </Text>
+    )
+  }
   {
     Astro.slots.has('default') && (
       <div class="flex gap-2.5 mt-2 flex-wrap justify-center">

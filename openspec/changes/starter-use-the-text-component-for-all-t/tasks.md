@@ -108,14 +108,14 @@ h1`, `.project-header h1`, `.project-summary`, `.legal-meta`,
       Covers **S4**.
 
 - [~] **T13.** From the repo root run
-      `node scripts/audit/tokens-only.mjs` and
-      `node scripts/audit/tokens-only.mjs --layered`. The starter
-      template introduces zero new I1/I4 violations. The two pre-
-      existing baseline failures (`themeColor: '#0a0a0a'` in
-      `packages/templates/starter/src/config/site.ts` and
-      `themeColor: '#fafafa'` in `packages/templates/docs/src/config/site.ts`)
-      predate this change (initial commit `f02e323`) and are
-      out-of-scope. See `runs/<ts>/impl.md`. Covers **S6**, **S7**.
+  `node scripts/audit/tokens-only.mjs` and
+  `node scripts/audit/tokens-only.mjs --layered`. The starter
+  template introduces zero new I1/I4 violations. The two pre-
+  existing baseline failures (`themeColor: '#0a0a0a'` in
+  `packages/templates/starter/src/config/site.ts` and
+  `themeColor: '#fafafa'` in `packages/templates/docs/src/config/site.ts`)
+  predate this change (initial commit `f02e323`) and are
+  out-of-scope. See `runs/<ts>/impl.md`. Covers **S6**, **S7**.
 
 - [x] **T14.** From the repo root run
       `node scripts/audit/no-react-in-atoms.mjs --named-only --registry --family-layout`
@@ -140,11 +140,11 @@ h1`, `.project-header h1`, `.project-summary`, `.legal-meta`,
       passing). No vitest project under `packages/templates/starter/`.
 
 - [~] **T18.** `pnpm perf:budget --change starter-use-the-text-component-for-all-t`
-      dep-count check ✅ (12 starter runtime deps, unchanged from main);
-      Lighthouse step fails for an environment reason only — no
-      lighthouse/Chrome binary in this sandbox (same situation as the
-      prior closed feature `add-e2e-testing-…`'s run a16b661). Report
-      at `runs/<ts>/perf.md`. Covers **S10** modulo environment.
+  dep-count check ✅ (12 starter runtime deps, unchanged from main);
+  Lighthouse step fails for an environment reason only — no
+  lighthouse/Chrome binary in this sandbox (same situation as the
+  prior closed feature `add-e2e-testing-…`'s run a16b661). Report
+  at `runs/<ts>/perf.md`. Covers **S10** modulo environment.
 
 - [x] **T19.** `git diff --name-only main -- ':!openspec'` lists 15
       files, all under `packages/templates/starter/`. No `apps/**`, no
