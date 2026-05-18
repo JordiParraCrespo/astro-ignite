@@ -42,5 +42,10 @@ pnpm-debug.log*
 coverage
 .nyc_output
 
+# Playwright e2e artifacts (regenerated per run)
+tests/e2e/test-results
+tests/e2e/playwright-report
+tests/e2e/.playwright-cache
+
 # build artifacts
 *.tsbuildinfo

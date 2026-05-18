@@ -15,7 +15,7 @@ Status: idle
 
 ## State
 
-Feature: 26 — reorganize-starter-split-pages-into-per
-Spec: openspec/changes/reorganize-starter-split-pages-into-per/
-Run: openspec/changes/reorganize-starter-split-pages-into-per/runs/2026-05-17T22-50-19Z/
-Status: in_progress
+Feature: 6 — add-e2e-testing-to-all-templates-and-app
+Spec: openspec/changes/add-e2e-testing-to-all-templates-and-app/
+Run: openspec/changes/add-e2e-testing-to-all-templates-and-app/runs/2026-05-18T08-28-15Z/
+Status: in_progress (implementer)

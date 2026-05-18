@@ -14,6 +14,18 @@ export async function getStaticPaths() {
     .map((lang) => ({ params: { lang } }));
 }
 
+// SSR (output: 'server') ignores getStaticPaths for dynamic routes, so
+// any /<unknown> URL would otherwise match this page. Guard at runtime so
+// only the configured non-default locales render here.
+const langParam = Astro.params.lang;
+if (
+  !langParam ||
+  !siteConfig.locales.includes(langParam) ||
+  langParam === siteConfig.defaultLocale
+) {
+  return new Response(null, { status: 404 });
+}
+
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const siteName = siteConfig.name[locale] ?? siteConfig.name[siteConfig.defaultLocale]!;
 const description =

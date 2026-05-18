@@ -5,6 +5,10 @@ import { siteConfig } from '@/config/site';
 
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const t = useTranslations(locale);
+
+// SSR (output: 'server') defaults responses to 200. Force 404 for the
+// no-route-matched page so crawlers + tests see the right status.
+Astro.response.status = 404;
 ---
 
 <BaseLayout title={t('seo.404.title')} description={t('seo.404.description')} noindex={true}>

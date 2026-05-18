@@ -96,7 +96,13 @@ pnpm format # prettier --write across the monorepo
 pnpm format:check # what the pre-commit hook runs
 
 pnpm scaffold:test # full e2e: wipes apps/playground/, runs CLI --yes, installs, builds, Lighthouse
+pnpm test:e2e # Playwright e2e — see tests/e2e/AGENTS.md
 ```
+
+End-to-end tests live at `tests/e2e/` and use Playwright. Run
+`pnpm test:e2e --list` to see what's wired; `pnpm test:e2e --project=<name>`
+to scope a run. See [`tests/e2e/AGENTS.md`](./tests/e2e/AGENTS.md) for
+the contributor guide.
 
 Single-package: `pnpm --filter <pkg-name> <script>` (names: `create-astro-ignite`, `@astro-ignite/template-starter`, `@astro-ignite/template-docs`, `@astro-ignite/site`, `@astro-ignite/docs`, `@astro-ignite/registry`).
 

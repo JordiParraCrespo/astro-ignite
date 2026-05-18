@@ -88,6 +88,18 @@ pnpm test         # vitest
 pnpm format       # prettier --write
 ```
 
+## End-to-end tests
+
+The workspace ships a Playwright e2e suite at `tests/e2e/`. The
+`starter` Playwright project boots this template via `astro dev` and
+runs every spec under `tests/e2e/common/` plus `tests/e2e/starter/`.
+See [`tests/e2e/AGENTS.md`](../../../tests/e2e/AGENTS.md). Scoped run
+from the workspace root:
+
+```bash
+pnpm test:e2e --project=starter
+```
+
 ## Style of work
 
 - Default to including the feature unless it materially blocks shipping.

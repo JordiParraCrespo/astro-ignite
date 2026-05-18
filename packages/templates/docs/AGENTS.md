@@ -78,6 +78,25 @@ pnpm test         # vitest
 pnpm format       # prettier --write
 ```
 
+## End-to-end tests
+
+The workspace ships a Playwright e2e suite at `tests/e2e/`. Two
+Playwright projects cover this template:
+
+- `docs-template` boots `astro dev` and runs every spec under
+  `tests/e2e/common/` plus `tests/e2e/docs-template/` (sidebar, MDX,
+  search-dialog-dev half).
+- `docs-template-built` first runs `astro build && astro preview`
+  (so the `postbuild: pagefind --site dist` step has run) and
+  exercises the search-with-results spec.
+
+See [`tests/e2e/AGENTS.md`](../../../tests/e2e/AGENTS.md). Scoped run:
+
+```bash
+pnpm test:e2e --project=docs-template
+pnpm test:e2e --project=docs-template-built
+```
+
 ## Style of work
 
 - Don't introduce abstractions before the third copy. The template is owned and editable.
