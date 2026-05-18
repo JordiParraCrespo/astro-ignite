@@ -36,10 +36,7 @@
       "id": 2,
       "name": "registry-block-pricing-card",
       "title": "First block-tier registry item: PricingCard",
-      "capabilities": [
-        "registry-blocks",
-        "registry-atoms"
-      ],
+      "capabilities": ["registry-blocks", "registry-atoms"],
       "description": "Compose Card + Button + (new) PriceTag atom into a PricingCard block. First exercise of the blocks tier, which currently has no items.",
       "acceptance": [
         "packages/registry/blocks/pricing-card/ exists with PricingCard.astro + a demo .mdx",
@@ -52,9 +49,7 @@
       "id": 3,
       "name": "doctor-shipped-in-templates",
       "title": "Ship pnpm doctor inside the templates",
-      "capabilities": [
-        "cli-scaffold"
-      ],
+      "capabilities": ["cli-scaffold"],
       "description": "Phase 2 of the harness — when the CLI user opts into harness scaffolding, scripts/doctor/ + scripts/committer + .claude/agents/ + openspec/ land in their repo.",
       "acceptance": [
         "create-astro-ignite prompts ask 'Include AI harness scaffolding?' (default: false)",
@@ -67,9 +62,7 @@
       "id": 4,
       "name": "make-the-h1-contain-only-text",
       "title": "Make the h1 contain only text",
-      "capabilities": [
-        "templates-i18n"
-      ],
+      "capabilities": ["templates-i18n"],
       "description": "---\nname: hero-h1-text-only\ncapabilities:\n  - templates-i18n\n---\n\n## Why\n\nThe HeroSection in `apps/site` currently wraps a `<span class=\"text-fg-muted\">` prefix inside the `<h1>`, paired with a separate `headlineMuted` i18n key. The desired hero is a single plain-text headline; the muted prefix and its translations should be removed.\n\n> Note: `apps/site/` is a marketing mirror, not a template. Only files under `apps/site/` are in scope for this change — do **not** modify `packages/templates/starter/`.\n\n## Acceptance\n\n- `apps/site/src/components/landing/HeroSection.astro` renders only `{t('landing.hero.headlineTail')}` as the single child of the `<h1>` (no nested span, no muted prefix)\n- `apps/site/src/i18n/en.json` no longer contains a `landing.hero.headlineMuted` key\n- `apps/site/src/i18n/es.json` no longer contains a `landing.hero.headlineMuted` key\n- `pnpm typecheck` is green\n- `pnpm build --filter @astro-ignite/site` is green",
       "acceptance": [
         "apps/site/src/components/landing/HeroSection.astro renders only {t('landing.hero.headlineTail')} as the single child of the <h1> (no nested span, no muted prefix)",
@@ -133,10 +126,7 @@
       "id": 7,
       "name": "starter-use-the-text-component-for-all-t",
       "title": "Starter: use the Text component for all typography",
-      "capabilities": [
-        "templates-css-tokens",
-        "registry-atoms"
-      ],
+      "capabilities": ["templates-css-tokens", "registry-atoms"],
       "description": "## Problem\n\nThe `Text` atom exists in the registry (`packages/registry/base/text.astro`) and is shipped pre-installed in the starter (`packages/templates/starter/src/components/ui/text.astro`), but pages and sections across `packages/templates/starter/` still use raw `<p>`, `<h1>`–`<h6>`, and inline Tailwind typography classes instead of `<Text>`.\n\n## Proposal\n\nAudit `packages/templates/starter/` and replace ad-hoc typography with the `Text` component so:\n\n- Typography variants (size, weight, color, leading) are centralized in one atom.\n- Token-driven color/scale changes propagate from a single source.\n- Users editing the scaffolded site have a single place to customize prose styles.\n\n## Acceptance\n\n- [ ] Every page in `packages/templates/starter/src/pages/` (including `[lang]/` parallels) uses `<Text>` for body copy and headings, except where a section component already encapsulates its own typography.\n- [ ] Every section/component under `packages/templates/starter/src/components/` uses `<Text>` for text content.\n- [ ] No remaining inline typography utility soup (e.g. `class=\\\"text-lg leading-7 text-zinc-400\\\"`) where `<Text>` covers the case.\n- [ ] If `Text` is missing a needed v",
       "acceptance": [
         "Every page under packages/templates/starter/src/pages/ (default and [lang]/ parallels) uses <Text> for body copy and headings, except where a section component already encapsulates its own typography in a scoped <style> block",
@@ -179,9 +169,25 @@
       "id": 9,
       "name": "docs-add-404-page-with-i18n-locale-paral",
       "title": "Docs: add 404 page with i18n + locale parallels",
-      "capabilities": [],
+      "capabilities": [
+        "templates-i18n",
+        "templates-css-tokens",
+        "templates-seo-jsonld",
+        "templates-perf"
+      ],
       "description": "# Docs: add 404 page with i18n + locale parallels\n\n## Problem\n\n`packages/templates/docs/src/pages/` has no `404.astro`. When a user hits an unknown URL on a docs site scaffolded from this template, Astro serves a default unstyled white page — no branding, no nav, no translated message, no \"back to docs\" link.\n\nThe starter template ships a real 404 (`pages/404.astro` + `[lang]/404.astro` parallels + `components/not-found/NotFoundHero.astro` + i18n `errors.404` keys). The docs template should match.\n\n## Proposed approach\n\nMirror the starter's pattern, scoped to a docs site:\n\n```\npackages/templates/docs/src/\n├── pages/\n│   ├── 404.astro                    ← new\n│   └── [lang]/404.astro             ← new (parallel routes, one per non-default locale)\n├── components/\n│   └── not-found/\n│       └── NotFoundHero.astro       ← new (docs-flavored, no marketing CTA)\n└── i18n/{en,es}.json                ← add errors.404.{heading,body,back}\n```\n\n**Docs-flavored differences vs starter:**\n- \"Back to home\" links to the docs landing (`/`), not a marketing home.\n- Include a \"Search the docs\" link to the search page or invoke the existing `SearchBox` component if it works headless on a static page.\n-",
-      "acceptance": [],
+      "acceptance": [
+        "packages/templates/docs/src/pages/404.astro exists, sets Astro.response.status = 404 in the frontmatter, and renders <NotFoundHero /> inside <BaseLayout> with noindex=true and seo.404.{title,description} i18n keys.",
+        "packages/templates/docs/src/pages/[lang]/404.astro exists, sets Astro.response.status = 404, and exports a getStaticPaths that emits one entry per siteConfig.locales.filter(l => l !== siteConfig.defaultLocale).",
+        "packages/templates/docs/src/components/not-found/NotFoundHero.astro exists, renders the 404 surface using design tokens (no raw zinc / hex), composes existing ui/ atoms (Text, Button), and contains its layout styles in a scoped <style> block.",
+        "NotFoundHero renders two affordances localized via i18n: a primary 'Back to home' link to the docs landing built with getRelativeLocaleUrl(locale, '/'), and a secondary 'Search the docs' link/button that opens the existing docs/SearchBox dialog or links to the docs root when search is not usable on a static 404.",
+        "packages/templates/docs/src/i18n/en.json and es.json expose errors.404.{heading,body,back} (already present) plus a new errors.404.search key consumed by NotFoundHero; both files stay key-parallel.",
+        "apps/docs/src/pages/404.astro, apps/docs/src/pages/[lang]/404.astro, apps/docs/src/components/not-found/NotFoundHero.astro, and apps/docs/src/i18n/{en,es}.json mirror the template changes verbatim (apps/docs is a manual mirror, not auto-synced).",
+        "Hitting /does-not-exist in pnpm dev for the docs template renders the styled 404 with chrome inherited from BaseLayout (theme toggle works, locale switcher visible when locales has more than one); curl -I against the previewed build returns the 404 status the static host advertises for the generated 404.html.",
+        "pnpm format:check, pnpm typecheck, pnpm test, pnpm audit:invariants --change docs-add-404-page-with-i18n-locale-paral, and pnpm scaffold:test all pass; templates-i18n (I1/I2/I4/I5/I6), templates-css-tokens (I1/I4), and templates-seo-jsonld (I1/I2/I3) stay green.",
+        "pnpm perf:budget against the docs template is not regressed: Lighthouse mobile Performance/Accessibility/Best Practices/SEO ≥ 95 on the 404 page; total transfer for /does-not-exist stays within the templates-perf budget.",
+        "No new runtime dependency is added to packages/templates/docs/package.json or apps/docs/package.json; the 404 page composes existing ui/ atoms and docs/SearchBox only."
+      ],
       "issue": 41
     }
   ]
