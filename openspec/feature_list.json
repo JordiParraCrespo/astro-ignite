@@ -36,10 +36,7 @@
       "id": 2,
       "name": "registry-block-pricing-card",
       "title": "First block-tier registry item: PricingCard",
-      "capabilities": [
-        "registry-blocks",
-        "registry-atoms"
-      ],
+      "capabilities": ["registry-blocks", "registry-atoms"],
       "description": "Compose Card + Button + (new) PriceTag atom into a PricingCard block. First exercise of the blocks tier, which currently has no items.",
       "acceptance": [
         "packages/registry/blocks/pricing-card/ exists with PricingCard.astro + a demo .mdx",
@@ -52,9 +49,7 @@
       "id": 3,
       "name": "doctor-shipped-in-templates",
       "title": "Ship pnpm doctor inside the templates",
-      "capabilities": [
-        "cli-scaffold"
-      ],
+      "capabilities": ["cli-scaffold"],
       "description": "Phase 2 of the harness — when the CLI user opts into harness scaffolding, scripts/doctor/ + scripts/committer + .claude/agents/ + openspec/ land in their repo.",
       "acceptance": [
         "create-astro-ignite prompts ask 'Include AI harness scaffolding?' (default: false)",
@@ -67,9 +62,7 @@
       "id": 4,
       "name": "make-the-h1-contain-only-text",
       "title": "Make the h1 contain only text",
-      "capabilities": [
-        "templates-i18n"
-      ],
+      "capabilities": ["templates-i18n"],
       "description": "---\nname: hero-h1-text-only\ncapabilities:\n  - templates-i18n\n---\n\n## Why\n\nThe HeroSection in `apps/site` currently wraps a `<span class=\"text-fg-muted\">` prefix inside the `<h1>`, paired with a separate `headlineMuted` i18n key. The desired hero is a single plain-text headline; the muted prefix and its translations should be removed.\n\n> Note: `apps/site/` is a marketing mirror, not a template. Only files under `apps/site/` are in scope for this change — do **not** modify `packages/templates/starter/`.\n\n## Acceptance\n\n- `apps/site/src/components/landing/HeroSection.astro` renders only `{t('landing.hero.headlineTail')}` as the single child of the `<h1>` (no nested span, no muted prefix)\n- `apps/site/src/i18n/en.json` no longer contains a `landing.hero.headlineMuted` key\n- `apps/site/src/i18n/es.json` no longer contains a `landing.hero.headlineMuted` key\n- `pnpm typecheck` is green\n- `pnpm build --filter @astro-ignite/site` is green",
       "acceptance": [
         "apps/site/src/components/landing/HeroSection.astro renders only {t('landing.hero.headlineTail')} as the single child of the <h1> (no nested span, no muted prefix)",
@@ -133,10 +126,7 @@
       "id": 7,
       "name": "starter-use-the-text-component-for-all-t",
       "title": "Starter: use the Text component for all typography",
-      "capabilities": [
-        "templates-css-tokens",
-        "registry-atoms"
-      ],
+      "capabilities": ["templates-css-tokens", "registry-atoms"],
       "description": "## Problem\n\nThe `Text` atom exists in the registry (`packages/registry/base/text.astro`) and is shipped pre-installed in the starter (`packages/templates/starter/src/components/ui/text.astro`), but pages and sections across `packages/templates/starter/` still use raw `<p>`, `<h1>`–`<h6>`, and inline Tailwind typography classes instead of `<Text>`.\n\n## Proposal\n\nAudit `packages/templates/starter/` and replace ad-hoc typography with the `Text` component so:\n\n- Typography variants (size, weight, color, leading) are centralized in one atom.\n- Token-driven color/scale changes propagate from a single source.\n- Users editing the scaffolded site have a single place to customize prose styles.\n\n## Acceptance\n\n- [ ] Every page in `packages/templates/starter/src/pages/` (including `[lang]/` parallels) uses `<Text>` for body copy and headings, except where a section component already encapsulates its own typography.\n- [ ] Every section/component under `packages/templates/starter/src/components/` uses `<Text>` for text content.\n- [ ] No remaining inline typography utility soup (e.g. `class=\\\"text-lg leading-7 text-zinc-400\\\"`) where `<Text>` covers the case.\n- [ ] If `Text` is missing a needed v",
       "acceptance": [
         "Every page under packages/templates/starter/src/pages/ (default and [lang]/ parallels) uses <Text> for body copy and headings, except where a section component already encapsulates its own typography in a scoped <style> block",
@@ -179,9 +169,18 @@
       "id": 9,
       "name": "docs-match-starter-perf-sitemap-config",
       "title": "Docs: match starter perf + sitemap config",
-      "capabilities": [],
+      "capabilities": ["templates-perf", "templates-seo-jsonld"],
       "description": "# Docs: match starter perf + sitemap config\n\n## Problem\n\n`packages/templates/docs/astro.config.mjs` is missing two production-grade defaults that the starter template ships:\n\n1. **No `inlineStylesheets: 'always'`** — the starter inlines all CSS into the HTML to eliminate render-blocking CSS requests on first paint. From the starter config:\n   > \"The largest bundle is ~25 KB (blog post route, Tailwind + tokens) — that adds ~25 KB to the HTML per page, but eliminates one render-blocking request and is a clear Speed-Index / FCP win for a content-light site.\"\n   The same argument applies to a docs site: content-light pages, CSS-heavy Tailwind, FCP-sensitive.\n\n2. **No sitemap `serialize` / per-page priority** — the starter post-processes the sitemap to give `/` priority `1.0` and `/legal/*` priority `0.3`. Docs sitemap is flat (default `0.5`), which under-signals the landing page and over-signals legal templates.\n\n## Proposed approach\n\nUpdate `packages/templates/docs/astro.config.mjs` to match the starter's `build` and sitemap blocks, adapted for docs routes:\n\n```js\nbuild: {\n  format: 'directory',\n  inlineStylesheets: 'always',\n},\n\n// inside sitemap()\nserialize(item) {\n  const pathname ",
-      "acceptance": [],
+      "acceptance": [
+        "packages/templates/docs/astro.config.mjs sets build.inlineStylesheets: 'always' (verbatim string literal 'always', not 'auto' or omitted).",
+        "packages/templates/docs/astro.config.mjs sitemap() integration includes a serialize(item) callback that lifts pathname === '/' to priority 1.0, demotes any url including '/legal/' to priority 0.3, and returns the item; the sitemap() call also sets default priority: 0.7 and keeps changefreq: 'weekly'.",
+        "apps/docs/astro.config.mjs mirrors the same build.inlineStylesheets, default sitemap priority/changefreq, and serialize callback byte-for-byte (modulo the existing site/adapter differences).",
+        "After pnpm --filter @astro-ignite/template-docs build, every emitted HTML page under dist/ contains an inline <style> block carrying the page CSS and no <link rel=\"stylesheet\" href=\"/_astro/*.css\"> for first-party bundles.",
+        "After the same build, dist/sitemap-0.xml lists <priority>1.0</priority> for the / entry, <priority>0.3</priority> for every /legal/* entry, and <priority>0.7</priority> for at least one docs guide page (e.g. /quick-start or /introduction).",
+        "No runtime dependency is added to packages/templates/docs/package.json or apps/docs/package.json.",
+        "pnpm format:check, pnpm typecheck, pnpm test, pnpm audit:invariants --change docs-match-starter-perf-sitemap-config, and pnpm scaffold:test all exit 0.",
+        "pnpm perf:budget against the docs template/app meets the templates-perf Lighthouse mobile thresholds (Performance/Accessibility/Best Practices/SEO ≥ 95, LCP/INP/CLS/TBT/total-transfer inside budget) on / and one inner page and does not regress relative to the previous baseline."
+      ],
       "issue": 42
     }
   ]
