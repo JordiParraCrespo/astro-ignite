@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import Button from '@/components/ui/button.astro';
 import { useTranslations } from '@/i18n';
 import { siteConfig } from '@/config/site';
 
@@ -12,7 +13,7 @@ const t = useTranslations(locale);
     <p class="code">404</p>
     <h1>{t('errors.404.heading')}</h1>
     <p class="message">{t('errors.404.body')}</p>
-    <a href="/" class="btn">{t('errors.404.back')} →</a>
+    <Button href="/" variant="default">{t('errors.404.back')} →</Button>
   </section>
 </BaseLayout>
 
@@ -41,19 +42,5 @@ const t = useTranslations(locale);
     color: var(--color-fg-muted);
     margin: 0 0 2rem;
     font-size: 1.0625rem;
-  }
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.625rem 1.125rem;
-    border-radius: 0.5rem;
-    background: var(--color-fg);
-    color: var(--color-bg);
-    text-decoration: none;
-    font-size: 0.9375rem;
-    font-weight: 500;
-  }
-  .btn:hover {
-    opacity: 0.9;
   }
 </style>

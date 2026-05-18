@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig, fontProviders } from 'astro/config';
+import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
 import node from '@astrojs/node';
@@ -15,6 +15,11 @@ export default defineConfig({
   adapter: node({ mode: 'standalone' }),
   build: {
     format: 'directory',
+    // Inline ALL stylesheets so the first paint never waits on a CSS round-trip.
+    // The largest bundle is ~25 KB (blog post route, Tailwind + tokens) — that
+    // adds ~25 KB to the HTML per page, but eliminates one render-blocking
+    // request and is a clear Speed-Index / FCP win for a content-light site.
+    inlineStylesheets: 'always',
   },
   i18n: {
     defaultLocale: siteConfig.defaultLocale,
@@ -48,29 +53,5 @@ export default defineConfig({
     // monorepo), but to Vite 6 in others (fresh scaffolds). Either way the runtime
     // plugin works — silence the conditional type drift with a single any-cast.
     plugins: [/** @type {any} */ (tailwindcss())],
-  },
-  experimental: {
-    fonts: [
-      {
-        provider: fontProviders.bunny(),
-        name: 'Geist',
-        cssVariable: '--font-display',
-        weights: ['400 700'],
-        styles: ['normal'],
-        subsets: ['latin', 'latin-ext'],
-        fallbacks: ['system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
-        display: 'swap',
-      },
-      {
-        provider: fontProviders.bunny(),
-        name: 'Geist Mono',
-        cssVariable: '--font-mono',
-        weights: [400, 600],
-        styles: ['normal'],
-        subsets: ['latin'],
-        fallbacks: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
-        display: 'swap',
-      },
-    ],
   },
 });

@@ -8,17 +8,28 @@ export type Props = HTMLAttributes<'div'> & {
 };
 
 const { orientation = 'horizontal', class: className, ...rest } = Astro.props;
-
-const sizing =
-  orientation === 'horizontal'
-    ? 'h-px w-full'
-    : 'w-px h-full self-stretch';
 ---
 
 <div
   role="separator"
   aria-orientation={orientation}
-  class={cn('bg-border shrink-0', sizing, className)}
+  class={cn('sep', `sep--${orientation}`, className)}
   {...rest}
 >
 </div>
+
+<style>
+  .sep {
+    background: var(--color-border);
+    flex-shrink: 0;
+  }
+  .sep--horizontal {
+    height: 1px;
+    width: 100%;
+  }
+  .sep--vertical {
+    width: 1px;
+    height: 100%;
+    align-self: stretch;
+  }
+</style>

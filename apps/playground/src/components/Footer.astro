@@ -15,9 +15,9 @@ const t = useTranslations(locale);
 const siteName = siteConfig.name[locale] ?? siteConfig.name[siteConfig.defaultLocale]!;
 
 const legalLinks = [
-  { label: 'Privacy', href: getRelativeLocaleUrl(locale, '/legal/privacy') },
-  { label: 'Terms', href: getRelativeLocaleUrl(locale, '/legal/terms') },
-  { label: 'Cookies', href: getRelativeLocaleUrl(locale, '/legal/cookies') },
+  { label: t('footer.privacy'), href: getRelativeLocaleUrl(locale, '/legal/privacy') },
+  { label: t('footer.terms'), href: getRelativeLocaleUrl(locale, '/legal/terms') },
+  { label: t('footer.cookies'), href: getRelativeLocaleUrl(locale, '/legal/cookies') },
 ];
 
 const rssUrl = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/rss.xml`;

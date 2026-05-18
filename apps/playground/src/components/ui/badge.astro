@@ -10,18 +10,47 @@ export type Props = HTMLAttributes<'span'> & {
 };
 
 const { variant = 'default', class: className, ...rest } = Astro.props;
-
-const base =
-  'inline-flex items-center gap-1 h-[22px] px-2 rounded-full text-xs font-medium leading-none border border-transparent whitespace-nowrap';
-
-const variants: Record<Variant, string> = {
-  default: 'bg-primary text-primary-fg',
-  secondary: 'bg-surface-2 text-fg',
-  outline: 'bg-transparent text-fg border-border',
-  destructive: 'bg-danger text-danger-fg',
-  success: 'bg-success text-success-fg',
-  warning: 'bg-warning text-warning-fg',
-};
 ---
 
-<span class={cn(base, variants[variant], className)} {...rest}><slot /></span>
+<span class={cn('badge', `badge--${variant}`, className)} {...rest}><slot /></span>
+
+<style>
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    height: 22px;
+    padding-inline: 8px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1;
+    border: 1px solid transparent;
+    white-space: nowrap;
+  }
+  .badge--default {
+    background: var(--color-primary);
+    color: var(--color-primary-fg);
+  }
+  .badge--secondary {
+    background: var(--color-surface-2);
+    color: var(--color-fg);
+  }
+  .badge--outline {
+    background: transparent;
+    color: var(--color-fg);
+    border-color: var(--color-border);
+  }
+  .badge--destructive {
+    background: var(--color-danger);
+    color: var(--color-zinc-50);
+  }
+  .badge--success {
+    background: var(--color-success);
+    color: var(--color-zinc-950);
+  }
+  .badge--warning {
+    background: var(--color-warning);
+    color: var(--color-zinc-950);
+  }
+</style>

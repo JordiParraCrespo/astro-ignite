@@ -4,8 +4,12 @@
  * automatically per-route. Uses CSS variables from the @theme block so it
  * inherits brand color / typography / dark-mode tokens.
  *
+ * Buttons route through `ui/button.astro` — don't redefine `.btn` here.
+ *
  * Edit freely — this is a reference layout, not a contract.
  */
+
+import Button from '@/components/ui/button.astro';
 
 interface Props {
   eyebrow?: string;
@@ -27,14 +31,14 @@ const { eyebrow, title, description, primaryCta, secondaryCta } = Astro.props;
       (primaryCta || secondaryCta) && (
         <div class="hero-actions">
           {primaryCta && (
-            <a href={primaryCta.href} class="btn btn-primary">
+            <Button href={primaryCta.href} variant="default">
               {primaryCta.label}
-            </a>
+            </Button>
           )}
           {secondaryCta && (
-            <a href={secondaryCta.href} class="btn btn-ghost">
+            <Button href={secondaryCta.href} variant="ghost">
               {secondaryCta.label} →
-            </a>
+            </Button>
           )}
         </div>
       )
@@ -85,30 +89,5 @@ const { eyebrow, title, description, primaryCta, secondaryCta } = Astro.props;
     gap: 0.75rem;
     justify-content: center;
     flex-wrap: wrap;
-  }
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.625rem 1.125rem;
-    border-radius: 0.5rem;
-    font-size: 0.9375rem;
-    font-weight: 500;
-    text-decoration: none;
-    border: 1px solid transparent;
-    transition: all 0.15s var(--ease-out-soft);
-  }
-  .btn-primary {
-    background: var(--color-fg);
-    color: var(--color-bg);
-  }
-  .btn-primary:hover {
-    opacity: 0.9;
-  }
-  .btn-ghost {
-    color: var(--color-fg);
-    border-color: var(--color-border);
-  }
-  .btn-ghost:hover {
-    background: var(--color-surface-2);
   }
 </style>
