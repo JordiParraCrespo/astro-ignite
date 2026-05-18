@@ -15,5 +15,7 @@ Status: idle
 
 ## State
 
-Feature: (none — idle)
-Status: idle
+Feature: 5 — add-e2e-testing-to-all-templates-and-app
+Spec: openspec/changes/add-e2e-testing-to-all-templates-and-app/
+Run: openspec/changes/add-e2e-testing-to-all-templates-and-app/runs/2026-05-18T08-28-15Z/
+Status: in_progress (implementer)

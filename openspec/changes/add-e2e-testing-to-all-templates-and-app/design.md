@@ -37,6 +37,7 @@ zero behaviour change").
 - NEW `tests/e2e/`
 - NEW `.changeset/add-e2e-testing-to-all-templates-and-app.md`
 - MOD `package.json`
+- MOD `pnpm-lock.yaml`
 - MOD `pnpm-workspace.yaml`
 - MOD `.gitignore`
 - MOD `.prettierignore`
@@ -51,6 +52,8 @@ zero behaviour change").
 - MOD `apps/site/CLAUDE.md`
 - MOD `apps/docs/AGENTS.md`
 - MOD `apps/docs/CLAUDE.md`
+- MOD `openspec/changes/add-e2e-testing-to-all-templates-and-app/`
+- MOD `openspec/progress/current.md`
 
 Notes for the committer:
 
@@ -191,6 +194,16 @@ change introduces, and the audit commands `pnpm audit:invariants
 | templates-consent I6    | Cookie banner accept → consent stored → analytics fires next nav    | `pnpm test:e2e --grep '@consent-postgate'` |
 | cli-scaffold I5         | Scaffolded playground passes an e2e smoke (homepage + 404)          | `pnpm test:e2e --project=playground`       |
 | cli-scaffold I6         | Workspace exposes `pnpm test:e2e` that lists at least one project   | `pnpm test:e2e --list`                     |
+
+Audit commands (parseable by `scripts/audit/run-all.mjs --change`):
+
+- audit: `pnpm test:e2e --list`
+
+Note: the `--grep` and `--project=playground` audits in the table above
+are only meaningful with running dev servers and installed browsers, so
+the `audit:invariants` dispatcher runs only the cheap `--list` check.
+The full grep-based audits run inside the `e2e` CI job — that is the
+canonical pass/fail signal for the behavioural invariants.
 
 The existing audits remain untouched and must continue to pass:
 
