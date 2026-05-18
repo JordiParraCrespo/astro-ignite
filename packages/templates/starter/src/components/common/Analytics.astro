@@ -1,0 +1,34 @@
+---
+/**
+ * Plausible analytics — env-gated, consent-gated.
+ *
+ * Renders nothing if `PUBLIC_PLAUSIBLE_DOMAIN` is unset (zero perf cost).
+ * Waits for the cookie banner to record consent before injecting the
+ * Plausible script. Listens for the `consent-change` window event.
+ *
+ * To swap to Umami / Fathom / GA / Vercel Analytics, replace this file —
+ * see docs/ANALYTICS.md for copy-paste recipes.
+ */
+
+const domain = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN;
+const host = import.meta.env.PUBLIC_PLAUSIBLE_HOST ?? 'https://plausible.io';
+---
+
+{
+  domain && (
+    <script is:inline define:vars={{ domain, host }}>
+      const __ig_plausible_inject = function () {
+        if (document.querySelector('script[data-domain]')) return;
+        const s = document.createElement('script');
+        s.defer = true;
+        s.dataset.domain = domain;
+        s.src = host + '/js/script.js';
+        document.head.appendChild(s);
+      };
+      if (localStorage.getItem('cookie-consent') === 'accepted') __ig_plausible_inject();
+      window.addEventListener('consent-change', function (e) {
+        if (e.detail === 'accepted') __ig_plausible_inject();
+      });
+    </script>
+  )
+}

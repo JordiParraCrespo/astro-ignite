@@ -4,8 +4,8 @@ import type { CollectionEntry } from 'astro:content';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import BlogIndexList from '@/components/sections/blog/BlogIndexList.astro';
-import type { PostCard } from '@/components/sections/blog/BlogIndexList.astro';
+import BlogIndexList from '@/components/blog/BlogIndexList.astro';
+import type { PostCard } from '@/components/blog/BlogIndexList.astro';
 import { useTranslations } from '@/i18n';
 import { siteConfig } from '@/config/site';
 import { breadcrumbListSchema, collectionPageSchema } from '@/lib/jsonld';

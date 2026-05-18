@@ -1,0 +1,200 @@
+---
+/**
+ * Site navigation.
+ *
+ * Above-the-fold component — uses scoped <style> blocks (not Tailwind) so the
+ * styles inline per-route automatically. Mobile menu is a vanilla-JS toggle
+ * that flips a class + aria-expanded on the nav.
+ */
+
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
+import { siteConfig } from '@/config/site';
+import { useTranslations } from '@/i18n';
+import ThemeToggle from './ThemeToggle.astro';
+import LocaleSwitcher from './LocaleSwitcher.astro';
+import Brand from './Brand.astro';
+
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
+
+const links = [
+  { label: t('nav.blog'), href: getRelativeLocaleUrl(locale, '/blog') },
+  { label: t('nav.projects'), href: getRelativeLocaleUrl(locale, '/projects') },
+  { label: t('nav.about'), href: getRelativeLocaleUrl(locale, '/about') },
+  { label: t('nav.contact'), href: getRelativeLocaleUrl(locale, '/contact') },
+];
+
+const homeUrl = getRelativeLocaleUrl(locale, '/');
+const siteName = siteConfig.name[locale] ?? siteConfig.name[siteConfig.defaultLocale]!;
+---
+
+<header class="site-header">
+  <nav class="site-nav" aria-label={t('nav.primary')}>
+    <Brand href={homeUrl} variant="lockup" size={0.32} label={siteName} />
+
+    <button
+      type="button"
+      class="nav-toggle"
+      aria-controls="primary-nav-menu"
+      aria-expanded="false"
+      aria-label={t('nav.openMenu')}
+    >
+      <span class="nav-toggle-icon" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </span>
+    </button>
+
+    <div id="primary-nav-menu" class="nav-menu">
+      <ul>
+        {
+          links.map((link) => (
+            <li>
+              <a href={link.href}>{link.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="nav-actions">
+        <LocaleSwitcher />
+        <ThemeToggle />
+      </div>
+    </div>
+  </nav>
+</header>
+
+<script is:inline>
+  (() => {
+    const toggle = document.querySelector('.nav-toggle');
+    const menu = document.getElementById('primary-nav-menu');
+    if (!toggle || !menu) return;
+    toggle.addEventListener('click', () => {
+      const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!isOpen));
+      menu.classList.toggle('open', !isOpen);
+      document.body.classList.toggle('nav-open', !isOpen);
+    });
+    // Close on resize to desktop
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 768) {
+        toggle.setAttribute('aria-expanded', 'false');
+        menu.classList.remove('open');
+        document.body.classList.remove('nav-open');
+      }
+    });
+  })();
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: color-mix(in oklch, var(--color-bg) 92%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .site-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0.875rem 1.25rem;
+    gap: 1rem;
+  }
+  .nav-toggle {
+    appearance: none;
+    background: transparent;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    color: var(--color-fg);
+    border-radius: 0.5rem;
+  }
+  .nav-toggle:hover {
+    background: var(--color-surface-2);
+  }
+  .nav-toggle-icon {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 20px;
+  }
+  .nav-toggle-icon span {
+    display: block;
+    height: 2px;
+    background: currentColor;
+    border-radius: 1px;
+  }
+
+  .nav-menu {
+    display: none;
+  }
+  .nav-menu ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 1.5rem;
+  }
+  .nav-menu a {
+    text-decoration: none;
+    color: var(--color-fg-muted);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    transition: color 0.15s var(--ease-out-soft);
+  }
+  .nav-menu a:hover {
+    color: var(--color-fg);
+  }
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: 1rem;
+  }
+
+  /* Desktop layout */
+  @media (min-width: 768px) {
+    .nav-toggle {
+      display: none;
+    }
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+  }
+
+  /* Mobile menu open */
+  @media (max-width: 767px) {
+    .nav-menu.open {
+      display: block;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--color-bg);
+      border-bottom: 1px solid var(--color-border);
+      padding: 1rem 1.25rem 1.5rem;
+    }
+    .nav-menu.open ul {
+      flex-direction: column;
+      gap: 0.875rem;
+      align-items: flex-start;
+    }
+    .nav-menu.open a {
+      font-size: 1.125rem;
+    }
+    .nav-menu.open .nav-actions {
+      margin-top: 1rem;
+      margin-left: 0;
+      padding-top: 1rem;
+      border-top: 1px solid var(--color-border);
+      width: 100%;
+      justify-content: flex-start;
+    }
+  }
+</style>

@@ -1,0 +1,76 @@
+---
+import { useTranslations } from '@/i18n';
+import { siteConfig } from '@/config/site';
+
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
+
+// Numeric `index` + technical English `tag` stay across locales; only title/body
+// are translated. Matches the convention used in marketing site landings.
+const features = [
+  {
+    index: '01',
+    tag: 'perf',
+    title: t('home.features.f01.title'),
+    body: t('home.features.f01.body'),
+  },
+  {
+    index: '02',
+    tag: 'seo',
+    title: t('home.features.f02.title'),
+    body: t('home.features.f02.body'),
+  },
+  {
+    index: '03',
+    tag: 'i18n',
+    title: t('home.features.f03.title'),
+    body: t('home.features.f03.body'),
+  },
+  {
+    index: '04',
+    tag: 'form',
+    title: t('home.features.f04.title'),
+    body: t('home.features.f04.body'),
+  },
+  {
+    index: '05',
+    tag: 'legal',
+    title: t('home.features.f05.title'),
+    body: t('home.features.f05.body'),
+  },
+  {
+    index: '06',
+    tag: 'core',
+    title: t('home.features.f06.title'),
+    body: t('home.features.f06.body'),
+  },
+];
+---
+
+<section class="px-5 pt-12 pb-16">
+  <div class="mx-auto max-w-7xl">
+    <h2
+      class="mb-6 text-center text-[clamp(1.5rem,3vw,2rem)] font-semibold tracking-[-0.02em] text-fg"
+    >
+      {t('home.featuresHeading')}
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 border border-border rounded-lg overflow-hidden">
+      {
+        features.map((f) => (
+          <div class="flex flex-col gap-2 px-5 py-4 border-b border-border md:border-r md:border-r-border max-md:border-r-0 md:[&:nth-child(3n)]:border-r-0">
+            <div class="flex items-center gap-2.5">
+              <span class="mono text-[10px] text-fg-muted border border-border px-1.5 py-px rounded-[3px]">
+                {f.index}
+              </span>
+              <span class="mono text-[10px] text-fg-subtle tracking-[0.08em] uppercase">
+                {f.tag}
+              </span>
+            </div>
+            <h4 class="mt-0.5 mb-0 text-sm font-medium tracking-[-0.02em] text-fg">{f.title}</h4>
+            <p class="m-0 text-xs leading-[1.55] text-fg-subtle">{f.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
