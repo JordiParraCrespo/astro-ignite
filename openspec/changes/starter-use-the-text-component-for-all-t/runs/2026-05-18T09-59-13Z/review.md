@@ -31,7 +31,7 @@ and the existing audit suite — see § "Rejected alternative" in
   `grep -REn '<(h[1-6]|p)\b[^>]*class="[^"]*\\b(text-\[|text-(lg|sm|xs|base|2xl|3xl|4xl|5xl|6xl)|leading-|font-(medium|semibold|bold|normal)|tracking-)[^"]*"' packages/templates/starter/src/`
   returned no matches.
 - **S5** (atom lockstep, vacuous) → ✅ `git diff main --
-  packages/registry/base/text.astro packages/templates/starter/src/components/ui/text.astro`
+packages/registry/base/text.astro packages/templates/starter/src/components/ui/text.astro`
   is empty.
 - **S6** (`tokens-only` PASS) → ❌ **audit red**, 2 hits — see T2.
 - **S7** (`tokens-only --layered` PASS) → ❌ same audit red — see T2.
@@ -41,7 +41,7 @@ and the existing audit suite — see § "Rejected alternative" in
 - **S10** (scaffold smoke + perf budget) → ❌ Lighthouse skipped (no
   Chrome binary in this sandbox) — see T3.
 - **S11** (boundary: only starter + registry text atom touched) → ❌
-  *partial* — 15 starter files are correctly the only application
+  _partial_ — 15 starter files are correctly the only application
   changes, but `tests/e2e/playwright-report/index.html` (71-line
   Playwright HTML artifact, **new file**) was added in the prettier
   autoformat commit `e7f71f5` and is **not** in `design.md`'s "Files
@@ -233,18 +233,18 @@ by `prettier --write`. Two fix options:
    - **(c)** Annotate the baseline in `design.md` § "Invariants this
      change touches" and amend `feature_list.json`'s acceptance rule
      to allow pre-existing baseline failures — same caveat as (b).
-   I cannot approve while the audit is red, regardless of who caused
-   the hit, because the reviewer protocol's hard rule is "Never approve
-   with any audit red."
+     I cannot approve while the audit is red, regardless of who caused
+     the hit, because the reviewer protocol's hard rule is "Never approve
+     with any audit red."
 
 2. **Perf budget Lighthouse step (BLOCKER, verdict rule 6).** `pnpm
-   perf:budget` is red — Lighthouse can't run in this sandbox.
+perf:budget` is red — Lighthouse can't run in this sandbox.
    `impl.md` cites prior precedent (`add-e2e-testing-…` accepted the
    same environment limitation), and the change introduces zero new
    runtime deps (dep-count check passes), so the regression risk is
    nominal — but the gate is `pnpm perf:budget` exits 0. Options:
    - **(a)** Run on a host with Chrome for Testing installed (`pnpm
-     dlx lighthouse` or follow `scripts/doctor/chrome-installed.mjs`)
+dlx lighthouse` or follow `scripts/doctor/chrome-installed.mjs`)
      and re-capture `perf.md`.
    - **(b)** Wire CI to run `pnpm perf:budget` and treat that as the
      gate, then update the reviewer protocol to accept "CI ran it
