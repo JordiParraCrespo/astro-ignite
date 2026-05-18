@@ -121,13 +121,13 @@ behaviour change`. The change to those files MUST be confined
       without the var and diffing `dist/`. Covers **S6**, **S11**.
 
 - [~] **T16.** Boot every project locally and confirm green:
-      `pnpm test:e2e --project=starter`,
-      `pnpm test:e2e --project=docs-template`,
-      `pnpm test:e2e --project=docs-template-built`,
-      `pnpm test:e2e --project=site`,
-      `pnpm test:e2e --project=docs-app`,
-      and a full `pnpm test:e2e` once. Capture the full run under
-      `runs/<ts>/e2e.txt`. Covers **S2–S15**, **S18**.
+  `pnpm test:e2e --project=starter`,
+  `pnpm test:e2e --project=docs-template`,
+  `pnpm test:e2e --project=docs-template-built`,
+  `pnpm test:e2e --project=site`,
+  `pnpm test:e2e --project=docs-app`,
+  and a full `pnpm test:e2e` once. Capture the full run under
+  `runs/<ts>/e2e.txt`. Covers **S2–S15**, **S18**.
 
 - [x] **T17.** Add the CI integration described in `design.md > CI
 integration`: - New `e2e` job in `.github/workflows/ci.yml` (cached
@@ -161,10 +161,10 @@ this change touches` and shell out to each `pnpm test:e2e
       Covers **S21**.
 
 - [~] **T21.** Run `pnpm perf:budget` (or the equivalent perf gate that
-      applies because `capabilities` matches `/^templates-/`) and
-      capture the report under `runs/<ts>/perf.txt`. The expected
-      delta is zero — no runtime code ships to the templates or apps.
-      Covers `design.md > Performance budget applicability`.
+  applies because `capabilities` matches `/^templates-/`) and
+  capture the report under `runs/<ts>/perf.txt`. The expected
+  delta is zero — no runtime code ships to the templates or apps.
+  Covers `design.md > Performance budget applicability`.
 
 - [x] **T22.** Add a changeset (`.changeset/add-e2e-testing-to-all-templates-and-app.md`)
       summarising the new e2e suite. Mark all publishable packages as
