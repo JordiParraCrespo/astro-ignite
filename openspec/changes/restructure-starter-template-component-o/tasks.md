@@ -165,7 +165,7 @@ invariants `I<n>` from the cited capability specs.
 - [ ] **T18.** Apply the chrome moves to
       `apps/site/src/components/`: `Nav.astro` →
       `common/Header.astro`; `Footer/Brand/ThemeToggle/
-  LocaleSwitcher/Analytics.astro` → `common/`;
+LocaleSwitcher/Analytics.astro` → `common/`;
       `CookieBanner.astro` → `legal/`. Update the layouts and any
       `landing/*` component that imports the moved files. The site's
       own `landing/*` and `blocks/terminal/*` directories stay put
@@ -184,7 +184,7 @@ invariants `I<n>` from the cited capability specs.
 - [ ] **T20.** Apply the chrome moves to
       `apps/playground/src/components/`: `Nav.astro` →
       `common/Header.astro`; `Footer/Brand/ThemeToggle/
-  LocaleSwitcher/Analytics/Hero.astro` → `common/`;
+LocaleSwitcher/Analytics/Hero.astro` → `common/`;
       `CookieBanner.astro` → `legal/`. Delete
       `apps/playground/src/components/blocks/` and every file under
       it (the playground replays the starter, which no longer has a
