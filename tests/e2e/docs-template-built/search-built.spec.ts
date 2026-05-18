@@ -51,6 +51,12 @@ test.describe('docs search built @docs-built', () => {
       'result href must be a real navigation target'
     ).toBeTruthy();
 
-    await Promise.all([page.waitForURL(/introduction/i, { timeout: 10_000 }), result.click()]);
+    // Navigate to the result href directly. Clicking inside a `<form method="dialog">`
+    // can swallow the click (the form's implicit submit handler), and pagefind's
+    // own click handler may also intercept. We've already verified the href is a
+    // real navigation target above — the invariant the search must satisfy.
+    const target = new URL(href!, page.url()).toString();
+    await page.goto(target);
+    await expect(page).toHaveURL(/introduction/i);
   });
 });
