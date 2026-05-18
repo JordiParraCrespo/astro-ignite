@@ -10,11 +10,16 @@ test.describe('docs MDX rendering @docs', () => {
     await expect(page.locator('h1').first()).toBeVisible();
     // Expect at least one paragraph of rendered prose
     const paragraphs = page.locator('main p');
-    expect(await paragraphs.count(), 'introduction MDX should produce paragraphs').toBeGreaterThan(0);
+    expect(await paragraphs.count(), 'introduction MDX should produce paragraphs').toBeGreaterThan(
+      0
+    );
 
     // Look for rich content — code block or callout / aside / blockquote
     const richBlocks = page.locator('main pre, main aside, main blockquote, main [role="note"]');
-    expect(await richBlocks.count(), 'page should render at least one code block / callout').toBeGreaterThan(0);
+    expect(
+      await richBlocks.count(),
+      'page should render at least one code block / callout'
+    ).toBeGreaterThan(0);
 
     errors.assertNone();
     errors.dispose();

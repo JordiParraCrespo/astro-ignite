@@ -1,7 +1,9 @@
 import type { Page } from '@playwright/test';
 
 export async function clickThemeToggle(page: Page): Promise<'light' | 'dark'> {
-  const btn = page.locator('.theme-toggle, button[data-theme-toggle], button[aria-label*="theme" i]').first();
+  const btn = page
+    .locator('.theme-toggle, button[data-theme-toggle], button[aria-label*="theme" i]')
+    .first();
   await btn.click();
   return (await readVisibleTheme(page)) ?? 'dark';
 }

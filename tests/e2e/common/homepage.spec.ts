@@ -5,7 +5,9 @@ import { trackAnalyticsHits } from '../shared/consent';
 test.describe('homepage @nav', () => {
   test('renders / with 200, non-empty title, no console errors', async ({ page, context }) => {
     await context.addInitScript(() => {
-      try { window.localStorage.removeItem('cookie-consent'); } catch {}
+      try {
+        window.localStorage.removeItem('cookie-consent');
+      } catch {}
     });
     const tracker = await trackAnalyticsHits(page);
     const errors = captureConsoleErrors(page);

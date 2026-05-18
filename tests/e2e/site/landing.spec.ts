@@ -6,7 +6,9 @@ test.describe('site marketing landing @site', () => {
     const errors = captureConsoleErrors(page);
     await page.goto('/');
     await expect(page.locator('h1').first()).toBeVisible();
-    const ctas = page.locator('a.btn, a[role="button"], a:has-text("Get started"), a:has-text("Start")');
+    const ctas = page.locator(
+      'a.btn, a[role="button"], a:has-text("Get started"), a:has-text("Start")'
+    );
     expect(await ctas.count(), 'site landing should expose at least one CTA').toBeGreaterThan(0);
     errors.assertNone();
     errors.dispose();

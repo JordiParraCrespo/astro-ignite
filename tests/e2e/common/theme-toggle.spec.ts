@@ -4,7 +4,9 @@ import { clickThemeToggle, readPersistedTheme, readVisibleTheme } from '../share
 test.describe('theme toggle @theme', () => {
   test('first click flips <html>.classList to .light and persists', async ({ page, context }) => {
     await context.addInitScript(() => {
-      try { window.localStorage.removeItem('theme'); } catch {}
+      try {
+        window.localStorage.removeItem('theme');
+      } catch {}
     });
     await page.goto('/');
 
@@ -24,7 +26,9 @@ test.describe('theme toggle @theme', () => {
 
   test('second click flips back and stores the opposite value', async ({ page, context }) => {
     await context.addInitScript(() => {
-      try { window.localStorage.removeItem('theme'); } catch {}
+      try {
+        window.localStorage.removeItem('theme');
+      } catch {}
     });
     await page.goto('/');
 

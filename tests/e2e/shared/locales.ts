@@ -10,11 +10,15 @@ export async function readHtmlLang(page: Page): Promise<string | null> {
 }
 
 export async function switchLocale(page: Page, target: string): Promise<void> {
-  const summary = page.locator('.locale-switcher summary, .locale-switcher [role="button"]').first();
+  const summary = page
+    .locator('.locale-switcher summary, .locale-switcher [role="button"]')
+    .first();
   if (await summary.count()) {
     await summary.click();
   }
-  const entry = page.locator(`.locale-switcher a[hreflang="${target}"], .locale-switcher [data-locale="${target}"]`).first();
+  const entry = page
+    .locator(`.locale-switcher a[hreflang="${target}"], .locale-switcher [data-locale="${target}"]`)
+    .first();
   await entry.click();
 }
 

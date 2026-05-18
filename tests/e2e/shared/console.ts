@@ -46,9 +46,7 @@ export function captureConsoleErrors(page: Page, opts: CaptureOptions = {}): Con
     entries,
     assertNone() {
       if (entries.length === 0) return;
-      const log = entries
-        .map((e) => `  [${e.type}] @ ${e.url}\n    ${e.text}`)
-        .join('\n');
+      const log = entries.map((e) => `  [${e.type}] @ ${e.url}\n    ${e.text}`).join('\n');
       throw new Error(`Unexpected console errors:\n${log}`);
     },
     dispose() {

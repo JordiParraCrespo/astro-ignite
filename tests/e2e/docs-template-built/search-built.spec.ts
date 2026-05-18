@@ -1,11 +1,17 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('docs search built @docs-built', () => {
-  test('typing "introduction" in the search dialog returns at least one result', async ({ page }) => {
+  test('typing "introduction" in the search dialog returns at least one result', async ({
+    page,
+  }) => {
     await page.goto('/');
 
-    const trigger = page.locator('[data-search-trigger], button:has-text("Search"), button[aria-label*="Search" i]').first();
-    const dialog = page.locator('dialog[data-search], dialog[aria-label*="Search" i], dialog#search-dialog').first();
+    const trigger = page
+      .locator('[data-search-trigger], button:has-text("Search"), button[aria-label*="Search" i]')
+      .first();
+    const dialog = page
+      .locator('dialog[data-search], dialog[aria-label*="Search" i], dialog#search-dialog')
+      .first();
 
     if (await trigger.count()) {
       await trigger.click();

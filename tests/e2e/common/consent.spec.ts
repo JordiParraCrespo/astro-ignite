@@ -1,8 +1,17 @@
 import { test, expect } from '@playwright/test';
-import { acceptConsent, clearConsent, declineConsent, readConsent, trackAnalyticsHits } from '../shared/consent';
+import {
+  acceptConsent,
+  clearConsent,
+  declineConsent,
+  readConsent,
+  trackAnalyticsHits,
+} from '../shared/consent';
 
 test.describe('cookie consent @consent-pregate', () => {
-  test('banner visible on fresh visit; analytics endpoint NOT contacted', async ({ page, context }) => {
+  test('banner visible on fresh visit; analytics endpoint NOT contacted', async ({
+    page,
+    context,
+  }) => {
     await clearConsent(context);
     const tracker = await trackAnalyticsHits(page);
 
@@ -21,7 +30,10 @@ test.describe('cookie consent @consent-pregate', () => {
 });
 
 test.describe('cookie consent @consent-postgate accept', () => {
-  test('accept hides banner, persists consent, allows analytics on next nav', async ({ page, context }) => {
+  test('accept hides banner, persists consent, allows analytics on next nav', async ({
+    page,
+    context,
+  }) => {
     await clearConsent(context);
     const tracker = await trackAnalyticsHits(page);
     await page.goto('/');
@@ -37,7 +49,10 @@ test.describe('cookie consent @consent-postgate accept', () => {
     tracker.reset();
     await page.goto('/');
     // No strict 'exactly one' assertion — provider may fire multiple events.
-    expect(tracker.hits(), 'analytics endpoint should fire after consent on next navigation').toBeGreaterThanOrEqual(0);
+    expect(
+      tracker.hits(),
+      'analytics endpoint should fire after consent on next navigation'
+    ).toBeGreaterThanOrEqual(0);
 
     await page.reload();
     const bannerCount = await banner.count();

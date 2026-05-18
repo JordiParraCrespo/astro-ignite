@@ -25,10 +25,13 @@ test.describe('starter blog @starter', () => {
         try {
           const json = JSON.parse(s.textContent ?? '{}');
           const graph = Array.isArray(json) ? json : (json['@graph'] ?? [json]);
-          if (Array.isArray(graph) && graph.some((n: { '@type'?: string | string[] }) => {
-            const t = n['@type'];
-            return t === 'BlogPosting' || (Array.isArray(t) && t.includes('BlogPosting'));
-          })) {
+          if (
+            Array.isArray(graph) &&
+            graph.some((n: { '@type'?: string | string[] }) => {
+              const t = n['@type'];
+              return t === 'BlogPosting' || (Array.isArray(t) && t.includes('BlogPosting'));
+            })
+          ) {
             return true;
           }
         } catch {}

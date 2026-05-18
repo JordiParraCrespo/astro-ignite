@@ -1,6 +1,11 @@
 import type { BrowserContext, Page } from '@playwright/test';
 
-export const ANALYTICS_HOSTS: RegExp[] = [/plausible\.io/i, /umami\./i, /fathom/i, /google-analytics/i];
+export const ANALYTICS_HOSTS: RegExp[] = [
+  /plausible\.io/i,
+  /umami\./i,
+  /fathom/i,
+  /google-analytics/i,
+];
 
 export async function clearConsent(context: BrowserContext): Promise<void> {
   await context.addInitScript(() => {
@@ -17,14 +22,20 @@ export async function readConsent(page: Page): Promise<string | null> {
 export async function acceptConsent(page: Page): Promise<void> {
   const banner = page.locator('#cookie-banner');
   await banner.waitFor({ state: 'visible' });
-  const acceptBtn = banner.locator('button[data-consent="accept"], button:has-text("Accept"), button:has-text("Aceptar")').first();
+  const acceptBtn = banner
+    .locator('button[data-consent="accept"], button:has-text("Accept"), button:has-text("Aceptar")')
+    .first();
   await acceptBtn.click();
 }
 
 export async function declineConsent(page: Page): Promise<void> {
   const banner = page.locator('#cookie-banner');
   await banner.waitFor({ state: 'visible' });
-  const declineBtn = banner.locator('button[data-consent="decline"], button:has-text("Decline"), button:has-text("Rechazar")').first();
+  const declineBtn = banner
+    .locator(
+      'button[data-consent="decline"], button:has-text("Decline"), button:has-text("Rechazar")'
+    )
+    .first();
   await declineBtn.click();
 }
 

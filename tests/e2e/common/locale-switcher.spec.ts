@@ -9,7 +9,10 @@ test.describe('LocaleSwitcher @i18n single-locale', () => {
       return; // absent: spec satisfied
     }
     const entries = await getLocaleSwitcherEntries(page);
-    expect(entries.length, 'single-locale switcher should expose no selectable entries').toBeLessThanOrEqual(1);
+    expect(
+      entries.length,
+      'single-locale switcher should expose no selectable entries'
+    ).toBeLessThanOrEqual(1);
   });
 });
 
@@ -19,13 +22,22 @@ test.describe('LocaleSwitcher @i18n two-locale fixture', () => {
     'two-locale fixture only runs when SITE_E2E_LOCALES includes a non-default locale'
   );
 
-  test('clicking a non-default locale entry navigates and updates <html lang>', async ({ page }) => {
+  test('clicking a non-default locale entry navigates and updates <html lang>', async ({
+    page,
+  }) => {
     await page.goto('/');
     const entriesBefore = await getLocaleSwitcherEntries(page);
-    expect(entriesBefore.length, 'switcher should expose at least one alternate locale').toBeGreaterThan(0);
+    expect(
+      entriesBefore.length,
+      'switcher should expose at least one alternate locale'
+    ).toBeGreaterThan(0);
 
     const target = entriesBefore[0]!;
-    const link = page.locator(`.locale-switcher a[hreflang="${target}"], .locale-switcher [data-locale="${target}"]`).first();
+    const link = page
+      .locator(
+        `.locale-switcher a[hreflang="${target}"], .locale-switcher [data-locale="${target}"]`
+      )
+      .first();
     await link.click();
     await page.waitForLoadState('domcontentloaded');
 

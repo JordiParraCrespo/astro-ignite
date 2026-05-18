@@ -3,7 +3,9 @@ import { blockResend } from '../shared/email';
 import { captureConsoleErrors } from '../shared/console';
 
 test.describe('contact form @starter', () => {
-  test('submitting the contact form shows the success state without hitting api.resend.com', async ({ page }) => {
+  test('submitting the contact form shows the success state without hitting api.resend.com', async ({
+    page,
+  }) => {
     const errors = captureConsoleErrors(page);
     const resend = await blockResend(page);
 
@@ -17,10 +19,18 @@ test.describe('contact form @starter', () => {
 
     await form.locator('button[type="submit"]').click();
 
-    const success = page.locator('[data-success], [role="status"], :text("Thanks"), :text("Gracias")').first();
-    await expect(success, 'success state should render after submit').toBeVisible({ timeout: 10_000 });
+    const success = page
+      .locator('[data-success], [role="status"], :text("Thanks"), :text("Gracias")')
+      .first();
+    await expect(success, 'success state should render after submit').toBeVisible({
+      timeout: 10_000,
+    });
 
-    expect(resend.hits(), 'api.resend.com must not be contacted under MOCK_EMAIL').toBe(0);
+    expect(resend.hits(), 'api.resend.com must not be contacted').toBe(0);
+    expect(
+      resend.actionHits(),
+      'the contact Astro Action must have been called once'
+    ).toBeGreaterThanOrEqual(1);
     errors.assertNone();
     errors.dispose();
   });
