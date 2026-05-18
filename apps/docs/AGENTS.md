@@ -25,3 +25,14 @@ template** — changes here do **not** reach CLI users.
 - Adding a docs-only chrome change (custom sidebar, etc.) → add to
   `packages/templates/docs/` first.
 - Audits run against the docs template, not against this app.
+
+## End-to-end tests
+
+The `docs-app` Playwright project at the workspace root boots this app
+via `astro dev` and runs every `tests/e2e/common/` spec plus the
+docs-app-specific specs under `tests/e2e/docs-app/`. See
+[`tests/e2e/AGENTS.md`](../../tests/e2e/AGENTS.md). Scoped run:
+
+```bash
+pnpm test:e2e --project=docs-app
+```

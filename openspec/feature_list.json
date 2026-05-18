@@ -75,6 +75,55 @@
     },
     {
       "id": 5,
+      "name": "reorganize-starter-split-pages-into-per",
+      "title": "Reorganize starter: split pages into per-section components",
+      "capabilities": [
+        "templates-i18n",
+        "templates-css-tokens",
+        "templates-seo-jsonld",
+        "templates-perf"
+      ],
+      "description": "## Problem\n\nIn `packages/templates/starter/`, pages currently mix multiple sections inline in a single `.astro` file. This makes pages harder to scan, harder to reuse, and harder for users to customize after scaffolding.\n\n## Proposal\n\n1. **Organize all pages and components properly** under `packages/templates/starter/src/`:\n   - Pages in `src/pages/` stay thin — composition only.\n   - Section components live alongside (e.g. `src/components/sections/` or per-page folders).\n   - Atoms continue to live in `src/components/ui/` (registry-sourced).\n\n2. **One section = one component.** Every distinct page section (hero, features, pricing, testimonials, CTA, etc.) becomes its own `.astro` file. Pages become a short list of imported sections.\n\n## Acceptance\n\n- [ ] Audit every page in `packages/templates/starter/src/pages/` (including `[lang]/` parallels).\n- [ ] Extract each visual section into its own component file.\n- [ ] Pages are composition-only — no inline section markup.\n- [ ] No regression in Lighthouse scores or `pnpm scaffold:test`.\n\n## Scope\n\nOnly `packages/templates/starter/`. Do **not** touch `apps/site/` or other templates in this issue.",
+      "acceptance": [
+        "Every page under packages/templates/starter/src/pages/ (including [lang]/ parallels) imports its visual sections from section components instead of inlining their markup; pages contain composition only (layout wrapper + section imports + data preparation in frontmatter).",
+        "Each distinct visual section (landing hero, landing features grid, about body, contact form, blog index list, projects index list, 404 hero) lives in its own .astro file under packages/templates/starter/src/components/sections/ (or a sibling per-page folder) — one section per file.",
+        "Default-locale page and its [lang]/ parallel import the same section components — no duplicated inline section markup between /foo.astro and /[lang]/foo.astro.",
+        "Scoped <style> blocks for above-the-fold sections move with the section into the section component file (layered CSS strategy preserved); no raw zinc / hex literals introduced.",
+        "Per-page JSON-LD schema arrays remain assembled in the page frontmatter and passed to BaseLayout — no section component emits a standalone <script type=\"application/ld+json\"> tag.",
+        "No new runtime dependencies added to packages/templates/starter/package.json.",
+        "pnpm typecheck, pnpm audit:invariants --change reorganize-starter-split-pages-into-per, and pnpm scaffold:test all pass.",
+        "pnpm perf:budget passes against the starter — Lighthouse mobile thresholds (Performance/Accessibility/Best Practices/SEO ≥ 95) and total-transfer budget for /, /blog, /projects, /about, /contact are not regressed."
+      ],
+      "issue": 26
+    },
+    {
+      "id": 6,
+      "name": "add-e2e-testing-to-all-templates-and-app",
+      "title": "Add e2e testing to all templates and apps",
+      "capabilities": [
+        "templates-i18n",
+        "templates-css-tokens",
+        "templates-consent",
+        "cli-scaffold"
+      ],
+      "description": "## Problem\n\nTemplates (`packages/templates/starter`, `packages/templates/docs`) and apps (`apps/site`, `apps/docs`, `apps/playground`) currently have no e2e test coverage. `pnpm scaffold:test` validates that the CLI can scaffold + build + pass Lighthouse, but there are no behavior tests for actual user flows (navigation, locale switching, theme toggle, contact form, search, etc.).\n\n## Proposal\n\nAdd an e2e test suite (Playwright recommended) that runs against:\n\n**Templates** (run against `pnpm dev` of the template directly):\n- [ ] `packages/templates/starter/`\n- [ ] `packages/templates/docs/`\n\n**Apps**:\n- [ ] `apps/site/`\n- [ ] `apps/docs/`\n- [ ] `apps/playground/` (smoke only — it's CI-regenerated)\n\n## Coverage per target\n\nAt minimum each target should verify:\n- [ ] Homepage renders without console errors\n- [ ] Internal navigation works (header links, footer links)\n- [ ] Locale switcher swaps routes correctly (if i18n configured)\n- [ ] Theme toggle cycles light/dark/system and persists\n- [ ] 404 page renders\n- [ ] Per-template specifics:\n  - starter: contact form submission (mocked email), blog index → post navigation\n  - docs: sidebar nav, search (if present), MDX page renders\n\n##",
+      "acceptance": [
+        "Playwright is installed as a workspace-root devDependency and a `pnpm test:e2e` script runs every target's suite",
+        "Each target (starter, docs templates; site, docs, playground apps) has its own Playwright project that boots its own dev or preview server",
+        "Every non-playground target verifies: homepage loads with no console errors, header + footer internal nav navigates correctly, theme toggle flips the `<html>` class and persists, 404 page renders for an unknown route",
+        "Starter target additionally covers: blog index → blog post navigation, and contact form submission with the email transport mocked (no real Resend / SMTP call)",
+        "Docs template target additionally covers: sidebar nav navigates between pages, an MDX content page renders its prose, and the search dialog opens (search-result behaviour is covered against a built site, since pagefind requires `pnpm build && pnpm preview`)",
+        "Cookie banner is visible on a fresh visit (no `cookie-consent` in localStorage) and no request is made to the configured analytics endpoint until the user clicks accept",
+        "When `siteConfig.locales` has more than one locale, the LocaleSwitcher swaps to the localized route on click; with the default single-locale config the switcher is either absent or a no-op (matching `templates-i18n` invariants)",
+        "Playground target runs a smoke suite (homepage + 404) wired into the same `pnpm test:e2e` invocation",
+        "CI runs `pnpm test:e2e` alongside `pnpm scaffold:test`; failures block the PR",
+        "Tests are deterministic and offline: email/Resend, Plausible, and any other external endpoint are mocked or blocked at the network layer",
+        "The workflow is documented in the workspace `AGENTS.md`, each target's `AGENTS.md`, and a `tests/e2e/AGENTS.md` that explains how to add a spec without breaking the per-target Playwright project layout"
+      ],
+      "issue": 27
+    },
+    {
+      "id": 7,
       "name": "starter-use-the-text-component-for-all-t",
       "title": "Starter: use the Text component for all typography",
       "capabilities": ["templates-css-tokens", "registry-atoms"],

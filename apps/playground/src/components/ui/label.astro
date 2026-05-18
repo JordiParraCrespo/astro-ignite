@@ -6,12 +6,21 @@ export type Props = HTMLAttributes<'label'> & { class?: string };
 const { class: className, ...rest } = Astro.props;
 ---
 
-<label
-  class={cn(
-    'inline-flex items-center gap-1.5 text-[13px] font-medium leading-snug text-fg select-none has-[+:disabled]:opacity-60 aria-disabled:opacity-60',
-    className,
-  )}
-  {...rest}
->
-  <slot />
-</label>
+<label class={cn('label', className)} {...rest}><slot /></label>
+
+<style>
+  .label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-fg);
+    line-height: 1.4;
+    user-select: none;
+  }
+  .label:has(+ :disabled),
+  .label[aria-disabled='true'] {
+    opacity: 0.6;
+  }
+</style>

@@ -30,7 +30,7 @@ const siteName = siteConfig.name[locale] ?? siteConfig.name[siteConfig.defaultLo
 ---
 
 <header class="site-header">
-  <nav class="site-nav" aria-label="Primary">
+  <nav class="site-nav" aria-label={t('nav.primary')}>
     <Brand href={homeUrl} variant="lockup" size={0.32} label={siteName} />
 
     <button

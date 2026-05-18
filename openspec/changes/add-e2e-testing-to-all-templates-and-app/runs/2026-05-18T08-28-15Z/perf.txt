@@ -1,0 +1,9 @@
+
+> astro-ignite-monorepo@0.0.0 perf:budget /home/dev/work/build
+> node ./scripts/perf/run.mjs
+
+✅ packages/templates/starter dep count — 12 runtime deps
+✅ packages/templates/docs dep count — 8 runtime deps
+❌ lighthouse binary — lighthouse not installed (try `pnpm dlx lighthouse` or install Chrome for Testing). Skipping Lighthouse run; see scripts/doctor/chrome-installed.mjs
+❌ Lighthouse budget — skipped — no lighthouse binary
+ ELIFECYCLE  Command failed with exit code 1.
