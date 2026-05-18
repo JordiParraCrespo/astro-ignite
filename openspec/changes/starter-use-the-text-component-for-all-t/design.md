@@ -200,6 +200,12 @@ zinc audit will continue to pass.
   Audit: `node scripts/audit/no-react-in-atoms.mjs --family-layout`.
   Status: **preserved**. `text` is a single-file atom, not a family.
 
+Audit commands (parseable by `scripts/audit/run-all.mjs --change`):
+
+- audit: `node scripts/audit/tokens-only.mjs`
+- audit: `node scripts/audit/tokens-only.mjs --layered`
+- audit: `node scripts/audit/no-react-in-atoms.mjs --named-only --registry --family-layout`
+
 The implementer MUST run `pnpm audit:invariants --change
 starter-use-the-text-component-for-all-t` and capture the output under
 `openspec/changes/starter-use-the-text-component-for-all-t/runs/<ts>/audit.md`.
