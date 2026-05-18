@@ -36,10 +36,7 @@
       "id": 2,
       "name": "registry-block-pricing-card",
       "title": "First block-tier registry item: PricingCard",
-      "capabilities": [
-        "registry-blocks",
-        "registry-atoms"
-      ],
+      "capabilities": ["registry-blocks", "registry-atoms"],
       "description": "Compose Card + Button + (new) PriceTag atom into a PricingCard block. First exercise of the blocks tier, which currently has no items.",
       "acceptance": [
         "packages/registry/blocks/pricing-card/ exists with PricingCard.astro + a demo .mdx",
@@ -52,9 +49,7 @@
       "id": 3,
       "name": "doctor-shipped-in-templates",
       "title": "Ship pnpm doctor inside the templates",
-      "capabilities": [
-        "cli-scaffold"
-      ],
+      "capabilities": ["cli-scaffold"],
       "description": "Phase 2 of the harness — when the CLI user opts into harness scaffolding, scripts/doctor/ + scripts/committer + .claude/agents/ + openspec/ land in their repo.",
       "acceptance": [
         "create-astro-ignite prompts ask 'Include AI harness scaffolding?' (default: false)",
@@ -67,9 +62,7 @@
       "id": 4,
       "name": "make-the-h1-contain-only-text",
       "title": "Make the h1 contain only text",
-      "capabilities": [
-        "templates-i18n"
-      ],
+      "capabilities": ["templates-i18n"],
       "description": "---\nname: hero-h1-text-only\ncapabilities:\n  - templates-i18n\n---\n\n## Why\n\nThe HeroSection in `apps/site` currently wraps a `<span class=\"text-fg-muted\">` prefix inside the `<h1>`, paired with a separate `headlineMuted` i18n key. The desired hero is a single plain-text headline; the muted prefix and its translations should be removed.\n\n> Note: `apps/site/` is a marketing mirror, not a template. Only files under `apps/site/` are in scope for this change — do **not** modify `packages/templates/starter/`.\n\n## Acceptance\n\n- `apps/site/src/components/landing/HeroSection.astro` renders only `{t('landing.hero.headlineTail')}` as the single child of the `<h1>` (no nested span, no muted prefix)\n- `apps/site/src/i18n/en.json` no longer contains a `landing.hero.headlineMuted` key\n- `apps/site/src/i18n/es.json` no longer contains a `landing.hero.headlineMuted` key\n- `pnpm typecheck` is green\n- `pnpm build --filter @astro-ignite/site` is green",
       "acceptance": [
         "apps/site/src/components/landing/HeroSection.astro renders only {t('landing.hero.headlineTail')} as the single child of the <h1> (no nested span, no muted prefix)",
@@ -133,10 +126,7 @@
       "id": 7,
       "name": "starter-use-the-text-component-for-all-t",
       "title": "Starter: use the Text component for all typography",
-      "capabilities": [
-        "templates-css-tokens",
-        "registry-atoms"
-      ],
+      "capabilities": ["templates-css-tokens", "registry-atoms"],
       "description": "## Problem\n\nThe `Text` atom exists in the registry (`packages/registry/base/text.astro`) and is shipped pre-installed in the starter (`packages/templates/starter/src/components/ui/text.astro`), but pages and sections across `packages/templates/starter/` still use raw `<p>`, `<h1>`–`<h6>`, and inline Tailwind typography classes instead of `<Text>`.\n\n## Proposal\n\nAudit `packages/templates/starter/` and replace ad-hoc typography with the `Text` component so:\n\n- Typography variants (size, weight, color, leading) are centralized in one atom.\n- Token-driven color/scale changes propagate from a single source.\n- Users editing the scaffolded site have a single place to customize prose styles.\n\n## Acceptance\n\n- [ ] Every page in `packages/templates/starter/src/pages/` (including `[lang]/` parallels) uses `<Text>` for body copy and headings, except where a section component already encapsulates its own typography.\n- [ ] Every section/component under `packages/templates/starter/src/components/` uses `<Text>` for text content.\n- [ ] No remaining inline typography utility soup (e.g. `class=\\\"text-lg leading-7 text-zinc-400\\\"`) where `<Text>` covers the case.\n- [ ] If `Text` is missing a needed v",
       "acceptance": [
         "Every page under packages/templates/starter/src/pages/ (default and [lang]/ parallels) uses <Text> for body copy and headings, except where a section component already encapsulates its own typography in a scoped <style> block",
@@ -179,9 +169,17 @@
       "id": 9,
       "name": "wire-local-lighthouse-against-a-preview",
       "title": "Wire local Lighthouse against a preview server + install Chrome on the autopilot runner",
-      "capabilities": [],
+      "capabilities": ["templates-perf"],
       "description": "# Wire local Lighthouse against a preview server + install Chrome for Testing on the autopilot runner\n\n## Problem\n\n`scripts/perf/run.mjs` is a deliberate placeholder. On the autopilot's Hetzner runner the script cannot run Lighthouse because:\n\n1. Chrome / Chromium is not on PATH (`scripts/doctor/chrome-installed.mjs` emits the same warning).\n2. `npx lighthouse` cannot fetch — the npm cache at `~/.npm/_cacache/` is read-only under the systemd unit's hardening (`PrivateTmp`, `ProtectSystem`).\n3. The script itself only checks for the binary and emits `not yet wired to a preview server target`; it does not actually start a preview server, run Lighthouse, parse the JSON, or compare against the budget thresholds in `scripts/perf/budget.json`.\n\nA change ago (the migrate-starter-template-to-tailwind-css PR #39), this blocked the implementer for half an hour because the migration's design required a measured Beasties LCP A/B/C. The interim mitigation was to make `pnpm perf:budget` skip gracefully when Lighthouse is unavailable — CI workflow `Lighthouse CI (mobile)` remained the authoritative budget gate. That's a fine safety net for now, but every future change that wants a local perf measu",
-      "acceptance": [],
+      "acceptance": [
+        "scripts/doctor/install-chrome.mjs exists, is idempotent (exits 0 fast when Chrome for Testing is already installed at the pinned version), downloads + extracts Chrome for Testing from the Google manifest into the configured prefix, and writes the chrome symlink so `which chrome` resolves; after running it, `node scripts/doctor/chrome-installed.mjs` reports Chrome as present (ok severity).",
+        "autopilot/systemd/aig-runner.service is checked into the repo as the source of truth for the runner's systemd unit and declares ReadWritePaths= (or an equivalent npm-cache-writable mechanism) so `npm` / `npx` invocations under the unit write to ~/.npm/_cacache without EROFS; ProtectSystem=strict and PrivateTmp remain in effect everywhere else.",
+        "scripts/perf/run.mjs `--page <route>` boots a preview server for the appropriate template (built first if needed), waits for the configured port (poll with a 30s timeout), runs `npx lighthouse <url> --preset=mobile --output=json --output-path=stdout --quiet --chrome-flags=\"--headless=new --no-sandbox --disable-gpu\"`, parses the LHR JSON, compares LCP/INP/CLS/TBT/total-transfer and Performance/Accessibility/Best-Practices/SEO scores against scripts/perf/budget.json, prints per-page numbers, and exits 0 when all within budget and 1 when any out of budget.",
+        "The preview server spawned by scripts/perf/run.mjs is torn down on normal exit and on SIGINT / SIGTERM — no orphan node processes or held ports remain after the script returns.",
+        "`pnpm perf:budget` on a clean check-out without Chrome / Chrome for Testing still degrades gracefully (skip with exit 0 and a clearly-labelled 'skipped — chrome not installed; run scripts/doctor/install-chrome.mjs' finding; never fail the gate on missing-tool grounds when Chrome is absent).",
+        "The previously broken `--critical-css` flag is still accepted by scripts/perf/run.mjs (kept as a no-op-compatible flag per the templates-perf delta from #37); passing it does not error and continues to inspect Beasties output for a built target when available.",
+        "AGENTS.md documents the dual-gate model in a section titled 'Performance gates' (or equivalent) that spells out: local `pnpm perf:budget` is a fast advisory check run by the implementer / reviewer; CI workflow `Lighthouse CI (mobile)` (.github/workflows/lighthouse.yml) is the authoritative gate; both must be green before a change is opened for review."
+      ],
       "issue": 45
     }
   ]
