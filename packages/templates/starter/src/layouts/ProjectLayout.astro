@@ -12,6 +12,7 @@ import { breadcrumbListSchema, creativeWorkSchema } from '@/lib/jsonld';
 
 import BaseLayout from './BaseLayout.astro';
 import HeroImage from '@/components/image/HeroImage.astro';
+import Text from '@/components/ui/text.astro';
 
 interface Props {
   entry: CollectionEntry<'projects'>;
@@ -71,8 +72,8 @@ const statusLabels = {
       <nav class="breadcrumbs" aria-label={t('nav.breadcrumbs')}>
         <a href={getRelativeLocaleUrl(locale, '/projects')}>← {t('projects.backToProjects')}</a>
       </nav>
-      <h1>{entry.data.title}</h1>
-      <p class="project-summary">{entry.data.summary}</p>
+      <Text variant="h1" class="mb-4">{entry.data.title}</Text>
+      <Text variant="lead" class="project-summary">{entry.data.summary}</Text>
       <HeroImage
         src={entry.data.heroImage}
         alt={entry.data.heroImageAlt}
@@ -185,19 +186,10 @@ const statusLabels = {
   .breadcrumbs a:hover {
     color: var(--color-fg);
   }
-  .project-header h1 {
-    font-size: clamp(2.25rem, 6vw, 3.5rem);
-    font-weight: 700;
-    line-height: 1.05;
-    letter-spacing: -0.025em;
-    margin: 0 0 1rem;
-    color: var(--color-fg);
-  }
+  /* `.project-summary` keeps only layout caps — typography comes from
+     <Text variant="lead">. */
   .project-summary {
-    font-size: 1.25rem;
-    line-height: 1.5;
-    color: var(--color-fg-muted);
-    margin: 0 0 2rem;
+    margin-bottom: 2rem;
     max-width: 48rem;
   }
   .project-header :global(picture),

@@ -74,20 +74,20 @@ variant="small" class="field-error">`. The `.field-error` class still
 
 ## Refactor — components and layouts
 
-- [ ] **T9.** `packages/templates/starter/src/components/Footer.astro`:
+- [x] **T9.** `packages/templates/starter/src/components/Footer.astro`:
       brand-block `<p>` / tagline `<p>` → `<Text>` (semibold body and
       muted small); section `<h3>` → `<Text variant="h4" as="h3">`;
       copyright + built-with `<p>` → `<Text variant="small"
 tone="muted">`. The links inside `<ul>` are nav links (chrome) and
       stay as `<a class="...">`. Covers **S2**.
 
-- [ ] **T10.** `packages/templates/starter/src/components/blocks/not-found-state.astro`:
+- [x] **T10.** `packages/templates/starter/src/components/blocks/not-found-state.astro`:
       `<span class="mono ...">{code}</span>` → `<Text variant="eyebrow"
 class="mono">`; `<h1 ...>` → `<Text variant="h1">`; `<p ...>` →
       `<Text variant="muted">`. The block mirrors the `404.astro` shape
       installed in PR #31. Covers **S2**.
 
-- [ ] **T11.** `packages/templates/starter/src/layouts/ArticleLayout.astro`,
+- [x] **T11.** `packages/templates/starter/src/layouts/ArticleLayout.astro`,
       `ProjectLayout.astro`, `LegalLayout.astro`: hand-rolled header
       `<h1>` and meta/summary `<p>` → `<Text>`. The MDX `<slot />` body
       and the `.prose` `<style is:global>` block remain untouched —

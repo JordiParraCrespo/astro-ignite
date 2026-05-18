@@ -7,6 +7,7 @@
 
 import { getRelativeLocaleUrl } from 'astro:i18n';
 
+import Text from '@/components/ui/text.astro';
 import { siteConfig } from '@/config/site';
 import { useTranslations } from '@/i18n';
 
@@ -32,16 +33,14 @@ const year = new Date().getFullYear();
 <footer class="border-t border-[var(--color-border)] mt-16">
   <div class="max-w-[80rem] mx-auto px-5 py-10 grid gap-8 md:grid-cols-4">
     <div class="md:col-span-2">
-      <p class="text-base font-semibold tracking-tight text-[var(--color-fg)]">
-        {siteName}
-      </p>
-      <p class="text-sm text-[var(--color-fg-muted)] mt-2 max-w-md">
+      <Text variant="body" weight="semibold">{siteName}</Text>
+      <Text variant="muted" class="mt-2 max-w-md">
         {siteConfig.description[locale] ?? siteConfig.description[siteConfig.defaultLocale]}
-      </p>
+      </Text>
     </div>
 
     <div>
-      <h3 class="text-sm font-semibold mb-3">{t('footer.legal')}</h3>
+      <Text variant="h4" as="h3" class="mb-3">{t('footer.legal')}</Text>
       <ul class="space-y-2">
         {
           legalLinks.map((link) => (
@@ -69,7 +68,9 @@ const year = new Date().getFullYear();
     {
       social.length > 0 && (
         <div>
-          <h3 class="text-sm font-semibold mb-3">{t('footer.social')}</h3>
+          <Text variant="h4" as="h3" class="mb-3">
+            {t('footer.social')}
+          </Text>
           <ul class="space-y-2">
             {social.map(([platform, url]) => (
               <li>
@@ -93,13 +94,13 @@ const year = new Date().getFullYear();
     <div
       class="max-w-[80rem] mx-auto px-5 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
     >
-      <p class="text-xs text-[var(--color-fg-muted)]">
+      <Text variant="small" tone="muted">
         © {year}
         {siteName}. {t('footer.rights')}
-      </p>
-      <p class="text-xs text-[var(--color-fg-muted)]">
+      </Text>
+      <Text variant="small" tone="muted">
         {t('footer.builtWith')}
-      </p>
+      </Text>
     </div>
   </div>
 </footer>
