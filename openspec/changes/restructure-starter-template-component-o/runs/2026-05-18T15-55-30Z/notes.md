@@ -57,11 +57,11 @@ unrelated to this restructure:
   `config/site.ts` for both templates are the same hex literals the
   audit has always flagged.
 - `consent-gated-analytics` — `ArticleLayout.astro: base layout does
-  not render CookieBanner` — the audit's `find(/Base|Layout|RootLayout/)`
+not render CookieBanner` — the audit's `find(/Base|Layout|RootLayout/)`
   picks `ArticleLayout` (which inherits from `BaseLayout`); the same
   hit appears on `main`.
 - `consent-gated-analytics` (×2) — `CookieBanner present but no
-  /legal/cookies(.astro|.mdx) page` — the templates serve the cookie
+/legal/cookies(.astro|.mdx) page` — the templates serve the cookie
   policy via `pages/legal/[...slug].astro` (content collection), not a
   static `cookies.astro` page; the audit doesn't understand the
   dynamic route and emits the same hit on `main`.

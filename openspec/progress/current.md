@@ -15,7 +15,7 @@ Status: idle
 
 ## State
 
-Feature: 29 — starter-use-the-text-component-for-all-t
-Spec: openspec/changes/starter-use-the-text-component-for-all-t/
-Run: openspec/changes/starter-use-the-text-component-for-all-t/runs/2026-05-18T09-59-13Z/
+Feature: 35 — restructure-starter-template-component-o
+Spec: openspec/changes/restructure-starter-template-component-o/
+Run: openspec/changes/restructure-starter-template-component-o/runs/2026-05-18T15-55-30Z/
 Status: in_progress
