@@ -34,7 +34,7 @@ The `committer --design` allow-list will reject any path not declared in
 
 ## Refactor — pages (default locale)
 
-- [ ] **T3.** `packages/templates/starter/src/pages/index.astro`:
+- [x] **T3.** `packages/templates/starter/src/pages/index.astro`:
       replace the features `<h2>` with `<Text variant="h2">` and each
       feature-card `<h4>`/`<p>` with `<Text variant="h4">` /
       `<Text variant="muted">` (or whichever variants T1 maps them to).
