@@ -4,6 +4,11 @@
 ships compositions. The starter template gets atoms copied into
 `src/components/ui/` at scaffold time; users own them after that.
 
+> **Blocks tier is currently empty.** No `registry:block` items live in
+> `registry.json` and the `blocks/` directory is intentionally absent
+> until a real composition worth distributing lands. The conventions
+> below describe the shape blocks will take when reintroduced.
+
 ## Public Contracts
 
 - **Specs:**
