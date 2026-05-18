@@ -91,6 +91,20 @@ lead | body | small | muted | eyebrow | code` can express. Extending
   installed with the same atom. The two files MUST diff only in
   trivially template-mechanical ways (none today).
 
+### Harness paperwork
+
+The implementer touches these as part of the protocol (run log, audit
+captures, tasks/progress markers, changeset). The committer's
+`--design` validator parses them out of the backticked list below.
+
+- MOD `openspec/changes/starter-use-the-text-component-for-all-t/`
+  (covers `tasks.md` close-out plus everything written under
+  `runs/<ts>/`: `inventory.md`, `impl.md`, `audit.md`, `perf.txt`).
+- MOD `openspec/progress/current.md` — pointer to the active run dir
+  (implementer protocol step 1).
+- NEW `.changeset/` — the patch-level changeset required by
+  `feature_list.json` rule `require_changeset_to_close`.
+
 That is the full set. No new files (no new components, no new audit
 script). No deletions.
 

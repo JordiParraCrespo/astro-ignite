@@ -10,7 +10,7 @@ The `committer --design` allow-list will reject any path not declared in
 
 ## Survey
 
-- [ ] **T1.** Inventory every `<h1>`–`<h6>` and `<p>` in
+- [x] **T1.** Inventory every `<h1>`–`<h6>` and `<p>` in
       `packages/templates/starter/src/{pages,components,layouts}/**/*.astro`
       and classify each as either (a) "body copy or heading inside an
       in-scope file", (b) "chrome / atom / scoped-style-encapsulated and
@@ -22,7 +22,7 @@ The `committer --design` allow-list will reject any path not declared in
 
 ## Atom extension (only if T1 requires it)
 
-- [ ] **T2.** If T1 surfaces a typography pattern none of the existing
+- [x] **T2.** If T1 surfaces a typography pattern none of the existing
       `Text` variants can express, extend
       `packages/registry/base/text.astro` with the new variant entry
       (variant union member + `defaultTag` + `variantClasses` row).

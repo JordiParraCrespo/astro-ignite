@@ -15,5 +15,7 @@ Status: idle
 
 ## State
 
-Feature: (none — idle)
-Status: idle
+Feature: 29 — starter-use-the-text-component-for-all-t
+Spec: openspec/changes/starter-use-the-text-component-for-all-t/
+Run: openspec/changes/starter-use-the-text-component-for-all-t/runs/2026-05-18T09-59-13Z/
+Status: in_progress
