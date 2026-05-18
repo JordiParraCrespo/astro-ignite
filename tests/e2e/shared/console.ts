@@ -10,6 +10,10 @@ const DEFAULT_ALLOW: RegExp[] = [
   /\[vite\]\s+connected/i,
   /\[HMR\]/i,
   /Download the React DevTools/i,
+  // Navigating to a 404 route surfaces a synthetic resource-load error in
+  // the page console. That's the browser, not the app — let tests that
+  // intentionally hit 404 routes keep clean console assertions.
+  /Failed to load resource[\s\S]*?status of 404/i,
 ];
 
 export type CaptureOptions = {

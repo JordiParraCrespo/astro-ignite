@@ -40,14 +40,14 @@ export async function blockResend(page: Page): Promise<EmailBlocker> {
     return route.abort();
   });
 
+  // Count the Astro Action POST but LET IT THROUGH. The action's `sendContactEmail`
+  // in dev mode (no RESEND_API_KEY) logs to console and returns successfully — the
+  // outbound `api.resend.com` route above stays blocked as a belt-and-braces. If we
+  // fulfilled here, the action never ran on the server, no result cookie was set,
+  // and Astro.getActionResult() returns undefined → the success UI never renders.
   await page.route('**/_actions/**', async (route) => {
     if (route.request().method() === 'POST') {
       actionHits++;
-      return route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({ data: { ok: true } }),
-      });
     }
     return route.continue();
   });

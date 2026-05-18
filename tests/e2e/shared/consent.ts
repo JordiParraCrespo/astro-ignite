@@ -8,9 +8,15 @@ export const ANALYTICS_HOSTS: RegExp[] = [
 ];
 
 export async function clearConsent(context: BrowserContext): Promise<void> {
+  // One-shot: clear on the very FIRST navigation only, then leave whatever
+  // the test sets afterwards alone. addInitScript runs on every navigation,
+  // so without this guard a post-accept reload would erase the consent value
+  // and the banner would reappear, breaking the "accept persists" assertions.
   await context.addInitScript(() => {
     try {
+      if (window.sessionStorage.getItem('__e2e_consent_cleared') === '1') return;
       window.localStorage.removeItem('cookie-consent');
+      window.sessionStorage.setItem('__e2e_consent_cleared', '1');
     } catch {}
   });
 }

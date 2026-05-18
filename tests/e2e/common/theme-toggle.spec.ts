@@ -11,11 +11,14 @@ test.describe('theme toggle @theme', () => {
     await page.goto('/');
 
     const beforeClass = await readVisibleTheme(page);
-    expect(beforeClass === 'light' || beforeClass === null || beforeClass === 'dark').toBeTruthy();
+    expect(beforeClass === 'light' || beforeClass === 'dark').toBeTruthy();
 
     await clickThemeToggle(page);
     const visibleAfter = await readVisibleTheme(page);
-    expect(visibleAfter, 'visible theme should be one of light/dark after click').not.toBeNull();
+    expect(
+      visibleAfter === 'light' || visibleAfter === 'dark',
+      'visible theme should be one of light/dark after click'
+    ).toBeTruthy();
     const stored = await readPersistedTheme(page);
     expect(stored, 'localStorage theme should match visible state').toBe(visibleAfter);
 
