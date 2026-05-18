@@ -12,9 +12,9 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 
 import { siteConfig, type NavLink, type NavCta } from '@/config/site';
 import { useTranslations, type TranslationKey } from '@/i18n';
-import Brand from '@/components/Brand.astro';
-import ThemeToggle from '@/components/ThemeToggle.astro';
-import LocaleSwitcher from '@/components/LocaleSwitcher.astro';
+import Brand from '@/components/common/Brand.astro';
+import ThemeToggle from '@/components/common/ThemeToggle.astro';
+import LocaleSwitcher from '@/components/common/LocaleSwitcher.astro';
 
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const t = useTranslations(locale);
