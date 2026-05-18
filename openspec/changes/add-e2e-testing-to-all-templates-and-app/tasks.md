@@ -37,7 +37,7 @@ shared helpers (T6–T9) precede target-specific specs (T10–T16); CI
       is skipped unless `PLAYWRIGHT_PLAYGROUND_READY=1` is set (CI
       flips this after `pnpm scaffold:test --full`). Default reporter:
       `[['list'], ['html', { open: 'never', outputFolder:
-    'tests/e2e/playwright-report' }]]`. Covers **S1**, **S2**.
+  'tests/e2e/playwright-report' }]]`. Covers **S1**, **S2**.
 
 - [ ] **T6.** Build `tests/e2e/shared/console.ts` —
       `captureConsoleErrors(page)` returns an object that subscribes
@@ -107,13 +107,13 @@ shared helpers (T6–T9) precede target-specific specs (T10–T16); CI
       `PLAYWRIGHT_PLAYGROUND_READY=1`. Covers **S16**.
 
 - [ ] **T15.** Implement the test-only `if (process.env.SITE_E2E ===
-    '1')` branches required by the locale and email scenarios. The
+  '1')` branches required by the locale and email scenarios. The
       diff stays inside `tests/e2e/` _only_ if the implementer picks
       the pure `page.route` approach for both. If the env-gated
       template branch approach is picked instead, the template's
       `astro.config.mjs` (and optionally `src/lib/email/index.ts`)
       gets a guarded branch — see `design.md > Templates require zero
-    behaviour change`. The change to those files MUST be confined
+  behaviour change`. The change to those files MUST be confined
       to a single `if (process.env.SITE_E2E === '1') { ... }` block
       with a comment pointing at `tests/e2e/AGENTS.md`. Verify the
       production build path is byte-identical by running
@@ -130,7 +130,7 @@ shared helpers (T6–T9) precede target-specific specs (T10–T16); CI
       `runs/<ts>/e2e.txt`. Covers **S2–S15**, **S18**.
 
 - [ ] **T17.** Add the CI integration described in `design.md > CI
-    integration`: - New `e2e` job in `.github/workflows/ci.yml` (cached
+  integration`: - New `e2e` job in `.github/workflows/ci.yml` (cached
       Playwright browser install, runs every project except
       `playground`). - Extra step in the existing `e2e-scaffold` job's `--pm=pnpm`
       matrix slot that runs `pnpm test:e2e --project=playground`
@@ -150,14 +150,14 @@ shared helpers (T6–T9) precede target-specific specs (T10–T16); CI
       Playwright project for that target. Covers **S19**.
 
 - [ ] **T19.** Run `pnpm format`, `pnpm format:check`, `pnpm
-    typecheck`, `pnpm lint`, and confirm all four exit 0. Covers
+  typecheck`, `pnpm lint`, and confirm all four exit 0. Covers
       **S20**.
 
 - [ ] **T20.** Run `pnpm audit:invariants --change
-    add-e2e-testing-to-all-templates-and-app` and confirm exit 0.
+  add-e2e-testing-to-all-templates-and-app` and confirm exit 0.
       The dispatcher will read the audit table in `design.md > Invariants
-    this change touches` and shell out to each `pnpm test:e2e
-    --grep ...` command. Capture the run under `runs/<ts>/audit.txt`.
+  this change touches` and shell out to each `pnpm test:e2e
+  --grep ...` command. Capture the run under `runs/<ts>/audit.txt`.
       Covers **S21**.
 
 - [ ] **T21.** Run `pnpm perf:budget` (or the equivalent perf gate that
@@ -174,7 +174,7 @@ shared helpers (T6–T9) precede target-specific specs (T10–T16); CI
       `feature_list.json > rules.require_changeset_to_close`.
 
 - [ ] **T23.** Final sweep — `git status` is clean, `git diff
-    --name-only main` lists only the paths in `design.md > Files
-    touched`, and `scripts/committer --design
-    openspec/changes/add-e2e-testing-to-all-templates-and-app/design.md
-    "<msg>" <paths>` stages successfully for each commit.
+  --name-only main` lists only the paths in `design.md > Files
+  touched`, and `scripts/committer --design
+  openspec/changes/add-e2e-testing-to-all-templates-and-app/design.md
+  "<msg>" <paths>` stages successfully for each commit.

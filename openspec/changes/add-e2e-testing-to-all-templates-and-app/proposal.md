@@ -250,7 +250,7 @@ preview` so the `postbuild: pagefind --site dist` step has run)
 - **THEN** a new `e2e` job runs, installs Playwright browsers (with the
   `actions/cache` hash on `pnpm-lock.yaml`), invokes
   `pnpm test:e2e --project=starter --project=docs-template
- --project=site --project=docs-app`, and a separate
+--project=site --project=docs-app`, and a separate
   `e2e-scaffold-then-playground` job runs the playground smoke after
   scaffold. Any failure marks the workflow red.
 

@@ -168,7 +168,7 @@ existing job:
 - **MOD job `e2e-scaffold`** — appends an extra step **only on the
   `--pm=pnpm` matrix entry** that runs
   `pnpm test:e2e --project=playground` after `scripts/scaffold-test.mjs
- --full` finishes. The other matrix entries (`npm`, `yarn`, `bun`)
+--full` finishes. The other matrix entries (`npm`, `yarn`, `bun`)
   keep their existing scope — the playground smoke is an e2e
   observation of the canonical `pnpm` flow, not a per-pm gate.
 
