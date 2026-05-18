@@ -40,16 +40,19 @@ export async function blockResend(page: Page): Promise<EmailBlocker> {
     return route.abort();
   });
 
-  // Count the Astro Action POST but LET IT THROUGH. The action's `sendContactEmail`
-  // in dev mode (no RESEND_API_KEY) logs to console and returns successfully — the
-  // outbound `api.resend.com` route above stays blocked as a belt-and-braces. If we
-  // fulfilled here, the action never ran on the server, no result cookie was set,
-  // and Astro.getActionResult() returns undefined → the success UI never renders.
-  await page.route('**/_actions/**', async (route) => {
-    if (route.request().method() === 'POST') {
+  // Observe Astro Action requests via page.on('request') instead of page.route.
+  // route.continue() seemed to interfere with the 303-redirect-with-cookie flow
+  // Astro emits for form-style submissions; observing without intercepting keeps
+  // the natural request lifecycle intact so the page re-renders with
+  // Astro.getActionResult() populated.
+  page.on('request', (req) => {
+    if (req.method() !== 'POST') return;
+    const url = req.url();
+    // Astro 5 form actions post to either `/_actions/<name>` or `?_astroAction=<name>`
+    // depending on the runtime; count either pattern.
+    if (url.includes('/_actions/') || url.includes('_astroAction=')) {
       actionHits++;
     }
-    return route.continue();
   });
 
   return {
