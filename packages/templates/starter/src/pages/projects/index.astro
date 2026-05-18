@@ -5,6 +5,7 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Image from '@/components/image/Image.astro';
+import Text from '@/components/ui/text.astro';
 import { useTranslations } from '@/i18n';
 import { siteConfig } from '@/config/site';
 import { breadcrumbListSchema, collectionPageSchema } from '@/lib/jsonld';
@@ -57,13 +58,15 @@ const schemas = [
 >
   <section class="page">
     <header class="page-header">
-      <h1>{t('seo.projects.title')}</h1>
-      <p class="lede">{t('seo.projects.description')}</p>
+      <Text variant="h1">{t('seo.projects.title')}</Text>
+      <Text variant="lead" class="lede mt-3">{t('seo.projects.description')}</Text>
     </header>
 
     {
       projects.length === 0 ? (
-        <p class="empty">{t('projects.noProjects')}</p>
+        <Text variant="muted" class="empty">
+          {t('projects.noProjects')}
+        </Text>
       ) : (
         <ul class="project-list">
           {projectCards.map(({ project, href }: ProjectCard) => (
@@ -79,8 +82,12 @@ const schemas = [
                   />
                 </div>
                 <div class="project-card-body">
-                  <h2>{project.data.title}</h2>
-                  <p class="project-summary">{project.data.summary}</p>
+                  <Text variant="h3" as="h2" class="mb-2">
+                    {project.data.title}
+                  </Text>
+                  <Text variant="muted" class="mb-4">
+                    {project.data.summary}
+                  </Text>
                   {project.data.techStack.length > 0 && (
                     <ul class="tech-list">
                       {project.data.techStack.slice(0, 4).map((tech: string) => (
@@ -108,22 +115,16 @@ const schemas = [
     margin-bottom: 2.5rem;
     text-align: center;
   }
-  .page-header h1 {
-    font-size: clamp(2rem, 5vw, 2.75rem);
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    margin: 0 0 0.75rem;
-  }
+  /* `.lede` retains the centered max-width that the atomized <Text> doesn't
+     control — the header is centered, so the lede needs an auto horizontal
+     margin and a 40rem cap. */
   .lede {
-    font-size: 1.125rem;
-    color: var(--color-fg-muted);
-    margin: 0 auto;
+    margin-left: auto;
+    margin-right: auto;
     max-width: 40rem;
   }
   .empty {
     text-align: center;
-    color: var(--color-fg-muted);
     padding: 3rem 0;
   }
 
@@ -163,19 +164,6 @@ const schemas = [
   }
   .project-card-body {
     padding: 1.25rem;
-  }
-  .project-card-body h2 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    line-height: 1.3;
-    margin: 0 0 0.5rem;
-    letter-spacing: -0.01em;
-  }
-  .project-summary {
-    color: var(--color-fg-muted);
-    font-size: 0.9375rem;
-    line-height: 1.5;
-    margin: 0 0 1rem;
   }
   .tech-list {
     display: flex;

@@ -5,6 +5,7 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Image from '@/components/image/Image.astro';
+import Text from '@/components/ui/text.astro';
 import { useTranslations } from '@/i18n';
 import { siteConfig } from '@/config/site';
 import { breadcrumbListSchema, collectionPageSchema } from '@/lib/jsonld';
@@ -62,13 +63,15 @@ const schemas = [
 <BaseLayout title={t('seo.blog.title')} description={t('seo.blog.description')} schemas={schemas}>
   <section class="page">
     <header class="page-header">
-      <h1>{t('seo.blog.title')}</h1>
-      <p class="lede">{t('seo.blog.description')}</p>
+      <Text variant="h1">{t('seo.blog.title')}</Text>
+      <Text variant="lead" class="mt-3">{t('seo.blog.description')}</Text>
     </header>
 
     {
       posts.length === 0 ? (
-        <p class="empty">{t('blog.noPosts')}</p>
+        <Text variant="muted" class="empty">
+          {t('blog.noPosts')}
+        </Text>
       ) : (
         <ul class="post-list">
           {postCards.map(({ post, href, dateText, dateIso }: PostCard) => (
@@ -84,11 +87,13 @@ const schemas = [
                   />
                 </div>
                 <div class="post-card-body">
-                  <h2>{post.data.title}</h2>
-                  <p class="post-meta">
+                  <Text variant="h3" as="h2" class="mb-2">
+                    {post.data.title}
+                  </Text>
+                  <Text variant="muted" class="mb-3">
                     <time datetime={dateIso}>{dateText}</time>
-                  </p>
-                  <p class="post-description">{post.data.description}</p>
+                  </Text>
+                  <Text variant="muted">{post.data.description}</Text>
                 </div>
               </a>
             </li>
@@ -108,21 +113,7 @@ const schemas = [
   .page-header {
     margin-bottom: 2.5rem;
   }
-  .page-header h1 {
-    font-size: clamp(2rem, 5vw, 2.75rem);
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    margin: 0 0 0.75rem;
-  }
-  .lede {
-    font-size: 1.125rem;
-    color: var(--color-fg-muted);
-    margin: 0;
-  }
   .empty {
-    color: var(--color-fg-muted);
-    font-size: 1rem;
     text-align: center;
     padding: 3rem 0;
   }
@@ -164,23 +155,5 @@ const schemas = [
   }
   .post-card-body {
     padding: 1.25rem;
-  }
-  .post-card-body h2 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    line-height: 1.3;
-    margin: 0 0 0.5rem;
-    letter-spacing: -0.01em;
-  }
-  .post-meta {
-    color: var(--color-fg-muted);
-    font-size: 0.8125rem;
-    margin: 0 0 0.75rem;
-  }
-  .post-description {
-    color: var(--color-fg-muted);
-    font-size: 0.9375rem;
-    line-height: 1.5;
-    margin: 0;
   }
 </style>

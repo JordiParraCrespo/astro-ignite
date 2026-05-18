@@ -54,17 +54,17 @@ variant="small" class="field-error">`. The `.field-error` class still
       provides the danger color (semantic error state, not typography).
       Covers **S1**.
 
-- [ ] **T6.** `packages/templates/starter/src/pages/blog/index.astro`:
+- [x] **T6.** `packages/templates/starter/src/pages/blog/index.astro`:
       page header → `<Text>`; empty-state `<p>` → `<Text>`; per-card
       `<h2>`/`.post-meta`/`.post-description` → `<Text>`. Update the
       scoped `<style>` to drop typography rules. Covers **S1**.
 
-- [ ] **T7.** `packages/templates/starter/src/pages/projects/index.astro`:
+- [x] **T7.** `packages/templates/starter/src/pages/projects/index.astro`:
       same pattern as T6 applied to the projects listing. Covers **S1**.
 
 ## Refactor — pages (`[lang]/` parallels)
 
-- [ ] **T8.** Mirror T3 / T4 / T5 / T6 / T7 into
+- [x] **T8.** Mirror T3 / T4 / T5 / T6 / T7 into
       `packages/templates/starter/src/pages/[lang]/{index,about,contact}.astro`
       and `packages/templates/starter/src/pages/[lang]/{blog,projects}/index.astro`
       respectively. Every default-locale page MUST have its parallel
