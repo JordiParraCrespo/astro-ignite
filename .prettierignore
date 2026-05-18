@@ -88,3 +88,7 @@ apps/*/src/layouts/DocsLayout.astro
 
 # Auto-generated test artifacts
 apps/playground/**
+
+# Playwright HTML / JSON reports (regenerated per run)
+tests/e2e/test-results/**
+tests/e2e/playwright-report/**
