@@ -36,10 +36,7 @@
       "id": 2,
       "name": "registry-block-pricing-card",
       "title": "First block-tier registry item: PricingCard",
-      "capabilities": [
-        "registry-blocks",
-        "registry-atoms"
-      ],
+      "capabilities": ["registry-blocks", "registry-atoms"],
       "description": "Compose Card + Button + (new) PriceTag atom into a PricingCard block. First exercise of the blocks tier, which currently has no items.",
       "acceptance": [
         "packages/registry/blocks/pricing-card/ exists with PricingCard.astro + a demo .mdx",
@@ -52,9 +49,7 @@
       "id": 3,
       "name": "doctor-shipped-in-templates",
       "title": "Ship pnpm doctor inside the templates",
-      "capabilities": [
-        "cli-scaffold"
-      ],
+      "capabilities": ["cli-scaffold"],
       "description": "Phase 2 of the harness — when the CLI user opts into harness scaffolding, scripts/doctor/ + scripts/committer + .claude/agents/ + openspec/ land in their repo.",
       "acceptance": [
         "create-astro-ignite prompts ask 'Include AI harness scaffolding?' (default: false)",
@@ -67,9 +62,7 @@
       "id": 4,
       "name": "make-the-h1-contain-only-text",
       "title": "Make the h1 contain only text",
-      "capabilities": [
-        "templates-i18n"
-      ],
+      "capabilities": ["templates-i18n"],
       "description": "---\nname: hero-h1-text-only\ncapabilities:\n  - templates-i18n\n---\n\n## Why\n\nThe HeroSection in `apps/site` currently wraps a `<span class=\"text-fg-muted\">` prefix inside the `<h1>`, paired with a separate `headlineMuted` i18n key. The desired hero is a single plain-text headline; the muted prefix and its translations should be removed.\n\n> Note: `apps/site/` is a marketing mirror, not a template. Only files under `apps/site/` are in scope for this change — do **not** modify `packages/templates/starter/`.\n\n## Acceptance\n\n- `apps/site/src/components/landing/HeroSection.astro` renders only `{t('landing.hero.headlineTail')}` as the single child of the `<h1>` (no nested span, no muted prefix)\n- `apps/site/src/i18n/en.json` no longer contains a `landing.hero.headlineMuted` key\n- `apps/site/src/i18n/es.json` no longer contains a `landing.hero.headlineMuted` key\n- `pnpm typecheck` is green\n- `pnpm build --filter @astro-ignite/site` is green",
       "acceptance": [
         "apps/site/src/components/landing/HeroSection.astro renders only {t('landing.hero.headlineTail')} as the single child of the <h1> (no nested span, no muted prefix)",
@@ -133,10 +126,7 @@
       "id": 7,
       "name": "starter-use-the-text-component-for-all-t",
       "title": "Starter: use the Text component for all typography",
-      "capabilities": [
-        "templates-css-tokens",
-        "registry-atoms"
-      ],
+      "capabilities": ["templates-css-tokens", "registry-atoms"],
       "description": "## Problem\n\nThe `Text` atom exists in the registry (`packages/registry/base/text.astro`) and is shipped pre-installed in the starter (`packages/templates/starter/src/components/ui/text.astro`), but pages and sections across `packages/templates/starter/` still use raw `<p>`, `<h1>`–`<h6>`, and inline Tailwind typography classes instead of `<Text>`.\n\n## Proposal\n\nAudit `packages/templates/starter/` and replace ad-hoc typography with the `Text` component so:\n\n- Typography variants (size, weight, color, leading) are centralized in one atom.\n- Token-driven color/scale changes propagate from a single source.\n- Users editing the scaffolded site have a single place to customize prose styles.\n\n## Acceptance\n\n- [ ] Every page in `packages/templates/starter/src/pages/` (including `[lang]/` parallels) uses `<Text>` for body copy and headings, except where a section component already encapsulates its own typography.\n- [ ] Every section/component under `packages/templates/starter/src/components/` uses `<Text>` for text content.\n- [ ] No remaining inline typography utility soup (e.g. `class=\\\"text-lg leading-7 text-zinc-400\\\"`) where `<Text>` covers the case.\n- [ ] If `Text` is missing a needed v",
       "acceptance": [
         "Every page under packages/templates/starter/src/pages/ (default and [lang]/ parallels) uses <Text> for body copy and headings, except where a section component already encapsulates its own typography in a scoped <style> block",
@@ -179,9 +169,20 @@
       "id": 9,
       "name": "migrate-starter-template-to-tailwind-css",
       "title": "Migrate starter template to Tailwind CSS",
-      "capabilities": [],
+      "capabilities": ["templates-css-tokens", "templates-perf"],
       "description": "## Goal\n\nMigrate the `starter` template (`packages/templates/starter/`) to use Tailwind CSS as the primary styling mechanism, replacing scoped `<style>` blocks where appropriate.\n\n## Context\n\nPer `AGENTS.md`, the current layered CSS strategy is:\n\n- Above-the-fold components use scoped `<style>` blocks.\n- Below-the-fold uses Tailwind v4.\n- Beasties extracts critical CSS at build time.\n\nThis split adds cognitive overhead and creates two ways to express the same thing. Tailwind v4's compiler is fast enough that the original motivation (keep the critical inline CSS tiny) is worth re-evaluating against the cost of maintaining two styling layers.\n\n## Scope\n\n- All `src/components/**/*.astro` in the starter template.\n- All `src/layouts/**/*.astro` in the starter template.\n- All `src/pages/**/*.astro` in the starter template.\n- Mirror the same changes into `apps/site/` (manual mirror per the architecture rules).\n- Refresh the CLI template cache at `packages/astro-ignite/templates/starter/`.\n- Regenerate `apps/playground/` via `pnpm scaffold:test`.\n\n## Constraints\n\n- **Design tokens stay tokens.** Components must continue to reference `--color-bg`, `--color-fg`, `--color-primary`, `--color-b",
-      "acceptance": [],
+      "acceptance": [
+        "Every .astro file under packages/templates/starter/src/{components,layouts,pages} renders its static styling through Tailwind v4 utility classes; no scoped <style> block remains except when it implements keyframe animations, view transitions, or runtime-dynamic CSS that Tailwind cannot express, and any such exception carries a one-line comment explaining the reason.",
+        "All color/typography/radius/shadow values used by components resolve through the design tokens declared in packages/templates/starter/src/styles/global.css (e.g. via Tailwind's arbitrary-value syntax bg-[var(--color-bg)] or token-derived utilities); raw zinc-* scale usage and hex literals remain forbidden outside global.css and `pnpm audit:invariants --change migrate-starter-template-to-tailwind-css` passes the tokens-only check on the starter tree.",
+        "Tri-state dark mode keeps working end-to-end: toggling .light on <html> still flips every component's surface/foreground/border via the same --color-* tokens with no need to rebuild Tailwind output and the existing Playwright theme-toggle spec is green.",
+        "The templates-css-tokens 'Layered CSS strategy' requirement is replaced by a 'Tailwind-first styling' requirement in this change's spec delta, and the corresponding scripts/audit/tokens-only.mjs --layered heuristic is removed or inverted so that the starter no longer fails the audit by omitting <style> blocks in Hero.astro / Header.astro.",
+        "Beasties is either removed from the starter's astro.config.mjs and package.json (with the templates-perf 'Beasties extracts critical CSS at build time' requirement deleted in the spec delta and its audit row dropped) OR explicitly retained with a written justification in design.md documenting that the inline-critical step still measurably improves LCP.",
+        "Lighthouse budget for the starter holds: pnpm perf:budget reports Performance/Accessibility/Best Practices/SEO ≥ 95 on /, /blog, /projects, /about, /contact (mobile, simulated 4G) and LCP / INP / CLS / TBT / total-transfer thresholds in templates-perf are met — both before and after the migration.",
+        "apps/site mirrors the new styling approach: every .astro file under apps/site/src/ that had a scoped <style> block before the migration uses the same Tailwind-utility pattern as its starter counterpart, and pnpm build --filter @astro-ignite/site is green.",
+        "The CLI template cache at packages/astro-ignite/templates/starter/ is refreshed (the prepack copy step run as part of the change, or the directory regenerated by hand) so its tree matches packages/templates/starter/ byte-for-byte except for the documented intentional differences captured in packages/astro-ignite/scripts/copy-templates.mjs.",
+        "Starter and root AGENTS.md files plus packages/templates/starter/CLAUDE.md are updated so the documented styling strategy is single-layer Tailwind referencing design tokens, with no remaining language claiming above-the-fold uses scoped <style> blocks.",
+        "packages/templates/starter/package.json gains no new runtime dependency; if Beasties is removed, the integration dep is also dropped from devDependencies / astro integrations and a changeset documents the change for end users."
+      ],
       "issue": 37
     }
   ]
