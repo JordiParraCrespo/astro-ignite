@@ -256,6 +256,11 @@ tree converges automatically.
   evolves during implementation, the spec deltas under
   `specs/<capability>/spec.md`, and the run-directory artifacts
   `runs/<ts>/{impl,audit,perf,review,notes}.md` / `perf.txt`).
+- MOD `.prettierignore` — adds the new `common/` and `legal/` paths
+  for chrome components with `<script is:inline>` that
+  prettier-plugin-astro cannot parse (mirrors the existing entries
+  for `Analytics.astro`, `CookieBanner.astro`, `ThemeToggle.astro`,
+  `LocaleSwitcher.astro`).
 
 ## New signatures
 
@@ -461,6 +466,22 @@ This change adds one MODIFIED requirement in the
 composition lands. The existing requirements stay in place for when
 blocks are reintroduced, but the registry manifest must not list any
 `registry:block` entry until then.
+
+Audit commands (parseable by `scripts/audit/run-all.mjs --change`):
+
+- audit: `node scripts/audit/i18n-parallels.mjs`
+- audit: `node scripts/audit/i18n-parallels.mjs --strict`
+- audit: `node scripts/audit/i18n-parallels.mjs --content`
+- audit: `node scripts/audit/i18n-parallels.mjs --config`
+- audit: `node scripts/audit/internal-links-localized.mjs`
+- audit: `node scripts/audit/tokens-only.mjs`
+- audit: `node scripts/audit/tokens-only.mjs --layered`
+- audit: `node scripts/audit/jsonld-graph.mjs --strict --typed`
+- audit: `node scripts/audit/consent-gated-analytics.mjs`
+- audit: `node scripts/audit/consent-gated-analytics.mjs --banner`
+- audit: `node scripts/audit/consent-gated-analytics.mjs --policy`
+- audit: `node scripts/audit/consent-gated-analytics.mjs --boundary`
+- audit: `node scripts/audit/no-react-in-atoms.mjs --include-blocks`
 
 ## Performance budget applicability
 
