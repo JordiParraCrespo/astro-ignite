@@ -36,7 +36,10 @@
       "id": 2,
       "name": "registry-block-pricing-card",
       "title": "First block-tier registry item: PricingCard",
-      "capabilities": ["registry-blocks", "registry-atoms"],
+      "capabilities": [
+        "registry-blocks",
+        "registry-atoms"
+      ],
       "description": "Compose Card + Button + (new) PriceTag atom into a PricingCard block. First exercise of the blocks tier, which currently has no items.",
       "acceptance": [
         "packages/registry/blocks/pricing-card/ exists with PricingCard.astro + a demo .mdx",
@@ -49,7 +52,9 @@
       "id": 3,
       "name": "doctor-shipped-in-templates",
       "title": "Ship pnpm doctor inside the templates",
-      "capabilities": ["cli-scaffold"],
+      "capabilities": [
+        "cli-scaffold"
+      ],
       "description": "Phase 2 of the harness — when the CLI user opts into harness scaffolding, scripts/doctor/ + scripts/committer + .claude/agents/ + openspec/ land in their repo.",
       "acceptance": [
         "create-astro-ignite prompts ask 'Include AI harness scaffolding?' (default: false)",
@@ -62,7 +67,9 @@
       "id": 4,
       "name": "make-the-h1-contain-only-text",
       "title": "Make the h1 contain only text",
-      "capabilities": ["templates-i18n"],
+      "capabilities": [
+        "templates-i18n"
+      ],
       "description": "---\nname: hero-h1-text-only\ncapabilities:\n  - templates-i18n\n---\n\n## Why\n\nThe HeroSection in `apps/site` currently wraps a `<span class=\"text-fg-muted\">` prefix inside the `<h1>`, paired with a separate `headlineMuted` i18n key. The desired hero is a single plain-text headline; the muted prefix and its translations should be removed.\n\n> Note: `apps/site/` is a marketing mirror, not a template. Only files under `apps/site/` are in scope for this change — do **not** modify `packages/templates/starter/`.\n\n## Acceptance\n\n- `apps/site/src/components/landing/HeroSection.astro` renders only `{t('landing.hero.headlineTail')}` as the single child of the `<h1>` (no nested span, no muted prefix)\n- `apps/site/src/i18n/en.json` no longer contains a `landing.hero.headlineMuted` key\n- `apps/site/src/i18n/es.json` no longer contains a `landing.hero.headlineMuted` key\n- `pnpm typecheck` is green\n- `pnpm build --filter @astro-ignite/site` is green",
       "acceptance": [
         "apps/site/src/components/landing/HeroSection.astro renders only {t('landing.hero.headlineTail')} as the single child of the <h1> (no nested span, no muted prefix)",
@@ -72,6 +79,15 @@
         "pnpm build --filter @astro-ignite/site is green"
       ],
       "issue": 24
+    },
+    {
+      "id": 5,
+      "name": "add-e2e-testing-to-all-templates-and-app",
+      "title": "Add e2e testing to all templates and apps",
+      "capabilities": [],
+      "description": "## Problem\n\nTemplates (`packages/templates/starter`, `packages/templates/docs`) and apps (`apps/site`, `apps/docs`, `apps/playground`) currently have no e2e test coverage. `pnpm scaffold:test` validates that the CLI can scaffold + build + pass Lighthouse, but there are no behavior tests for actual user flows (navigation, locale switching, theme toggle, contact form, search, etc.).\n\n## Proposal\n\nAdd an e2e test suite (Playwright recommended) that runs against:\n\n**Templates** (run against `pnpm dev` of the template directly):\n- [ ] `packages/templates/starter/`\n- [ ] `packages/templates/docs/`\n\n**Apps**:\n- [ ] `apps/site/`\n- [ ] `apps/docs/`\n- [ ] `apps/playground/` (smoke only — it's CI-regenerated)\n\n## Coverage per target\n\nAt minimum each target should verify:\n- [ ] Homepage renders without console errors\n- [ ] Internal navigation works (header links, footer links)\n- [ ] Locale switcher swaps routes correctly (if i18n configured)\n- [ ] Theme toggle cycles light/dark/system and persists\n- [ ] 404 page renders\n- [ ] Per-template specifics:\n  - starter: contact form submission (mocked email), blog index → post navigation\n  - docs: sidebar nav, search (if present), MDX page renders\n\n##",
+      "acceptance": [],
+      "issue": 27
     }
   ]
 }
