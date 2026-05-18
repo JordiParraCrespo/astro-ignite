@@ -35,3 +35,14 @@ The marketing landing for astro-ignite itself. **Manual mirror of the
 - Audits run against starter, not against this app. The `i18n-parallels`
   audit is template-scoped; you can break i18n parallels here only if
   the same break exists in starter (and then you've got a starter bug).
+
+## End-to-end tests
+
+The `site` Playwright project at the workspace root boots this app via
+`astro dev` and runs every `tests/e2e/common/` spec plus the
+site-specific specs under `tests/e2e/site/`. See
+[`tests/e2e/AGENTS.md`](../../tests/e2e/AGENTS.md). Scoped run:
+
+```bash
+pnpm test:e2e --project=site
+```
