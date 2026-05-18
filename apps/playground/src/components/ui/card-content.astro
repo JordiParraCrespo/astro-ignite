@@ -6,10 +6,4 @@ export type Props = HTMLAttributes<'div'> & { class?: string };
 const { class: className, ...rest } = Astro.props;
 ---
 
-<div class={cn('card-content', className)} {...rest}><slot /></div>
-
-<style>
-  .card-content {
-    padding: 24px;
-  }
-</style>
+<div class={cn('p-6', className)} {...rest}><slot /></div>

@@ -16,7 +16,26 @@ export type Props = (AsButton | AsAnchor) & {
 
 const { variant = 'default', size = 'md', class: className, href, ...rest } = Astro.props;
 
-const classes = cn('btn', `btn--${variant}`, `btn--${size}`, className);
+const base =
+  'inline-flex items-center justify-center gap-2 rounded-md font-medium leading-none whitespace-nowrap border border-transparent cursor-pointer transition-[background-color,border-color,color,opacity] duration-150 select-none no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:opacity-50 disabled:pointer-events-none aria-disabled:opacity-50 aria-disabled:pointer-events-none';
+
+const sizes: Record<Size, string> = {
+  sm: 'h-[30px] px-2.5 text-[13px] rounded-sm',
+  md: 'h-9 px-3.5 text-sm',
+  lg: 'h-11 px-[18px] text-[15px] rounded-md',
+  icon: 'h-9 w-9 p-0',
+};
+
+const variants: Record<Variant, string> = {
+  default: 'bg-primary text-primary-fg hover:opacity-90',
+  secondary: 'bg-surface-2 text-fg border-border hover:border-border-strong',
+  outline: 'bg-transparent text-fg border-border hover:bg-surface-2 hover:border-border-strong',
+  ghost: 'bg-transparent text-fg hover:bg-surface-2',
+  destructive: 'bg-danger text-danger-fg hover:opacity-90',
+  link: 'bg-transparent text-fg h-auto !p-0 underline underline-offset-4',
+};
+
+const classes = cn(base, sizes[size], variants[variant], className);
 ---
 
 {
@@ -30,108 +49,3 @@ const classes = cn('btn', `btn--${variant}`, `btn--${size}`, className);
     </button>
   )
 }
-
-<style>
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    border-radius: var(--radius);
-    font-weight: 500;
-    font-family: inherit;
-    line-height: 1;
-    white-space: nowrap;
-    border: 1px solid transparent;
-    cursor: pointer;
-    transition:
-      background 120ms ease,
-      border-color 120ms ease,
-      color 120ms ease,
-      opacity 120ms ease;
-    user-select: none;
-    text-decoration: none;
-  }
-  .btn:focus-visible {
-    outline: 2px solid var(--color-ring);
-    outline-offset: 2px;
-  }
-  .btn:disabled,
-  .btn[aria-disabled='true'] {
-    opacity: 0.5;
-    pointer-events: none;
-  }
-
-  .btn--sm {
-    height: 32px;
-    padding-inline: 12px;
-    font-size: 13px;
-  }
-  .btn--md {
-    height: 40px;
-    padding-inline: 16px;
-    font-size: 14px;
-  }
-  .btn--lg {
-    height: 48px;
-    padding-inline: 20px;
-    font-size: 16px;
-  }
-  .btn--icon {
-    height: 40px;
-    width: 40px;
-    padding: 0;
-  }
-
-  .btn--default {
-    background: var(--color-primary);
-    color: var(--color-primary-fg);
-  }
-  .btn--default:hover {
-    opacity: 0.9;
-  }
-
-  .btn--secondary {
-    background: var(--color-surface-2);
-    color: var(--color-fg);
-    border-color: var(--color-border);
-  }
-  .btn--secondary:hover {
-    border-color: var(--color-border-strong);
-  }
-
-  .btn--outline {
-    background: transparent;
-    color: var(--color-fg);
-    border-color: var(--color-border);
-  }
-  .btn--outline:hover {
-    background: var(--color-surface-2);
-    border-color: var(--color-border-strong);
-  }
-
-  .btn--ghost {
-    background: transparent;
-    color: var(--color-fg);
-  }
-  .btn--ghost:hover {
-    background: var(--color-surface-2);
-  }
-
-  .btn--destructive {
-    background: var(--color-danger);
-    color: var(--color-zinc-50);
-  }
-  .btn--destructive:hover {
-    opacity: 0.9;
-  }
-
-  .btn--link {
-    background: transparent;
-    color: var(--color-fg);
-    height: auto;
-    padding: 0;
-    text-decoration: underline;
-    text-underline-offset: 4px;
-  }
-</style>

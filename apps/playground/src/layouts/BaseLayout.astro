@@ -5,7 +5,7 @@
  * - Anti-flash theme script (must run BEFORE CSS to avoid FOUC)
  * - Hero image preload (page passes `preloadImages` for LCP optimization)
  * - <SEO> + <JsonLd> with siteSchemas auto-merged
- * - <Nav>, <main id="main">, <Footer>, <CookieBanner>, <Analytics>
+ * - <Header>, <main id="main">, <Footer>, <CookieBanner>, <Analytics>
  * - Skip-link as first focusable element for a11y
  *
  * Specialized layouts (ArticleLayout, ProjectLayout, LegalLayout) wrap this.
@@ -21,10 +21,10 @@ import { useTranslations } from '@/i18n';
 
 import SEO from '@/components/seo/SEO.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
-import Nav from '@/components/Nav.astro';
-import Footer from '@/components/Footer.astro';
-import CookieBanner from '@/components/CookieBanner.astro';
-import Analytics from '@/components/Analytics.astro';
+import Header from '@/components/common/Header.astro';
+import Footer from '@/components/common/Footer.astro';
+import CookieBanner from '@/components/legal/CookieBanner.astro';
+import Analytics from '@/components/common/Analytics.astro';
 
 interface Props {
   title: string;
@@ -132,7 +132,7 @@ const allSchemas = [...siteSchemas(locale), ...schemas];
   </head>
   <body>
     <a href="#main" class="skip-link">{t('nav.skipToContent')}</a>
-    <Nav />
+    <Header />
     <main id="main">
       <slot />
     </main>

@@ -21,7 +21,7 @@ style).
 - S1 — Final layout matches proposed structure
   → tree check: `packages/templates/starter/src/components/` immediate
   subdirs are `ui common blog projects about contact legal not-found
-  image seo`; zero `*.astro` at root; no `sections/` or `blocks/`. ✅
+image seo`; zero `*.astro` at root; no `sections/` or `blocks/`. ✅
 - S2 — Every relocated file at its mapped path
   → confirmed via `git diff --name-only main..HEAD`: every old path
   deleted, every new path created per design.md migration map. ✅
@@ -41,7 +41,7 @@ style).
   and explicitly out of scope per design.md). ✅
 - S7 — Registry blocks tier removed
   → `packages/registry/blocks/` deleted; `grep registry:block
-  packages/registry/registry.json` returns 0. ✅
+packages/registry/registry.json` returns 0. ✅
 - S8 — Mirrors in sync
   → docs template + apps/site + apps/docs mirrors moved chrome to
   `common/` + `legal/`. `apps/playground/` is **not** mirrored
@@ -99,26 +99,26 @@ script — every failure recurs identically):
 - `tokens-only --layered` — same hex literals (the layered split itself
   is preserved).
 - `consent-gated-analytics --banner` — `ArticleLayout.astro: base
-  layout does not render CookieBanner` (audit's
+layout does not render CookieBanner` (audit's
   `/Base|Layout|RootLayout/` regex picks `ArticleLayout`).
 - `consent-gated-analytics --policy` — `CookieBanner present but no
-  /legal/cookies(.astro|.mdx) page` (templates serve via dynamic
+/legal/cookies(.astro|.mdx) page` (templates serve via dynamic
   `pages/legal/[...slug].astro`).
 
 Per-invariant trace:
 
-| Invariant                  | Audit                                                        | Result                                                                                  |
-| -------------------------- | ------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
-| templates-i18n I1-I4       | `i18n-parallels.mjs` (+ `--strict`, `--content`, `--config`) | ✅ PASS (×4)                                                                            |
-| templates-i18n I5/I6       | `internal-links-localized.mjs`                               | ❌ PRE-EXISTING (SidebarNav)                                                            |
-| templates-css-tokens I1    | `tokens-only.mjs`                                            | ❌ PRE-EXISTING (themeColor hex)                                                        |
+| Invariant                  | Audit                                                        | Result                                                                                   |
+| -------------------------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| templates-i18n I1-I4       | `i18n-parallels.mjs` (+ `--strict`, `--content`, `--config`) | ✅ PASS (×4)                                                                             |
+| templates-i18n I5/I6       | `internal-links-localized.mjs`                               | ❌ PRE-EXISTING (SidebarNav)                                                             |
+| templates-css-tokens I1    | `tokens-only.mjs`                                            | ❌ PRE-EXISTING (themeColor hex)                                                         |
 | templates-css-tokens I4    | `tokens-only.mjs --layered`                                  | ❌ PRE-EXISTING (same hex; layered split preserved — Header/Hero `<style>` still scoped) |
-| templates-seo-jsonld I1-I3 | `jsonld-graph.mjs --strict --typed`                          | ✅ PASS                                                                                 |
-| templates-consent I1       | `consent-gated-analytics.mjs`                                | ✅ PASS                                                                                 |
-| templates-consent I2       | `consent-gated-analytics.mjs --banner`                       | ❌ PRE-EXISTING (ArticleLayout false positive)                                          |
-| templates-consent I3       | `consent-gated-analytics.mjs --policy`                       | ❌ PRE-EXISTING (dynamic cookie route)                                                  |
-| templates-consent I4       | `consent-gated-analytics.mjs --boundary`                     | ✅ PASS                                                                                 |
-| registry-blocks I1         | `no-react-in-atoms.mjs --include-blocks`                     | ✅ PASS (vacuous — 0 blocks)                                                            |
+| templates-seo-jsonld I1-I3 | `jsonld-graph.mjs --strict --typed`                          | ✅ PASS                                                                                  |
+| templates-consent I1       | `consent-gated-analytics.mjs`                                | ✅ PASS                                                                                  |
+| templates-consent I2       | `consent-gated-analytics.mjs --banner`                       | ❌ PRE-EXISTING (ArticleLayout false positive)                                           |
+| templates-consent I3       | `consent-gated-analytics.mjs --policy`                       | ❌ PRE-EXISTING (dynamic cookie route)                                                   |
+| templates-consent I4       | `consent-gated-analytics.mjs --boundary`                     | ✅ PASS                                                                                  |
+| registry-blocks I1         | `no-react-in-atoms.mjs --include-blocks`                     | ✅ PASS (vacuous — 0 blocks)                                                             |
 
 The audit script's exit non-zero is driven entirely by pre-existing
 violations on `main`. No new audit failure is introduced by this
@@ -138,7 +138,7 @@ reviewer environment.
 - `pnpm perf:budget --deps`: ✅ starter 12 / docs 8 runtime deps; no
   drift.
 - `node scripts/perf/run.mjs --page /`: ❌ `lighthouse binary —
-  lighthouse not installed`; no Chrome for Testing available; the run
+lighthouse not installed`; no Chrome for Testing available; the run
   produced `runs/.../perf.md` with three FAIL rows for the missing
   binary (artifact removed during cleanup to avoid leaving stale
   output).
@@ -249,7 +249,6 @@ committer's design-gate by harness convention.
    prepack happens.
 
    Fix:
-
    - Add `scripts/scaffold-test.mjs` to design.md's "Files touched"
      (amendment).
    - Update the `EXPECTED_FILES` list to the new paths
@@ -265,7 +264,6 @@ committer's design-gate by harness convention.
 2. **T20 / apps/playground hand-mirror is genuinely blocked by the
    committer rule.** The implementer notes this honestly. Two options
    for the next pass:
-
    - Amend design.md to allow `apps/playground/*` so the hand-mirror
      can land, OR
    - After fixing blocker 1, run `pnpm scaffold:test` post-prepack;
@@ -283,7 +281,6 @@ committer's design-gate by harness convention.
    scan emitted HTML, not source paths — but C11 ("`pnpm perf:budget`
    passes") requires a green run. Acceptable resolutions, in order of
    preference:
-
    - Implementer reruns `pnpm perf:budget` after fixing blocker 1 (so
      the playground reflects the new layout) and captures the report
      under `runs/<ts>/perf.txt`, OR

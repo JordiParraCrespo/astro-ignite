@@ -4,7 +4,8 @@ import type { CollectionEntry } from 'astro:content';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import Image from '@/components/image/Image.astro';
+import ProjectsIndexList from '@/components/projects/ProjectsIndexList.astro';
+import type { ProjectCard } from '@/components/projects/ProjectsIndexList.astro';
 import { useTranslations } from '@/i18n';
 import { siteConfig } from '@/config/site';
 import { breadcrumbListSchema, collectionPageSchema } from '@/lib/jsonld';
@@ -27,11 +28,6 @@ const projects = (
   (a: CollectionEntry<'projects'>, b: CollectionEntry<'projects'>) =>
     +b.data.datePublished - +a.data.datePublished
 );
-
-type ProjectCard = {
-  project: CollectionEntry<'projects'>;
-  href: string;
-};
 
 const projectCards: ProjectCard[] = projects.map((project: CollectionEntry<'projects'>) => {
   // entry.id format from Astro 5 i18n collection: "<locale>/<slug>" (folder /index stripped).
@@ -61,141 +57,5 @@ const schemas = [
   description={t('seo.projects.description')}
   schemas={schemas}
 >
-  <section class="page">
-    <header class="page-header">
-      <h1>{t('seo.projects.title')}</h1>
-      <p class="lede">{t('seo.projects.description')}</p>
-    </header>
-
-    {
-      projects.length === 0 ? (
-        <p class="empty">{t('projects.noProjects')}</p>
-      ) : (
-        <ul class="project-list">
-          {projectCards.map(({ project, href }: ProjectCard) => (
-            <li>
-              <a href={href} class="project-card">
-                <div class="project-card-image">
-                  <Image
-                    src={project.data.heroImage}
-                    alt={project.data.heroImageAlt}
-                    width={800}
-                    height={420}
-                    sizes="(min-width: 768px) 50vw, 100vw"
-                  />
-                </div>
-                <div class="project-card-body">
-                  <h2>{project.data.title}</h2>
-                  <p class="project-summary">{project.data.summary}</p>
-                  {project.data.techStack.length > 0 && (
-                    <ul class="tech-list">
-                      {project.data.techStack.slice(0, 4).map((tech: string) => (
-                        <li>{tech}</li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </a>
-            </li>
-          ))}
-        </ul>
-      )
-    }
-  </section>
+  <ProjectsIndexList projectCards={projectCards} />
 </BaseLayout>
-
-<style>
-  .page {
-    max-width: 80rem;
-    margin: 0 auto;
-    padding: 3rem 1.25rem 4rem;
-  }
-  .page-header {
-    margin-bottom: 2.5rem;
-    text-align: center;
-  }
-  .page-header h1 {
-    font-size: clamp(2rem, 5vw, 2.75rem);
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    margin: 0 0 0.75rem;
-  }
-  .lede {
-    font-size: 1.125rem;
-    color: var(--color-fg-muted);
-    margin: 0 auto;
-    max-width: 40rem;
-  }
-  .empty {
-    text-align: center;
-    color: var(--color-fg-muted);
-    padding: 3rem 0;
-  }
-
-  .project-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    gap: 1.5rem;
-    grid-template-columns: 1fr;
-  }
-  @media (min-width: 768px) {
-    .project-list {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  .project-card {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-    border: 1px solid var(--color-border);
-    border-radius: 0.75rem;
-    overflow: hidden;
-    transition: border-color 0.15s var(--ease-out-soft);
-  }
-  .project-card:hover {
-    border-color: var(--color-primary);
-  }
-  .project-card-image :global(picture),
-  .project-card-image :global(img) {
-    width: 100%;
-    height: auto;
-    display: block;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-  }
-  .project-card-body {
-    padding: 1.25rem;
-  }
-  .project-card-body h2 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    line-height: 1.3;
-    margin: 0 0 0.5rem;
-    letter-spacing: -0.01em;
-  }
-  .project-summary {
-    color: var(--color-fg-muted);
-    font-size: 0.9375rem;
-    line-height: 1.5;
-    margin: 0 0 1rem;
-  }
-  .tech-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.375rem;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  .tech-list li {
-    font-size: 0.75rem;
-    background: var(--color-surface-2);
-    color: var(--color-fg-muted);
-    padding: 0.125rem 0.5rem;
-    border-radius: 0.25rem;
-  }
-</style>

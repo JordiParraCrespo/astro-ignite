@@ -75,7 +75,7 @@ describe('scaffoldProject', () => {
       'src/config/site.ts',
       'src/lib/email/index.ts',
       'src/lib/email/resend.ts',
-      'src/components/Nav.astro',
+      'src/components/common/Header.astro',
       'src/pages/index.astro',
     ]) {
       const stat = await fs.stat(path.join(target, rel));
