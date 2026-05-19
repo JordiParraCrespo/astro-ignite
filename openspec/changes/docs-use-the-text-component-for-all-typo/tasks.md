@@ -151,7 +151,7 @@ apps/docs/src/components/ui/text.astro` shows no divergence. Covers
       `apps/docs/src/components/legal/CookieBanner.astro`. Covers
       **S3**, **S6**, **S12**.
 
-- [ ] **T14.** `apps/docs/src/components/blocks/not-found-state.astro`:
+- [x] **T14.** `apps/docs/src/components/blocks/not-found-state.astro`:
       replace `<h1 class="m-0 text-[clamp(40px,6vw,56px)] font-medium
 tracking-[-0.045em] leading-none text-fg">{title}</h1>` with
       `<Text variant="h1">{title}</Text>` and
@@ -163,7 +163,7 @@ max-w-[36ch]">{description}</p>` with
       `<Text variant="eyebrow" class="mono">{code}</Text>`. Covers
       **S3**, **S6**, **S12**.
 
-- [ ] **T15.** `apps/docs/src/pages/components/index.astro`: replace
+- [x] **T15.** `apps/docs/src/pages/components/index.astro`: replace
       the page-frame typography (`cat__eyebrow`, `cat__title`,
       `cat__lede`, each `grp__lede`, each group `<h2>{group}</h2>`,
       and each per-component `<h3>{name}</h3>`) with `<Text>`
