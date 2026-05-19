@@ -50,7 +50,7 @@ systemctl restart aig-runner`) and points at the templates-perf
 
 ## Phase 2 — Chrome for Testing install script
 
-- [ ] **T3.** Write `scripts/doctor/install-chrome.mjs`. Implement
+- [x] **T3.** Write `scripts/doctor/install-chrome.mjs`. Implement
       argv parsing for `--prefix`, `--bindir`, `--version`, and
       `--dry-run` (matching the design's CLI surface). Resolve the
       pinned version (constant at the top of the file; the
@@ -65,14 +65,14 @@ systemctl restart aig-runner`) and points at the templates-perf
       `<bindir>/chrome` → the extracted `chrome` binary. Covers
       **S2**, **S3**.
 
-- [ ] **T4.** Add the idempotence fast path in
+- [x] **T4.** Add the idempotence fast path in
       `install-chrome.mjs`: if the symlink at `<bindir>/chrome`
       already resolves to a binary under `<prefix>/<version>/`,
       print `Chrome for Testing <version> already installed at
 <symlink>` and exit 0 within ~1s without re-downloading. Covers
       **S1**.
 
-- [ ] **T5.** Update `scripts/doctor/chrome-installed.mjs`: extend
+- [x] **T5.** Update `scripts/doctor/chrome-installed.mjs`: extend
       the probe array to include `/usr/local/bin/chrome` and
       `$HOME/.local/bin/chrome`. Replace the existing warn fix hint
       with `Run scripts/doctor/install-chrome.mjs to install the
@@ -80,7 +80,7 @@ pinned Chrome for Testing.`. Covers **S4**.
 
 ## Phase 3 — npm cache writability doctor check
 
-- [ ] **T6.** Write `scripts/doctor/npm-cache-writable.mjs`.
+- [x] **T6.** Write `scripts/doctor/npm-cache-writable.mjs`.
       Export `check()`. Probe by writing + removing a 1-byte file
       at `$HOME/.npm/_cacache/.aig-doctor-probe-<pid>`. On
       success, emit `ok` with the probe path; on
@@ -90,7 +90,7 @@ aig-runner so ReadWritePaths= grants the npm cache write
 access.`. Use only built-in node modules + `./_lib.mjs`. Covers
       **S14**.
 
-- [ ] **T7.** Confirm the new doctor check loads via
+- [x] **T7.** Confirm the new doctor check loads via
       `pnpm doctor` (the autoloader at `scripts/doctor/run-all.mjs`
       picks up every `*.mjs` other than `_lib.mjs` and
       `run-all.mjs`). Covers **S14**.
