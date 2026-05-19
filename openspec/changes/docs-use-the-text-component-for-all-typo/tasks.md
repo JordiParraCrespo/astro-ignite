@@ -80,7 +80,7 @@ apps/docs/src/components/ui/text.astro` shows no divergence. Covers
 
 ## Refactor — docs template components
 
-- [ ] **T5.** `packages/templates/docs/src/components/docs/ComponentShowcase.astro`:
+- [x] **T5.** `packages/templates/docs/src/components/docs/ComponentShowcase.astro`:
       replace `<h1 class="showcase__title">{name}</h1>` with
       `<Text variant="h1" class="showcase__title">{name}</Text>` and
       `<p class="showcase__desc">{description}</p>` with
