@@ -51,19 +51,19 @@ apps/docs/package.json` is empty (verified independently) ✅
 - S12 → `pnpm scaffold:test` per impl.md was green ✅
 - **S13 → ❌ FAILED. The diff against main DOES touch `apps/playground/`
   (16 files in commit `f68a454`). S13's text explicitly says "No
-  `apps/playground/**`."**
+  `apps/playground/**`."\*\*
 
 ## T2 — Invariant audits
 
 `pnpm audit:invariants --change docs-ship-registry-atoms-in-srccomponent`:
 ❌ non-zero exit (ELIFECYCLE 1).
 
-| Audit                                        | Status  | Notes              |
-| -------------------------------------------- | ------- | ------------------ |
-| `no-react-in-atoms`                          | ✅ PASS | scanned 32 file(s) |
-| `no-react-in-atoms` (full flags)             | ✅ PASS | scanned 32 file(s) |
-| `tokens-only`                                | ❌ FAIL | 2 violation(s)     |
-| `scripts/perf/run.mjs --deps`                | ✅ PASS |                    |
+| Audit                            | Status  | Notes              |
+| -------------------------------- | ------- | ------------------ |
+| `no-react-in-atoms`              | ✅ PASS | scanned 32 file(s) |
+| `no-react-in-atoms` (full flags) | ✅ PASS | scanned 32 file(s) |
+| `tokens-only`                    | ❌ FAIL | 2 violation(s)     |
+| `scripts/perf/run.mjs --deps`    | ✅ PASS |                    |
 
 `tokens-only` hits:
 
@@ -161,15 +161,15 @@ message), so verification falls to the path-vs-design.md check below.
 
 **Path budget vs design.md "Files touched":**
 
-| Area                                         | Files | In design.md allow-list?                                     |
-| -------------------------------------------- | ----- | ------------------------------------------------------------ |
-| `packages/templates/docs/src/components/ui/` | 30    | ✅ enumerated 30× under § Atoms                              |
-| `packages/templates/docs/src/lib/toast.ts`   | 1     | ✅ § Lib helper                                              |
-| `packages/astro-ignite/templates/docs/**`    | 52    | ✅ § CLI template cache prefix-match                         |
+| Area                                         | Files | In design.md allow-list?                                    |
+| -------------------------------------------- | ----- | ----------------------------------------------------------- |
+| `packages/templates/docs/src/components/ui/` | 30    | ✅ enumerated 30× under § Atoms                             |
+| `packages/templates/docs/src/lib/toast.ts`   | 1     | ✅ § Lib helper                                             |
+| `packages/astro-ignite/templates/docs/**`    | 52    | ✅ § CLI template cache prefix-match                        |
 | `apps/playground/**`                         | 16    | ❌ **NOT in design.md**, scenario S13 explicitly forbids it |
-| `apps/docs/**`                               | 0     | ✅ (parity confirmed at T9; no edit needed)                  |
-| `.changeset/docs-atom-set-parity.md`         | 1     | ✅ § Harness paperwork                                       |
-| `openspec/**`                                | 9     | ✅ § Harness paperwork                                       |
+| `apps/docs/**`                               | 0     | ✅ (parity confirmed at T9; no edit needed)                 |
+| `.changeset/docs-atom-set-parity.md`         | 1     | ✅ § Harness paperwork                                      |
+| `openspec/**`                                | 9     | ✅ § Harness paperwork                                      |
 
 The 16 `apps/playground/` files in commit `f68a454` ("prettier
 autoformat") are NOT prettier formatting — `git show f68a454 --
@@ -229,9 +229,9 @@ refactor mislabeled as autoformat, and it violates:
 3. **`pnpm format:check` red — two run-artifact files un-prettied.**
    - `openspec/changes/docs-ship-registry-atoms-in-srccomponent/runs/2026-05-19T13-25-44Z/audit.md`
    - `openspec/changes/docs-ship-registry-atoms-in-srccomponent/runs/2026-05-19T13-25-44Z/perf.md`
-   Run `pnpm format` to fix, and commit the result via
-   `scripts/committer --design` (the openspec run-dir is allow-listed
-   under § Harness paperwork).
+     Run `pnpm format` to fix, and commit the result via
+     `scripts/committer --design` (the openspec run-dir is allow-listed
+     under § Harness paperwork).
 
 ## Notes (non-blocking)
 
