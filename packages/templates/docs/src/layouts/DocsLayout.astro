@@ -122,6 +122,7 @@ const dateFmt = new Intl.DateTimeFormat(Astro.currentLocale ?? 'en', {
 </BaseLayout>
 
 <style is:global>
+  @reference "../styles/global.css";
   /* Why kept: MDX-emitted prose elements are not in Tailwind's class-scan path.
      @apply re-uses Tailwind utilities (and the token layer) so the rules
      stay token-resolved without a parallel design system. */

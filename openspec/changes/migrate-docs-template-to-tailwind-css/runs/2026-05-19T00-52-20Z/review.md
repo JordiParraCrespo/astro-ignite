@@ -89,6 +89,7 @@ Per-audit results (parsed from
   `themeColor` site-config hex literals, or the
   `tokens-only.mjs` allowlist must be widened. As shipped, the
   audit reports the change's `I1` check as failing.
+
 - `i18n-parallels` (×4 variants) — ✅ all PASS.
 - `internal-links-localized` — ❌ **FAIL**. Hit:
   - `packages/templates/docs/src/components/docs/SidebarNav.astro:69`
@@ -100,6 +101,7 @@ Per-audit results (parsed from
   audit (which is the formal check the design hand-waves toward in
   its "Audit" line at design.md:456) is failing on a file this
   change touched. **S4 is not satisfied.**
+
 - `consent-gated-analytics` (×4 variants: default, `--banner`,
   `--policy`, `--boundary`) — mixed:
   - default — ✅ PASS
@@ -253,7 +255,7 @@ Global:
   prior `main` history; reviewer flags but does not block).
 - C10 — `pnpm doctor` — not run; ❓.
 
-Scoped (templates-* applies):
+Scoped (templates-\* applies):
 
 - C11 — `pnpm perf:budget` — ❌ not run. **BLOCKER.**
 - C12 — `pnpm scaffold:test` — ❌ not run. **BLOCKER.**
@@ -278,25 +280,25 @@ Closing checkpoints C21–C23 — not applicable until approval.
 `git diff --name-only main..HEAD` paths (deduped):
 
 - `openspec/changes/migrate-docs-template-to-tailwind-css/{APPROVED,
-  design.md, proposal.md, tasks.md, runs/.../notes.md,
-  specs/templates-css-tokens/spec.md}` — ✅ in scope.
+design.md, proposal.md, tasks.md, runs/.../notes.md,
+specs/templates-css-tokens/spec.md}` — ✅ in scope.
 - `openspec/feature_list.json` — harness state. Not in
   design.md's "Files touched" but treated as harness scaffolding;
   reviewer accepts.
 - `openspec/progress/current.md` — same; harness progress
   artefact.
 - `packages/templates/docs/src/{components/common/Brand.astro,
-  components/common/LocaleSwitcher.astro,
-  components/common/ThemeToggle.astro,
-  components/docs/Breadcrumbs.astro,
-  components/docs/CodeBlock.astro,
-  components/docs/OnThisPage.astro,
-  components/docs/PrevNext.astro,
-  components/docs/SearchBox.astro,
-  components/docs/SidebarNav.astro,
-  components/legal/CookieBanner.astro,
-  layouts/DocsLayout.astro,
-  layouts/LegalLayout.astro}` — ✅ all listed in design.md
+components/common/LocaleSwitcher.astro,
+components/common/ThemeToggle.astro,
+components/docs/Breadcrumbs.astro,
+components/docs/CodeBlock.astro,
+components/docs/OnThisPage.astro,
+components/docs/PrevNext.astro,
+components/docs/SearchBox.astro,
+components/docs/SidebarNav.astro,
+components/legal/CookieBanner.astro,
+layouts/DocsLayout.astro,
+layouts/LegalLayout.astro}` — ✅ all listed in design.md
   "Files touched".
 
 Missing in-scope paths from design.md that **should** have been
@@ -322,7 +324,7 @@ touched:
   components/docs, components/legal, components/image,
   components/blocks/not-found-state.astro, pages/**) — design.md
   §"`apps/docs/` — mirror migration" lists ≥ 25 paths; **none
-  touched**. Major scope miss.
+  touched\*\*. Major scope miss.
 - `packages/astro-ignite/templates/docs/**` — design.md §"CLI
   template cache" requires the 78-file refresh; **none touched**.
 - `packages/templates/docs/AGENTS.md` — design.md §Documentation
