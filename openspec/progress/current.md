@@ -15,7 +15,7 @@ Status: idle
 
 ## State
 
-Feature: 37 — migrate-starter-template-to-tailwind-css
-Spec: openspec/changes/migrate-starter-template-to-tailwind-css/
-Run: openspec/changes/migrate-starter-template-to-tailwind-css/runs/2026-05-18T23-29-02Z/
+Feature: 38 — migrate-docs-template-to-tailwind-css
+Spec: openspec/changes/migrate-docs-template-to-tailwind-css/
+Run: openspec/changes/migrate-docs-template-to-tailwind-css/runs/2026-05-19T00-52-20Z/
 Status: in_progress

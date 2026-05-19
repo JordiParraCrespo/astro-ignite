@@ -23,12 +23,21 @@ const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
 {
   items.length > 0 && (
-    <aside class="on-this-page" aria-label={title}>
-      <div class="on-this-page-title mono">{title}</div>
-      <ul>
+    <aside
+      class="on-this-page sticky top-8 hidden max-h-[calc(100vh-64px)] flex-col gap-2.5 self-start overflow-y-auto px-4 lg:flex"
+      aria-label={title}
+    >
+      <div class="mono text-[10px] uppercase tracking-[0.12em] text-[var(--color-fg-muted)]">
+        {title}
+      </div>
+      <ul class="m-0 flex list-none flex-col gap-1 p-0">
         {items.map((h) => (
-          <li class:list={[`depth-${h.depth}`]}>
-            <a href={`#${h.slug}`} data-heading={h.slug}>
+          <li class:list={[h.depth === 3 && 'pl-3']}>
+            <a
+              class="block rounded-r-[var(--radius-sm)] border-l-2 border-transparent px-2.5 py-1 text-[12px] leading-[1.45] text-[var(--color-fg-muted)] no-underline transition-colors duration-100 hover:text-[var(--color-fg)] data-[active]:border-l-[var(--color-fg)] data-[active]:font-medium data-[active]:text-[var(--color-fg)]"
+              href={`#${h.slug}`}
+              data-heading={h.slug}
+            >
               {h.text}
             </a>
           </li>
@@ -61,55 +70,3 @@ const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
     });
   }
 </script>
-
-<style>
-  .on-this-page {
-    position: sticky;
-    top: 32px;
-    align-self: start;
-    padding: 0 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    max-height: calc(100vh - 64px);
-    overflow-y: auto;
-  }
-  .on-this-page-title {
-    font-size: 10px;
-    color: var(--color-fg-muted);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-  .on-this-page ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .on-this-page li.depth-3 {
-    padding-left: 12px;
-  }
-  .on-this-page a {
-    display: block;
-    padding: 4px 10px;
-    border-left: 2px solid transparent;
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-    color: var(--color-fg-muted);
-    font-size: 12px;
-    line-height: 1.45;
-    text-decoration: none;
-    transition:
-      color 0.1s,
-      border-color 0.1s;
-  }
-  .on-this-page a:hover {
-    color: var(--color-fg);
-  }
-  .on-this-page a[data-active] {
-    color: var(--color-fg);
-    font-weight: 500;
-    border-left-color: var(--color-fg);
-  }
-</style>
