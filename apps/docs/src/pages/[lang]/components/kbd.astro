@@ -8,6 +8,7 @@ export function getStaticPaths() {
 import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
 import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
 import Kbd from '@/components/ui/kbd.astro';
+import Text from '@/components/ui/text.astro';
 import { useTranslations } from '@/i18n';
 
 const t = useTranslations(Astro.currentLocale);
@@ -15,15 +16,15 @@ const t = useTranslations(Astro.currentLocale);
 
 <ComponentsLayout title={`kbd | ${t('seo.home.title')}`} description={t('components.summary.kbd')}>
   <ComponentShowcase name="kbd" description={t('components.detail.kbd.description')}>
-    <p>
+    <Text variant="muted">
       {t('components.detail.kbd.line1Pre')}
       <Kbd>⌘</Kbd> + <Kbd>K</Kbd>
       {t('components.detail.kbd.line1Post')}
-    </p>
-    <p>
+    </Text>
+    <Text variant="muted">
       {t('components.detail.kbd.line2Pre')}
       <Kbd>Ctrl</Kbd> + <Kbd>S</Kbd>{t('components.detail.kbd.line2Mid')}
       <Kbd>Ctrl</Kbd> + <Kbd>Z</Kbd>{t('components.detail.kbd.line2Post')}
-    </p>
+    </Text>
   </ComponentShowcase>
 </ComponentsLayout>

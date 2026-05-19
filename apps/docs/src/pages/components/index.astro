@@ -38,12 +38,12 @@ const t = useTranslations(Astro.currentLocale);
 >
   <div class="cat">
     <header class="cat__head">
-      <p class="cat__eyebrow mono">Design system · 0.1.0</p>
-      <h1 class="cat__title">Components</h1>
-      <p class="cat__lede">
+      <Text variant="eyebrow" class="cat__eyebrow mono">Design system · 0.1.0</Text>
+      <Text variant="h1" class="cat__title">Components</Text>
+      <Text variant="lead" class="cat__lede">
         Every visual surface in astro-ignite, in one place. Registry primitives, site &amp; docs
         chrome, and the landing composites. All built on a single zinc scale and Geist type pairing.
-      </p>
+      </Text>
       <div class="cat__meta mono">
         <span><strong>34</strong> components</span>
         <span><strong>19</strong> registry primitives</span>
@@ -62,17 +62,17 @@ const t = useTranslations(Astro.currentLocale);
     <section class="grp" id="brand">
       <header class="grp__head">
         <div>
-          <h2>Brand</h2>
-          <p class="grp__lede">
+          <Text variant="h2">Brand</Text>
+          <Text variant="lead" class="grp__lede">
             The <span class="mono">&gt;_</span> mark and lockup. Always Geist Mono, always lowercase wordmark.
-          </p>
+          </Text>
         </div>
         <span class="grp__count mono">1 component · 2 variants</span>
       </header>
 
       <article class="comp">
         <div class="comp__head">
-          <h3>Brand</h3>
+          <Text variant="h3">Brand</Text>
           <span class="comp__file mono">apps/site/src/components/Brand.astro</span>
           <span class="comp__anno mono">variant=lockup | mark</span>
         </div>
@@ -106,18 +106,18 @@ const t = useTranslations(Astro.currentLocale);
     <section class="grp" id="primitives">
       <header class="grp__head">
         <div>
-          <h2>Registry primitives</h2>
-          <p class="grp__lede">
+          <Text variant="h2">Registry primitives</Text>
+          <Text variant="lead" class="grp__lede">
             shadcn-style copy-paste components. Source in
             <span class="mono">packages/registry/base</span>.
-          </p>
+          </Text>
         </div>
         <span class="grp__count mono">19 components</span>
       </header>
 
       <article class="comp" id="button">
         <div class="comp__head">
-          <h3>Button</h3><span class="comp__file mono">button.astro</span>
+          <Text variant="h3">Button</Text><span class="comp__file mono">button.astro</span>
           <span class="comp__anno mono">5 variants · 3 sizes</span>
         </div>
         <div class="preview">
@@ -140,7 +140,7 @@ const t = useTranslations(Astro.currentLocale);
 
       <article class="comp" id="link">
         <div class="comp__head">
-          <h3>Link</h3><span class="comp__file mono">link.astro</span>
+          <Text variant="h3">Link</Text><span class="comp__file mono">link.astro</span>
         </div>
         <div class="preview">
           <div class="row">
@@ -156,7 +156,7 @@ const t = useTranslations(Astro.currentLocale);
 
       <article class="comp" id="text">
         <div class="comp__head">
-          <h3>Text</h3><span class="comp__file mono">text.astro</span>
+          <Text variant="h3">Text</Text><span class="comp__file mono">text.astro</span>
           <span class="comp__anno mono">11 variants · polymorphic</span>
         </div>
         <div class="preview">
@@ -181,7 +181,7 @@ const t = useTranslations(Astro.currentLocale);
 
       <article class="comp" id="badge">
         <div class="comp__head">
-          <h3>Badge</h3><span class="comp__file mono">badge.astro</span>
+          <Text variant="h3">Badge</Text><span class="comp__file mono">badge.astro</span>
         </div>
         <div class="preview">
           <div class="row">
@@ -196,7 +196,7 @@ const t = useTranslations(Astro.currentLocale);
 
       <article class="comp" id="card">
         <div class="comp__head">
-          <h3>Card</h3><span class="comp__file mono">card/*.astro</span>
+          <Text variant="h3">Card</Text><span class="comp__file mono">card/*.astro</span>
           <span class="comp__anno mono">composition</span>
         </div>
         <div class="preview">
@@ -220,7 +220,7 @@ const t = useTranslations(Astro.currentLocale);
 
       <article class="comp" id="input">
         <div class="comp__head">
-          <h3>Input</h3><span class="comp__file mono">input.astro</span>
+          <Text variant="h3">Input</Text><span class="comp__file mono">input.astro</span>
         </div>
         <div class="preview">
           <div class="row" style="align-items: flex-start; gap: 16px;">
@@ -233,7 +233,7 @@ const t = useTranslations(Astro.currentLocale);
 
       <article class="comp" id="textarea">
         <div class="comp__head">
-          <h3>Textarea</h3><span class="comp__file mono">textarea.astro</span>
+          <Text variant="h3">Textarea</Text><span class="comp__file mono">textarea.astro</span>
         </div>
         <div class="preview">
           <div class="col field" style="max-width: 360px;">
@@ -245,7 +245,7 @@ const t = useTranslations(Astro.currentLocale);
 
       <article class="comp" id="label">
         <div class="comp__head">
-          <h3>Label</h3><span class="comp__file mono">label.astro</span>
+          <Text variant="h3">Label</Text><span class="comp__file mono">label.astro</span>
         </div>
         <div class="preview">
           <div class="col field" style="max-width: 320px;">
@@ -257,7 +257,7 @@ const t = useTranslations(Astro.currentLocale);
 
       <article class="comp" id="separator">
         <div class="comp__head">
-          <h3>Separator</h3><span class="comp__file mono">separator.astro</span>
+          <Text variant="h3">Separator</Text><span class="comp__file mono">separator.astro</span>
         </div>
         <div class="preview">
           <div class="col" style="gap: 12px; max-width: 360px;">
@@ -276,7 +276,7 @@ const t = useTranslations(Astro.currentLocale);
 
       <article class="comp" id="alert">
         <div class="comp__head">
-          <h3>Alert</h3><span class="comp__file mono">alert.astro</span>
+          <Text variant="h3">Alert</Text><span class="comp__file mono">alert.astro</span>
         </div>
         <div class="preview" style="max-width: 640px;">
           <Alert>
@@ -292,7 +292,7 @@ const t = useTranslations(Astro.currentLocale);
 
       <article class="comp" id="avatar">
         <div class="comp__head">
-          <h3>Avatar</h3><span class="comp__file mono">avatar.astro</span>
+          <Text variant="h3">Avatar</Text><span class="comp__file mono">avatar.astro</span>
         </div>
         <div class="preview">
           <div class="row">
@@ -311,7 +311,7 @@ const t = useTranslations(Astro.currentLocale);
 
         <article class="comp" id="skeleton">
           <div class="comp__head">
-            <h3>Skeleton</h3><span class="comp__file mono">skeleton.astro</span>
+            <Text variant="h3">Skeleton</Text><span class="comp__file mono">skeleton.astro</span>
           </div>
           <div class="preview">
             <div class="col" style="gap: 10px; max-width: 420px;">
@@ -331,7 +331,7 @@ const t = useTranslations(Astro.currentLocale);
 
         <article class="comp" id="kbd">
           <div class="comp__head">
-            <h3>Kbd</h3><span class="comp__file mono">kbd.astro</span>
+            <Text variant="h3">Kbd</Text><span class="comp__file mono">kbd.astro</span>
           </div>
           <div class="preview">
             <div class="row" style="gap: 8px;">
@@ -349,7 +349,7 @@ const t = useTranslations(Astro.currentLocale);
 
         <article class="comp" id="tabs">
           <div class="comp__head">
-            <h3>Tabs</h3><span class="comp__file mono">tabs/*.astro</span>
+            <Text variant="h3">Tabs</Text><span class="comp__file mono">tabs/*.astro</span>
           </div>
           <div class="preview">
             <Tabs defaultValue="preview">
@@ -367,7 +367,8 @@ const t = useTranslations(Astro.currentLocale);
 
         <article class="comp" id="accordion">
           <div class="comp__head">
-            <h3>Accordion</h3><span class="comp__file mono">accordion/*.astro</span>
+            <Text variant="h3">Accordion</Text><span class="comp__file mono">accordion/*.astro</span
+            >
           </div>
           <div class="preview">
             <Accordion>
@@ -384,7 +385,7 @@ const t = useTranslations(Astro.currentLocale);
 
         <article class="comp" id="dialog">
           <div class="comp__head">
-            <h3>Dialog</h3><span class="comp__file mono">dialog/*.astro</span>
+            <Text variant="h3">Dialog</Text><span class="comp__file mono">dialog/*.astro</span>
             <span class="comp__anno mono">native &lt;dialog&gt; element</span>
           </div>
           <div class="preview">
@@ -407,7 +408,9 @@ const t = useTranslations(Astro.currentLocale);
 
         <article class="comp" id="dropdown-menu">
           <div class="comp__head">
-            <h3>Dropdown menu</h3><span class="comp__file mono">dropdown-menu/*.astro</span>
+            <Text variant="h3">Dropdown menu</Text><span class="comp__file mono"
+              >dropdown-menu/*.astro</span
+            >
             <span class="comp__anno mono">popover API</span>
           </div>
           <div class="preview">
@@ -425,7 +428,7 @@ const t = useTranslations(Astro.currentLocale);
 
         <article class="comp" id="tooltip">
           <div class="comp__head">
-            <h3>Tooltip</h3><span class="comp__file mono">tooltip.astro</span>
+            <Text variant="h3">Tooltip</Text><span class="comp__file mono">tooltip.astro</span>
             <span class="comp__anno mono">CSS-only</span>
           </div>
           <div class="preview">
@@ -442,7 +445,9 @@ const t = useTranslations(Astro.currentLocale);
 
         <article class="comp" id="toast">
           <div class="comp__head">
-            <h3>Toast</h3><span class="comp__file mono">toaster.astro + lib/toast.ts</span>
+            <Text variant="h3">Toast</Text><span class="comp__file mono"
+              >toaster.astro + lib/toast.ts</span
+            >
           </div>
           <div class="preview">
             <div class="toast-static">
@@ -459,35 +464,37 @@ const t = useTranslations(Astro.currentLocale);
       <section class="grp" id="blocks">
         <header class="grp__head">
           <div>
-            <h2>Blocks</h2>
-            <p class="grp__lede">
+            <Text variant="h2">Blocks</Text>
+            <Text variant="lead" class="grp__lede">
               Drop-in feature blocks. Source in <span class="mono">packages/registry/blocks</span>.
-            </p>
+            </Text>
           </div>
           <span class="grp__count mono">1 block</span>
         </header>
 
-        <p class="more-link mono">
+        <Text variant="small" class="more-link mono">
           <a href="/blocks/not-found-state">not-found-state</a>
-        </p>
+        </Text>
       </section>
 
       <!-- ============ CHROME ============ -->
       <section class="grp" id="chrome">
         <header class="grp__head">
           <div>
-            <h2>Chrome</h2>
-            <p class="grp__lede">
+            <Text variant="h2">Chrome</Text>
+            <Text variant="lead" class="grp__lede">
               Static previews of the site &amp; docs chrome elements. The live components ship with
               both templates.
-            </p>
+            </Text>
           </div>
           <span class="grp__count mono">7 components</span>
         </header>
 
         <article class="comp" id="nav">
           <div class="comp__head">
-            <h3>Nav</h3><span class="comp__file mono">src/components/Header.astro</span>
+            <Text variant="h3">Nav</Text><span class="comp__file mono"
+              >src/components/Header.astro</span
+            >
           </div>
           <div class="preview">
             <div class="ch-nav">
@@ -509,7 +516,9 @@ const t = useTranslations(Astro.currentLocale);
 
         <article class="comp" id="footer">
           <div class="comp__head">
-            <h3>Footer</h3><span class="comp__file mono">src/components/Footer.astro</span>
+            <Text variant="h3">Footer</Text><span class="comp__file mono"
+              >src/components/Footer.astro</span
+            >
           </div>
           <div class="preview">
             <div class="ch-foot">
@@ -536,7 +545,7 @@ const t = useTranslations(Astro.currentLocale);
 
         <article class="comp" id="locale-switcher">
           <div class="comp__head">
-            <h3>LocaleSwitcher</h3><span class="comp__file mono"
+            <Text variant="h3">LocaleSwitcher</Text><span class="comp__file mono"
               >src/components/LocaleSwitcher.astro</span
             >
           </div>
@@ -559,7 +568,8 @@ const t = useTranslations(Astro.currentLocale);
 
         <article class="comp" id="theme-toggle">
           <div class="comp__head">
-            <h3>ThemeToggle</h3><span class="comp__file mono">src/components/ThemeToggle.astro</span
+            <Text variant="h3">ThemeToggle</Text><span class="comp__file mono"
+              >src/components/ThemeToggle.astro</span
             >
           </div>
           <div class="preview">
@@ -574,7 +584,7 @@ const t = useTranslations(Astro.currentLocale);
 
         <article class="comp" id="cookie-banner">
           <div class="comp__head">
-            <h3>CookieBanner</h3><span class="comp__file mono"
+            <Text variant="h3">CookieBanner</Text><span class="comp__file mono"
               >src/components/CookieBanner.astro</span
             >
           </div>
@@ -594,7 +604,7 @@ const t = useTranslations(Astro.currentLocale);
 
         <article class="comp" id="sidebar-nav">
           <div class="comp__head">
-            <h3>SidebarNav</h3><span class="comp__file mono"
+            <Text variant="h3">SidebarNav</Text><span class="comp__file mono"
               >src/components/docs/SidebarNav.astro</span
             >
           </div>
@@ -621,7 +631,7 @@ const t = useTranslations(Astro.currentLocale);
 
         <article class="comp" id="search-box">
           <div class="comp__head">
-            <h3>SearchBox</h3><span class="comp__file mono"
+            <Text variant="h3">SearchBox</Text><span class="comp__file mono"
               >src/components/docs/SearchBox.astro</span
             >
           </div>

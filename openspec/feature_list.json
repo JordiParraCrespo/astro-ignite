@@ -204,6 +204,25 @@
         "pnpm scaffold:test (docs path) passes and pnpm perf:budget against the docs template / apps/docs holds Lighthouse mobile Performance / Accessibility / Best Practices / SEO ≥ 95 and the total-transfer / LCP / INP / CLS / TBT budgets defined in templates-perf."
       ],
       "issue": 38
+    },
+    {
+      "name": "docs-use-the-text-component-for-all-typo",
+      "title": "Docs: use the Text component for all typography",
+      "capabilities": ["templates-css-tokens", "registry-atoms"],
+      "description": "# Docs: use the Text component for all typography\n\n## Problem\n\nThe starter template was migrated to the shared `<Text>` atom in #29 / PR #33 — every `h1`, `h2`, `p`, `lead`, `muted`, etc. now flows through one component with a typed `variant` prop. The docs template is still raw HTML + Tailwind classes:\n\n```\npackages/templates/docs/src/\n├── pages/                     ← raw <h1>/<p> in index, [...slug], legal/[...slug] + [lang]/ parallels\n├── components/docs/           ← Callout, ComponentShowcase, PrevNext, Breadcrumbs, OnThisPage, SearchBox, SidebarNav, CodeBlock\n├── components/common/         ← Brand, ThemeToggle, LocaleSwitcher, Analytics\n├── components/legal/          ← CookieBanner\n└── components/seo/            ← JsonLd, SEO (no visible text)\n```\n\nTypography drifts: `text-2xl font-semibold` here, `text-base text-fg-muted` there, `text-sm` somewhere else. The starter's tokenized variants (`display`, `h1`-`h4`, `lead`, `body`, `small`, `muted`, `eyebrow`, `code`) don't apply here yet.\n\n## Proposed approach\n\nCopy the `<Text>` atom from `packages/registry/base/text.astro` into the docs template at `packages/templates/docs/src/components/ui/text.astro` (creating the missing `ui/` ",
+      "acceptance": [
+        "packages/templates/docs/src/components/ui/text.astro exists and mirrors packages/registry/base/text.astro (same variant union, same defaultTag/variantClasses/toneClasses/weightClasses tables, same named Props export); the registry.json text entry continues to target src/components/ui/text.astro so a fresh scaffold of the docs template ships the atom pre-installed",
+        "Every page under packages/templates/docs/src/pages/ (default and [lang]/ parallels — index, [...slug], legal/[...slug]) renders body copy and headings through <Text>, except where layouts already own the typography",
+        "Every docs/legal/common component that renders visible typography (ComponentShowcase title+description, SidebarNav group heading, CookieBanner title+description, anything else surfacing prose) uses <Text>, with the exception of the explicit allow-list (atoms in src/components/ui/*, seo/*, image/*, above-the-fold chrome that encapsulates its own typography in a scoped <style> block)",
+        "Layouts under packages/templates/docs/src/layouts/ (DocsLayout, LegalLayout) render their hand-rolled header h1 + lede/meta p through <Text>; the MDX <slot /> body and the .docs-prose / .legal-prose global <style is:global> blocks stay untouched (MDX rendering is out of scope)",
+        "No raw <h1>–<h6> or <p> with inline typography utility soup (text-[...], text-{lg,sm,xs,base,2xl,3xl,4xl,5xl,6xl}, leading-*, font-{medium,semibold,bold,normal}, tracking-*) remains on raw heading/paragraph elements in packages/templates/docs/src/**/*.astro outside the allow-listed scoped-style components",
+        "If <Text> is missing a variant the refactor needs, packages/registry/base/text.astro and packages/templates/docs/src/components/ui/text.astro are extended in lockstep (no fallback to raw heading/paragraph tags with inline typography classes); the starter mirror at packages/templates/starter/src/components/ui/text.astro is updated in the same wave so all three files stay byte-for-byte equivalent (modulo any path-mechanical diff)",
+        "apps/docs/src/components/ui/text.astro is created (or updated, if a ui/ folder already exists in apps/docs) and apps/docs/src/**/*.astro is swept the same way; the mirroring matches the docs template change file-for-file per the apps-mirror-templates rule in CLAUDE.md (apps don't auto-update)",
+        "pnpm format:check, pnpm typecheck, pnpm test, and pnpm audit:invariants --change docs-use-the-text-component-for-all-typo all pass (templates-css-tokens I1/I4 and registry-atoms I1–I4 stay green)",
+        "pnpm scaffold:test passes and pnpm perf:budget against the docs template is not regressed — Lighthouse mobile Performance/Accessibility/Best Practices/SEO ≥ 95 on /, /getting-started (or the equivalent representative slug), and a representative [...slug] page",
+        "A changeset under .changeset/ describes the change as a non-breaking refactor for users who scaffolded the docs template earlier and want to mirror the typography consolidation back"
+      ],
+      "issue": 40
     }
   ]
 }

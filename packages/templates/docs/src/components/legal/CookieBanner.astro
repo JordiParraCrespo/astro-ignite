@@ -14,6 +14,7 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 
 import { useTranslations } from '@/i18n';
 import { siteConfig } from '@/config/site';
+import Text from '@/components/ui/text.astro';
 
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const t = useTranslations(locale);
@@ -27,12 +28,12 @@ const cookiesPolicyUrl = getRelativeLocaleUrl(locale, '/legal/cookies');
   aria-labelledby="cookie-banner-title"
   aria-describedby="cookie-banner-description"
 >
-  <h2 id="cookie-banner-title" class="m-0 mb-1 text-base font-semibold">
+  <Text variant="h4" as="h2" id="cookie-banner-title" class="m-0 mb-1">
     {t('cookies.banner.title')}
-  </h2>
-  <p id="cookie-banner-description" class="m-0 mb-3.5 text-[var(--color-fg-muted)]">
+  </Text>
+  <Text variant="muted" id="cookie-banner-description" class="m-0 mb-3.5">
     {t('cookies.banner.description')}
-  </p>
+  </Text>
   <div class="mb-2.5 flex justify-end gap-2">
     <button
       type="button"

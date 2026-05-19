@@ -15,7 +15,7 @@ Status: idle
 
 ## State
 
-Feature: 38 — migrate-docs-template-to-tailwind-css
-Spec: openspec/changes/migrate-docs-template-to-tailwind-css/
-Run: openspec/changes/migrate-docs-template-to-tailwind-css/runs/2026-05-19T00-52-20Z/
+Feature: 40 — docs-use-the-text-component-for-all-typo
+Spec: openspec/changes/docs-use-the-text-component-for-all-typo/
+Run: openspec/changes/docs-use-the-text-component-for-all-typo/runs/2026-05-19T01-24-38Z/
 Status: in_progress

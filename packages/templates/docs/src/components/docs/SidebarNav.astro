@@ -13,6 +13,7 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 
 import Brand from '../common/Brand.astro';
 import SearchBox from './SearchBox.astro';
+import Text from '@/components/ui/text.astro';
 import { sidebar } from '@/config/sidebar';
 import { siteConfig } from '@/config/site';
 import { useTranslations } from '@/i18n';
@@ -80,9 +81,9 @@ const linkActive = 'bg-[var(--color-surface-2)] font-medium text-[var(--color-fg
         if (visibleItems.length === 0) return null;
         return (
           <div class="flex flex-col gap-1">
-            <h2 class="mono m-0 mb-[2px] px-2 py-1 text-[10px] uppercase tracking-[0.12em] text-[var(--color-fg-muted)]">
+            <Text variant="eyebrow" as="h2" class="mono m-0 mb-[2px] px-2 py-1">
               {group.group}
-            </h2>
+            </Text>
             <ul class="m-0 flex list-none flex-col gap-px p-0">
               {visibleItems.map((item) => (
                 <li>

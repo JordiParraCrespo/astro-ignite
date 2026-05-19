@@ -11,6 +11,7 @@ import type { CollectionEntry } from 'astro:content';
 import { siteConfig } from '@/config/site';
 import { useTranslations } from '@/i18n';
 import { breadcrumbListSchema, webPageSchema } from '@/lib/jsonld';
+import Text from '@/components/ui/text.astro';
 
 import BaseLayout from './BaseLayout.astro';
 
@@ -58,8 +59,8 @@ const dateFmt = new Intl.DateTimeFormat(locale, {
 >
   <article class="legal">
     <header class="legal-header">
-      <h1>{entry.data.title}</h1>
-      <p class="legal-meta">
+      <Text variant="h1">{entry.data.title}</Text>
+      <Text variant="muted" class="legal-meta">
         <span>
           {t('legal.lastUpdated')}:
           <time datetime={entry.data.lastUpdated.toISOString()}>
@@ -68,7 +69,7 @@ const dateFmt = new Intl.DateTimeFormat(locale, {
         </span>
         <span class="dot" aria-hidden="true">·</span>
         <span>{t('legal.version')} {entry.data.version}</span>
-      </p>
+      </Text>
     </header>
 
     <div class="prose legal-prose">
@@ -86,17 +87,10 @@ const dateFmt = new Intl.DateTimeFormat(locale, {
   .legal-header {
     margin-bottom: 2rem;
   }
-  .legal-header h1 {
-    font-size: clamp(1.75rem, 4vw, 2.25rem);
-    font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
+  .legal-header :global(h1) {
     margin: 0 0 0.5rem;
-    color: var(--color-fg);
   }
   .legal-meta {
-    color: var(--color-fg-muted);
-    font-size: 0.875rem;
     margin: 0;
     display: flex;
     flex-wrap: wrap;

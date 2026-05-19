@@ -25,6 +25,7 @@ import Breadcrumbs from '@/components/docs/Breadcrumbs.astro';
 import PrevNext from '@/components/docs/PrevNext.astro';
 import ThemeToggle from '@/components/common/ThemeToggle.astro';
 import LocaleSwitcher from '@/components/common/LocaleSwitcher.astro';
+import Text from '@/components/ui/text.astro';
 import { breadcrumbListSchema, webPageSchema } from '@/lib/jsonld';
 import { siteConfig } from '@/config/site';
 
@@ -91,14 +92,8 @@ const dateFmt = new Intl.DateTimeFormat(Astro.currentLocale ?? 'en', {
               </div>
             )
           }
-          <h1
-            class="m-0 mb-3 font-medium leading-[1.05] tracking-[-0.04em] text-[var(--color-fg)] text-[clamp(1.75rem,3vw,2.375rem)]"
-          >
-            {title}
-          </h1>
-          <p class="m-0 mb-4 max-w-[60ch] text-base leading-[1.55] text-[var(--color-fg-muted)]">
-            {description}
-          </p>
+          <Text variant="h1">{title}</Text>
+          <Text variant="lead" class="m-0 mb-4 max-w-[60ch]">{description}</Text>
           {
             lastUpdated && (
               <div class="mono flex items-center gap-1.5 text-[11px] tracking-[-0.005em] text-[var(--color-fg-muted)]">

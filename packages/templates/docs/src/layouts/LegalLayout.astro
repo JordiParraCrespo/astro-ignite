@@ -11,6 +11,7 @@ import type { CollectionEntry } from 'astro:content';
 import { siteConfig } from '@/config/site';
 import { useTranslations } from '@/i18n';
 import { breadcrumbListSchema, webPageSchema } from '@/lib/jsonld';
+import Text from '@/components/ui/text.astro';
 
 import BaseLayout from './BaseLayout.astro';
 
@@ -58,12 +59,8 @@ const dateFmt = new Intl.DateTimeFormat(locale, {
 >
   <article class="mx-auto max-w-[42rem] px-5 pb-16 pt-8">
     <header class="mb-8">
-      <h1
-        class="m-0 mb-2 font-bold leading-[1.2] tracking-[-0.02em] text-[var(--color-fg)] text-[clamp(1.75rem,4vw,2.25rem)]"
-      >
-        {entry.data.title}
-      </h1>
-      <p class="m-0 flex flex-wrap gap-2 text-sm text-[var(--color-fg-muted)]">
+      <Text variant="h1">{entry.data.title}</Text>
+      <Text variant="muted" class="m-0 flex flex-wrap gap-2">
         <span>
           {t('legal.lastUpdated')}:
           <time datetime={entry.data.lastUpdated.toISOString()}>
@@ -72,7 +69,7 @@ const dateFmt = new Intl.DateTimeFormat(locale, {
         </span>
         <span aria-hidden="true">·</span>
         <span>{t('legal.version')} {entry.data.version}</span>
-      </p>
+      </Text>
     </header>
 
     <div

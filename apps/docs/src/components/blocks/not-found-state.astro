@@ -1,5 +1,6 @@
 ---
 import { cn } from '@/lib/cn';
+import Text from '@/components/ui/text.astro';
 
 export type Props = {
   code?: string;
@@ -14,13 +15,13 @@ const { code = 'Error · 404', title, description, class: className } = Astro.pr
 <section
   class={cn('max-w-[480px] mx-auto mt-16 text-center flex flex-col gap-4 items-center', className)}
 >
-  <span class="mono text-xs tracking-[0.2em] uppercase text-fg-subtle">{code}</span>
-  <h1 class="m-0 text-[clamp(40px,6vw,56px)] font-medium tracking-[-0.045em] leading-none text-fg">
-    {title}
-  </h1>
+  <Text variant="eyebrow" class="mono">{code}</Text>
+  <Text variant="h1">{title}</Text>
   {
     description && (
-      <p class="m-0 text-[15px] text-fg-muted leading-relaxed max-w-[36ch]">{description}</p>
+      <Text variant="muted" class="max-w-[36ch]">
+        {description}
+      </Text>
     )
   }
   {
