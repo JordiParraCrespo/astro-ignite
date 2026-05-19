@@ -33,7 +33,7 @@ invariants `I<n>` from the cited capability specs.
 
 ## Phase 2 — Mirror to `apps/docs/`
 
-- [ ] **T3.** Apply the same edits to `apps/docs/astro.config.mjs`:
+- [x] **T3.** Apply the same edits to `apps/docs/astro.config.mjs`:
       add `inlineStylesheets: 'always'` to the `build` block, and
       extend the `sitemap()` call with `priority: 0.7` plus the
       identical `serialize` callback from T2. The two files must
