@@ -36,7 +36,10 @@
       "id": 2,
       "name": "registry-block-pricing-card",
       "title": "First block-tier registry item: PricingCard",
-      "capabilities": ["registry-blocks", "registry-atoms"],
+      "capabilities": [
+        "registry-blocks",
+        "registry-atoms"
+      ],
       "description": "Compose Card + Button + (new) PriceTag atom into a PricingCard block. First exercise of the blocks tier, which currently has no items.",
       "acceptance": [
         "packages/registry/blocks/pricing-card/ exists with PricingCard.astro + a demo .mdx",
@@ -49,7 +52,9 @@
       "id": 3,
       "name": "doctor-shipped-in-templates",
       "title": "Ship pnpm doctor inside the templates",
-      "capabilities": ["cli-scaffold"],
+      "capabilities": [
+        "cli-scaffold"
+      ],
       "description": "Phase 2 of the harness — when the CLI user opts into harness scaffolding, scripts/doctor/ + scripts/committer + .claude/agents/ + openspec/ land in their repo.",
       "acceptance": [
         "create-astro-ignite prompts ask 'Include AI harness scaffolding?' (default: false)",
@@ -62,7 +67,9 @@
       "id": 4,
       "name": "make-the-h1-contain-only-text",
       "title": "Make the h1 contain only text",
-      "capabilities": ["templates-i18n"],
+      "capabilities": [
+        "templates-i18n"
+      ],
       "description": "---\nname: hero-h1-text-only\ncapabilities:\n  - templates-i18n\n---\n\n## Why\n\nThe HeroSection in `apps/site` currently wraps a `<span class=\"text-fg-muted\">` prefix inside the `<h1>`, paired with a separate `headlineMuted` i18n key. The desired hero is a single plain-text headline; the muted prefix and its translations should be removed.\n\n> Note: `apps/site/` is a marketing mirror, not a template. Only files under `apps/site/` are in scope for this change — do **not** modify `packages/templates/starter/`.\n\n## Acceptance\n\n- `apps/site/src/components/landing/HeroSection.astro` renders only `{t('landing.hero.headlineTail')}` as the single child of the `<h1>` (no nested span, no muted prefix)\n- `apps/site/src/i18n/en.json` no longer contains a `landing.hero.headlineMuted` key\n- `apps/site/src/i18n/es.json` no longer contains a `landing.hero.headlineMuted` key\n- `pnpm typecheck` is green\n- `pnpm build --filter @astro-ignite/site` is green",
       "acceptance": [
         "apps/site/src/components/landing/HeroSection.astro renders only {t('landing.hero.headlineTail')} as the single child of the <h1> (no nested span, no muted prefix)",
@@ -126,7 +133,10 @@
       "id": 7,
       "name": "starter-use-the-text-component-for-all-t",
       "title": "Starter: use the Text component for all typography",
-      "capabilities": ["templates-css-tokens", "registry-atoms"],
+      "capabilities": [
+        "templates-css-tokens",
+        "registry-atoms"
+      ],
       "description": "## Problem\n\nThe `Text` atom exists in the registry (`packages/registry/base/text.astro`) and is shipped pre-installed in the starter (`packages/templates/starter/src/components/ui/text.astro`), but pages and sections across `packages/templates/starter/` still use raw `<p>`, `<h1>`–`<h6>`, and inline Tailwind typography classes instead of `<Text>`.\n\n## Proposal\n\nAudit `packages/templates/starter/` and replace ad-hoc typography with the `Text` component so:\n\n- Typography variants (size, weight, color, leading) are centralized in one atom.\n- Token-driven color/scale changes propagate from a single source.\n- Users editing the scaffolded site have a single place to customize prose styles.\n\n## Acceptance\n\n- [ ] Every page in `packages/templates/starter/src/pages/` (including `[lang]/` parallels) uses `<Text>` for body copy and headings, except where a section component already encapsulates its own typography.\n- [ ] Every section/component under `packages/templates/starter/src/components/` uses `<Text>` for text content.\n- [ ] No remaining inline typography utility soup (e.g. `class=\\\"text-lg leading-7 text-zinc-400\\\"`) where `<Text>` covers the case.\n- [ ] If `Text` is missing a needed v",
       "acceptance": [
         "Every page under packages/templates/starter/src/pages/ (default and [lang]/ parallels) uses <Text> for body copy and headings, except where a section component already encapsulates its own typography in a scoped <style> block",
@@ -169,7 +179,10 @@
       "id": 9,
       "name": "migrate-starter-template-to-tailwind-css",
       "title": "Migrate starter template to Tailwind CSS",
-      "capabilities": ["templates-css-tokens", "templates-perf"],
+      "capabilities": [
+        "templates-css-tokens",
+        "templates-perf"
+      ],
       "description": "## Goal\n\nMigrate the `starter` template (`packages/templates/starter/`) to use Tailwind CSS as the primary styling mechanism, replacing scoped `<style>` blocks where appropriate.\n\n## Context\n\nPer `AGENTS.md`, the current layered CSS strategy is:\n\n- Above-the-fold components use scoped `<style>` blocks.\n- Below-the-fold uses Tailwind v4.\n- Beasties extracts critical CSS at build time.\n\nThis split adds cognitive overhead and creates two ways to express the same thing. Tailwind v4's compiler is fast enough that the original motivation (keep the critical inline CSS tiny) is worth re-evaluating against the cost of maintaining two styling layers.\n\n## Scope\n\n- All `src/components/**/*.astro` in the starter template.\n- All `src/layouts/**/*.astro` in the starter template.\n- All `src/pages/**/*.astro` in the starter template.\n- Mirror the same changes into `apps/site/` (manual mirror per the architecture rules).\n- Refresh the CLI template cache at `packages/astro-ignite/templates/starter/`.\n- Regenerate `apps/playground/` via `pnpm scaffold:test`.\n\n## Constraints\n\n- **Design tokens stay tokens.** Components must continue to reference `--color-bg`, `--color-fg`, `--color-primary`, `--color-b",
       "acceptance": [
         "Every .astro file under packages/templates/starter/src/{components,layouts,pages} renders its static styling through Tailwind v4 utility classes; no scoped <style> block remains except when it implements keyframe animations, view transitions, or runtime-dynamic CSS that Tailwind cannot express, and any such exception carries a one-line comment explaining the reason.",
@@ -189,7 +202,11 @@
       "id": 10,
       "name": "migrate-docs-template-to-tailwind-css",
       "title": "Migrate docs template to Tailwind CSS",
-      "capabilities": ["templates-css-tokens", "templates-i18n", "templates-perf"],
+      "capabilities": [
+        "templates-css-tokens",
+        "templates-i18n",
+        "templates-perf"
+      ],
       "description": "## Goal\n\nMigrate the `docs` template (`packages/templates/docs/`) to use Tailwind CSS as the primary styling mechanism, replacing scoped `<style>` blocks where appropriate.\n\n## Context\n\nPer `AGENTS.md`, the current layered CSS strategy is:\n\n- Above-the-fold components use scoped `<style>` blocks.\n- Below-the-fold uses Tailwind v4.\n- Beasties extracts critical CSS at build time.\n\nThe docs template has its own chrome (sidebar, TOC rail, article surface) built from primitives — none of it is shared with the starter. Migrating it independently keeps PRs reviewable and unblocks the starter-side migration.\n\n## Scope\n\n- All `src/components/**/*.astro` in the docs template (including `common/`, `legal/`, and the docs-specific `docs/` bucket — `SidebarNav.astro`, TOC, etc.).\n- All `src/layouts/**/*.astro` in the docs template (`BaseLayout`, `DocsLayout`).\n- All `src/pages/**/*.astro` in the docs template.\n- Mirror the same changes into `apps/docs/` (manual mirror per the architecture rules).\n- Refresh the CLI template cache at `packages/astro-ignite/templates/docs/`.\n\n## Constraints\n\n- **Design tokens stay tokens.** Components must continue to reference `--color-bg`, `--color-fg`, `--color-",
       "acceptance": [
         "Every component file under packages/templates/docs/src/components/** that previously carried a scoped <style> block uses Tailwind v4 utilities (including arbitrary-value forms like bg-[var(--color-bg)]) as the primary styling mechanism, except where Tailwind cannot express the rule (MDX prose via :global, keyframes, container queries) — in which case the residual scoped block is kept and documented inline with a one-line comment explaining why.",
@@ -210,7 +227,10 @@
       "id": 11,
       "name": "docs-use-the-text-component-for-all-typo",
       "title": "Docs: use the Text component for all typography",
-      "capabilities": ["templates-css-tokens", "registry-atoms"],
+      "capabilities": [
+        "templates-css-tokens",
+        "registry-atoms"
+      ],
       "description": "# Docs: use the Text component for all typography\n\n## Problem\n\nThe starter template was migrated to the shared `<Text>` atom in #29 / PR #33 — every `h1`, `h2`, `p`, `lead`, `muted`, etc. now flows through one component with a typed `variant` prop. The docs template is still raw HTML + Tailwind classes:\n\n```\npackages/templates/docs/src/\n├── pages/                     ← raw <h1>/<p> in index, [...slug], legal/[...slug] + [lang]/ parallels\n├── components/docs/           ← Callout, ComponentShowcase, PrevNext, Breadcrumbs, OnThisPage, SearchBox, SidebarNav, CodeBlock\n├── components/common/         ← Brand, ThemeToggle, LocaleSwitcher, Analytics\n├── components/legal/          ← CookieBanner\n└── components/seo/            ← JsonLd, SEO (no visible text)\n```\n\nTypography drifts: `text-2xl font-semibold` here, `text-base text-fg-muted` there, `text-sm` somewhere else. The starter's tokenized variants (`display`, `h1`-`h4`, `lead`, `body`, `small`, `muted`, `eyebrow`, `code`) don't apply here yet.\n\n## Proposed approach\n\nCopy the `<Text>` atom from `packages/registry/base/text.astro` into the docs template at `packages/templates/docs/src/components/ui/text.astro` (creating the missing `ui/` ",
       "acceptance": [
         "packages/templates/docs/src/components/ui/text.astro exists and mirrors packages/registry/base/text.astro (same variant union, same defaultTag/variantClasses/toneClasses/weightClasses tables, same named Props export); the registry.json text entry continues to target src/components/ui/text.astro so a fresh scaffold of the docs template ships the atom pre-installed",
@@ -255,7 +275,10 @@
       "id": 13,
       "name": "docs-match-starter-perf-sitemap-config",
       "title": "Docs: match starter perf + sitemap config",
-      "capabilities": ["templates-perf", "templates-seo-jsonld"],
+      "capabilities": [
+        "templates-perf",
+        "templates-seo-jsonld"
+      ],
       "description": "# Docs: match starter perf + sitemap config\n\n## Problem\n\n`packages/templates/docs/astro.config.mjs` is missing two production-grade defaults that the starter template ships:\n\n1. **No `inlineStylesheets: 'always'`** — the starter inlines all CSS into the HTML to eliminate render-blocking CSS requests on first paint. From the starter config:\n   > \"The largest bundle is ~25 KB (blog post route, Tailwind + tokens) — that adds ~25 KB to the HTML per page, but eliminates one render-blocking request and is a clear Speed-Index / FCP win for a content-light site.\"\n   The same argument applies to a docs site: content-light pages, CSS-heavy Tailwind, FCP-sensitive.\n\n2. **No sitemap `serialize` / per-page priority** — the starter post-processes the sitemap to give `/` priority `1.0` and `/legal/*` priority `0.3`. Docs sitemap is flat (default `0.5`), which under-signals the landing page and over-signals legal templates.\n\n## Proposed approach\n\nUpdate `packages/templates/docs/astro.config.mjs` to match the starter's `build` and sitemap blocks, adapted for docs routes:\n\n```js\nbuild: {\n  format: 'directory',\n  inlineStylesheets: 'always',\n},\n\n// inside sitemap()\nserialize(item) {\n  const pathname ",
       "acceptance": [
         "packages/templates/docs/astro.config.mjs sets build.inlineStylesheets: 'always' (verbatim string literal 'always', not 'auto' or omitted).",
@@ -273,7 +296,9 @@
       "id": 14,
       "name": "wire-local-lighthouse-against-a-preview",
       "title": "Wire local Lighthouse against a preview server + install Chrome on the autopilot runner",
-      "capabilities": ["templates-perf"],
+      "capabilities": [
+        "templates-perf"
+      ],
       "description": "# Wire local Lighthouse against a preview server + install Chrome for Testing on the autopilot runner\n\n## Problem\n\n`scripts/perf/run.mjs` is a deliberate placeholder. On the autopilot's Hetzner runner the script cannot run Lighthouse because:\n\n1. Chrome / Chromium is not on PATH (`scripts/doctor/chrome-installed.mjs` emits the same warning).\n2. `npx lighthouse` cannot fetch — the npm cache at `~/.npm/_cacache/` is read-only under the systemd unit's hardening (`PrivateTmp`, `ProtectSystem`).\n3. The script itself only checks for the binary and emits `not yet wired to a preview server target`; it does not actually start a preview server, run Lighthouse, parse the JSON, or compare against the budget thresholds in `scripts/perf/budget.json`.\n\nA change ago (the migrate-starter-template-to-tailwind-css PR #39), this blocked the implementer for half an hour because the migration's design required a measured Beasties LCP A/B/C. The interim mitigation was to make `pnpm perf:budget` skip gracefully when Lighthouse is unavailable — CI workflow `Lighthouse CI (mobile)` remained the authoritative budget gate. That's a fine safety net for now, but every future change that wants a local perf measu",
       "acceptance": [
         "scripts/doctor/install-chrome.mjs exists, is idempotent (exits 0 fast when Chrome for Testing is already installed at the pinned version), downloads + extracts Chrome for Testing from the Google manifest into the configured prefix, and writes the chrome symlink so `which chrome` resolves; after running it, `node scripts/doctor/chrome-installed.mjs` reports Chrome as present (ok severity).",
@@ -285,6 +310,15 @@
         "AGENTS.md documents the dual-gate model in a section titled 'Performance gates' (or equivalent) that spells out: local `pnpm perf:budget` is a fast advisory check run by the implementer / reviewer; CI workflow `Lighthouse CI (mobile)` (.github/workflows/lighthouse.yml) is the authoritative gate; both must be green before a change is opened for review."
       ],
       "issue": 45
+    },
+    {
+      "id": 15,
+      "name": "docs-ship-registry-atoms-in-srccomponent",
+      "title": "Docs: ship registry atoms in src/components/ui/ (parity with starter)",
+      "capabilities": [],
+      "description": "# Docs: ship registry atoms in src/components/ui/ (parity with starter)\n\n## Problem\n\n`packages/templates/docs/src/components/ui/` only contains `text.astro` (landed in #40). The starter template ships ~30 atoms pre-installed in the same path:\n\n```\npackages/templates/starter/src/components/ui/\n├── accordion.astro, accordion-item.astro\n├── alert.astro\n├── avatar.astro\n├── badge.astro\n├── button.astro\n├── card.astro, card-{content,description,footer,header,title}.astro\n├── dialog.astro, dialog-{description,title}.astro\n├── dropdown-menu.astro, dropdown-menu-item.astro\n├── input.astro\n├── kbd.astro\n├── label.astro\n├── link.astro\n├── separator.astro\n├── skeleton.astro\n├── tabs.astro, tabs-{content,list,trigger}.astro\n├── textarea.astro\n├── text.astro\n├── toaster.astro\n└── tooltip.astro\n```\n\nThe docs template's `ComponentShowcase`, `Callout`, code blocks, sidebar, and pages all need them — today the docs template either ad-hoc reimplements primitives or relies on the user installing them post-scaffold via the shadcn-style CLI. A freshly-scaffolded docs site should ship the atoms its own pages depend on.\n\n## Proposed approach\n\nCopy each atom (and the supporting `lib/toast.ts` if `toaster`",
+      "acceptance": [],
+      "issue": 49
     }
   ]
 }
