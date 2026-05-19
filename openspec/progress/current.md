@@ -15,7 +15,7 @@ Status: idle
 
 ## State
 
-Feature: 35 — restructure-starter-template-component-o
-Spec: openspec/changes/restructure-starter-template-component-o/
-Run: openspec/changes/restructure-starter-template-component-o/runs/2026-05-18T15-55-30Z/
+Feature: 45 — wire-local-lighthouse-against-a-preview
+Spec: openspec/changes/wire-local-lighthouse-against-a-preview/
+Run: openspec/changes/wire-local-lighthouse-against-a-preview/runs/2026-05-19T03-52-23Z/
 Status: in_progress

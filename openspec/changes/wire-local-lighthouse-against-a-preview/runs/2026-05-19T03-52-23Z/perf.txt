@@ -1,0 +1,5 @@
+✅ packages/templates/starter dep count — 12 runtime deps
+✅ packages/templates/docs dep count — 8 runtime deps
+✅ Lighthouse run — skipped — chrome not installed; run scripts/doctor/install-chrome.mjs
+
+Report: openspec/changes/wire-local-lighthouse-against-a-preview/runs/2026-05-19T03-52-23Z/perf.md

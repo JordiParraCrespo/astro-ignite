@@ -232,18 +232,18 @@ thresholds)`;
 
 ## Phase 7 — Verification
 
-- [ ] **T21.** Run `pnpm format:check`. Confirm exit 0. (If the
+- [x] **T21.** Run `pnpm format:check`. Confirm exit 0. (If the
       Astro / mjs files drifted, run `pnpm format` and re-commit;
       do not bypass.) Covers **S17** (format half).
 
-- [ ] **T22.** Run `pnpm typecheck`. Confirm exit 0. Covers
+- [x] **T22.** Run `pnpm typecheck`. Confirm exit 0. Covers
       **S17** (typecheck half).
 
-- [ ] **T23.** Run `pnpm test`. Confirm exit 0. The new
+- [x] **T23.** Run `pnpm test`. Confirm exit 0. The new
       `scripts/perf/run.test.mjs` must run and pass. Covers
       **S6**, **S7**, **S8**.
 
-- [ ] **T24.** Run `node scripts/doctor/install-chrome.mjs --dry-run`
+- [x] **T24.** Run `node scripts/doctor/install-chrome.mjs --dry-run`
       from the runner. Confirm the resolved download URL points at
       the pinned Chrome for Testing version's `chrome-linux64.zip`
       asset under `googlechromelabs.github.io`. (Dry-run does not
@@ -290,14 +290,14 @@ daemon-reload && sudo systemctl restart aig-runner`. Then run
       (`sudo mv /usr/local/bin/chrome.bak /usr/local/bin/chrome`).
       Capture in `runs/<ts>/notes.md`. Covers **S12**.
 
-- [ ] **T30.** Confirm `--critical-css` still works. Run
+- [x] **T30.** Confirm `--critical-css` still works. Run
       `pnpm --filter @astro-ignite/site build` then
       `node scripts/perf/run.mjs --critical-css`. Confirm
       it inspects `apps/site/dist/index.html`, reports inlined
       `<style>` findings, and exits per the pre-existing
       semantics. Covers **S11**.
 
-- [ ] **T31.** Run `pnpm audit:invariants --change
+- [x] **T31.** Run `pnpm audit:invariants --change
 wire-local-lighthouse-against-a-preview`. The dispatcher reads
       `design.md`'s "Invariants this change touches" section and
       runs the audit commands listed there
@@ -307,7 +307,7 @@ wire-local-lighthouse-against-a-preview`. The dispatcher reads
       `runs/<ts>/audit.md`. Covers **I1**, **I2**, **I3**, **I4**,
       **I5**.
 
-- [ ] **T32.** Final boundary check. Run `git diff --name-only
+- [x] **T32.** Final boundary check. Run `git diff --name-only
 main` and confirm the touched paths are limited to the set in
       proposal **S17**: `scripts/perf/run.mjs`,
       `scripts/perf/run.test.mjs`,

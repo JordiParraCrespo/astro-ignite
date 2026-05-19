@@ -116,6 +116,9 @@ autopilot/systemd/aig-runner.service /etc/systemd/system/` then
   implementation, `specs/templates-perf/spec.md` (the delta below),
   plus run-directory artefacts (`runs/<ts>/{impl,audit,perf,
 review,notes}.md` / `perf.txt`).
+- MOD `openspec/progress/current.md` — the harness's "what's
+  happening right now" tracker. Per the implementer protocol the
+  current-session state is bumped to this feature's run dir.
 
 ## New signatures
 
