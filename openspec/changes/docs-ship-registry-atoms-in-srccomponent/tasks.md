@@ -160,7 +160,7 @@ diff -q packages/templates/docs/src/lib/toast.ts apps/docs/src/lib/toast.ts`
 
 ## Verification
 
-- [ ] **T11.** From the repo root, run the S1 verifier:
+- [x] **T11.** From the repo root, run the S1 verifier:
       `    for f in packages/templates/starter/src/components/ui/*.astro; do
   name=$(basename "$f")
   diff -q "$f" "packages/templates/docs/src/components/ui/$name"
@@ -172,13 +172,13 @@ done`
       families) — all identical. Capture the output in
       `runs/<ts>/audit.md`. Covers **S1**, **S3**.
 
-- [ ] **T12.** Run `node scripts/audit/no-react-in-atoms.mjs` and
+- [x] **T12.** Run `node scripts/audit/no-react-in-atoms.mjs` and
       `node scripts/audit/no-react-in-atoms.mjs --named-only --registry
 --family-layout`. Both exit 0 (no change vs `main`; the audit walks
       `packages/registry/base/`, which this change does not modify).
       Capture in `runs/<ts>/audit.md`. Covers **S6**.
 
-- [ ] **T13.** Run `node scripts/audit/tokens-only.mjs`. Confirm the
+- [x] **T13.** Run `node scripts/audit/tokens-only.mjs`. Confirm the
       modified docs template introduces zero new I1 violations beyond
       the pre-existing baseline (the `themeColor: '#fafafa'` hex
       literal in `packages/templates/docs/src/config/site.ts` predates
@@ -186,13 +186,13 @@ done`
       for the same exception note). Capture in `runs/<ts>/audit.md`.
       Covers **S6**.
 
-- [ ] **T14.** Run
+- [x] **T14.** Run
       `pnpm audit:invariants --change docs-ship-registry-atoms-in-srccomponent`
       and capture the output under `runs/<ts>/audit.md`. Confirm exit
       code 0 (modulo any documented baseline failures from prior
       changes). Covers **S11**.
 
-- [ ] **T15.** Run `pnpm --filter @astro-ignite/template-docs typecheck`,
+- [x] **T15.** Run `pnpm --filter @astro-ignite/template-docs typecheck`,
       `pnpm --filter @astro-ignite/template-docs build`,
       `pnpm --filter @astro-ignite/docs typecheck`, and
       `pnpm --filter @astro-ignite/docs build`. Capture each result in
@@ -201,12 +201,12 @@ done`
       starter precedent), document it as the same out-of-scope
       environmental issue. Covers **S9**.
 
-- [ ] **T16.** Run `pnpm test` and `pnpm format:check`. Capture the
+- [x] **T16.** Run `pnpm test` and `pnpm format:check`. Capture the
       result in `runs/<ts>/impl.md`. No new vitest tests are
       introduced by this change (the contract is enforced by the
       audit suite + the byte-equality verifier at T11).
 
-- [ ] **T17.** Run `pnpm scaffold:test` and
+- [x] **T17.** Run `pnpm scaffold:test` and
       `pnpm perf:budget --change docs-ship-registry-atoms-in-srccomponent`.
       Capture both reports in `runs/<ts>/perf.md`. If the sandbox
       lacks a Lighthouse / Chrome binary, document the environmental
@@ -217,7 +217,7 @@ done`
       `apps/playground/src/components/ui/` byte-equivalently to the
       docs-template source. Covers **S10**, **S12**.
 
-- [ ] **T18.** Run
+- [x] **T18.** Run
       `git diff --name-only main -- ':!openspec' ':!.changeset'` and
       confirm every changed file is under
       `packages/templates/docs/src/components/ui/`,
@@ -232,7 +232,7 @@ done`
 
 ## Changeset
 
-- [ ] **T19.** Add `.changeset/docs-atom-set-parity.md` (patch level,
+- [x] **T19.** Add `.changeset/docs-atom-set-parity.md` (patch level,
       scoping `astro-ignite` and `create-astro-ignite` — the docs
       template is `ignored` in `.changeset/config.json` the same way
       the starter is, so the version bump rides on the parent

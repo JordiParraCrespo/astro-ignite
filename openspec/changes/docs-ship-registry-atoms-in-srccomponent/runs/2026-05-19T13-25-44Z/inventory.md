@@ -6,22 +6,22 @@ Every `diff -q packages/registry/base/<atom>.astro
 packages/templates/starter/src/components/ui/<atom>.astro` exited 0
 (identical) for the 14 top-level singleton atoms:
 
-| atom | result |
-|---|---|
-| alert.astro | identical |
-| avatar.astro | identical |
-| badge.astro | identical |
-| button.astro | identical |
-| input.astro | identical |
-| kbd.astro | identical |
-| label.astro | identical |
-| link.astro | identical |
+| atom            | result    |
+| --------------- | --------- |
+| alert.astro     | identical |
+| avatar.astro    | identical |
+| badge.astro     | identical |
+| button.astro    | identical |
+| input.astro     | identical |
+| kbd.astro       | identical |
+| label.astro     | identical |
+| link.astro      | identical |
 | separator.astro | identical |
-| skeleton.astro | identical |
-| textarea.astro | identical |
-| text.astro | identical |
-| toaster.astro | identical |
-| tooltip.astro | identical |
+| skeleton.astro  | identical |
+| textarea.astro  | identical |
+| text.astro      | identical |
+| toaster.astro   | identical |
+| tooltip.astro   | identical |
 
 ## (a) Registry ↔ Starter byte parity — compound families
 
@@ -67,6 +67,7 @@ by T8.
 ## (d) apps/docs mirror parity
 
 The full loop
+
 ```
 for f in packages/templates/starter/src/components/ui/*.astro; do
   name=$(basename "$f")
@@ -74,6 +75,7 @@ for f in packages/templates/starter/src/components/ui/*.astro; do
 done
 diff -q packages/registry/lib/toast.ts apps/docs/src/lib/toast.ts
 ```
+
 exited 0 with **no "differ" lines**. `apps/docs/src/components/ui/`
 already ships all 30 atoms + `text.astro` byte-equivalent to the
 registry; `apps/docs/src/lib/toast.ts` is byte-equivalent to
