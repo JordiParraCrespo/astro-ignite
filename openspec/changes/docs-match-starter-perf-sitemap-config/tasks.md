@@ -65,12 +65,12 @@ invariants `I<n>` from the cited capability specs.
       `pnpm format` and re-commit; do not bypass the check.)
       Covers **S8** (format half).
 
-- [ ] **T7.** Run `pnpm typecheck`. Confirm exit 0. Covers **S8**
+- [x] **T7.** Run `pnpm typecheck`. Confirm exit 0. Covers **S8**
       (typecheck half).
 
-- [ ] **T8.** Run `pnpm test`. Confirm exit 0. Covers **S8**.
+- [x] **T8.** Run `pnpm test`. Confirm exit 0. Covers **S8**.
 
-- [ ] **T9.** Run `pnpm --filter @astro-ignite/template-docs build`.
+- [x] **T9.** Run `pnpm --filter @astro-ignite/template-docs build`.
       Then inspect every emitted `dist/**/*.html` file: assert each
       page contains at least one inline `<style>` block and zero
       `<link rel="stylesheet" href="/_astro/*.css">` tags for
@@ -78,7 +78,7 @@ invariants `I<n>` from the cited capability specs.
       `runs/<ts>/notes.md` listing the pages inspected and the
       result. Covers **S4**.
 
-- [ ] **T10.** From the same template build, parse
+- [x] **T10.** From the same template build, parse
       `dist/sitemap-0.xml` and assert: - exactly one `<url>` whose `<loc>` is `<siteUrl>/` carries
       `<priority>1.0</priority>`, - every `<url>` whose `<loc>` contains `/legal/` carries
       `<priority>0.3</priority>`, - at least one guide page (e.g. `/quick-start`,
@@ -86,11 +86,11 @@ invariants `I<n>` from the cited capability specs.
       Record the relevant XML excerpt under `runs/<ts>/notes.md`.
       Covers **S5**.
 
-- [ ] **T11.** Run `pnpm --filter @astro-ignite/docs build` (the
+- [x] **T11.** Run `pnpm --filter @astro-ignite/docs build` (the
       `apps/docs/` sibling) and repeat T9 + T10 assertions against
       its `dist/`. Covers **S6**.
 
-- [ ] **T12.** Run `pnpm audit:invariants --change
+- [x] **T12.** Run `pnpm audit:invariants --change
 docs-match-starter-perf-sitemap-config`. Confirm exit 0. The
       dispatched audits include `tokens-only.mjs` and `tokens-only.mjs
 --layered` (unchanged), the perf gates (`scripts/perf/run.mjs

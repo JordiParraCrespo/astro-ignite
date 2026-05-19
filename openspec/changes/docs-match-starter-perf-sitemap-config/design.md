@@ -18,6 +18,19 @@
   `apps/docs/CLAUDE.md` the app is a manual mirror; this change moves
   the two files together.
 
+### `scripts/audit/` — sitemap + inline-stylesheets assertion
+
+- NEW `scripts/audit/sitemap-priority.mjs` — small grep that asserts
+  every `packages/templates/<kind>/astro.config.mjs` ships
+  `inlineStylesheets: 'always'` and (when the file registers
+  `sitemap()`) a default `priority:` literal plus the
+  `serialize(item)` callback with the documented landing / `/legal/`
+  branches. Registered in `scripts/doctor/audits-present.mjs` so the
+  doctor check knows the file is required.
+- MOD `scripts/doctor/audits-present.mjs` — add the new audit script
+  to the doctor's required-scripts list so its absence is caught by
+  `pnpm doctor`.
+
 ### Documentation + changeset
 
 - NEW `.changeset/docs-perf-sitemap-defaults.md` — per the harness
@@ -208,6 +221,7 @@ Audit command summary (parseable by `scripts/audit/run-all.mjs --change`):
 - audit: `node scripts/perf/run.mjs --page /quick-start`
 - audit: `node scripts/audit/jsonld-graph.mjs --strict --typed`
 - audit: `node scripts/audit/tokens-only.mjs --layered`
+- audit: `node scripts/audit/sitemap-priority.mjs`
 
 The sitemap-priority assertion is captured by the spec delta as a
 testable requirement; the implementer wires it into the change

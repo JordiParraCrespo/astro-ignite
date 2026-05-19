@@ -13,6 +13,7 @@ const required = [
   'banner-pipeline.mjs',
   'cli-dep-stripping.mjs',
   'jsonld-graph.mjs',
+  'sitemap-priority.mjs',
   'run-all.mjs',
 ];
 
