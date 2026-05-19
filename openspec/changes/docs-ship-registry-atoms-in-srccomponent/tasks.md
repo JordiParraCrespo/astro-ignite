@@ -62,7 +62,7 @@ byte equality. No content edit is made.
       `link.astro`, and `separator.astro` (5 files). Run the same
       typecheck. Covers **S1**.
 
-- [ ] **T2c.** Copy `skeleton.astro`, `textarea.astro`, and
+- [x] **T2c.** Copy `skeleton.astro`, `textarea.astro`, and
       `tooltip.astro` (3 files). Run typecheck. Covers **S1**.
 
 - [ ] **T2d.** Copy `toaster.astro` (1 file). At this point typecheck
