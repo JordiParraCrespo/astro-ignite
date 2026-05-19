@@ -98,18 +98,18 @@ apps/docs/package.json` is empty → ✅ (no runtime deps added).
 
 Per-`I<n>` status from `design.md`:
 
-| Invariant                                                                                  | Audit                                       | Result                                                                                                       |
-| ------------------------------------------------------------------------------------------ | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `templates-perf` I1 — Lighthouse mobile ≥ 95 on `/`                                        | `scripts/perf/run.mjs --page /`             | ❌ **deferred** — Lighthouse binary absent in this env                                                       |
-| `templates-perf` I2 — Lighthouse mobile ≥ 95 on `/quick-start`                             | `scripts/perf/run.mjs --page /quick-start`  | ❌ **deferred** — Lighthouse binary absent                                                                   |
-| `templates-perf` I3 — total transfer ≤ 150 KB compressed                                   | `scripts/perf/run.mjs --transfer`           | ❌ "not yet wired; run after Lighthouse integration lands" — pre-existing infra gap                          |
-| `templates-perf` I4 — critical CSS inlined                                                 | `scripts/perf/run.mjs --critical-css`       | ✅ PASS — inline `<style>` confirmed in `apps/docs/dist/index.html`                                          |
-| `templates-perf` I5 — no undeclared runtime dep                                            | `scripts/perf/run.mjs --deps`               | ✅ PASS — 12 (starter) + 8 (docs) runtime deps unchanged                                                     |
-| `templates-perf` **new** — every template ships `inlineStylesheets: 'always'`              | `scripts/audit/sitemap-priority.mjs`        | ✅ PASS — scanned 2 templates                                                                                |
-| `templates-perf` **new** — emitted HTML carries no first-party `<link rel="stylesheet">`   | inline check (build + grep, T9 + T11)       | ✅ PASS — 0 matches across 6 (template) + 65 (apps/docs) HTML files                                          |
-| `templates-seo-jsonld` I1–I3 — `@graph` JSON-LD shape                                      | `scripts/audit/jsonld-graph.mjs`            | ✅ PASS — JSON-LD graph clean                                                                                |
-| `templates-seo-jsonld` **new** — sitemap `serialize` + default `priority`                  | `scripts/audit/sitemap-priority.mjs`        | ✅ PASS — scanned 2 templates                                                                                |
-| `templates-seo-jsonld` **new** — emitted sitemap XML reflects priority signals             | inline check (XML parse, T10 + T11)         | ✅ PASS — landing 1.0, every `/legal/` 0.3, guides 0.7 in both `dist/sitemap-0.xml` outputs                  |
+| Invariant                                                                                | Audit                                      | Result                                                                                      |
+| ---------------------------------------------------------------------------------------- | ------------------------------------------ | ------------------------------------------------------------------------------------------- |
+| `templates-perf` I1 — Lighthouse mobile ≥ 95 on `/`                                      | `scripts/perf/run.mjs --page /`            | ❌ **deferred** — Lighthouse binary absent in this env                                      |
+| `templates-perf` I2 — Lighthouse mobile ≥ 95 on `/quick-start`                           | `scripts/perf/run.mjs --page /quick-start` | ❌ **deferred** — Lighthouse binary absent                                                  |
+| `templates-perf` I3 — total transfer ≤ 150 KB compressed                                 | `scripts/perf/run.mjs --transfer`          | ❌ "not yet wired; run after Lighthouse integration lands" — pre-existing infra gap         |
+| `templates-perf` I4 — critical CSS inlined                                               | `scripts/perf/run.mjs --critical-css`      | ✅ PASS — inline `<style>` confirmed in `apps/docs/dist/index.html`                         |
+| `templates-perf` I5 — no undeclared runtime dep                                          | `scripts/perf/run.mjs --deps`              | ✅ PASS — 12 (starter) + 8 (docs) runtime deps unchanged                                    |
+| `templates-perf` **new** — every template ships `inlineStylesheets: 'always'`            | `scripts/audit/sitemap-priority.mjs`       | ✅ PASS — scanned 2 templates                                                               |
+| `templates-perf` **new** — emitted HTML carries no first-party `<link rel="stylesheet">` | inline check (build + grep, T9 + T11)      | ✅ PASS — 0 matches across 6 (template) + 65 (apps/docs) HTML files                         |
+| `templates-seo-jsonld` I1–I3 — `@graph` JSON-LD shape                                    | `scripts/audit/jsonld-graph.mjs`           | ✅ PASS — JSON-LD graph clean                                                               |
+| `templates-seo-jsonld` **new** — sitemap `serialize` + default `priority`                | `scripts/audit/sitemap-priority.mjs`       | ✅ PASS — scanned 2 templates                                                               |
+| `templates-seo-jsonld` **new** — emitted sitemap XML reflects priority signals           | inline check (XML parse, T10 + T11)        | ✅ PASS — landing 1.0, every `/legal/` 0.3, guides 0.7 in both `dist/sitemap-0.xml` outputs |
 
 The `tokens-only` failure is the same two `themeColor: '#…'` hex
 literals at `packages/templates/docs/src/config/site.ts:68` and
@@ -191,7 +191,6 @@ out-of-scope edits.
 
 1. **`pnpm audit:invariants` is red because of pre-existing
    `tokens-only` hex literals.** Two violations:
-
    - `packages/templates/docs/src/config/site.ts:68` —
      `themeColor: '#fafafa',`
    - `packages/templates/starter/src/config/site.ts:107` —
@@ -202,7 +201,6 @@ out-of-scope edits.
    the same blocker and offered two fixes; either is acceptable here
    (each in a **separate** change so the parity diff stays
    reviewable):
-
    - **(a)** Refactor the `themeColor` field on `siteConfig` to a
      token reference (`'var(--color-bg)'` or the resolved
      theme-color token), and update the consumer in `Layout.astro` to
@@ -221,7 +219,6 @@ name="theme-color">` value is required by the browser to be a
    wired"). The change touches `templates-*` capabilities, so the
    harness rule `require_perf_budget_to_close_when` makes the perf
    gate mandatory. Two options:
-
    - **(a)** Re-run this exact change's reviewer on an environment
      with Chrome for Testing installed (`pnpm dlx lighthouse` or the
      `scripts/doctor/chrome-installed.mjs` install path). Confirm
