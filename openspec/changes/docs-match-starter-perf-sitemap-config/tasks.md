@@ -55,12 +55,12 @@ invariants `I<n>` from the cited capability specs.
 
 ## Phase 4 — Verification
 
-- [ ] **T5.** Diff `packages/templates/docs/package.json` and
+- [x] **T5.** Diff `packages/templates/docs/package.json` and
       `apps/docs/package.json` against `main`. Confirm
       `dependencies` arrays have zero added entries. Covers
       **S7**, `templates-perf` I5.
 
-- [ ] **T6.** Run `pnpm format:check`. Confirm exit 0. (If
+- [x] **T6.** Run `pnpm format:check`. Confirm exit 0. (If
       failing because the config file's formatting drifted, run
       `pnpm format` and re-commit; do not bypass the check.)
       Covers **S8** (format half).

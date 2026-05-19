@@ -14,7 +14,7 @@ production-grade build-config knobs:
   template already records.
 - `sitemap()` integration default `priority: 0.7` plus a
   `serialize(item)` callback that lifts the landing page (`pathname ===
-  '/'`) to `1.0` and demotes any URL containing `/legal/` to `0.3`.
+'/'`) to `1.0` and demotes any URL containing `/legal/` to `0.3`.
   Brings docs sitemap priority signalling to parity with starter so the
   canonical entry point outranks legal boilerplate.
 
