@@ -65,7 +65,7 @@ byte equality. No content edit is made.
 - [x] **T2c.** Copy `skeleton.astro`, `textarea.astro`, and
       `tooltip.astro` (3 files). Run typecheck. Covers **S1**.
 
-- [ ] **T2d.** Copy `toaster.astro` (1 file). At this point typecheck
+- [x] **T2d.** Copy `toaster.astro` (1 file). At this point typecheck
       WILL fail because `toaster.astro` imports `@/lib/toast` which
       does not yet exist in the docs template. Proceed immediately to
       T8 (which adds the helper) — do NOT run typecheck between T2d
@@ -105,7 +105,7 @@ byte equality. No content edit is made.
 
 ## Lib helper
 
-- [ ] **T8.** Copy `packages/registry/lib/toast.ts` to
+- [x] **T8.** Copy `packages/registry/lib/toast.ts` to
       `packages/templates/docs/src/lib/toast.ts`. Verify with
       `diff -q packages/registry/lib/toast.ts
 packages/templates/docs/src/lib/toast.ts` (exit 0) and
