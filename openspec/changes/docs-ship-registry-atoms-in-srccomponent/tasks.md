@@ -79,7 +79,7 @@ byte equality. No content edit is made.
       `packages/templates/docs/src/components/ui/`. Verify with
       `diff -q`. Covers **S1**, **S3**.
 
-- [ ] **T4.** card: copy `card.astro`, `card-content.astro`,
+- [x] **T4.** card: copy `card.astro`, `card-content.astro`,
       `card-description.astro`, `card-footer.astro`,
       `card-header.astro`, `card-title.astro` from
       `packages/registry/base/card/` (or starter mirror) into
