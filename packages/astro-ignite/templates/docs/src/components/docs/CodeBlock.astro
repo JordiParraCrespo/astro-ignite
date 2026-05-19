@@ -13,26 +13,34 @@
  */
 
 interface Props {
-  /** Optional title row label (e.g. "terminal", "src/site.ts"). */
   filename?: string;
-  /** Display-only language label; doesn't drive highlighting. */
   language?: string;
 }
 
 const { filename, language } = Astro.props;
 ---
 
-<div class="code-block">
-  <div class="code-header">
-    <span class="code-filename mono">{filename ?? 'snippet'}</span>
-    {language && <span class="code-lang mono">{language}</span>}
-    <button type="button" class="code-copy mono" data-copy-source> copy </button>
+<div
+  class="code-block my-6 overflow-hidden rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface-2)]"
+>
+  <div
+    class="flex items-center gap-2.5 border-b border-[var(--color-border)] px-3.5 py-2 text-[11px] text-[var(--color-fg-muted)]"
+  >
+    <span class="mono flex-1">{filename ?? 'snippet'}</span>
+    {language && <span class="mono text-[var(--color-fg-subtle)]">{language}</span>}
+    <button
+      type="button"
+      class="mono cursor-pointer appearance-none rounded-[var(--radius-sm)] border-0 bg-transparent px-1.5 py-0.5 text-[11px] text-[var(--color-fg-muted)] transition-colors duration-100 hover:bg-[var(--color-surface)] hover:text-[var(--color-fg)]"
+      data-copy-source
+    >
+      copy
+    </button>
   </div>
-  <pre class="code-body mono"><code><slot /></code></pre>
+  <pre
+    class="mono m-0 overflow-x-auto px-4 py-3.5 text-[13px] leading-[1.65] text-[var(--color-fg)]"><code class="bg-transparent p-0 font-mono"><slot /></code></pre>
 </div>
 
 <script>
-  // Click handler: read the <pre>'s text and write to clipboard.
   document.querySelectorAll<HTMLButtonElement>('.code-block [data-copy-source]').forEach((btn) => {
     btn.addEventListener('click', async () => {
       const block = btn.closest('.code-block');
@@ -52,58 +60,3 @@ const { filename, language } = Astro.props;
     });
   });
 </script>
-
-<style>
-  .code-block {
-    margin: 1.5rem 0;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    background: var(--color-surface-2);
-    overflow: hidden;
-  }
-  .code-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 14px;
-    border-bottom: 1px solid var(--color-border);
-    font-size: 11px;
-    color: var(--color-fg-muted);
-  }
-  .code-filename {
-    flex: 1;
-  }
-  .code-lang {
-    color: var(--color-fg-subtle);
-  }
-  .code-copy {
-    appearance: none;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--color-fg-muted);
-    font-size: 11px;
-    padding: 2px 6px;
-    border-radius: var(--radius-sm);
-    transition:
-      background 0.1s,
-      color 0.1s;
-  }
-  .code-copy:hover {
-    color: var(--color-fg);
-    background: var(--color-surface);
-  }
-  .code-body {
-    margin: 0;
-    padding: 14px 16px;
-    font-size: 13px;
-    line-height: 1.65;
-    color: var(--color-fg);
-    overflow-x: auto;
-  }
-  .code-body code {
-    font-family: var(--font-mono);
-    background: transparent;
-    padding: 0;
-  }
-</style>

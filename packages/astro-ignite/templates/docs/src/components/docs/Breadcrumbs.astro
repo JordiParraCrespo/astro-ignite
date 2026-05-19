@@ -23,7 +23,6 @@ const { currentSlug, currentTitle } = Astro.props;
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const t = useTranslations(locale);
 
-// Find the sidebar group this slug belongs to (if any).
 const owningGroup = sidebar.find((g) => g.items.some((it) => it.slug === currentSlug));
 
 const crumbs = [
@@ -33,17 +32,27 @@ const crumbs = [
 ];
 ---
 
-<nav class="breadcrumbs mono" aria-label={t('nav.breadcrumbs')}>
+<nav
+  class="mono flex flex-wrap items-center gap-1.5 text-[11px] tracking-[-0.005em] text-[var(--color-fg-muted)]"
+  aria-label={t('nav.breadcrumbs')}
+>
   {
     crumbs.map((c, i) => (
       <>
         {c.href ? (
-          <a href={c.href}>{c.label}</a>
+          <a
+            class="text-[var(--color-fg-muted)] no-underline hover:text-[var(--color-fg)]"
+            href={c.href}
+          >
+            {c.label}
+          </a>
         ) : (
-          <span class:list={[i === crumbs.length - 1 && 'current']}>{c.label}</span>
+          <span class:list={[i === crumbs.length - 1 ? 'text-[var(--color-fg)]' : null]}>
+            {c.label}
+          </span>
         )}
         {i < crumbs.length - 1 && (
-          <span class="separator" aria-hidden="true">
+          <span class="text-[var(--color-fg-subtle)]" aria-hidden="true">
             /
           </span>
         )}
@@ -51,28 +60,3 @@ const crumbs = [
     ))
   }
 </nav>
-
-<style>
-  .breadcrumbs {
-    font-size: 11px;
-    color: var(--color-fg-muted);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-    letter-spacing: -0.005em;
-  }
-  .breadcrumbs a {
-    color: var(--color-fg-muted);
-    text-decoration: none;
-  }
-  .breadcrumbs a:hover {
-    color: var(--color-fg);
-  }
-  .breadcrumbs .current {
-    color: var(--color-fg);
-  }
-  .breadcrumbs .separator {
-    color: var(--color-fg-subtle);
-  }
-</style>

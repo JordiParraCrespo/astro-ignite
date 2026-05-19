@@ -16,9 +16,14 @@ const locale = Astro.currentLocale;
 const t = useTranslations(locale);
 ---
 
-<button class="theme-toggle" type="button" aria-label={t('theme.label')} title={t('theme.label')}>
+<button
+  class="theme-toggle inline-flex cursor-pointer items-center justify-center rounded-lg border-0 bg-transparent p-2 text-[var(--color-fg-muted)] transition-colors duration-150 hover:bg-[var(--color-surface-2)] hover:text-[var(--color-fg)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-ring)]"
+  type="button"
+  aria-label={t('theme.label')}
+  title={t('theme.label')}
+>
   <svg
-    class="icon"
+    class="icon block h-[1.125rem] w-[1.125rem] transition-transform duration-200"
     aria-hidden="true"
     viewBox="0 0 24 24"
     width="20"
@@ -49,37 +54,9 @@ const t = useTranslations(locale);
 </script>
 
 <style>
-  .theme-toggle {
-    appearance: none;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    color: var(--color-fg-muted);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition:
-      color 0.15s var(--ease-out-soft),
-      background-color 0.15s var(--ease-out-soft);
-  }
-  .theme-toggle:hover {
-    color: var(--color-fg);
-    background: var(--color-surface-2);
-  }
-  .theme-toggle:focus-visible {
-    outline: 2px solid var(--color-ring, var(--color-fg));
-    outline-offset: 2px;
-  }
-  .theme-toggle .icon {
-    width: 1.125rem;
-    height: 1.125rem;
-    display: block;
-    transition: transform 200ms var(--ease-out-soft);
-  }
-  /* Flip the filled half when light theme is active so the icon visually
-     mirrors the current state. */
+  /* Why kept: theme-state mirroring rotates the icon when <html> carries
+     `.light`. The ancestor selector cannot be expressed with Tailwind
+     utilities without restructuring the markup. */
   :global(html.light) .theme-toggle .icon {
     transform: rotate(180deg);
   }

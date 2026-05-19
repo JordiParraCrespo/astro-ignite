@@ -26,8 +26,6 @@ const t = useTranslations(locale);
 
 const allDocs = await getCollection('docs', (e: CollectionEntry<'docs'>) => !e.data.draft);
 
-// Flat sidebar items, skipping externals and any slug whose entry doesn't
-// exist in the current locale.
 const flat = sidebar
   .flatMap((g) => g.items)
   .filter((it) => !it.slug.startsWith('http'))
@@ -39,65 +37,37 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null;
 
 const titleForSlug = (slug: string): string =>
   allDocs.find((e) => e.id === `${locale}/${slug}`)?.data.title ?? slug;
+
+const linkBase =
+  'flex flex-col gap-1 rounded-[var(--radius)] border border-[var(--color-border)] px-3.5 py-3 text-[var(--color-fg)] no-underline transition-colors duration-100 hover:border-[var(--color-border-strong)]';
 ---
 
 {
   (prev || next) && (
-    <nav class="prev-next" aria-label={t('nav.pageNavigation')}>
+    <nav
+      class="mt-16 grid grid-cols-2 gap-3 border-t border-[var(--color-border)] pt-6"
+      aria-label={t('nav.pageNavigation')}
+    >
       {prev ? (
-        <a class="prev-next-link" href={getRelativeLocaleUrl(locale, `/${prev.slug}`)}>
-          <span class="prev-next-label mono">← {t('blog.previousPost')}</span>
-          <span class="prev-next-title">{prev.label ?? titleForSlug(prev.slug)}</span>
+        <a class={linkBase} href={getRelativeLocaleUrl(locale, `/${prev.slug}`)}>
+          <span class="mono text-[11px] text-[var(--color-fg-muted)]">
+            ← {t('blog.previousPost')}
+          </span>
+          <span class="text-sm font-medium tracking-[-0.01em]">
+            {prev.label ?? titleForSlug(prev.slug)}
+          </span>
         </a>
       ) : (
         <span />
       )}
       {next && (
-        <a
-          class="prev-next-link prev-next-link-right"
-          href={getRelativeLocaleUrl(locale, `/${next.slug}`)}
-        >
-          <span class="prev-next-label mono">{t('blog.nextPost')} →</span>
-          <span class="prev-next-title">{next.label ?? titleForSlug(next.slug)}</span>
+        <a class={linkBase + ' text-right'} href={getRelativeLocaleUrl(locale, `/${next.slug}`)}>
+          <span class="mono text-[11px] text-[var(--color-fg-muted)]">{t('blog.nextPost')} →</span>
+          <span class="text-sm font-medium tracking-[-0.01em]">
+            {next.label ?? titleForSlug(next.slug)}
+          </span>
         </a>
       )}
     </nav>
   )
 }
-
-<style>
-  .prev-next {
-    margin-top: 4rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--color-border);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-  .prev-next-link {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 12px 14px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    text-decoration: none;
-    color: var(--color-fg);
-    transition: border-color 0.12s var(--ease-out-soft);
-  }
-  .prev-next-link:hover {
-    border-color: var(--color-border-strong);
-  }
-  .prev-next-link-right {
-    text-align: right;
-  }
-  .prev-next-label {
-    font-size: 11px;
-    color: var(--color-fg-muted);
-  }
-  .prev-next-title {
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: -0.01em;
-  }
-</style>

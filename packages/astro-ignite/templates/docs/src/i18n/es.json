@@ -120,7 +120,8 @@
     "404": {
       "heading": "Página no encontrada",
       "body": "La página que buscas no existe o ha sido movida.",
-      "back": "Volver al inicio"
+      "back": "Volver al inicio",
+      "search": "Buscar en la documentación"
     }
   },
   "sidebar": {
