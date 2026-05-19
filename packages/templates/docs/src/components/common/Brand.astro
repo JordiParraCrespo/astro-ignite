@@ -42,10 +42,14 @@ const caretWidth = 22 * size;
 const caretHeight = 6 * size;
 const caretLift = 4 * size;
 const caretMargin = 4 * size;
+
+const wrapperBase =
+  'inline-flex items-center text-[var(--color-fg)] no-underline leading-none tracking-[-0.04em]';
+const wrapperGap = variant === 'lockup' ? 'gap-[var(--ig-gap)]' : 'gap-0';
 ---
 
 <Tag
-  class:list={['ig-brand', `ig-brand-${variant}`, className]}
+  class:list={[wrapperBase, wrapperGap, 'ig-brand', className]}
   href={href}
   aria-label={href ? label : undefined}
   style={`
@@ -60,69 +64,34 @@ const caretMargin = 4 * size;
 >
   {
     variant !== 'word' && (
-      <span class="ig-mark mono" aria-hidden={variant === 'lockup' ? 'true' : undefined}>
-        <span class="ig-gt">{'>'}</span>
-        <span class="ig-caret caret" />
+      <span
+        class="mono inline-flex items-baseline font-medium leading-none text-[length:var(--ig-mono-size)] text-[var(--color-fg)]"
+        aria-hidden={variant === 'lockup' ? 'true' : undefined}
+      >
+        <span class="inline-block">{'>'}</span>
+        <span
+          class="ig-caret caret inline-block bg-[var(--color-fg)] w-[var(--ig-caret-w)] h-[var(--ig-caret-h)] ml-[var(--ig-caret-margin)]"
+          style={`transform: translateY(calc(var(--ig-caret-lift) * -1));`}
+        />
       </span>
     )
   }
-  {variant !== 'mark' && <span class="ig-word">astro-ignite</span>}
+  {
+    variant !== 'mark' && (
+      <span
+        class="font-medium lowercase text-[length:var(--ig-sans-size)] tracking-[-0.04em] text-[var(--color-fg)]"
+      >
+        astro-ignite
+      </span>
+    )
+  }
 </Tag>
 
 <style>
-  .ig-brand {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--ig-gap);
-    text-decoration: none;
-    color: var(--color-fg);
-    line-height: 1;
-    letter-spacing: -0.04em;
-  }
-  a.ig-brand:hover {
-    color: var(--color-fg);
-  }
+  /* Why kept: hover-driven descendant style (a:hover .ig-caret) cannot be
+     expressed with Tailwind utilities alone — group-hover would need an
+     additional wrapper element. */
   a.ig-brand:hover .ig-caret {
     background: var(--color-primary);
-  }
-
-  /* Mark group: `>` + caret block */
-  .ig-mark {
-    font-family: var(--font-mono);
-    font-size: var(--ig-mono-size);
-    font-weight: 500;
-    line-height: 1;
-    color: var(--color-fg);
-    display: inline-flex;
-    align-items: baseline;
-  }
-  .ig-gt {
-    /* slight optical correction so the > sits on the baseline cleanly */
-    display: inline-block;
-  }
-  .ig-caret {
-    display: inline-block;
-    width: var(--ig-caret-w);
-    height: var(--ig-caret-h);
-    background: var(--color-fg);
-    margin-left: var(--ig-caret-margin);
-    transform: translateY(calc(var(--ig-caret-lift) * -1));
-  }
-
-  /* Wordmark — Geist Sans, always lowercase, tight tracking */
-  .ig-word {
-    font-family: var(--font-display);
-    font-size: var(--ig-sans-size);
-    font-weight: 500;
-    color: var(--color-fg);
-    text-transform: lowercase;
-    letter-spacing: -0.04em;
-  }
-
-  /* Compact lockup is the default — but the mark-only and word-only variants
-     drop the gap. */
-  .ig-brand-mark,
-  .ig-brand-word {
-    gap: 0;
   }
 </style>
