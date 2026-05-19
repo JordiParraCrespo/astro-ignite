@@ -1,15 +1,13 @@
 # Perf — docs-add-footer-chrome-parity-with-start
 
-Generated: 2026-05-19T14:11:04.924Z
+Generated: 2026-05-19T14:19:46.180Z
 
 ## Findings
-
 - ✅ packages/templates/starter dep count — 12 runtime deps
 - ✅ packages/templates/docs dep count — 8 runtime deps
 - ✅ Lighthouse run — skipped — chrome not installed; run scripts/doctor/install-chrome.mjs
 
 ## Budget (canonical: openspec/specs/templates-perf/spec.md )
-
 ```json
 {
   "$comment": "Canonical thresholds live in openspec/specs/templates-perf/spec.md scripts/doctor/perf-budget-baseline.mjs warns when these drift.",
