@@ -3,11 +3,13 @@
 Generated: 2026-05-19T04:04:33.827Z
 
 ## Findings
+
 - ✅ packages/templates/starter dep count — 12 runtime deps
 - ✅ packages/templates/docs dep count — 8 runtime deps
 - ✅ Lighthouse run — skipped — chrome not installed; run scripts/doctor/install-chrome.mjs
 
 ## Budget (canonical: openspec/specs/templates-perf/spec.md )
+
 ```json
 {
   "$comment": "Canonical thresholds live in openspec/specs/templates-perf/spec.md scripts/doctor/perf-budget-baseline.mjs warns when these drift.",
