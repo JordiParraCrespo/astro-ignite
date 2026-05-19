@@ -69,7 +69,7 @@ apps/docs/src/components/ui/text.astro` shows no divergence. Covers
       props; keep layout/spacing). The `<style is:global>.docs-prose`
       block stays untouched. Covers **S4**, **S6**.
 
-- [ ] **T4.** `packages/templates/docs/src/layouts/LegalLayout.astro`:
+- [x] **T4.** `packages/templates/docs/src/layouts/LegalLayout.astro`:
       replace `<h1>{entry.data.title}</h1>` with `<Text variant="h1">{…}</Text>`
       and `<p class="legal-meta">…</p>` with
       `<Text variant="muted" class="legal-meta">…</Text>`. Shrink the
