@@ -116,7 +116,7 @@ apps/docs/src/components/ui/text.astro` shows no divergence. Covers
 
 ## Refactor — docs template pages (audit-only by default)
 
-- [ ] **T8.** Verify each page under
+- [x] **T8.** Verify each page under
       `packages/templates/docs/src/pages/**/*.astro` (`index.astro`,
       `[...slug].astro`, `legal/[...slug].astro`,
       `[lang]/index.astro`, `[lang]/[...slug].astro`,
@@ -131,10 +131,10 @@ apps/docs/src/components/ui/text.astro` shows no divergence. Covers
 
 ## Refactor — apps/docs mirror
 
-- [ ] **T9.** Mirror T3 into `apps/docs/src/layouts/DocsLayout.astro`.
+- [x] **T9.** Mirror T3 into `apps/docs/src/layouts/DocsLayout.astro`.
       Covers **S4**, **S6**, **S12**.
 
-- [ ] **T10.** Mirror T4 into `apps/docs/src/layouts/LegalLayout.astro`.
+- [x] **T10.** Mirror T4 into `apps/docs/src/layouts/LegalLayout.astro`.
       Covers **S4**, **S6**, **S12**.
 
 - [ ] **T11.** Mirror T5 into
