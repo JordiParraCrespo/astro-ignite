@@ -3,6 +3,7 @@
 Generated: 2026-05-19T00:43:23.891Z
 
 ## Findings
+
 - ✅ packages/templates/starter dep count — 12 runtime deps
 - ✅ packages/templates/docs dep count — 8 runtime deps
 - ✅ Lighthouse binary — skipped — Lighthouse unavailable locally; CI workflow "Lighthouse CI (mobile)" is the authoritative gate
@@ -10,6 +11,7 @@ Generated: 2026-05-19T00:43:23.891Z
 - ✅ Lighthouse run — skipped — local runner not yet wired to a preview server; CI workflow "Lighthouse CI (mobile)" is the authoritative gate
 
 ## Budget (canonical: openspec/specs/templates-perf/spec.md )
+
 ```json
 {
   "$comment": "Canonical thresholds live in openspec/specs/templates-perf/spec.md scripts/doctor/perf-budget-baseline.mjs warns when these drift.",

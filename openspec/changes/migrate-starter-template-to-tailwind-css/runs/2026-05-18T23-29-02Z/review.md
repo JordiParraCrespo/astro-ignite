@@ -46,15 +46,15 @@ No out-of-scope code paths detected.
 
 Manual run of each audit script referenced by `design.md`'s invariants table:
 
-| Invariant | Command | Result |
-| --- | --- | --- |
-| `templates-css-tokens I1` | `node scripts/audit/tokens-only.mjs` | ❌ 2 hits (pre-existing themeColor literals) |
-| `templates-css-tokens I2` | `node scripts/audit/tokens-only.mjs --config` | ❌ same 2 hits |
-| `templates-css-tokens I3` | `node scripts/audit/tokens-only.mjs --darkmode` | ❌ same 2 hits |
-| `templates-css-tokens I4` | `node scripts/audit/tokens-only.mjs --layered` | ✅ deprecated no-op, exits 0 with notice |
-| `templates-perf I1/I2/I3` | CI workflow (Lighthouse CI mobile) | n/a locally |
-| `templates-perf I4` | removed by spec delta | n/a |
-| `templates-perf I5` | `node scripts/perf/run.mjs --deps` | ✅ 12 starter / 8 docs runtime deps (no net add) |
+| Invariant                 | Command                                         | Result                                           |
+| ------------------------- | ----------------------------------------------- | ------------------------------------------------ |
+| `templates-css-tokens I1` | `node scripts/audit/tokens-only.mjs`            | ❌ 2 hits (pre-existing themeColor literals)     |
+| `templates-css-tokens I2` | `node scripts/audit/tokens-only.mjs --config`   | ❌ same 2 hits                                   |
+| `templates-css-tokens I3` | `node scripts/audit/tokens-only.mjs --darkmode` | ❌ same 2 hits                                   |
+| `templates-css-tokens I4` | `node scripts/audit/tokens-only.mjs --layered`  | ✅ deprecated no-op, exits 0 with notice         |
+| `templates-perf I1/I2/I3` | CI workflow (Lighthouse CI mobile)              | n/a locally                                      |
+| `templates-perf I4`       | removed by spec delta                           | n/a                                              |
+| `templates-perf I5`       | `node scripts/perf/run.mjs --deps`              | ✅ 12 starter / 8 docs runtime deps (no net add) |
 
 The `tokens-only` failures are real but pre-existing (initial commit `f02e323`, `git blame` confirms). The migration neither introduced nor cleaned them.
 
@@ -101,7 +101,7 @@ Recommend either flipping the `[ ]` boxes (with one-line per-task evidence point
 ## Changes requested
 
 1. **`tokens-only` audit is red.** Either teach the audit to ignore `themeColor:` config lines (the HTML spec requires literal hex for `<meta name="theme-color">`), or move `themeColor` values into `var(--color-*)` tokens read at runtime. The two hits at `packages/templates/{starter,docs}/src/config/site.ts` are pre-existing but the migration's spec delta keeps I1 active, so the gate now bites. (S2, criterion 2)
-2. **Invariant-dispatcher mismatch.** Reshape `design.md`'s "Invariants this change touches" section to use the `- audit: \`<cmd>\`` bullet-list form that `scripts/audit/run-all.mjs` parses, or extend the dispatcher to also parse the markdown-table form already used in this design. As written, `pnpm audit:invariants --change <name>` silently runs no audits. (S9, criterion 2)
+2. **Invariant-dispatcher mismatch.** Reshape `design.md`'s "Invariants this change touches" section to use the `- audit: \`<cmd>\``bullet-list form that`scripts/audit/run-all.mjs`parses, or extend the dispatcher to also parse the markdown-table form already used in this design. As written,`pnpm audit:invariants --change <name>` silently runs no audits. (S9, criterion 2)
 3. **Tasks not justified.** Flip the `[ ]` checkboxes in `tasks.md` for tasks that are complete, or add a `## Tasks` section to `impl.md` with a per-task one-line justification (T1 → inventory.md; T3 → commit `546fe43`; …). T19 and T21 in particular have no recorded execution in the run-dir. (Criterion 3)
 4. **`pnpm format:check` fails on the regenerated audit/perf run-dir artifacts.** Either fix `scripts/audit/run-all.mjs` and `scripts/perf/run.mjs` to emit prettier-compatible markdown, or add `openspec/changes/*/runs/**` to `.prettierignore`. (C4)
 5. **S3's named e2e test does not exist.** Either add a `theme-toggle` Playwright spec to `tests/e2e/starter/`, or rewrite S3 to reference an existing test / a manual procedure. (Criterion 1)
