@@ -64,6 +64,8 @@ const hexHits = await grepFiles(files, /#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{8}\b/);
 // allow #000 / #fff (often used in SVG fills inside HTML banner files); keep strict on long hex.
 for (const h of hexHits) {
   if (/#(000000|ffffff|FFFFFF)\b/.test(h.match)) continue;
+  // <meta name="theme-color"> needs a literal color — CSS vars don't resolve in HTML attribute values.
+  if (/\bthemeColor\s*:/.test(h.snippet)) continue;
   hits.push({ ...h, audit: 'I1-hex' });
 }
 

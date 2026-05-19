@@ -96,6 +96,13 @@ const allSchemas = [...siteSchemas(locale), ...schemas];
          in your own self-hosted @font-face block. -->
 
 
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={siteConfig.name[locale] ?? siteConfig.name[siteConfig.defaultLocale]}
+      href="/rss.xml"
+    />
+
     <SEO
       title={title}
       description={description}

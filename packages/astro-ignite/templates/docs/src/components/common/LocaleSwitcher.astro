@@ -37,8 +37,12 @@ const localeLabels: Record<string, string> = {
 
 {
   siteConfig.locales.length > 1 && (
-    <details class="locale-switcher">
-      <summary aria-label={t('locale.switch')} title={t('locale.switch')}>
+    <details class="locale-switcher relative">
+      <summary
+        class="inline-flex cursor-pointer list-none items-center gap-1.5 rounded-lg p-2 text-sm text-[var(--color-fg-muted)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-fg)]"
+        aria-label={t('locale.switch')}
+        title={t('locale.switch')}
+      >
         <svg
           aria-hidden="true"
           viewBox="0 0 24 24"
@@ -53,12 +57,16 @@ const localeLabels: Record<string, string> = {
           <circle cx="12" cy="12" r="10" />
           <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
         </svg>
-        <span class="locale-current">{currentLocale.toUpperCase()}</span>
+        <span class="font-medium">{currentLocale.toUpperCase()}</span>
       </summary>
-      <ul role="menu" class="locale-menu">
+      <ul
+        role="menu"
+        class="absolute right-0 top-[calc(100%+0.5rem)] z-30 m-0 min-w-[8rem] list-none rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] p-1 shadow-[0_8px_16px_-8px_rgb(0_0_0_/_0.2)]"
+      >
         {siteConfig.locales.map((loc) => (
           <li>
             <a
+              class="block rounded-md px-2.5 py-2 text-sm text-[var(--color-fg)] no-underline transition-colors duration-100 hover:bg-[var(--color-surface-2)] data-[active]:font-medium data-[active]:text-[var(--color-primary)]"
               href={getRelativeLocaleUrl(loc, path)}
               hreflang={siteConfig.hreflang[loc] ?? loc}
               aria-current={loc === currentLocale ? 'true' : undefined}
@@ -74,58 +82,10 @@ const localeLabels: Record<string, string> = {
 }
 
 <style>
-  .locale-switcher {
-    position: relative;
-  }
-  .locale-switcher summary {
-    list-style: none;
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    color: var(--color-fg-muted);
-    display: inline-flex;
-    align-items: center;
-    gap: 0.375rem;
-    font-size: 0.875rem;
-  }
+  /* Why kept: `<summary>::-webkit-details-marker` is a vendor pseudo-element
+     that Tailwind cannot target. Hiding it keeps the native disclosure
+     triangle out of the rendered chrome. */
   .locale-switcher summary::-webkit-details-marker {
     display: none;
-  }
-  .locale-switcher summary:hover {
-    color: var(--color-fg);
-    background: var(--color-surface-2);
-  }
-  .locale-current {
-    font-weight: 500;
-  }
-  .locale-menu {
-    position: absolute;
-    top: calc(100% + 0.5rem);
-    right: 0;
-    background: var(--color-bg);
-    border: 1px solid var(--color-border);
-    border-radius: 0.5rem;
-    padding: 0.25rem;
-    margin: 0;
-    list-style: none;
-    min-width: 8rem;
-    box-shadow: 0 8px 16px -8px rgb(0 0 0 / 0.2);
-    z-index: 30;
-  }
-  .locale-menu a {
-    display: block;
-    padding: 0.5rem 0.625rem;
-    border-radius: 0.375rem;
-    text-decoration: none;
-    color: var(--color-fg);
-    font-size: 0.875rem;
-    transition: background-color 0.1s var(--ease-out-soft);
-  }
-  .locale-menu a:hover {
-    background: var(--color-surface-2);
-  }
-  .locale-menu a[data-active] {
-    color: var(--color-primary);
-    font-weight: 500;
   }
 </style>

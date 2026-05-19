@@ -1,0 +1,129 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
+import SearchBox from '@/components/docs/SearchBox.astro';
+import { useTranslations } from '@/i18n';
+import { siteConfig } from '@/config/site';
+
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
+const homeHref = getRelativeLocaleUrl(locale, '/');
+---
+
+<section class="not-found">
+  <div class="text-stack">
+    <span class="eyebrow mono">404</span>
+    <h1 class="heading">{t('errors.404.heading')}</h1>
+    <p class="body">{t('errors.404.body')}</p>
+  </div>
+  <div class="actions">
+    <a class="action action-primary" href={homeHref}>{t('errors.404.back')} →</a>
+    <button
+      type="button"
+      class="action action-secondary"
+      data-not-found-search
+      aria-label={t('errors.404.search')}
+    >
+      <span class="action-icon mono" aria-hidden="true">⌕</span>
+      <span>{t('errors.404.search')}</span>
+    </button>
+  </div>
+  <SearchBox />
+</section>
+
+<script>
+  const trigger = document.querySelector<HTMLButtonElement>('[data-not-found-search]');
+  trigger?.addEventListener('click', () => {
+    const dialog = document.getElementById('search-dialog') as HTMLDialogElement | null;
+    dialog?.showModal();
+  });
+</script>
+
+<style>
+  .not-found {
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: 5rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    text-align: center;
+  }
+  .text-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-fg-muted);
+  }
+  .heading {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    color: var(--color-fg);
+  }
+  .body {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--color-fg-muted);
+    max-width: 36ch;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+  .action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    font-size: 0.875rem;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition:
+      border-color 0.12s var(--ease-out-soft),
+      background 0.12s var(--ease-out-soft),
+      color 0.12s var(--ease-out-soft);
+  }
+  .action-primary {
+    background: var(--color-fg);
+    color: var(--color-bg);
+    border-color: var(--color-fg);
+  }
+  .action-primary:hover {
+    background: var(--color-fg-muted);
+    border-color: var(--color-fg-muted);
+  }
+  .action-secondary {
+    background: var(--color-surface);
+    color: var(--color-fg);
+  }
+  .action-secondary:hover {
+    border-color: var(--color-border-strong);
+  }
+  .action-icon {
+    font-size: 0.875rem;
+  }
+  /* The mounted SearchBox renders its own trigger button; we own the search
+     affordance with the buttons above, so hide the inline trigger here.
+     The dialog itself stays mounted so showModal() works. */
+  .not-found :global(.search-box) {
+    display: none;
+  }
+</style>
