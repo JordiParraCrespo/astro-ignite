@@ -15,7 +15,7 @@ Status: idle
 
 ## State
 
-Feature: 45 — wire-local-lighthouse-against-a-preview
-Spec: openspec/changes/wire-local-lighthouse-against-a-preview/
-Run: openspec/changes/wire-local-lighthouse-against-a-preview/runs/2026-05-19T03-52-23Z/
+Feature: 49 — docs-ship-registry-atoms-in-srccomponent
+Spec: openspec/changes/docs-ship-registry-atoms-in-srccomponent/
+Run: openspec/changes/docs-ship-registry-atoms-in-srccomponent/runs/2026-05-19T13-25-44Z/
 Status: in_progress

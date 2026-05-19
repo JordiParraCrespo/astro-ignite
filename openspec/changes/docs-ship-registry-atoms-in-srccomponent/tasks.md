@@ -10,7 +10,7 @@ in `design.md` § Files touched. Stay within it.
 
 ## Survey
 
-- [ ] **T1.** Inventory:
+- [x] **T1.** Inventory:
       (a) `diff -q packages/registry/base/<atom>.astro
 packages/templates/starter/src/components/ui/<atom>.astro` for every
       starter atom (and for compound families,
