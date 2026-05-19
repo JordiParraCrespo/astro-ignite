@@ -92,16 +92,14 @@ jobs:
           path: packages/astro-ignite/dist/index.js
 
   release:
-    name: Create version PR or publish stable
+    name: Create version PR
     if: >-
       ${{ github.event_name == 'push'
           && github.repository_owner == 'JordiParraCrespo' }}
     runs-on: ubuntu-latest
-    environment: Prod
     permissions:
       contents: write
       pull-requests: write
-      id-token: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -122,15 +120,12 @@ jobs:
           pnpm --filter astro-ignite build
           pnpm --filter create-astro-ignite build
 
-      - name: Open version PR or publish
+      - name: Open or update version PR
         uses: changesets/action@v1
         with:
           setupGitUser: true
           commit: 'chore(release): version packages'
           title: 'chore(release): version packages'
           version: node .github/changeset-version.js
-          publish: pnpm changeset publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
