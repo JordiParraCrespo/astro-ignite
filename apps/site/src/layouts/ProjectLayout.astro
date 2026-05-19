@@ -113,7 +113,9 @@ const statusLabels = {
             )
           }
           <dt class="font-medium text-[var(--color-fg-muted)]">{t('projects.statusLabel')}</dt>
-          <dd class="m-0 text-[var(--color-fg)]">{statusLabels[entry.data.status as keyof typeof statusLabels]}</dd>
+          <dd class="m-0 text-[var(--color-fg)]">
+            {statusLabels[entry.data.status as keyof typeof statusLabels]}
+          </dd>
           {
             entry.data.datePublished && (
               <>
@@ -133,7 +135,9 @@ const statusLabels = {
                 <dd class="m-0 text-[var(--color-fg)]">
                   <ul class="m-0 flex list-none flex-wrap gap-1.5 p-0">
                     {entry.data.techStack.map((tech: string) => (
-                      <li class="rounded bg-[var(--color-surface-2)] px-2 py-0.5 text-[0.8125rem]">{tech}</li>
+                      <li class="rounded bg-[var(--color-surface-2)] px-2 py-0.5 text-[0.8125rem]">
+                        {tech}
+                      </li>
                     ))}
                   </ul>
                 </dd>

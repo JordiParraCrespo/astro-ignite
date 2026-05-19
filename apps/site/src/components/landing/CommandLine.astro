@@ -14,7 +14,9 @@ const { command, copyLabel, copiedLabel, id } = Astro.props;
   {...id ? { id } : {}}
 >
   <span>
-    <span class="mr-1.5 text-[var(--color-fg)]">$</span><span class="mono text-[var(--color-fg)]">{command}</span>
+    <span class="mr-1.5 text-[var(--color-fg)]">$</span><span class="mono text-[var(--color-fg)]"
+      >{command}</span
+    >
   </span>
   <button
     class="cmd-copy cursor-pointer appearance-none rounded border border-[var(--color-border)] bg-transparent px-2 py-1 font-mono text-[11px] text-[var(--color-fg)] transition-[color,border-color] duration-[0.12s] hover:border-[var(--color-border-strong)] hover:text-[var(--color-fg)]"

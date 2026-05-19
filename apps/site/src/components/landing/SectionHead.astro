@@ -8,11 +8,13 @@ interface Props {
 const { eyebrow, heading, meta } = Astro.props;
 ---
 
-<div class="mb-10 flex items-end justify-between gap-10 max-[720px]:flex-col max-[720px]:items-start">
-  <div class="max-w-[45ch] [&_p]:mt-3 [&_p]:text-[16px] [&_p]:leading-[1.55] [&_p]:text-[var(--color-fg-muted)]">
-    <span
-      class="mono text-[11px] tracking-[0.18em] text-[var(--color-fg-muted)] uppercase"
-    >
+<div
+  class="mb-10 flex items-end justify-between gap-10 max-[720px]:flex-col max-[720px]:items-start"
+>
+  <div
+    class="max-w-[45ch] [&_p]:mt-3 [&_p]:text-[16px] [&_p]:leading-[1.55] [&_p]:text-[var(--color-fg-muted)]"
+  >
+    <span class="mono text-[11px] tracking-[0.18em] text-[var(--color-fg-muted)] uppercase">
       {eyebrow}
     </span>
     <h2
@@ -24,9 +26,7 @@ const { eyebrow, heading, meta } = Astro.props;
   </div>
   {
     meta && (
-      <p
-        class="mono m-0 max-w-[30ch] text-right text-[12px] leading-[1.6] text-[var(--color-fg-muted)] max-[720px]:text-left"
-      >
+      <p class="mono m-0 max-w-[30ch] text-right text-[12px] leading-[1.6] text-[var(--color-fg-muted)] max-[720px]:text-left">
         {meta}
       </p>
     )

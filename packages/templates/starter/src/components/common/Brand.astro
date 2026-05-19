@@ -75,17 +75,13 @@ const gapClass = variant === 'lockup' ? 'gap-[var(--ig-gap)]' : 'gap-0';
         aria-hidden={variant === 'lockup' ? 'true' : undefined}
       >
         <span class="inline-block">{'>'}</span>
-        <span
-          class="ig-caret caret ml-[var(--ig-caret-margin)] inline-block h-[var(--ig-caret-h)] w-[var(--ig-caret-w)] translate-y-[calc(var(--ig-caret-lift)*-1)] bg-[var(--color-fg)]"
-        />
+        <span class="ig-caret caret ml-[var(--ig-caret-margin)] inline-block h-[var(--ig-caret-h)] w-[var(--ig-caret-w)] translate-y-[calc(var(--ig-caret-lift)*-1)] bg-[var(--color-fg)]" />
       </span>
     )
   }
   {
     variant !== 'mark' && (
-      <span
-        class="font-sans text-[length:var(--ig-sans-size)] font-medium tracking-[-0.04em] text-[var(--color-fg)] lowercase"
-      >
+      <span class="font-sans text-[length:var(--ig-sans-size)] font-medium tracking-[-0.04em] text-[var(--color-fg)] lowercase">
         astro-ignite
       </span>
     )

@@ -51,7 +51,9 @@ const inputError = result?.error && isInputError(result.error) ? result.error : 
     novalidate
   >
     <div class="flex flex-col gap-1.5">
-      <label for="name" class="text-sm font-medium text-[var(--color-fg)]">{t('contact.name')}</label>
+      <label for="name" class="text-sm font-medium text-[var(--color-fg)]"
+        >{t('contact.name')}</label
+      >
       <input
         id="name"
         name="name"
@@ -71,7 +73,9 @@ const inputError = result?.error && isInputError(result.error) ? result.error : 
     </div>
 
     <div class="flex flex-col gap-1.5">
-      <label for="email" class="text-sm font-medium text-[var(--color-fg)]">{t('contact.email')}</label>
+      <label for="email" class="text-sm font-medium text-[var(--color-fg)]"
+        >{t('contact.email')}</label
+      >
       <input
         id="email"
         name="email"
@@ -91,7 +95,9 @@ const inputError = result?.error && isInputError(result.error) ? result.error : 
     </div>
 
     <div class="flex flex-col gap-1.5">
-      <label for="message" class="text-sm font-medium text-[var(--color-fg)]">{t('contact.message')}</label>
+      <label for="message" class="text-sm font-medium text-[var(--color-fg)]"
+        >{t('contact.message')}</label
+      >
       <textarea
         id="message"
         name="message"

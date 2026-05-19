@@ -27,7 +27,9 @@ const docsPreviewUrl = siteConfig.urls.docsPreview;
     >
       <p>
         {t('landing.templates.lede')}
-        <span class="mono text-[14px] text-[var(--color-fg)]">--template</span>{t('landing.templates.ledeTail')}
+        <span class="mono text-[14px] text-[var(--color-fg)]">--template</span>{
+          t('landing.templates.ledeTail')
+        }
       </p>
     </SectionHead>
 
@@ -58,9 +60,9 @@ const docsPreviewUrl = siteConfig.urls.docsPreview;
     <div class="mt-6 flex flex-wrap items-center justify-between gap-5">
       <span class="mono text-[12px] text-[var(--color-fg-muted)]">
         {t('landing.templates.moreLead')}{' '}
-        <span class="text-[var(--color-fg)]">portfolio</span>, <span class="text-[var(--color-fg)]">commerce</span>, <span class="text-[var(--color-fg)]"
-          >changelog</span
-        >.
+        <span class="text-[var(--color-fg)]">portfolio</span>, <span class="text-[var(--color-fg)]"
+          >commerce</span
+        >, <span class="text-[var(--color-fg)]">changelog</span>.
       </span>
       <a class="btn btn-ghost btn-sm" href={ghUrl + '/blob/main/ROADMAP.md'} rel="noopener">
         {t('landing.templates.browseAll')}
