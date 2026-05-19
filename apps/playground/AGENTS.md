@@ -11,7 +11,7 @@ The site ships with: blog + projects content collections, contact form via Astro
 ## Stack snapshot
 
 - **Astro 5** — static-first, server output via `@astrojs/node@^9` (required for Actions)
-- **Tailwind v4** — layered with scoped `<style>` blocks above the fold
+- **Tailwind v4** — single styling layer; component colors resolve through `--color-*` tokens via arbitrary-value utilities (`bg-[var(--color-fg)]`). `inlineStylesheets: 'always'` inlines the full stylesheet on first paint.
 - **Geist Sans + Geist Mono** — self-hosted via `astro:fonts`, zero CLS
 - **schema-dts** typed JSON-LD composed via `@graph`
 - **No client framework** — interactive primitives are Astro + vanilla JS / native HTML (`<details>`, `<dialog>`, popover API, custom elements)
@@ -21,7 +21,7 @@ The site ships with: blog + projects content collections, contact form via Astro
 1. **i18n with parallel routes.** Default locale at `/`, non-default at `/[lang]/`. Every page that exists at `/foo` must also exist at `src/pages/[lang]/foo.astro` with `getStaticPaths` emitting one entry per `siteConfig.locales.filter(l => l !== siteConfig.defaultLocale)`. Content collections use `{locale}/{slug}.mdx` folder layout. Default `siteConfig.locales` ships as `['en']` — parallel routes stay dormant until a second locale is added.
 2. **Internal links go through `getRelativeLocaleUrl(lang, path)`** — never hardcode `/about`.
 3. **LocaleSwitcher in chrome** — hide nav items that have no localized entry.
-4. **Layered CSS.** Above-the-fold components (Hero, Header, BaseLayout) use scoped `<style>` blocks to avoid render-blocking. Below-the-fold uses Tailwind v4. Beasties extracts critical CSS at build time.
+4. **Tailwind-first styling, token-resolved.** Component colors / spacing / typography ship as Tailwind v4 utilities that resolve `--color-*` tokens (`bg-[var(--color-bg)]`, `text-[var(--color-fg-muted)]`). Scoped `<style>` blocks are reserved for what Tailwind cannot express — keyframe animations, view-transition selectors, runtime-dynamic CSS computed from component props, MDX prose targeting `<slot/>` content — and each such block carries a leading `<!-- tailwind-exception: <reason> -->` comment naming what Tailwind cannot express. `inlineStylesheets: 'always'` puts the full stylesheet in the HTML on first paint, so there is no separate critical-CSS extraction step.
 5. **Design tokens only.** Components reference `--color-bg`, `--color-fg`, `--color-primary`, `--color-border`, etc. — never raw zinc scale. The zinc scale at the bottom of `global.css` is the source of token values; tri-state dark mode (`.light` class) flips them.
 6. **JSON-LD composes via `@graph`.** Each page contributes its node — don't emit standalone `<script type="application/ld+json">` blocks.
 7. **Astro Actions need an adapter.** The template pins `@astrojs/node@^9`. Swap adapters in `astro.config.mjs` for other targets — see README.

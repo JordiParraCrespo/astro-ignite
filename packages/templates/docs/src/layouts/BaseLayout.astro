@@ -22,6 +22,7 @@ import SEO from '@/components/seo/SEO.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import CookieBanner from '@/components/legal/CookieBanner.astro';
 import Analytics from '@/components/common/Analytics.astro';
+import Footer from '@/components/common/Footer.astro';
 
 interface Props {
   title: string;
@@ -119,6 +120,7 @@ const allSchemas = [...siteSchemas(locale), ...schemas];
   <body>
     <a href="#main" class="skip-link">Skip to main content</a>
     <slot />
+    <Footer />
     <CookieBanner />
   </body>
 </html>

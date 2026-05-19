@@ -285,6 +285,26 @@
         "AGENTS.md documents the dual-gate model in a section titled 'Performance gates' (or equivalent) that spells out: local `pnpm perf:budget` is a fast advisory check run by the implementer / reviewer; CI workflow `Lighthouse CI (mobile)` (.github/workflows/lighthouse.yml) is the authoritative gate; both must be green before a change is opened for review."
       ],
       "issue": 45
+    },
+    {
+      "id": 15,
+      "name": "docs-add-footer-chrome-parity-with-start",
+      "title": "Docs: add Footer chrome (parity with starter)",
+      "capabilities": ["templates-i18n", "templates-css-tokens", "templates-perf"],
+      "description": "# Docs: add Footer chrome (parity with starter)\n\n## Problem\n\n`packages/templates/docs/src/components/common/` has `Brand`, `LocaleSwitcher`, `ThemeToggle`, `Analytics` — but **no `Footer.astro`**. A scaffolded docs site renders no footer chrome at all: no cookie/legal links, no brand mark at the bottom of the page, no \\\"made with\\\" credit.\n\nThe starter ships `packages/templates/starter/src/components/common/Footer.astro` with:\n\n- brand mark + tagline\n- legal links (Privacy, Terms, Cookies)\n- locale switcher echo for users who scrolled past the header\n- self-hosted attribution / build info\n\nDocs deserves the same chrome — the legal pages already exist in the docs template (`pages/legal/[...slug].astro` + `[lang]/` parallel), they just have no entry point from the rest of the site.\n\n## Proposed approach\n\n1. Add `packages/templates/docs/src/components/common/Footer.astro` mirroring the starter's design (tokens-only, named props, i18n via `t()`), trimmed for docs flavor (no marketing links — point at the docs landing, legal section, GitHub repo).\n2. Wire it into `packages/templates/docs/src/layouts/BaseLayout.astro` so every docs page (including 404 and legal) inherits it.\n3. Add `erro",
+      "acceptance": [
+        "packages/templates/docs/src/components/common/Footer.astro exists, renders body copy through the ui/ Text atom, uses design tokens for every color (no raw zinc / hex literals), and only adds a scoped <style> block when Tailwind cannot express the rule (with an inline justification comment).",
+        "packages/templates/docs/src/layouts/BaseLayout.astro renders <Footer /> after the main <slot /> so every page that uses the layout (index, [...slug], legal/[...slug], 404, [lang]/* parallels) inherits the footer.",
+        "Every internal link inside Footer.astro is built with getRelativeLocaleUrl(locale, '/legal/<slug>') (or the equivalent locale-aware helper for the RSS / docs-landing href) — no hardcoded /legal/... string remains; scripts/audit/internal-links-localized.mjs stays green.",
+        "packages/templates/docs/src/i18n/en.json and es.json add footer.{privacy,terms,cookies} keys (key-parallel) alongside the existing footer.{rights,builtWith,rss,legal,social} keys; no other locale bundle structure changes.",
+        "apps/docs/src/components/common/Footer.astro, apps/docs/src/layouts/BaseLayout.astro, and apps/docs/src/i18n/{en,es}.json mirror the template changes file-for-file (manual mirror per apps/docs/CLAUDE.md).",
+        "packages/astro-ignite/templates/docs/ is refreshed via the prepack copy-templates script (or by hand) so a fresh `pnpm pack` ships the new Footer.astro, the updated BaseLayout, and the updated i18n bundles.",
+        "No new runtime dependency is added to packages/templates/docs/package.json or apps/docs/package.json; the footer composes existing ui/ atoms only.",
+        "pnpm format:check, pnpm typecheck, pnpm test, pnpm audit:invariants --change docs-add-footer-chrome-parity-with-start, and pnpm scaffold:test all pass; tokens-only, internal-links-localized, and i18n-parallels audits stay green.",
+        "pnpm perf:budget against the docs template is not regressed: Lighthouse mobile Performance/Accessibility/Best Practices/SEO ≥ 95 on / and at least one inner page; total-transfer / LCP / INP / CLS / TBT budgets in templates-perf hold.",
+        "A changeset under .changeset/ documents the addition as a non-breaking refactor for end users who scaffolded the docs template earlier and want to mirror the chrome back."
+      ],
+      "issue": 50
     }
   ]
 }
