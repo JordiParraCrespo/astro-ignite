@@ -2,9 +2,10 @@
 /**
  * Site navigation.
  *
- * Above-the-fold component — uses scoped <style> blocks (not Tailwind) so the
- * styles inline per-route automatically. Mobile menu is a vanilla-JS toggle
- * that flips a class + aria-expanded on the nav.
+ * Tailwind utilities resolve colors through the --color-* tokens in
+ * src/styles/global.css. Mobile menu state is driven by a `.open` class
+ * flipped from the inline script; the `[&.open]:flex` arbitrary variant
+ * picks it up.
  */
 
 import { getRelativeLocaleUrl } from 'astro:i18n';
@@ -29,33 +30,52 @@ const homeUrl = getRelativeLocaleUrl(locale, '/');
 const siteName = siteConfig.name[locale] ?? siteConfig.name[siteConfig.defaultLocale]!;
 ---
 
-<header class="site-header">
-  <nav class="site-nav" aria-label={t('nav.primary')}>
+<header
+  class="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[color-mix(in_oklch,var(--color-bg)_92%,transparent)] backdrop-blur-[12px]"
+>
+  <nav
+    class="mx-auto flex max-w-[80rem] items-center justify-between gap-4 px-5 py-3.5"
+    aria-label={t('nav.primary')}
+  >
     <Brand href={homeUrl} variant="lockup" size={0.32} label={siteName} />
 
     <button
       type="button"
-      class="nav-toggle"
+      class="nav-toggle inline-flex cursor-pointer appearance-none items-center rounded-lg border-none bg-transparent p-2 text-[var(--color-fg)] hover:bg-[var(--color-surface-2)] md:hidden"
       aria-controls="primary-nav-menu"
       aria-expanded="false"
       aria-label={t('nav.openMenu')}
     >
-      <span class="nav-toggle-icon" aria-hidden="true">
-        <span></span><span></span><span></span>
+      <span class="flex w-5 flex-col gap-[4px]" aria-hidden="true">
+        <span class="block h-[2px] rounded-[1px] bg-current"></span>
+        <span class="block h-[2px] rounded-[1px] bg-current"></span>
+        <span class="block h-[2px] rounded-[1px] bg-current"></span>
       </span>
     </button>
 
-    <div id="primary-nav-menu" class="nav-menu">
-      <ul>
+    <div
+      id="primary-nav-menu"
+      class="nav-menu hidden md:flex md:items-center md:gap-4 [&.open]:absolute [&.open]:top-full [&.open]:right-0 [&.open]:left-0 [&.open]:block [&.open]:border-b [&.open]:border-[var(--color-border)] [&.open]:bg-[var(--color-bg)] [&.open]:px-5 [&.open]:pt-4 [&.open]:pb-6 md:[&.open]:static md:[&.open]:border-0 md:[&.open]:bg-transparent md:[&.open]:p-0"
+    >
+      <ul
+        class="m-0 flex list-none gap-6 p-0 [.nav-menu.open_&]:flex-col [.nav-menu.open_&]:items-start [.nav-menu.open_&]:gap-3.5 md:[.nav-menu.open_&]:flex-row md:[.nav-menu.open_&]:items-center md:[.nav-menu.open_&]:gap-6"
+      >
         {
           links.map((link) => (
             <li>
-              <a href={link.href}>{link.label}</a>
+              <a
+                href={link.href}
+                class="text-[0.9375rem] font-medium text-[var(--color-fg-muted)] no-underline transition-colors duration-150 ease-[var(--ease-out-soft)] hover:text-[var(--color-fg)] [.nav-menu.open_&]:text-[1.125rem] md:[.nav-menu.open_&]:text-[0.9375rem]"
+              >
+                {link.label}
+              </a>
             </li>
           ))
         }
       </ul>
-      <div class="nav-actions">
+      <div
+        class="ml-4 flex items-center gap-2 [.nav-menu.open_&]:mt-4 [.nav-menu.open_&]:ml-0 [.nav-menu.open_&]:w-full [.nav-menu.open_&]:justify-start [.nav-menu.open_&]:border-t [.nav-menu.open_&]:border-[var(--color-border)] [.nav-menu.open_&]:pt-4 md:[.nav-menu.open_&]:mt-0 md:[.nav-menu.open_&]:ml-4 md:[.nav-menu.open_&]:w-auto md:[.nav-menu.open_&]:border-0 md:[.nav-menu.open_&]:pt-0"
+      >
         <LocaleSwitcher />
         <ThemeToggle />
       </div>
@@ -84,117 +104,3 @@ const siteName = siteConfig.name[locale] ?? siteConfig.name[siteConfig.defaultLo
     });
   })();
 </script>
-
-<style>
-  .site-header {
-    position: sticky;
-    top: 0;
-    z-index: 40;
-    background: color-mix(in oklch, var(--color-bg) 92%, transparent);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--color-border);
-  }
-  .site-nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 80rem;
-    margin: 0 auto;
-    padding: 0.875rem 1.25rem;
-    gap: 1rem;
-  }
-  .nav-toggle {
-    appearance: none;
-    background: transparent;
-    border: none;
-    padding: 0.5rem;
-    cursor: pointer;
-    color: var(--color-fg);
-    border-radius: 0.5rem;
-  }
-  .nav-toggle:hover {
-    background: var(--color-surface-2);
-  }
-  .nav-toggle-icon {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    width: 20px;
-  }
-  .nav-toggle-icon span {
-    display: block;
-    height: 2px;
-    background: currentColor;
-    border-radius: 1px;
-  }
-
-  .nav-menu {
-    display: none;
-  }
-  .nav-menu ul {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    gap: 1.5rem;
-  }
-  .nav-menu a {
-    text-decoration: none;
-    color: var(--color-fg-muted);
-    font-size: 0.9375rem;
-    font-weight: 500;
-    transition: color 0.15s var(--ease-out-soft);
-  }
-  .nav-menu a:hover {
-    color: var(--color-fg);
-  }
-  .nav-actions {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-left: 1rem;
-  }
-
-  /* Desktop layout */
-  @media (min-width: 768px) {
-    .nav-toggle {
-      display: none;
-    }
-    .nav-menu {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-  }
-
-  /* Mobile menu open */
-  @media (max-width: 767px) {
-    .nav-menu.open {
-      display: block;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: var(--color-bg);
-      border-bottom: 1px solid var(--color-border);
-      padding: 1rem 1.25rem 1.5rem;
-    }
-    .nav-menu.open ul {
-      flex-direction: column;
-      gap: 0.875rem;
-      align-items: flex-start;
-    }
-    .nav-menu.open a {
-      font-size: 1.125rem;
-    }
-    .nav-menu.open .nav-actions {
-      margin-top: 1rem;
-      margin-left: 0;
-      padding-top: 1rem;
-      border-top: 1px solid var(--color-border);
-      width: 100%;
-      justify-content: flex-start;
-    }
-  }
-</style>

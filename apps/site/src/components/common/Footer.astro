@@ -2,9 +2,9 @@
 /**
  * Site footer — shared across every layout.
  *
- * Below-the-fold component. Scoped <style> mirrors the landing design:
- * brand block on the left, three link columns (Product / Resources / Legal)
- * on the right, mono font throughout.
+ * Below-the-fold component using Tailwind utilities resolved through the
+ * --color-* tokens. Brand block on the left, three link columns
+ * (Product / Resources / Legal) on the right, mono font throughout.
  */
 
 import { getRelativeLocaleUrl } from 'astro:i18n';
@@ -28,30 +28,34 @@ const docsUrl = siteConfig.urls.docs;
 const ghUrl = siteConfig.social.github ?? 'https://github.com/JordiParraCrespo/astro-ignite';
 ---
 
-<footer class="site-footer">
-  <div class="footer-inner">
-    <div class="footer-brand">
+<footer
+  class="border-t border-[var(--color-border)] pt-10 pb-14 font-mono text-[12px] text-[var(--color-fg-muted)]"
+>
+  <div
+    class="mx-auto flex max-w-[1200px] flex-wrap justify-between gap-8 px-10 max-[720px]:px-6 [&_a]:text-[var(--color-fg-muted)] [&_a]:no-underline [&_a]:transition-colors [&_a]:duration-[0.12s] [&_a]:ease-[var(--ease-out-soft)] hover:[&_a]:text-[var(--color-fg)]"
+  >
+    <div class="flex max-w-[36ch] flex-col gap-3">
       <Brand variant="lockup" size={0.32} />
-      <p class="footer-lede mono">{t('landing.footer.lede')}</p>
+      <p class="mono m-0 text-[12px] text-[var(--color-fg-muted)]">{t('landing.footer.lede')}</p>
     </div>
-    <div class="footer-cols">
-      <div class="footer-col">
-        <span class="footer-head">{t('landing.footer.productHead')}</span>
+    <div class="flex flex-wrap gap-12">
+      <div class="flex flex-col gap-2">
+        <span class="mb-1 text-[var(--color-fg)]">{t('landing.footer.productHead')}</span>
         <a href={`${homeRoot}/#templates`}>{t('landing.nav.templates')}</a>
         <a href={blogHref}>{t('landing.nav.blog')}</a>
         <a href={docsUrl} target="_blank" rel="noopener">{t('landing.nav.docs')}</a>
         <a href={`${ghUrl}/blob/main/plan.md`} rel="noopener">{t('landing.nav.plan')}</a>
         <a href={`${ghUrl}/releases`} rel="noopener">{t('landing.nav.changelog')}</a>
       </div>
-      <div class="footer-col">
-        <span class="footer-head">{t('landing.footer.resourcesHead')}</span>
+      <div class="flex flex-col gap-2">
+        <span class="mb-1 text-[var(--color-fg)]">{t('landing.footer.resourcesHead')}</span>
         <a href={ghUrl} rel="noopener">GitHub</a>
         <a href={`${ghUrl}/issues`} rel="noopener">{t('landing.footer.issues')}</a>
         <a href={`${ghUrl}/discussions`} rel="noopener">{t('landing.footer.discussions')}</a>
         <a href="https://www.npmjs.com/package/create-astro-ignite" rel="noopener">npm</a>
       </div>
-      <div class="footer-col">
-        <span class="footer-head">{t('landing.footer.legalHead')}</span>
+      <div class="flex flex-col gap-2">
+        <span class="mb-1 text-[var(--color-fg)]">{t('landing.footer.legalHead')}</span>
         <a href={`${ghUrl}/blob/main/LICENSE`} rel="noopener">{t('landing.footer.license')}</a>
         <a href={privacyHref}>{t('landing.footer.privacy')}</a>
         <a href={termsHref}>{t('landing.footer.terms')}</a>
@@ -61,60 +65,3 @@ const ghUrl = siteConfig.social.github ?? 'https://github.com/JordiParraCrespo/a
     </div>
   </div>
 </footer>
-
-<style>
-  .site-footer {
-    border-top: 1px solid var(--color-border);
-    padding: 40px 0 56px;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--color-fg-muted);
-  }
-  .footer-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 40px;
-    display: flex;
-    justify-content: space-between;
-    gap: 32px;
-    flex-wrap: wrap;
-  }
-  @media (max-width: 720px) {
-    .footer-inner {
-      padding: 0 24px;
-    }
-  }
-  .footer-inner a {
-    color: var(--color-fg-muted);
-    text-decoration: none;
-    transition: color 0.12s var(--ease-out-soft);
-  }
-  .footer-inner a:hover {
-    color: var(--color-fg);
-  }
-  .footer-brand {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    max-width: 36ch;
-  }
-  .footer-lede {
-    margin: 0;
-    font-size: 12px;
-    color: var(--color-fg-muted);
-  }
-  .footer-cols {
-    display: flex;
-    gap: 48px;
-    flex-wrap: wrap;
-  }
-  .footer-col {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .footer-head {
-    color: var(--color-fg);
-    margin-bottom: 4px;
-  }
-</style>

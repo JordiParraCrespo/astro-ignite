@@ -57,48 +57,25 @@ const dateFmt = new Intl.DateTimeFormat(locale, {
   type="website"
   schemas={schemas}
 >
-  <article class="legal">
-    <header class="legal-header">
+  <article class="mx-auto max-w-[42rem] px-5 pt-8 pb-16">
+    <header class="mb-8">
       <Text variant="h1" class="mb-2">{entry.data.title}</Text>
-      <Text variant="muted" class="legal-meta">
+      <Text variant="muted" class="flex flex-wrap gap-2">
         <span>
           {t('legal.lastUpdated')}:
           <time datetime={entry.data.lastUpdated.toISOString()}>
             {dateFmt.format(entry.data.lastUpdated)}
           </time>
         </span>
-        <span class="dot" aria-hidden="true">·</span>
+        <span aria-hidden="true">·</span>
         <span>{t('legal.version')} {entry.data.version}</span>
       </Text>
     </header>
 
-    <div class="prose legal-prose">
+    <div
+      class="prose [&_blockquote]:my-6 [&_blockquote]:rounded-r-md [&_blockquote]:border-l-[3px] [&_blockquote]:border-l-[var(--color-warning)] [&_blockquote]:bg-[var(--color-surface-2)] [&_blockquote]:px-4 [&_blockquote]:py-3"
+    >
       <slot />
     </div>
   </article>
 </BaseLayout>
-
-<style>
-  .legal {
-    max-width: 42rem;
-    margin: 0 auto;
-    padding: 2rem 1.25rem 4rem;
-  }
-  .legal-header {
-    margin-bottom: 2rem;
-  }
-  /* `.legal-meta` keeps only flex/gap layout — typography comes from
-     <Text variant="muted">. */
-  .legal-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-  .legal-prose :global(blockquote) {
-    background: var(--color-surface-2);
-    border-left: 3px solid var(--color-warning);
-    padding: 0.75rem 1rem;
-    margin: 1.5rem 0;
-    border-radius: 0 0.375rem 0.375rem 0;
-  }
-</style>

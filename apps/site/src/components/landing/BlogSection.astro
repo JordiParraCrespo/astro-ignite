@@ -17,22 +17,22 @@ const rssHref = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/r
 
 {
   recentCards.length > 0 && (
-    <section class="blog-section">
-      <div class="page">
+    <section class="pb-24 max-[720px]:pb-16">
+      <div class="page mx-auto max-w-[1200px] px-10 max-[720px]:px-6">
         <SectionHead
           eyebrow={t('landing.blog.eyebrow')}
           heading={t('landing.blog.headline')}
           meta={t('landing.blog.meta')}
         />
 
-        <div class="blog-grid">
+        <div class="grid grid-cols-3 gap-4 max-[920px]:grid-cols-2 max-[620px]:grid-cols-1">
           {recentCards.map((c) => (
             <BlogCard card={c} />
           ))}
         </div>
 
-        <div class="blog-foot">
-          <span class="mono blog-foot-meta">
+        <div class="mt-6 flex flex-wrap items-center justify-between gap-4">
+          <span class="mono text-[12px] text-[var(--color-fg-muted)] [&_a]:text-[var(--color-fg-muted)] [&_a]:no-underline [&_a]:transition-colors [&_a]:duration-[0.12s] [&_a]:ease-[var(--ease-out-soft)] hover:[&_a]:text-[var(--color-fg)]">
             {t('landing.blog.articles', { count: blogCards.length })} · <a href={rssHref}>RSS ↗</a>
           </span>
           <a class="btn btn-ghost btn-sm" href={blogHref}>
@@ -43,59 +43,3 @@ const rssHref = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/r
     </section>
   )
 }
-
-<style>
-  .page {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 40px;
-  }
-  @media (max-width: 720px) {
-    .page {
-      padding: 0 24px;
-    }
-  }
-  .blog-section {
-    padding: 0 0 96px;
-  }
-  @media (max-width: 720px) {
-    .blog-section {
-      padding: 0 0 64px;
-    }
-  }
-  .blog-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-  @media (max-width: 920px) {
-    .blog-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  @media (max-width: 620px) {
-    .blog-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-  .blog-foot {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 24px;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-  .blog-foot-meta {
-    font-size: 12px;
-    color: var(--color-fg-muted);
-  }
-  .blog-foot-meta a {
-    color: var(--color-fg-muted);
-    text-decoration: none;
-    transition: color 0.12s var(--ease-out-soft);
-  }
-  .blog-foot-meta a:hover {
-    color: var(--color-fg);
-  }
-</style>
