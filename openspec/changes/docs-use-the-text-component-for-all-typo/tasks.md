@@ -10,7 +10,7 @@ in `design.md` § Files touched. Stay within it.
 
 ## Survey
 
-- [ ] **T1.** Inventory every `<h1>`–`<h6>` and `<p>` in
+- [x] **T1.** Inventory every `<h1>`–`<h6>` and `<p>` in
       `packages/templates/docs/src/{pages,components,layouts}/**/*.astro`
       and in `apps/docs/src/{pages,components,layouts}/**/*.astro`.
       Classify each as either (a) "body copy or heading inside an
@@ -25,7 +25,7 @@ in `design.md` § Files touched. Stay within it.
 
 ## Atom install + lockstep extension (only if T1 needs it)
 
-- [ ] **T2a.** Create
+- [x] **T2a.** Create
       `packages/templates/docs/src/components/ui/text.astro` by copying
       `packages/registry/base/text.astro` and rewriting the `cn` import
       to resolve against the docs template's local `src/lib/cn.ts`
@@ -37,14 +37,14 @@ packages/templates/docs/src/components/ui/text.astro` shows no
       divergence beyond what diffs against the registry source. Covers
       **S1**.
 
-- [ ] **T2b.** Create `apps/docs/src/components/ui/text.astro` with the
+- [x] **T2b.** Create `apps/docs/src/components/ui/text.astro` with the
       same content as T2a (the `ui/` folder already exists in
       `apps/docs/src/components/`). Confirm `diff -u
 packages/templates/docs/src/components/ui/text.astro
 apps/docs/src/components/ui/text.astro` shows no divergence. Covers
       **S1**, **S12**.
 
-- [ ] **T2c.** **Only if T1 surfaces a typography pattern none of the
+- [x] **T2c.** **Only if T1 surfaces a typography pattern none of the
       existing `Text` variants can express:** extend
       `packages/registry/base/text.astro` with the new variant entry
       (variant union member + `defaultTag` + `variantClasses` row).
