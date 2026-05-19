@@ -55,6 +55,14 @@ const aspectStyle = width && height ? `aspect-ratio: ${width} / ${height};` : ''
   />
 </div>
 
+<!--
+  tailwind-exception: ::before pseudo-element with `content: ''` and a
+  dynamic `background-image: var(--blur)` driven by the blur data URL
+  computed at build time. Tailwind v4's `before:content-['']` + arbitrary
+  variants could express this, but the result is harder to read than a
+  small scoped block; the dynamic var pattern is exactly what the spec
+  carve-out is for.
+-->
 <style>
   .ig-image {
     position: relative;
