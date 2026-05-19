@@ -137,17 +137,17 @@ apps/docs/src/components/ui/text.astro` shows no divergence. Covers
 - [x] **T10.** Mirror T4 into `apps/docs/src/layouts/LegalLayout.astro`.
       Covers **S4**, **S6**, **S12**.
 
-- [ ] **T11.** Mirror T5 into
+- [x] **T11.** Mirror T5 into
       `apps/docs/src/components/docs/ComponentShowcase.astro`. Covers
       **S3**, **S6**, **S12**.
 
-- [ ] **T12.** Mirror T6 into
+- [x] **T12.** Mirror T6 into
       `apps/docs/src/components/docs/SidebarNav.astro` (note: the
       apps copy uses `groupLabel` instead of `group.group`; otherwise
       the substitution is line-for-line). Covers **S3**, **S6**,
       **S12**.
 
-- [ ] **T13.** Mirror T7 into
+- [x] **T13.** Mirror T7 into
       `apps/docs/src/components/legal/CookieBanner.astro`. Covers
       **S3**, **S6**, **S12**.
 
