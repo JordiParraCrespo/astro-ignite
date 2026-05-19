@@ -15,7 +15,7 @@ Status: idle
 
 ## State
 
-Feature: 41 — docs-add-404-page-with-i18n-locale-paral
-Spec: openspec/changes/docs-add-404-page-with-i18n-locale-paral/
-Run: openspec/changes/docs-add-404-page-with-i18n-locale-paral/runs/2026-05-19T02-29-39Z/
+Feature: 42 — docs-match-starter-perf-sitemap-config
+Spec: openspec/changes/docs-match-starter-perf-sitemap-config/
+Run: openspec/changes/docs-match-starter-perf-sitemap-config/runs/2026-05-19T03-10-57Z/
 Status: in_progress

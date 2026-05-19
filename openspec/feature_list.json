@@ -250,6 +250,24 @@
         "No new runtime dependency is added to packages/templates/docs/package.json or apps/docs/package.json; the 404 page composes existing ui/ atoms and docs/SearchBox only."
       ],
       "issue": 41
+    },
+    {
+      "id": 13,
+      "name": "docs-match-starter-perf-sitemap-config",
+      "title": "Docs: match starter perf + sitemap config",
+      "capabilities": ["templates-perf", "templates-seo-jsonld"],
+      "description": "# Docs: match starter perf + sitemap config\n\n## Problem\n\n`packages/templates/docs/astro.config.mjs` is missing two production-grade defaults that the starter template ships:\n\n1. **No `inlineStylesheets: 'always'`** — the starter inlines all CSS into the HTML to eliminate render-blocking CSS requests on first paint. From the starter config:\n   > \"The largest bundle is ~25 KB (blog post route, Tailwind + tokens) — that adds ~25 KB to the HTML per page, but eliminates one render-blocking request and is a clear Speed-Index / FCP win for a content-light site.\"\n   The same argument applies to a docs site: content-light pages, CSS-heavy Tailwind, FCP-sensitive.\n\n2. **No sitemap `serialize` / per-page priority** — the starter post-processes the sitemap to give `/` priority `1.0` and `/legal/*` priority `0.3`. Docs sitemap is flat (default `0.5`), which under-signals the landing page and over-signals legal templates.\n\n## Proposed approach\n\nUpdate `packages/templates/docs/astro.config.mjs` to match the starter's `build` and sitemap blocks, adapted for docs routes:\n\n```js\nbuild: {\n  format: 'directory',\n  inlineStylesheets: 'always',\n},\n\n// inside sitemap()\nserialize(item) {\n  const pathname ",
+      "acceptance": [
+        "packages/templates/docs/astro.config.mjs sets build.inlineStylesheets: 'always' (verbatim string literal 'always', not 'auto' or omitted).",
+        "packages/templates/docs/astro.config.mjs sitemap() integration includes a serialize(item) callback that lifts pathname === '/' to priority 1.0, demotes any url including '/legal/' to priority 0.3, and returns the item; the sitemap() call also sets default priority: 0.7 and keeps changefreq: 'weekly'.",
+        "apps/docs/astro.config.mjs mirrors the same build.inlineStylesheets, default sitemap priority/changefreq, and serialize callback byte-for-byte (modulo the existing site/adapter differences).",
+        "After pnpm --filter @astro-ignite/template-docs build, every emitted HTML page under dist/ contains an inline <style> block carrying the page CSS and no <link rel=\"stylesheet\" href=\"/_astro/*.css\"> for first-party bundles.",
+        "After the same build, dist/sitemap-0.xml lists <priority>1.0</priority> for the / entry, <priority>0.3</priority> for every /legal/* entry, and <priority>0.7</priority> for at least one docs guide page (e.g. /quick-start or /introduction).",
+        "No runtime dependency is added to packages/templates/docs/package.json or apps/docs/package.json.",
+        "pnpm format:check, pnpm typecheck, pnpm test, pnpm audit:invariants --change docs-match-starter-perf-sitemap-config, and pnpm scaffold:test all exit 0.",
+        "pnpm perf:budget against the docs template/app meets the templates-perf Lighthouse mobile thresholds (Performance/Accessibility/Best Practices/SEO ≥ 95, LCP/INP/CLS/TBT/total-transfer inside budget) on / and one inner page and does not regress relative to the previous baseline."
+      ],
+      "issue": 42
     }
   ]
 }

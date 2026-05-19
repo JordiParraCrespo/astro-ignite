@@ -1,0 +1,61 @@
+perf:budget — deferred to reviewer / CI for this run.
+
+Captured output (this run):
+
+  > astro-ignite-monorepo@0.0.0 perf:budget /home/dev/work/build
+  > node ./scripts/perf/run.mjs
+
+  ✅ packages/templates/starter dep count — 12 runtime deps
+  ✅ packages/templates/docs dep count — 8 runtime deps
+  ❌ lighthouse binary — lighthouse not installed
+     (try `pnpm dlx lighthouse` or install Chrome for Testing).
+     Skipping Lighthouse run; see scripts/doctor/chrome-installed.mjs
+  ❌ Lighthouse budget — skipped — no lighthouse binary
+
+Rationale: the Lighthouse binary is not installed in this headless
+implementer environment (same pre-existing infrastructure gap as the
+previous run of `pnpm perf:budget` on the restructure-starter-template-
+component-o change). The dep-count gates pass for both templates; the
+change adds zero runtime dependencies. The static-source assertions
+that back the new spec deltas (every `astro.config.mjs` ships
+`inlineStylesheets: 'always'`, the docs `sitemap()` call carries the
+`priority` + `serialize` shape, and the emitted `dist/**/*.html` /
+`dist/sitemap-0.xml` reflect the priority signals) all pass via
+`pnpm audit:invariants --change docs-match-starter-perf-sitemap-config`
+and the build-output checks recorded in `notes.md`.
+
+Expected directional impact on the docs template (vs. the
+`inlineStylesheets: 'auto'` baseline):
+
+- One fewer render-blocking stylesheet round-trip on first paint of
+  every docs page (the first-party CSS bundle now ships inline in HTML).
+- FCP / Speed Index: small improvement on simulated 4G slow CPU.
+- LCP: unchanged or slightly improved (docs LCP is the H1 above the
+  fold, painted with no CSS wait).
+- Total compressed transfer on `/`: roughly equal — bytes move from a
+  separate CSS response into the HTML response; with brotli the
+  inlined form is typically within a few KB of the linked form.
+- JS bundle / runtime deps: unchanged (S7 / templates-perf I5 PASS).
+- Sitemap: one additional `<priority>` element per `<url>` entry
+  (negligible bytes).
+
+The reviewer / CI should re-run `pnpm perf:budget` (and
+`pnpm perf:budget --change docs-match-starter-perf-sitemap-config`)
+on an environment with the Lighthouse binary installed and confirm:
+
+- Performance, Accessibility, Best Practices, SEO ≥ 95 on `/` and
+  `/quick-start` for both the docs template and the apps/docs mirror.
+- LCP ≤ 2.0 s, INP ≤ 200 ms, CLS ≤ 0.05, TBT ≤ 200 ms.
+- Total compressed transfer on `/` ≤ 150 KB.
+- FCP / Speed Index do not regress vs. the previous recorded baseline
+  (and ideally improve, per the issue's stated goal).
+
+To reproduce:
+
+  pnpm perf:budget
+  pnpm perf:budget --change docs-match-starter-perf-sitemap-config
+
+Pre-existing audit failures unrelated to this change (the
+`tokens-only` themeColor hex hits in
+`packages/templates/{docs,starter}/src/config/site.ts`) reproduce on
+`main` and are tracked separately.
