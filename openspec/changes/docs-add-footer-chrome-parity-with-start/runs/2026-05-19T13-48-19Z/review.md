@@ -70,7 +70,7 @@ on T1 audits, T2 invariant audits, and the CI scaffold/Lighthouse gates):
   is empty; perf gate reports `8 runtime deps` (unchanged). ✅
 - **S10** Perf budget on docs pages — **DEFERRED to CI**. Local
   Lighthouse skipped cleanly (`chrome not installed; run
-  scripts/doctor/install-chrome.mjs` — documented graceful skip in
+scripts/doctor/install-chrome.mjs` — documented graceful skip in
   `CLAUDE.md` § "Performance gates / Graceful skip on missing Chrome").
   Deps gate ✅. CI `Lighthouse CI (mobile)` is authoritative per repo
   policy.
@@ -88,12 +88,12 @@ on T1 audits, T2 invariant audits, and the CI scaffold/Lighthouse gates):
 `pnpm audit:invariants --change docs-add-footer-chrome-parity-with-start`:
 ❌ exit 1.
 
-| Audit                      | Status  | Notes                                |
-| -------------------------- | ------- | ------------------------------------ |
-| `i18n-parallels`           | ✅ PASS | 2 templates scanned                  |
-| `internal-links-localized` | ❌ FAIL | 1 hit (PRE-EXISTING)                 |
-| `tokens-only`              | ❌ FAIL | 2 hits (PRE-EXISTING)                |
-| `tokens-only --layered`    | ✅ PASS | deprecated no-op                     |
+| Audit                      | Status  | Notes                 |
+| -------------------------- | ------- | --------------------- |
+| `i18n-parallels`           | ✅ PASS | 2 templates scanned   |
+| `internal-links-localized` | ❌ FAIL | 1 hit (PRE-EXISTING)  |
+| `tokens-only`              | ❌ FAIL | 2 hits (PRE-EXISTING) |
+| `tokens-only --layered`    | ✅ PASS | deprecated no-op      |
 
 Failing hits (all verified absent from this change's diff via
 `git diff main..HEAD -- <file>` → empty):
