@@ -103,14 +103,14 @@ docs-match-starter-perf-sitemap-config`. Confirm exit 0. The
       future run. Covers **S8**, `templates-perf` I1–I5,
       `templates-seo-jsonld` (new sitemap requirement).
 
-- [ ] **T13.** Run `pnpm scaffold:test`. The CLI scaffolds a
+- [x] **T13.** Run `pnpm scaffold:test`. The CLI scaffolds a
       template into `apps/playground/`, installs, builds, runs
       Lighthouse. Confirm exit 0. (Scaffold smoke currently exercises
       the starter; this run is the regression fence that the
       docs-template config edit did not break the CLI flow.) Covers
       **S8**.
 
-- [ ] **T14.** Run `pnpm perf:budget` against the docs template /
+- [x] **T14.** Run `pnpm perf:budget` against the docs template /
       app. Capture the report under
       `openspec/changes/docs-match-starter-perf-sitemap-config/runs/<ts>/perf.txt`
       with per-page Lighthouse scores for `/` and `/quick-start`,
@@ -122,7 +122,7 @@ docs-match-starter-perf-sitemap-config`. Confirm exit 0. The
       baseline (and ideally improve, per the issue's stated goal).
       Covers **S9**, `templates-perf` I1–I5.
 
-- [ ] **T15.** Final boundary check. Run `git diff --name-only main`
+- [x] **T15.** Final boundary check. Run `git diff --name-only main`
       and confirm the touched paths are limited to:
       `packages/templates/docs/astro.config.mjs`,
       `apps/docs/astro.config.mjs`,
