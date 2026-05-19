@@ -15,6 +15,7 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 
 import Brand from '../common/Brand.astro';
 import SearchBox from './SearchBox.astro';
+import Text from '@/components/ui/text.astro';
 import { sidebar } from '@/config/sidebar';
 import { siteConfig } from '@/config/site';
 import { useTranslations } from '@/i18n';
@@ -76,7 +77,7 @@ const isActive = (slug: string) => {
         if (visibleItems.length === 0) return null;
         return (
           <div class="sidebar-group">
-            <h2 class="sidebar-group-title mono">{group.group}</h2>
+            <Text variant="eyebrow" as="h2" class="sidebar-group-title mono">{group.group}</Text>
             <ul>
               {visibleItems.map((item) => (
                 <li>
@@ -129,10 +130,6 @@ const isActive = (slug: string) => {
     gap: 4px;
   }
   .sidebar-group-title {
-    font-size: 10px;
-    color: var(--color-fg-muted);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
     padding: 4px 8px;
     margin: 0 0 2px;
   }

@@ -91,7 +91,7 @@ apps/docs/src/components/ui/text.astro` shows no divergence. Covers
       bespoke decoration; `.showcase__desc` keeps `max-width: 60ch`
       and `margin`). Covers **S3**, **S6**.
 
-- [ ] **T6.** `packages/templates/docs/src/components/docs/SidebarNav.astro`:
+- [x] **T6.** `packages/templates/docs/src/components/docs/SidebarNav.astro`:
       replace `<h2 class="sidebar-group-title mono">{group.group}</h2>`
       with
       `<Text variant="eyebrow" as="h2" class="sidebar-group-title">{group.group}</Text>`.
