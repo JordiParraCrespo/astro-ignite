@@ -97,7 +97,7 @@ access.`. Use only built-in node modules + `./_lib.mjs`. Covers
 
 ## Phase 4 — Perf runner pure comparator + unit test
 
-- [ ] **T8.** In `scripts/perf/run.mjs`, extract the threshold
+- [x] **T8.** In `scripts/perf/run.mjs`, extract the threshold
       comparison logic into an exported pure helper
       `compareAgainstBudget(lhr, thresholds, options = {})`.
       Returns `{ findings, anyFail }` per the "New signatures"
@@ -114,7 +114,7 @@ access.`. Use only built-in node modules + `./_lib.mjs`. Covers
       LHR yields a `❌` finding (not a silent pass) — `anyFail =
 true`. Covers **S6**, **S7**, **S8**.
 
-- [ ] **T9.** Write `scripts/perf/run.test.mjs` (vitest). Fixture
+- [x] **T9.** Write `scripts/perf/run.test.mjs` (vitest). Fixture
       cases: - All scores ≥ floor + all metrics ≤ threshold →
       `anyFail === false`, every finding `pass === true`. Covers
       **S8**. - LCP fixture at `3200` (threshold `2000`) → exactly one
@@ -131,21 +131,21 @@ true`. Covers **S6**, **S7**, **S8**.
 
 ## Phase 5 — Perf runner I/O wiring (preview server + Lighthouse subprocess)
 
-- [ ] **T10.** Add helpers to `scripts/perf/run.mjs`:
+- [x] **T10.** Add helpers to `scripts/perf/run.mjs`:
       `findFreePort()` (uses `node:net` `server.listen(0)` to
       claim a port and immediately release it), and
       `waitForHttp(url, { timeoutMs = 30_000, intervalMs = 250 })`
       (polls `fetch(url)` until 200 OK or timeout). Both helpers
       are private to the file (not exported). Covers **S5** prep.
 
-- [ ] **T11.** Add `findChrome()` to `scripts/perf/run.mjs` —
+- [x] **T11.** Add `findChrome()` to `scripts/perf/run.mjs` —
       walks the same probe list as
       `scripts/doctor/chrome-installed.mjs` plus
       `/usr/local/bin/chrome` and `$HOME/.local/bin/chrome`. Used
       by the Lighthouse branch to short-circuit into the graceful
       skip when Chrome is missing. Covers **S12**.
 
-- [ ] **T12.** Add `resolveTarget(argv)` to
+- [x] **T12.** Add `resolveTarget(argv)` to
       `scripts/perf/run.mjs` — maps `--page <route>` to the
       preview-server target package per the mapping table in
       `design.md` (starter for `/`, `/blog`, `/blog/**`,
@@ -154,14 +154,14 @@ true`. Covers **S6**, **S7**, **S8**.
       override when present. Default target on missing `--page` is
       starter. Covers **S5** prep.
 
-- [ ] **T13.** Add `buildIfNeeded(targetPkg)` to
+- [x] **T13.** Add `buildIfNeeded(targetPkg)` to
       `scripts/perf/run.mjs` — checks for the package's `dist/`
       directory; if absent or stale, runs
       `spawnSync('pnpm', ['--filter', targetPkg, 'build'], …)` and
       surfaces a clear finding on build failure. Covers **S5**
       prep.
 
-- [ ] **T14.** Rewrite the Lighthouse branch in
+- [x] **T14.** Rewrite the Lighthouse branch in
       `scripts/perf/run.mjs` (the block today at lines ~60–75) to
       use the helpers added in T8–T13. The new flow matches the
       "Composition shape" block in `design.md`:
@@ -181,7 +181,7 @@ thresholds)`;
       when `anyFail`. Covers **S5**, **S6**, **S7**, **S8**,
       **S12**, **S16**.
 
-- [ ] **T15.** Add the preview-server cleanup contract to
+- [x] **T15.** Add the preview-server cleanup contract to
       `scripts/perf/run.mjs`: the spawn from T14 is tracked in a
       module-scoped `let server`; a `cleanup()` function calls
       `server?.kill('SIGTERM')` (and a fallback `SIGKILL` after
@@ -191,7 +191,7 @@ thresholds)`;
       handlers call `cleanup()` then exit with code 130 / 143
       respectively. Covers **S9**, **S10**.
 
-- [ ] **T16.** Rewire the `--transfer` branch in
+- [x] **T16.** Rewire the `--transfer` branch in
       `scripts/perf/run.mjs` to use the same LHR-derived total
       (from `lhr.audits['total-byte-weight'].numericValue`) when
       a real Lighthouse run is available. When no LHR is available
@@ -199,7 +199,7 @@ thresholds)`;
       the same Chrome-absent skip semantics introduced in T11.
       Covers **I3**.
 
-- [ ] **T17.** Confirm the `--critical-css` branch in
+- [x] **T17.** Confirm the `--critical-css` branch in
       `scripts/perf/run.mjs` is untouched: it continues to inspect
       `apps/site/dist/index.html` and `apps/docs/dist/index.html`
       for inlined `<style>` blocks, and continues to be accepted
