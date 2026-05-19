@@ -1,0 +1,65 @@
+---
+import { cn } from '@/lib/cn';
+import type { HTMLAttributes } from 'astro/types';
+
+type Variant = 'default' | 'destructive' | 'warning' | 'success';
+
+export type Props = HTMLAttributes<'div'> & {
+  variant?: Variant;
+  class?: string;
+};
+
+const { variant = 'default', class: className, ...rest } = Astro.props;
+
+const borderByVariant: Record<Variant, string> = {
+  default: 'border-border',
+  destructive: 'border-[color-mix(in_oklch,var(--color-danger)_50%,var(--color-border))]',
+  warning: 'border-[color-mix(in_oklch,var(--color-warning)_50%,var(--color-border))]',
+  success: 'border-[color-mix(in_oklch,var(--color-success)_50%,var(--color-border))]',
+};
+
+const accentByVariant: Record<Variant, string> = {
+  default: 'text-fg-muted',
+  destructive: 'text-danger',
+  warning: 'text-warning',
+  success: 'text-success',
+};
+---
+
+<div
+  role="alert"
+  class={cn(
+    'flex gap-3 px-4 py-3.5 rounded-md border bg-surface-2 text-fg',
+    borderByVariant[variant],
+    className
+  )}
+  {...rest}
+>
+  {
+    Astro.slots.has('icon') && (
+      <div
+        class={cn(
+          'shrink-0 w-[18px] h-[18px] rounded-full border-[1.5px] border-current grid place-items-center font-mono text-[11px] font-semibold leading-none',
+          accentByVariant[variant]
+        )}
+      >
+        <slot name="icon" />
+      </div>
+    )
+  }
+  <div class="flex flex-col gap-1 flex-1 min-w-0">
+    {
+      Astro.slots.has('title') && (
+        <div
+          class={cn(
+            'font-semibold text-sm leading-tight',
+            variant !== 'default' && accentByVariant[variant]
+          )}
+        >
+          <slot name="title" />
+        </div>
+      )
+    }
+    <div class="text-fg-muted text-[13px] leading-normal"><slot /></div>
+  </div>
+</div>

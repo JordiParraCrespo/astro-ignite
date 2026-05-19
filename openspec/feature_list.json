@@ -288,6 +288,25 @@
     },
     {
       "id": 15,
+      "name": "docs-ship-registry-atoms-in-srccomponent",
+      "title": "Docs: ship registry atoms in src/components/ui/ (parity with starter)",
+      "capabilities": ["registry-atoms", "templates-perf"],
+      "description": "# Docs: ship registry atoms in src/components/ui/ (parity with starter)\n\n## Problem\n\n`packages/templates/docs/src/components/ui/` only contains `text.astro` (landed in #40). The starter template ships ~30 atoms pre-installed in the same path:\n\n```\npackages/templates/starter/src/components/ui/\n├── accordion.astro, accordion-item.astro\n├── alert.astro\n├── avatar.astro\n├── badge.astro\n├── button.astro\n├── card.astro, card-{content,description,footer,header,title}.astro\n├── dialog.astro, dialog-{description,title}.astro\n├── dropdown-menu.astro, dropdown-menu-item.astro\n├── input.astro\n├── kbd.astro\n├── label.astro\n├── link.astro\n├── separator.astro\n├── skeleton.astro\n├── tabs.astro, tabs-{content,list,trigger}.astro\n├── textarea.astro\n├── text.astro\n├── toaster.astro\n└── tooltip.astro\n```\n\nThe docs template's `ComponentShowcase`, `Callout`, code blocks, sidebar, and pages all need them — today the docs template either ad-hoc reimplements primitives or relies on the user installing them post-scaffold via the shadcn-style CLI. A freshly-scaffolded docs site should ship the atoms its own pages depend on.\n\n## Proposed approach\n\nCopy each atom (and the supporting `lib/toast.ts` if `toaster`",
+      "acceptance": [
+        "Every atom that exists in packages/templates/starter/src/components/ui/ has a byte-equivalent file at the same target path under packages/templates/docs/src/components/ui/; the only permitted diff is path-mechanical (none expected — the starter mirror already shares the @/lib/cn import shape).",
+        "packages/templates/docs/src/lib/toast.ts exists and is byte-equivalent to packages/registry/lib/toast.ts (the helper the toaster atom dispatches against); no other lib file is added.",
+        "The registry.json files[] arrays for compound families (card, dialog, tabs, accordion, dropdown-menu) continue to resolve a scaffold of the docs template — each entry's target path lands at packages/templates/docs/src/components/ui/<name>.astro byte-for-byte equal to the registry source.",
+        "apps/docs/src/components/ui/ and apps/docs/src/lib/toast.ts remain byte-equivalent to the docs template's set (the apps copy already ships them per the manual-mirror rule); no apps/docs/src/components/ui/ file diverges from packages/templates/docs/src/components/ui/.",
+        "packages/astro-ignite/templates/docs/ is refreshed via `node packages/astro-ignite/scripts/copy-templates.mjs` so a fresh `pnpm pack` would ship the migrated cache — every newly-added atom and lib file appears under packages/astro-ignite/templates/docs/src/components/ui/ and packages/astro-ignite/templates/docs/src/lib/.",
+        "No new runtime dependency is added to packages/templates/docs/package.json or apps/docs/package.json (the dependencies and devDependencies blocks are unchanged).",
+        "pnpm format:check, pnpm typecheck, pnpm test, and pnpm audit:invariants --change docs-ship-registry-atoms-in-srccomponent all exit 0; registry-atoms I1–I4 stay green.",
+        "pnpm scaffold:test passes against the docs path and pnpm perf:budget against the docs template is not regressed (Lighthouse mobile Performance/Accessibility/Best Practices/SEO ≥ 95 on / and one inner page; total-transfer/LCP/INP/CLS/TBT inside the templates-perf budget).",
+        "A changeset under .changeset/ describes the change as a non-breaking refactor that mirrors the starter's pre-installed atom set into the docs template."
+      ],
+      "issue": 49
+    },
+    {
+      "id": 16,
       "name": "docs-add-footer-chrome-parity-with-start",
       "title": "Docs: add Footer chrome (parity with starter)",
       "capabilities": ["templates-i18n", "templates-css-tokens", "templates-perf"],

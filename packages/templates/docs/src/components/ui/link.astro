@@ -1,0 +1,24 @@
+---
+import { cn } from '@/lib/cn';
+import type { HTMLAttributes } from 'astro/types';
+
+type Variant = 'default' | 'muted' | 'underline';
+
+export type Props = HTMLAttributes<'a'> & {
+  variant?: Variant;
+  class?: string;
+};
+
+const { variant = 'default', class: className, ...rest } = Astro.props;
+
+const base =
+  'no-underline transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring focus-visible:rounded-[2px]';
+
+const variants: Record<Variant, string> = {
+  default: 'text-fg hover:text-fg-muted',
+  muted: 'text-fg-muted hover:text-fg',
+  underline: 'text-fg underline underline-offset-4 decoration-border-strong hover:decoration-fg',
+};
+---
+
+<a class={cn(base, variants[variant], className)} {...rest}><slot /></a>

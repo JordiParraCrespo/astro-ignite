@@ -1,0 +1,9 @@
+---
+import { cn } from '@/lib/cn';
+import type { HTMLAttributes } from 'astro/types';
+
+export type Props = HTMLAttributes<'p'> & { class?: string };
+const { class: className, ...rest } = Astro.props;
+---
+
+<p class={cn('text-fg-muted text-sm leading-normal m-0', className)} {...rest}><slot /></p>

@@ -15,7 +15,7 @@ Status: idle
 
 ## State
 
-Feature: 50 — docs-add-footer-chrome-parity-with-start
-Spec: openspec/changes/docs-add-footer-chrome-parity-with-start/
-Run: openspec/changes/docs-add-footer-chrome-parity-with-start/runs/2026-05-19T13-48-19Z/
+Feature: 49 — docs-ship-registry-atoms-in-srccomponent
+Spec: openspec/changes/docs-ship-registry-atoms-in-srccomponent/
+Run: openspec/changes/docs-ship-registry-atoms-in-srccomponent/runs/2026-05-19T13-25-44Z/
 Status: in_progress

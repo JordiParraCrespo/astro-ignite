@@ -1,0 +1,31 @@
+---
+import { cn } from '@/lib/cn';
+
+export type Props = {
+  type?: 'single' | 'multiple';
+  name?: string;
+  class?: string;
+};
+
+const { type = 'single', name, class: className } = Astro.props;
+const groupName =
+  type === 'single' ? (name ?? `accordion-${Math.random().toString(36).slice(2, 9)}`) : undefined;
+---
+
+<div
+  class={cn('flex flex-col border-t border-border', className)}
+  data-group={groupName}
+  data-accordion
+>
+  <slot />
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-accordion][data-group]').forEach((el) => {
+    const group = el.dataset.group;
+    if (!group) return;
+    el.querySelectorAll<HTMLDetailsElement>('details').forEach((d) => {
+      if (!d.name) d.name = group;
+    });
+  });
+</script>

@@ -1,0 +1,17 @@
+---
+import { cn } from '@/lib/cn';
+import type { HTMLAttributes } from 'astro/types';
+
+export type Props = HTMLAttributes<'label'> & { class?: string };
+const { class: className, ...rest } = Astro.props;
+---
+
+<label
+  class={cn(
+    'inline-flex items-center gap-1.5 text-[13px] font-medium leading-snug text-fg select-none has-[+:disabled]:opacity-60 aria-disabled:opacity-60',
+    className
+  )}
+  {...rest}
+>
+  <slot />
+</label>

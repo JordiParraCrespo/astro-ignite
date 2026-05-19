@@ -1,0 +1,52 @@
+---
+import { cn } from '@/lib/cn';
+
+export type Props = {
+  id: string;
+  class?: string;
+  labelledBy?: string;
+};
+
+const { id, class: className, labelledBy } = Astro.props;
+---
+
+<dialog
+  id={id}
+  aria-labelledby={labelledBy}
+  class={cn(
+    'fixed inset-0 m-auto p-0 border border-border rounded-lg bg-surface text-fg w-[min(90vw,480px)] max-w-[min(90vw,480px)] h-fit max-h-[calc(100vh-32px)] shadow-[0_25px_50px_-10px_rgb(0_0_0/0.6)] backdrop:bg-black/60 backdrop:backdrop-blur-[2px]',
+    className
+  )}
+>
+  <div class="p-6 flex flex-col gap-3">
+    <slot />
+  </div>
+</dialog>
+
+<script>
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    const opener = target.closest<HTMLElement>('[data-dialog-open]');
+    if (opener) {
+      const id = opener.dataset.dialogOpen!;
+      const el = document.getElementById(id) as HTMLDialogElement | null;
+      el?.showModal();
+      return;
+    }
+    const closer = target.closest<HTMLElement>('[data-dialog-close]');
+    if (closer) {
+      closer.closest('dialog')?.close();
+      return;
+    }
+    if (target.tagName === 'DIALOG') {
+      const dlg = target as HTMLDialogElement;
+      const rect = dlg.getBoundingClientRect();
+      const inside =
+        e.clientX >= rect.left &&
+        e.clientX <= rect.right &&
+        e.clientY >= rect.top &&
+        e.clientY <= rect.bottom;
+      if (!inside) dlg.close();
+    }
+  });
+</script>
