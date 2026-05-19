@@ -86,7 +86,7 @@ byte equality. No content edit is made.
       `packages/templates/docs/src/components/ui/`. Verify with
       `diff -q`. Covers **S1**, **S3**.
 
-- [ ] **T5.** dialog: copy `dialog.astro`, `dialog-description.astro`,
+- [x] **T5.** dialog: copy `dialog.astro`, `dialog-description.astro`,
       `dialog-title.astro` from `packages/registry/base/dialog/` (or
       starter mirror) into `packages/templates/docs/src/components/ui/`.
       Verify with `diff -q`. Covers **S1**, **S3**.
