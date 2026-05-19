@@ -73,7 +73,7 @@ byte equality. No content edit is made.
 
 ## Atom copy — compound families (17 files)
 
-- [ ] **T3.** accordion: copy `accordion.astro` and
+- [x] **T3.** accordion: copy `accordion.astro` and
       `accordion-item.astro` from `packages/registry/base/accordion/`
       (or starter mirror) into
       `packages/templates/docs/src/components/ui/`. Verify with
