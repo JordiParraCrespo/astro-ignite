@@ -43,16 +43,16 @@ The three `feat` commits (`97ebb84`, `e67d6cd`, `5cce4d4`) only touch paths insi
 
 `pnpm audit:invariants --change docs-add-404-page-with-i18n-locale-paral`: ❌ **red** (exit code 1; 3 audits failing, 5 passing).
 
-| Audit                                        | Result  | Notes                                                                                                                                                                                                                |
-| -------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `i18n-parallels`                             | ✅ PASS | scanned 2 template(s)                                                                                                                                                                                                |
-| `i18n-parallels --strict`                    | ✅ PASS | scanned 2 template(s)                                                                                                                                                                                                |
-| `internal-links-localized` (templates-i18n I5) | ❌ FAIL | `packages/templates/docs/src/components/docs/SidebarNav.astro:64` — `<Brand href="/" variant="lockup" size={0.42} />` (pre-existing on `main`; this change does not touch SidebarNav.astro)                            |
-| `tokens-only` (templates-css-tokens I1)      | ❌ FAIL | `packages/templates/docs/src/config/site.ts:68` `themeColor: '#fafafa'` and `packages/templates/starter/src/config/site.ts:107` `themeColor: '#0a0a0a'` (both pre-existing on `main`; this change does not touch them) |
-| `tokens-only --layered` (templates-css-tokens I4) | ❌ FAIL | same two pre-existing site.ts hits                                                                                                                                                                                   |
-| `jsonld-graph`                               | ✅ PASS | JSON-LD graph clean                                                                                                                                                                                                  |
-| `jsonld-graph --strict`                      | ✅ PASS |                                                                                                                                                                                                                      |
-| `jsonld-graph --typed`                       | ✅ PASS |                                                                                                                                                                                                                      |
+| Audit                                             | Result  | Notes                                                                                                                                                                                                                  |
+| ------------------------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `i18n-parallels`                                  | ✅ PASS | scanned 2 template(s)                                                                                                                                                                                                  |
+| `i18n-parallels --strict`                         | ✅ PASS | scanned 2 template(s)                                                                                                                                                                                                  |
+| `internal-links-localized` (templates-i18n I5)    | ❌ FAIL | `packages/templates/docs/src/components/docs/SidebarNav.astro:64` — `<Brand href="/" variant="lockup" size={0.42} />` (pre-existing on `main`; this change does not touch SidebarNav.astro)                            |
+| `tokens-only` (templates-css-tokens I1)           | ❌ FAIL | `packages/templates/docs/src/config/site.ts:68` `themeColor: '#fafafa'` and `packages/templates/starter/src/config/site.ts:107` `themeColor: '#0a0a0a'` (both pre-existing on `main`; this change does not touch them) |
+| `tokens-only --layered` (templates-css-tokens I4) | ❌ FAIL | same two pre-existing site.ts hits                                                                                                                                                                                     |
+| `jsonld-graph`                                    | ✅ PASS | JSON-LD graph clean                                                                                                                                                                                                    |
+| `jsonld-graph --strict`                           | ✅ PASS |                                                                                                                                                                                                                        |
+| `jsonld-graph --typed`                            | ✅ PASS |                                                                                                                                                                                                                        |
 
 `audit.md` reflects the same. The fresh per-change run was overwritten by `run-all.mjs`.
 
@@ -64,13 +64,13 @@ Applicable: **yes** (capabilities include `templates-*` per `design.md`).
 
 `pnpm perf:budget --change docs-add-404-page-with-i18n-locale-paral`: ❌ **red** (exit code 1).
 
-| Check                | Result  | Notes                                                                                                                |
-| -------------------- | ------- | -------------------------------------------------------------------------------------------------------------------- |
-| starter dep count    | ✅ PASS | 12 runtime deps                                                                                                      |
-| docs dep count       | ✅ PASS | 8 runtime deps                                                                                                       |
-| lighthouse binary    | ❌ FAIL | "lighthouse not installed (try `pnpm dlx lighthouse` or install Chrome for Testing). Skipping Lighthouse run"        |
-| Lighthouse budget    | ❌ FAIL | skipped — no lighthouse binary                                                                                       |
-| Lighthouse run       | ❌ FAIL | "not yet wired to a preview server target; see AGENTS.md step 6"                                                     |
+| Check             | Result  | Notes                                                                                                         |
+| ----------------- | ------- | ------------------------------------------------------------------------------------------------------------- |
+| starter dep count | ✅ PASS | 12 runtime deps                                                                                               |
+| docs dep count    | ✅ PASS | 8 runtime deps                                                                                                |
+| lighthouse binary | ❌ FAIL | "lighthouse not installed (try `pnpm dlx lighthouse` or install Chrome for Testing). Skipping Lighthouse run" |
+| Lighthouse budget | ❌ FAIL | skipped — no lighthouse binary                                                                                |
+| Lighthouse run    | ❌ FAIL | "not yet wired to a preview server target; see AGENTS.md step 6"                                              |
 
 The implementer's open question #2 acknowledges this as a known-placeholder runner. Per the reviewer hard rules ("Never approve with `pnpm perf:budget` red when it applies") and verdict criterion #6, this is a blocker as long as the budget check is required by `design.md`'s "Performance budget applicability" section. The harness gap must be closed (or the budget step waived in `feature_list.json` rules) before APPROVED can be emitted.
 
@@ -93,7 +93,7 @@ Net: T10 and T13 were marked `[x]` in `tasks.md` but their underlying audit/perf
 
 ## CHECKPOINTS
 
-Walking applicable global + scoped (templates-*) items:
+Walking applicable global + scoped (templates-\*) items:
 
 - **C1** [x] — `pnpm install` not re-run by this review; no lockfile drift in diff.
 - **C2** [x] — `pnpm typecheck` green.
