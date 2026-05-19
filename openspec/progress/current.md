@@ -15,7 +15,7 @@ Status: idle
 
 ## State
 
-Feature: 40 — docs-use-the-text-component-for-all-typo
-Spec: openspec/changes/docs-use-the-text-component-for-all-typo/
-Run: openspec/changes/docs-use-the-text-component-for-all-typo/runs/2026-05-19T01-24-38Z/
+Feature: 41 — docs-add-404-page-with-i18n-locale-paral
+Spec: openspec/changes/docs-add-404-page-with-i18n-locale-paral/
+Run: openspec/changes/docs-add-404-page-with-i18n-locale-paral/runs/2026-05-19T02-29-39Z/
 Status: in_progress
