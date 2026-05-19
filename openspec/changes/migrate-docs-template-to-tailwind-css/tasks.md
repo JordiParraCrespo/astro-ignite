@@ -31,7 +31,7 @@ invariants `I<n>` from the cited capability specs.
 
 ## Phase 1 — Docs template: layouts
 
-- [ ] **T1.** Migrate
+- [x] **T1.** Migrate
       `packages/templates/docs/src/layouts/BaseLayout.astro`.
       Inspect for any scoped `<style>` block. Convert layout-shell
       styling (skip link, `<header>` if present, `<main>` wrapper,
@@ -40,7 +40,7 @@ invariants `I<n>` from the cited capability specs.
       "Why kept" comment, or are promoted into `global.css` if they
       are reusable. Covers **S1**, **S2**, `templates-css-tokens` I1.
 
-- [ ] **T2.** Migrate
+- [x] **T2.** Migrate
       `packages/templates/docs/src/layouts/DocsLayout.astro`. Convert
       the regular `<style>` block (the docs shell grid, the toolbar,
       the header, tags, meta, lede, prose container) to Tailwind
@@ -51,7 +51,7 @@ invariants `I<n>` from the cited capability specs.
       Record the choice in `runs/<ts>/notes.md`. Covers **S1**, **S2**,
       **S6**, **S7**, `templates-css-tokens` I1, I3.
 
-- [ ] **T3.** Migrate
+- [x] **T3.** Migrate
       `packages/templates/docs/src/layouts/LegalLayout.astro` with
       the same treatment as DocsLayout. Decide whether the MDX-prose
       block is shared with DocsLayout (single source) or duplicated

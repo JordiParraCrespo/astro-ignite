@@ -40,7 +40,10 @@ const crumbs = [
     crumbs.map((c, i) => (
       <>
         {c.href ? (
-          <a class="text-[var(--color-fg-muted)] no-underline hover:text-[var(--color-fg)]" href={c.href}>
+          <a
+            class="text-[var(--color-fg-muted)] no-underline hover:text-[var(--color-fg)]"
+            href={c.href}
+          >
             {c.label}
           </a>
         ) : (

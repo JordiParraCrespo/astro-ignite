@@ -61,13 +61,8 @@ const linkBase =
         <span />
       )}
       {next && (
-        <a
-          class={linkBase + ' text-right'}
-          href={getRelativeLocaleUrl(locale, `/${next.slug}`)}
-        >
-          <span class="mono text-[11px] text-[var(--color-fg-muted)]">
-            {t('blog.nextPost')} →
-          </span>
+        <a class={linkBase + ' text-right'} href={getRelativeLocaleUrl(locale, `/${next.slug}`)}>
+          <span class="mono text-[11px] text-[var(--color-fg-muted)]">{t('blog.nextPost')} →</span>
           <span class="text-sm font-medium tracking-[-0.01em]">
             {next.label ?? titleForSlug(next.slug)}
           </span>
