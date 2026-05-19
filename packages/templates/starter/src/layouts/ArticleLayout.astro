@@ -96,22 +96,27 @@ const dateFmt = new Intl.DateTimeFormat(locale, {
   schemas={schemas}
   preloadImages={[entry.data.heroImage]}
 >
-  <article class="article">
-    <header class="article-header">
-      <nav class="breadcrumbs" aria-label={t('nav.breadcrumbs')}>
-        <a href={getRelativeLocaleUrl(locale, '/blog')}>← {t('blog.backToBlog')}</a>
+  <article class="mx-auto max-w-[48rem] px-5 pt-8 pb-16">
+    <header
+      class="mb-10 [&_picture]:block [&_picture]:h-auto [&_picture]:w-full [&_picture]:overflow-hidden [&_picture]:rounded-xl [&_img]:block [&_img]:h-auto [&_img]:w-full [&_img]:overflow-hidden [&_img]:rounded-xl"
+    >
+      <nav class="mb-6 text-sm" aria-label={t('nav.breadcrumbs')}>
+        <a
+          href={getRelativeLocaleUrl(locale, '/blog')}
+          class="text-[var(--color-fg-muted)] no-underline hover:text-[var(--color-fg)]"
+        >
+          ← {t('blog.backToBlog')}
+        </a>
       </nav>
       <Text variant="h1" class="mb-4">{entry.data.title}</Text>
-      <Text variant="muted" class="article-meta">
+      <Text variant="muted" class="mb-8 flex flex-wrap items-center gap-2">
         {
           author && (
             <>
-              <span class="author">
+              <span>
                 {t('blog.byAuthor')} {author.data.name}
               </span>
-              <span class="dot" aria-hidden="true">
-                ·
-              </span>
+              <span aria-hidden="true">·</span>
             </>
           )
         }
@@ -135,49 +140,15 @@ const dateFmt = new Intl.DateTimeFormat(locale, {
   </article>
 </BaseLayout>
 
-<style>
-  .article {
-    max-width: 48rem;
-    margin: 0 auto;
-    padding: 2rem 1.25rem 4rem;
-  }
-  .article-header {
-    margin-bottom: 2.5rem;
-  }
-  .breadcrumbs {
-    margin-bottom: 1.5rem;
-    font-size: 0.875rem;
-  }
-  .breadcrumbs a {
-    color: var(--color-fg-muted);
-    text-decoration: none;
-  }
-  .breadcrumbs a:hover {
-    color: var(--color-fg);
-  }
-  /* `.article-meta` keeps only the flex/gap layout — typography now comes
-     from <Text variant="muted">. */
-  .article-meta {
-    margin-bottom: 2rem;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .article-header :global(picture),
-  .article-header :global(img) {
-    border-radius: 0.75rem;
-    overflow: hidden;
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-</style>
-
+<!--
+  tailwind-exception: MDX prose styling — selectors target nodes generated
+  by the MDX renderer at runtime, and there is no Tailwind component-scope
+  variant that reaches those nodes when the .prose wrapper lives in this
+  layout but the children come from a slot. Keeping a single is:global
+  block here is simpler than a sea of [&_h2]/[&_p]/[&_a] arbitrary
+  variants on the prose container.
+-->
 <style is:global>
-  /* Prose styles for article body — Tailwind below-the-fold by convention,
-     but a base prose container kept here so MDX content renders well even
-     without Tailwind's typography plugin. */
   .prose {
     color: var(--color-fg);
     font-size: 1.0625rem;

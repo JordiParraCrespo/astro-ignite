@@ -16,6 +16,7 @@
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Brand from '@/components/common/Brand.astro';
+import Text from '@/components/ui/text.astro';
 
 const ZINC = [
   ['50', '#fafafa'],
@@ -181,12 +182,12 @@ const SECTIONS = [
 >
   <header class="canvas-header">
     <div class="canvas-meta mono">design / canvas · v0.1</div>
-    <h1>astro-ignite — design system</h1>
-    <p class="canvas-lede">
+    <Text variant="h1">astro-ignite — design system</Text>
+    <Text variant="lead" class="canvas-lede">
       Pure shadcn monochrome. Dark-first. Geist Sans/Mono. No accent color — interactive states are
       the inversion of the neutrals. This page is the canonical visual reference; every component in
       the template renders against these tokens.
-    </p>
+    </Text>
     <nav class="canvas-toc mono" aria-label="Sections">
       {SECTIONS.map((s) => <a href={`#${s.id}`}>{s.label}</a>)}
     </nav>
@@ -197,8 +198,10 @@ const SECTIONS = [
        ============================================================ -->
   <section id="brand" class="canvas-section">
     <div class="section-head">
-      <h2>Brand</h2>
-      <p class="section-sub">Mark A — cursor `&gt;_`. Locked across the system.</p>
+      <Text variant="h2">Brand</Text>
+      <Text variant="muted" class="section-sub"
+        >Mark A — cursor `&gt;_`. Locked across the system.</Text
+      >
     </div>
 
     <div class="brand-grid">
@@ -262,8 +265,10 @@ const SECTIONS = [
        ============================================================ -->
   <section id="color" class="canvas-section">
     <div class="section-head">
-      <h2>Color</h2>
-      <p class="section-sub">Single-hue Zinc scale + functional tokens. No accent.</p>
+      <Text variant="h2">Color</Text>
+      <Text variant="muted" class="section-sub"
+        >Single-hue Zinc scale + functional tokens. No accent.</Text
+      >
     </div>
 
     <div class="card color-card-wide">
@@ -330,10 +335,10 @@ const SECTIONS = [
        ============================================================ -->
   <section id="type" class="canvas-section">
     <div class="section-head">
-      <h2>Typography</h2>
-      <p class="section-sub">
+      <Text variant="h2">Typography</Text>
+      <Text variant="muted" class="section-sub">
         Geist Sans for everything human · Geist Mono for everything machine.
-      </p>
+      </Text>
     </div>
 
     <div class="type-grid">
@@ -422,8 +427,8 @@ const SECTIONS = [
        ============================================================ -->
   <section id="ui" class="canvas-section">
     <div class="section-head">
-      <h2>Components</h2>
-      <p class="section-sub">Quiet · 36 px default · 6 px radius.</p>
+      <Text variant="h2">Components</Text>
+      <Text variant="muted" class="section-sub">Quiet · 36 px default · 6 px radius.</Text>
     </div>
 
     <div class="ui-grid">
@@ -608,8 +613,8 @@ const SECTIONS = [
        ============================================================ -->
   <section id="site" class="canvas-section">
     <div class="section-head">
-      <h2>Marketing</h2>
-      <p class="section-sub">Sample sections built from the system above.</p>
+      <Text variant="h2">Marketing</Text>
+      <Text variant="muted" class="section-sub">Sample sections built from the system above.</Text>
     </div>
 
     <!-- Hero -->
@@ -678,12 +683,12 @@ const SECTIONS = [
        ============================================================ -->
   <section id="docs-tile" class="canvas-section">
     <div class="section-head">
-      <h2>Docs</h2>
-      <p class="section-sub">
+      <Text variant="h2">Docs</Text>
+      <Text variant="muted" class="section-sub">
         You're already in the docs site — every page renders against this same system. The 3-column
         layout, breadcrumbs, on-this-page TOC, callouts, and code blocks are all built from the
         primitives above.
-      </p>
+      </Text>
     </div>
     <div class="card docs-tile">
       <a href="/" class="docs-tile-link">
