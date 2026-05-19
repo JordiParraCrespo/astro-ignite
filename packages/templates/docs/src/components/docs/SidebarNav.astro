@@ -67,7 +67,7 @@ const linkActive = 'bg-[var(--color-surface-2)] font-medium text-[var(--color-fg
   aria-label={t('nav.documentation')}
 >
   <header class="px-1">
-    <Brand href="/" variant="lockup" size={0.42} />
+    <Brand href={getRelativeLocaleUrl(locale, '/')} variant="lockup" size={0.42} />
   </header>
 
   <SearchBox />
