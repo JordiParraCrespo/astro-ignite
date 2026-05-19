@@ -20,7 +20,10 @@
     "builtWith": "Built with astro-ignite.",
     "rss": "RSS feed",
     "legal": "Legal",
-    "social": "Social"
+    "social": "Social",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "cookies": "Cookies"
   },
   "theme": {
     "label": "Theme",

@@ -53,6 +53,9 @@ importers:
       '@astrojs/mdx':
         specifier: ^4.0.3
         version: 4.3.14(astro@5.18.1(@types/node@22.19.18)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.60.3)(typescript@5.9.3)(yaml@2.8.4))
+      '@astrojs/rss':
+        specifier: ^4.0.18
+        version: 4.0.18
       '@astrojs/sitemap':
         specifier: ^3.2.1
         version: 3.7.2
@@ -280,6 +283,9 @@ importers:
       '@astrojs/mdx':
         specifier: ^4.0.3
         version: 4.3.14(astro@5.18.1(@types/node@22.19.18)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.60.3)(typescript@5.9.3)(yaml@2.8.4))
+      '@astrojs/rss':
+        specifier: ^4.0.18
+        version: 4.0.18
       '@astrojs/sitemap':
         specifier: ^3.2.1
         version: 3.7.2
