@@ -15,7 +15,7 @@ Status: idle
 
 ## State
 
-Feature: 42 — docs-match-starter-perf-sitemap-config
-Spec: openspec/changes/docs-match-starter-perf-sitemap-config/
-Run: openspec/changes/docs-match-starter-perf-sitemap-config/runs/2026-05-19T03-10-57Z/
+Feature: 45 — wire-local-lighthouse-against-a-preview
+Spec: openspec/changes/wire-local-lighthouse-against-a-preview/
+Run: openspec/changes/wire-local-lighthouse-against-a-preview/runs/2026-05-19T03-52-23Z/
 Status: in_progress

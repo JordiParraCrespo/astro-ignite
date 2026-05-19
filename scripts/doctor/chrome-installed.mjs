@@ -1,33 +1,48 @@
 // doctor check: Chrome for Testing reachable (needed by Lighthouse + banner pipeline).
 
+import { existsSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
+import { homedir } from 'node:os';
+import { join } from 'node:path';
 import { ok, warn } from './_lib.mjs';
 
 export async function check() {
   const findings = [];
-  // Try the npx chrome path first (Chrome for Testing via puppeteer / chrome-launcher)
-  const which = spawnSync('which', ['chrome'], { encoding: 'utf8' });
   const probes = [
     ['which', 'google-chrome'],
     ['which', 'chrome'],
     ['which', 'chromium'],
   ];
   let found = null;
-  for (const [cmd, arg] of probes) {
-    const r = spawnSync(cmd, [arg], { encoding: 'utf8' });
+  for (const [cmd, name] of probes) {
+    const r = spawnSync(cmd, [name], { encoding: 'utf8' });
     if (r.status === 0 && r.stdout.trim()) {
       found = r.stdout.trim();
       break;
     }
   }
+  if (!found) {
+    const pathProbes = [
+      '/usr/local/bin/chrome',
+      join(homedir(), '.local/bin/chrome'),
+    ];
+    for (const p of pathProbes) {
+      if (existsSync(p)) {
+        found = p;
+        break;
+      }
+    }
+  }
   if (found) {
     findings.push(ok('chrome', `Chrome at ${found}`));
   } else {
-    findings.push(warn(
-      'chrome',
-      'No google-chrome / chrome / chromium on PATH. Lighthouse runs and the banner pipeline will fail.',
-      'Install Chrome for Testing: `npx @puppeteer/browsers install chrome@stable` or use the system package.',
-    ));
+    findings.push(
+      warn(
+        'chrome',
+        'No google-chrome / chrome / chromium on PATH. Lighthouse runs and the banner pipeline will fail.',
+        'Run scripts/doctor/install-chrome.mjs to install the pinned Chrome for Testing.',
+      ),
+    );
   }
   return findings;
 }

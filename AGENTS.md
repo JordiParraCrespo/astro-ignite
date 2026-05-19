@@ -44,6 +44,7 @@ The technical foundations that drive the project. The sections below (`Workspace
 - **Self-hosted Geist Sans + Mono** via Astro's font pipeline. System stack as the fallback. No external font fetches on first paint.
 - **pnpm@9.15.0 workspaces** (pinned via `packageManager`). **tsup** builds the CLI. **vitest** for tests. **changesets** for the release flow.
 - **Banner pipeline** = claude-design HTML → headless Chrome (Chrome for Testing) → PNG. No satori, no resvg, no hand-rolled SVG. See `## Banner & hero images`.
+- **Lighthouse 100s gate.** Local advisory + CI authoritative. See `## Performance gates`.
 
 ### Code & file rules
 
@@ -97,6 +98,7 @@ pnpm format:check # what the pre-commit hook runs
 
 pnpm scaffold:test # full e2e: wipes apps/playground/, runs CLI --yes, installs, builds, Lighthouse
 pnpm test:e2e # Playwright e2e — see tests/e2e/AGENTS.md
+pnpm perf:budget # local advisory perf gate — see `## Performance gates`
 ```
 
 End-to-end tests live at `tests/e2e/` and use Playwright. Run
@@ -147,6 +149,25 @@ Highlights:
 - **Card-style families** (`card`, `tabs`, `accordion`, `dialog`, `dropdown-menu`) ship as one registry item with multiple files — see `registry.json` for `files[]` arrays. Source files are organized in `base/<family>/` subdirectories.
 - `registryDependencies` resolves transitively: every UI item depends on `cn`.
 - Two layers, by intent: **base** (atoms — done) and **blocks** (compositions like PricingCard, FeatureGrid — not built yet).
+
+## Performance gates
+
+Templates ship at Lighthouse 100s. Two gates protect that target:
+
+- **Local advisory — `pnpm perf:budget`.** Runs `scripts/perf/run.mjs`, which builds the resolved template (default: starter), boots a preview server on a free port, runs `npx lighthouse <url> --preset=mobile --output=json …`, parses the LHR, and compares each score and metric against `scripts/perf/budget.json`. Prints per-page numbers; exits 0 on pass, 1 on bust. Run by the implementer and reviewer before opening a PR.
+- **CI authoritative — `Lighthouse CI (mobile)`** (`.github/workflows/lighthouse.yml`). Runs against `apps/playground/` (the scaffolded canonical output). This is the gating signal — the local gate is advisory.
+
+Both must be green before review.
+
+### Graceful skip on missing Chrome
+
+The local gate is allowed to skip when no `chrome` / `google-chrome` / `chromium` is on PATH and no `/usr/local/bin/chrome` or `~/.local/bin/chrome` symlink exists. In that case the Lighthouse branch records a single `skipped — chrome not installed; run scripts/doctor/install-chrome.mjs` finding and exits 0. **The CI gate never skips** — `runs-on: ubuntu-latest` ships a Chrome the workflow drives directly.
+
+### How to make the local gate green
+
+1. Run `scripts/doctor/install-chrome.mjs` (idempotent; pinned Chrome for Testing version). On the runner this needs sudo so it can write under `/opt/chrome-for-testing/` and `/usr/local/bin/`.
+2. On the autopilot runner the systemd unit at `autopilot/systemd/aig-runner.service` must be deployed so `~/.npm/_cacache/` is writable — `npx lighthouse` fetches into the cache on first use. `pnpm doctor`'s `npm-cache-writable` check warns when this is missing.
+3. Re-run `pnpm perf:budget` (or `pnpm perf:budget --page /` for a single page). Stdout shows per-metric numeric lines.
 
 ## Banner & hero images
 

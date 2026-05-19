@@ -268,6 +268,23 @@
         "pnpm perf:budget against the docs template/app meets the templates-perf Lighthouse mobile thresholds (Performance/Accessibility/Best Practices/SEO ≥ 95, LCP/INP/CLS/TBT/total-transfer inside budget) on / and one inner page and does not regress relative to the previous baseline."
       ],
       "issue": 42
+    },
+    {
+      "id": 14,
+      "name": "wire-local-lighthouse-against-a-preview",
+      "title": "Wire local Lighthouse against a preview server + install Chrome on the autopilot runner",
+      "capabilities": ["templates-perf"],
+      "description": "# Wire local Lighthouse against a preview server + install Chrome for Testing on the autopilot runner\n\n## Problem\n\n`scripts/perf/run.mjs` is a deliberate placeholder. On the autopilot's Hetzner runner the script cannot run Lighthouse because:\n\n1. Chrome / Chromium is not on PATH (`scripts/doctor/chrome-installed.mjs` emits the same warning).\n2. `npx lighthouse` cannot fetch — the npm cache at `~/.npm/_cacache/` is read-only under the systemd unit's hardening (`PrivateTmp`, `ProtectSystem`).\n3. The script itself only checks for the binary and emits `not yet wired to a preview server target`; it does not actually start a preview server, run Lighthouse, parse the JSON, or compare against the budget thresholds in `scripts/perf/budget.json`.\n\nA change ago (the migrate-starter-template-to-tailwind-css PR #39), this blocked the implementer for half an hour because the migration's design required a measured Beasties LCP A/B/C. The interim mitigation was to make `pnpm perf:budget` skip gracefully when Lighthouse is unavailable — CI workflow `Lighthouse CI (mobile)` remained the authoritative budget gate. That's a fine safety net for now, but every future change that wants a local perf measu",
+      "acceptance": [
+        "scripts/doctor/install-chrome.mjs exists, is idempotent (exits 0 fast when Chrome for Testing is already installed at the pinned version), downloads + extracts Chrome for Testing from the Google manifest into the configured prefix, and writes the chrome symlink so `which chrome` resolves; after running it, `node scripts/doctor/chrome-installed.mjs` reports Chrome as present (ok severity).",
+        "autopilot/systemd/aig-runner.service is checked into the repo as the source of truth for the runner's systemd unit and declares ReadWritePaths= (or an equivalent npm-cache-writable mechanism) so `npm` / `npx` invocations under the unit write to ~/.npm/_cacache without EROFS; ProtectSystem=strict and PrivateTmp remain in effect everywhere else.",
+        "scripts/perf/run.mjs `--page <route>` boots a preview server for the appropriate template (built first if needed), waits for the configured port (poll with a 30s timeout), runs `npx lighthouse <url> --preset=mobile --output=json --output-path=stdout --quiet --chrome-flags=\"--headless=new --no-sandbox --disable-gpu\"`, parses the LHR JSON, compares LCP/INP/CLS/TBT/total-transfer and Performance/Accessibility/Best-Practices/SEO scores against scripts/perf/budget.json, prints per-page numbers, and exits 0 when all within budget and 1 when any out of budget.",
+        "The preview server spawned by scripts/perf/run.mjs is torn down on normal exit and on SIGINT / SIGTERM — no orphan node processes or held ports remain after the script returns.",
+        "`pnpm perf:budget` on a clean check-out without Chrome / Chrome for Testing still degrades gracefully (skip with exit 0 and a clearly-labelled 'skipped — chrome not installed; run scripts/doctor/install-chrome.mjs' finding; never fail the gate on missing-tool grounds when Chrome is absent).",
+        "The previously broken `--critical-css` flag is still accepted by scripts/perf/run.mjs (kept as a no-op-compatible flag per the templates-perf delta from #37); passing it does not error and continues to inspect Beasties output for a built target when available.",
+        "AGENTS.md documents the dual-gate model in a section titled 'Performance gates' (or equivalent) that spells out: local `pnpm perf:budget` is a fast advisory check run by the implementer / reviewer; CI workflow `Lighthouse CI (mobile)` (.github/workflows/lighthouse.yml) is the authoritative gate; both must be green before a change is opened for review."
+      ],
+      "issue": 45
     }
   ]
 }
