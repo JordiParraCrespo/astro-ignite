@@ -30,7 +30,7 @@ invariants `I<n>` from `openspec/specs/templates-perf/spec.md`.
 
 ## Phase 1 — Systemd unit (source of truth in repo)
 
-- [ ] **T1.** Create the `autopilot/` directory at the repo root.
+- [x] **T1.** Create the `autopilot/` directory at the repo root.
       Add `autopilot/AGENTS.md` (boundary doc) and a
       `autopilot/CLAUDE.md` symlink → `AGENTS.md`. The boundary doc
       names the deployment contract (operator runs
@@ -39,7 +39,7 @@ invariants `I<n>` from `openspec/specs/templates-perf/spec.md`.
 systemctl restart aig-runner`) and points at the templates-perf
       spec for why `ReadWritePaths=` matters. Covers **S13** prep.
 
-- [ ] **T2.** Write `autopilot/systemd/aig-runner.service`. Declare
+- [x] **T2.** Write `autopilot/systemd/aig-runner.service`. Declare
       `ProtectSystem=strict`, `PrivateTmp=true`,
       `NoNewPrivileges=true`, and
       `ReadWritePaths=%h/.npm %h/.cache /opt/chrome-for-testing`
