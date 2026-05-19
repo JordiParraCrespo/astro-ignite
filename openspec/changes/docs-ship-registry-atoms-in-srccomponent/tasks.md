@@ -58,7 +58,7 @@ byte equality. No content edit is made.
       surface because the atoms import only `@/lib/cn`, which already
       exists in the docs template tree). Covers **S1**.
 
-- [ ] **T2b.** Copy `input.astro`, `kbd.astro`, `label.astro`,
+- [x] **T2b.** Copy `input.astro`, `kbd.astro`, `label.astro`,
       `link.astro`, and `separator.astro` (5 files). Run the same
       typecheck. Covers **S1**.
 
