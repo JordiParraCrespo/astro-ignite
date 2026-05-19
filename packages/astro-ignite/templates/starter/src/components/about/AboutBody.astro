@@ -6,10 +6,14 @@ const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const t = useTranslations(locale);
 ---
 
-<article class="page">
-  <header class="page-header">
-    <h1>{t('seo.about.title')}</h1>
-    <p class="lede">{t('seo.about.description')}</p>
+<article class="mx-auto max-w-[48rem] px-5 pt-12 pb-16">
+  <header class="mb-8">
+    <h1
+      class="m-0 mb-3 text-[clamp(2rem,5vw,2.75rem)] leading-[1.1] font-bold tracking-[-0.02em] text-[var(--color-fg)]"
+    >
+      {t('seo.about.title')}
+    </h1>
+    <p class="m-0 text-lg leading-[1.5] text-[var(--color-fg-muted)]">{t('seo.about.description')}</p>
   </header>
   <div class="prose">
     <p>{t('about.body.p1')}</p>
@@ -22,28 +26,3 @@ const t = useTranslations(locale);
     </ul>
   </div>
 </article>
-
-<style>
-  .page {
-    max-width: 48rem;
-    margin: 0 auto;
-    padding: 3rem 1.25rem 4rem;
-  }
-  .page-header {
-    margin-bottom: 2rem;
-  }
-  .page-header h1 {
-    font-size: clamp(2rem, 5vw, 2.75rem);
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    margin: 0 0 0.75rem;
-    color: var(--color-fg);
-  }
-  .lede {
-    font-size: 1.125rem;
-    color: var(--color-fg-muted);
-    margin: 0;
-    line-height: 1.5;
-  }
-</style>

@@ -22,21 +22,26 @@ const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const t = useTranslations(locale);
 ---
 
-<section class="page">
-  <header class="page-header">
-    <h1>{t('seo.blog.title')}</h1>
-    <p class="lede">{t('seo.blog.description')}</p>
+<section class="mx-auto max-w-[64rem] px-5 pt-12 pb-16">
+  <header class="mb-10">
+    <h1 class="m-0 mb-3 text-[clamp(2rem,5vw,2.75rem)] leading-[1.1] font-bold tracking-[-0.02em]">
+      {t('seo.blog.title')}
+    </h1>
+    <p class="m-0 text-lg text-[var(--color-fg-muted)]">{t('seo.blog.description')}</p>
   </header>
 
   {
     postCards.length === 0 ? (
-      <p class="empty">{t('blog.noPosts')}</p>
+      <p class="py-12 text-center text-base text-[var(--color-fg-muted)]">{t('blog.noPosts')}</p>
     ) : (
-      <ul class="post-list">
+      <ul class="m-0 grid list-none gap-6 p-0 md:grid-cols-2">
         {postCards.map(({ post, href, dateText, dateIso }: PostCard) => (
           <li>
-            <a href={href} class="post-card">
-              <div class="post-card-image">
+            <a
+              href={href}
+              class="block overflow-hidden rounded-xl border border-[var(--color-border)] text-inherit no-underline transition-[border-color,transform] duration-150 ease-[var(--ease-out-soft)] hover:border-[var(--color-primary)] [&_picture]:block [&_picture]:aspect-[16/9] [&_picture]:h-auto [&_picture]:w-full [&_picture]:object-cover [&_img]:block [&_img]:aspect-[16/9] [&_img]:h-auto [&_img]:w-full [&_img]:object-cover"
+            >
+              <div>
                 <Image
                   src={post.data.heroImage}
                   alt={post.data.heroImageAlt}
@@ -45,12 +50,16 @@ const t = useTranslations(locale);
                   sizes="(min-width: 768px) 384px, 100vw"
                 />
               </div>
-              <div class="post-card-body">
-                <h2>{post.data.title}</h2>
-                <p class="post-meta">
+              <div class="p-5">
+                <h2 class="m-0 mb-2 text-xl leading-[1.3] font-semibold tracking-[-0.01em]">
+                  {post.data.title}
+                </h2>
+                <p class="m-0 mb-3 text-[0.8125rem] text-[var(--color-fg-muted)]">
                   <time datetime={dateIso}>{dateText}</time>
                 </p>
-                <p class="post-description">{post.data.description}</p>
+                <p class="m-0 text-[0.9375rem] leading-[1.5] text-[var(--color-fg-muted)]">
+                  {post.data.description}
+                </p>
               </div>
             </a>
           </li>
@@ -59,89 +68,3 @@ const t = useTranslations(locale);
     )
   }
 </section>
-
-<style>
-  .page {
-    max-width: 64rem;
-    margin: 0 auto;
-    padding: 3rem 1.25rem 4rem;
-  }
-  .page-header {
-    margin-bottom: 2.5rem;
-  }
-  .page-header h1 {
-    font-size: clamp(2rem, 5vw, 2.75rem);
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    margin: 0 0 0.75rem;
-  }
-  .lede {
-    font-size: 1.125rem;
-    color: var(--color-fg-muted);
-    margin: 0;
-  }
-  .empty {
-    color: var(--color-fg-muted);
-    font-size: 1rem;
-    text-align: center;
-    padding: 3rem 0;
-  }
-
-  .post-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    gap: 1.5rem;
-  }
-  @media (min-width: 768px) {
-    .post-list {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  .post-card {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-    border: 1px solid var(--color-border);
-    border-radius: 0.75rem;
-    overflow: hidden;
-    transition:
-      border-color 0.15s var(--ease-out-soft),
-      transform 0.15s var(--ease-out-soft);
-  }
-  .post-card:hover {
-    border-color: var(--color-primary);
-  }
-  .post-card-image :global(picture),
-  .post-card-image :global(img) {
-    width: 100%;
-    height: auto;
-    display: block;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-  }
-  .post-card-body {
-    padding: 1.25rem;
-  }
-  .post-card-body h2 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    line-height: 1.3;
-    margin: 0 0 0.5rem;
-    letter-spacing: -0.01em;
-  }
-  .post-meta {
-    color: var(--color-fg-muted);
-    font-size: 0.8125rem;
-    margin: 0 0 0.75rem;
-  }
-  .post-description {
-    color: var(--color-fg-muted);
-    font-size: 0.9375rem;
-    line-height: 1.5;
-    margin: 0;
-  }
-</style>
