@@ -15,7 +15,7 @@ Status: idle
 
 ## State
 
-Feature: 35 — restructure-starter-template-component-o
-Spec: openspec/changes/restructure-starter-template-component-o/
-Run: openspec/changes/restructure-starter-template-component-o/runs/2026-05-18T15-55-30Z/
+Feature: 41 — docs-add-404-page-with-i18n-locale-paral
+Spec: openspec/changes/docs-add-404-page-with-i18n-locale-paral/
+Run: openspec/changes/docs-add-404-page-with-i18n-locale-paral/runs/2026-05-19T02-29-39Z/
 Status: in_progress

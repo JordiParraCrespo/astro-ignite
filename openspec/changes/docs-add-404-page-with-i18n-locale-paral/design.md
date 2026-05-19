@@ -239,6 +239,17 @@ audited by the cited command.
 dispatches the four capability audits above plus the per-change
 manifest assembled by `scripts/audit/run-all.mjs`.
 
+Audit commands (parseable by `scripts/audit/run-all.mjs --change`):
+
+- audit: `node scripts/audit/i18n-parallels.mjs`
+- audit: `node scripts/audit/i18n-parallels.mjs --strict`
+- audit: `node scripts/audit/internal-links-localized.mjs`
+- audit: `node scripts/audit/tokens-only.mjs`
+- audit: `node scripts/audit/tokens-only.mjs --layered`
+- audit: `node scripts/audit/jsonld-graph.mjs`
+- audit: `node scripts/audit/jsonld-graph.mjs --strict`
+- audit: `node scripts/audit/jsonld-graph.mjs --typed`
+
 ## Performance budget applicability
 
 The change capabilities match `/^(templates|registry)-/`, so per
