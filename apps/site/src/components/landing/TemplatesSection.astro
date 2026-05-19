@@ -18,8 +18,8 @@ const starterPreviewUrl = siteConfig.urls.starterPreview;
 const docsPreviewUrl = siteConfig.urls.docsPreview;
 ---
 
-<section class="templates-section" id="templates">
-  <div class="page">
+<section class="pb-24 max-[720px]:pb-16" id="templates">
+  <div class="page mx-auto max-w-[1200px] px-10 max-[720px]:px-6">
     <SectionHead
       eyebrow={t('landing.templates.eyebrow')}
       heading={t('landing.templates.headline')}
@@ -27,11 +27,13 @@ const docsPreviewUrl = siteConfig.urls.docsPreview;
     >
       <p>
         {t('landing.templates.lede')}
-        <span class="mono inline-code">--template</span>{t('landing.templates.ledeTail')}
+        <span class="mono text-[14px] text-[var(--color-fg)]">--template</span>{
+          t('landing.templates.ledeTail')
+        }
       </p>
     </SectionHead>
 
-    <div class="tpls">
+    <div class="grid grid-cols-2 gap-6 max-[900px]:grid-cols-1">
       <TemplateCard
         preview={starterPreview}
         name={t('landing.templates.starter.name')}
@@ -55,12 +57,12 @@ const docsPreviewUrl = siteConfig.urls.docsPreview;
       />
     </div>
 
-    <div class="tpls-foot">
-      <span class="mono tpls-coming">
+    <div class="mt-6 flex flex-wrap items-center justify-between gap-5">
+      <span class="mono text-[12px] text-[var(--color-fg-muted)]">
         {t('landing.templates.moreLead')}{' '}
-        <span class="emph">portfolio</span>, <span class="emph">commerce</span>, <span class="emph"
-          >changelog</span
-        >.
+        <span class="text-[var(--color-fg)]">portfolio</span>, <span class="text-[var(--color-fg)]"
+          >commerce</span
+        >, <span class="text-[var(--color-fg)]">changelog</span>.
       </span>
       <a class="btn btn-ghost btn-sm" href={ghUrl + '/blob/main/ROADMAP.md'} rel="noopener">
         {t('landing.templates.browseAll')}
@@ -68,53 +70,3 @@ const docsPreviewUrl = siteConfig.urls.docsPreview;
     </div>
   </div>
 </section>
-
-<style>
-  .page {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 40px;
-  }
-  @media (max-width: 720px) {
-    .page {
-      padding: 0 24px;
-    }
-  }
-  .emph {
-    color: var(--color-fg);
-  }
-  .inline-code {
-    font-size: 14px;
-    color: var(--color-fg);
-  }
-  .templates-section {
-    padding: 0 0 96px;
-  }
-  @media (max-width: 720px) {
-    .templates-section {
-      padding: 0 0 64px;
-    }
-  }
-  .tpls {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-  }
-  @media (max-width: 900px) {
-    .tpls {
-      grid-template-columns: 1fr;
-    }
-  }
-  .tpls-foot {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    margin-top: 24px;
-    flex-wrap: wrap;
-  }
-  .tpls-coming {
-    font-size: 12px;
-    color: var(--color-fg-muted);
-  }
-</style>
