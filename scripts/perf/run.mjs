@@ -98,22 +98,18 @@ if (transferOnly) {
 }
 
 if (criticalOnly) {
- // Beasties output check: look for inlined <style> in built HTML
- const buildDirs = [
- join(ROOT, 'apps/site/dist'),
- join(ROOT, 'apps/docs/dist'),
- ];
- let anyBuild = false;
- for (const dir of buildDirs) {
- if (!existsSync(dir)) continue;
- anyBuild = true;
- const idx = join(dir, 'index.html');
- if (!existsSync(idx)) continue;
- const html = await readFile(idx, 'utf8');
- const hasInline = /<style\b[^>]*>[\s\S]*?<\/style>/.test(html);
- record(`Critical CSS inlined in ${relative(ROOT, idx)}`, hasInline, hasInline ? 'inline <style> found' : 'no inline critical CSS detected');
- }
- if (!anyBuild) record('Build output present', false, 'run `pnpm build` first');
+ // The "Beasties extracts critical CSS at build time" invariant was retired
+ // by migrate-starter-template-to-tailwind-css (Tailwind v4 + inlineStylesheets:'always'
+ // inlines the full stylesheet, so Beasties has no remaining surface area).
+ // Flag preserved as a no-op so older changes' design.md files do not break.
+ process.stderr.write(
+  "perf: --critical-css is a deprecated no-op; the Beasties invariant was retired by migrate-starter-template-to-tailwind-css\n"
+ );
+ record(
+  'Critical CSS check',
+  true,
+  'skipped — flag deprecated; the layered-CSS strategy and Beasties were retired'
+ );
 }
 
 finishAndExit();
