@@ -1,0 +1,52 @@
+---
+import { cn } from '@/lib/cn';
+
+type Size = 'sm' | 'md' | 'lg';
+
+export type Props = {
+  src?: string;
+  alt?: string;
+  fallback?: string;
+  size?: Size;
+  class?: string;
+};
+
+const { src, alt = '', fallback, size = 'md', class: className } = Astro.props;
+const initials = (fallback ?? alt)
+  .split(' ')
+  .map((w) => w[0])
+  .filter(Boolean)
+  .slice(0, 2)
+  .join('')
+  .toUpperCase();
+
+const sizes: Record<Size, string> = {
+  sm: 'w-7 h-7 text-[28px]',
+  md: 'w-9 h-9 text-[36px]',
+  lg: 'w-[52px] h-[52px] text-[52px]',
+};
+---
+
+<span
+  class={cn(
+    'inline-flex items-center justify-center rounded-full overflow-hidden bg-surface-2 text-fg-muted shrink-0 select-none',
+    sizes[size],
+    className
+  )}
+>
+  {
+    src ? (
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        class="w-full h-full object-cover block"
+      />
+    ) : (
+      <span class="text-[0.4em] font-semibold tracking-[0.02em]" aria-hidden="true">
+        {initials || '?'}
+      </span>
+    )
+  }
+</span>

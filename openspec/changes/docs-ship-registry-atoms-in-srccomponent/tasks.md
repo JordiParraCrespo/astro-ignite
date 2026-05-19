@@ -51,7 +51,7 @@ filename under `packages/templates/docs/src/components/ui/`. The
 operation is `cp -p` (or equivalent) followed by `diff -q` confirming
 byte equality. No content edit is made.
 
-- [ ] **T2a.** Copy `alert.astro`, `avatar.astro`, `badge.astro`, and
+- [x] **T2a.** Copy `alert.astro`, `avatar.astro`, `badge.astro`, and
       `button.astro` (4 files). Run
       `pnpm --filter @astro-ignite/template-docs typecheck` after this
       batch to confirm the template still compiles (no broken imports
