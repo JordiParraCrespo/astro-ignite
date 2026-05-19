@@ -15,6 +15,7 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 
 import Brand from '../common/Brand.astro';
 import SearchBox from './SearchBox.astro';
+import Text from '@/components/ui/text.astro';
 import { sidebar } from '@/config/sidebar';
 import { siteConfig } from '@/config/site';
 import { useTranslations } from '@/i18n';
@@ -109,15 +110,15 @@ const isActive = (slug: string) => {
 
         return isCollapsible ? (
           <details class="sidebar-group sidebar-group--collapsible" open={open}>
-            <summary class="sidebar-group-title mono">
+            <Text variant="eyebrow" as="summary" class="sidebar-group-title mono">
               <span>{groupLabel}</span>
               <span class="sidebar-group-caret" aria-hidden="true">▸</span>
-            </summary>
+            </Text>
             <ul>{links}</ul>
           </details>
         ) : (
           <div class="sidebar-group">
-            <h2 class="sidebar-group-title mono">{groupLabel}</h2>
+            <Text variant="eyebrow" as="h2" class="sidebar-group-title mono">{groupLabel}</Text>
             <ul>{links}</ul>
           </div>
         );
@@ -154,10 +155,6 @@ const isActive = (slug: string) => {
     gap: 4px;
   }
   .sidebar-group-title {
-    font-size: 10px;
-    color: var(--color-fg-muted);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
     padding: 4px 8px;
     margin: 0 0 2px;
   }

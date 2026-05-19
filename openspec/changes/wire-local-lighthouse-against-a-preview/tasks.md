@@ -282,7 +282,7 @@ daemon-reload && sudo systemctl restart aig-runner`. Then run
       empty. Capture the verification commands and outputs under
       `runs/<ts>/notes.md`. Covers **S10**.
 
-- [ ] **T29.** Confirm the graceful-skip path. Temporarily mask
+- [x] **T29.** Confirm the graceful-skip path. Temporarily mask
       Chrome (`sudo mv /usr/local/bin/chrome /usr/local/bin/chrome.bak`),
       run `pnpm perf:budget --page /`, confirm exit 0 with a
       `skipped — chrome not installed; run scripts/doctor/install-chrome.mjs`

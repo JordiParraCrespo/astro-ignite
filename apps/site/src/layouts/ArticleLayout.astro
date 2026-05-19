@@ -127,10 +127,6 @@ const linkTo = (e: CollectionEntry<'blog'>) => {
   return getRelativeLocaleUrl(locale, `/blog/${s}`);
 };
 
-// Hreflang alternates — pair translations explicitly when slugs differ between
-// locales (e.g. /blog/best-astro-templates ↔ /es/blog/mejores-plantillas-astro).
-// Without this, BaseLayout auto-computes alternates by reusing the current
-// pathname across locales, which produces 404s for translated-slug posts.
 const translationKey = entry.data.translationKey;
 let alternates: Array<{ lang: string; href: string }> | undefined;
 if (translationKey) {
@@ -165,54 +161,89 @@ if (translationKey) {
   alternates={alternates}
   preloadImages={[entry.data.heroImage]}
 >
-  <article class="pp-shell">
-    <header class="pp-header">
-      <nav class="pp-crumb mono" aria-label={t('nav.breadcrumbs')}>
-        <a href={homeHref}>{t('nav.home')}</a>
-        <span class="sep" aria-hidden="true">/</span>
-        <a href={blogHref}>{t('nav.blog')}</a>
-        <span class="sep" aria-hidden="true">/</span>
-        <span class="on">{entry.data.title}</span>
+  <article class="mx-auto max-w-[1100px] px-10 max-[720px]:px-6">
+    <header class="border-b border-[var(--color-border)] py-8">
+      <nav
+        class="mono mb-[18px] flex flex-wrap items-center gap-1.5 text-[11px] tracking-[0.04em] text-[var(--color-fg-subtle)]"
+        aria-label={t('nav.breadcrumbs')}
+      >
+        <a
+          href={homeHref}
+          class="text-[var(--color-fg-subtle)] no-underline transition-colors duration-[0.12s] ease-[var(--ease-out-soft)] hover:text-[var(--color-fg)]"
+        >
+          {t('nav.home')}
+        </a>
+        <span class="text-[var(--color-border-strong)]" aria-hidden="true">/</span>
+        <a
+          href={blogHref}
+          class="text-[var(--color-fg-subtle)] no-underline transition-colors duration-[0.12s] ease-[var(--ease-out-soft)] hover:text-[var(--color-fg)]"
+        >
+          {t('nav.blog')}
+        </a>
+        <span class="text-[var(--color-border-strong)]" aria-hidden="true">/</span>
+        <span class="text-[var(--color-fg)]">{entry.data.title}</span>
       </nav>
 
       {
         tags.length > 0 && (
-          <div class="pp-pretags mono">
+          <div class="mono mb-3.5 flex flex-wrap gap-1.5">
             {tags.map((tag: string) => (
-              <span class="chip">#{tag}</span>
+              <span class="inline-flex items-center rounded-full border border-[var(--color-border)] bg-transparent px-2 py-0.5 text-[10px] text-[var(--color-fg-muted)]">
+                #{tag}
+              </span>
             ))}
           </div>
         )
       }
 
-      <h1>{entry.data.title}</h1>
-      <p class="pp-dek">{entry.data.description}</p>
+      <h1
+        class="m-0 text-[clamp(34px,5.2vw,48px)] leading-none font-medium tracking-[-0.045em] text-balance text-[var(--color-fg)]"
+      >
+        {entry.data.title}
+      </h1>
+      <p
+        class="mt-4 max-w-[62ch] text-[clamp(16px,1.4vw,18px)] leading-[1.55] text-pretty text-[var(--color-fg-muted)]"
+      >
+        {entry.data.description}
+      </p>
 
-      <div class="pp-meta mono">
-        <span class="author">
-          <span class="av">{authorInitials}</span>
+      <div
+        class="mono mt-[22px] flex flex-wrap items-center gap-3 text-[12px] text-[var(--color-fg-subtle)]"
+      >
+        <span class="inline-flex items-center gap-2 text-[var(--color-fg)]">
+          <span
+            class="inline-grid h-[22px] w-[22px] place-items-center rounded-full border border-[var(--color-border-strong)] bg-[var(--color-surface-2)] text-[10px] font-medium text-[var(--color-fg)]"
+          >
+            {authorInitials}
+          </span>
           {authorName}
         </span>
-        <span class="dot" aria-hidden="true">·</span>
+        <span class="text-[var(--color-border-strong)]" aria-hidden="true">·</span>
         <time datetime={datePublishedIso}>{datePublishedText}</time>
         {
           dateModifiedText && (
             <>
-              <span class="dot" aria-hidden="true">
+              <span class="text-[var(--color-border-strong)]" aria-hidden="true">
                 ·
               </span>
-              <span class="updated">
+              <span>
                 {t('blog.updatedOn')} {dateModifiedText}
               </span>
             </>
           )
         }
-        <span class="dot" aria-hidden="true">·</span>
-        <span class="badge-mono">{t('blog.readingTime', { minutes })}</span>
+        <span class="text-[var(--color-border-strong)]" aria-hidden="true">·</span>
+        <span
+          class="rounded border border-[var(--color-border)] px-1.5 py-0.5 font-mono text-[10px] text-[var(--color-fg-muted)]"
+        >
+          {t('blog.readingTime', { minutes })}
+        </span>
       </div>
     </header>
 
-    <figure class="pp-hero">
+    <figure
+      class="mt-8 aspect-[1200/630] overflow-hidden rounded-[14px] border border-[var(--color-border)] bg-[var(--color-bg)] [&_img]:block [&_img]:h-full [&_img]:w-full [&_img]:object-cover"
+    >
       <HeroImage
         src={entry.data.heroImage}
         alt={entry.data.heroImageAlt}
@@ -222,19 +253,36 @@ if (translationKey) {
       />
     </figure>
 
-    <div class="pp-body">
-      <div class="pp-prose">
+    <div class="pt-9 pb-20">
+      <div class="pp-prose mx-auto flex max-w-[68ch] flex-col gap-4">
         <slot />
 
-        <div class="pp-author">
-          <span class="av lg">{authorInitials}</span>
-          <div class="bio">
-            <span class="name">{authorName}</span>
-            {authorBio && <span class="text">{authorBio}</span>}
+        <div
+          class="mt-10 flex gap-3.5 rounded-[10px] border border-[var(--color-border)] bg-[var(--color-surface)] p-[18px]"
+        >
+          <span
+            class="inline-grid h-10 w-10 flex-shrink-0 place-items-center rounded-full border border-[var(--color-border-strong)] bg-[var(--color-surface-2)] font-mono text-[13px] font-medium text-[var(--color-fg)]"
+          >
+            {authorInitials}
+          </span>
+          <div class="flex flex-col gap-1">
+            <span class="text-sm font-medium text-[var(--color-fg)]">{authorName}</span>
+            {
+              authorBio && (
+                <span class="mb-1 text-[13px] leading-[1.55] text-[var(--color-fg-muted)]">
+                  {authorBio}
+                </span>
+              )
+            }
             {
               author?.data.url && (
-                <div class="links">
-                  <a href={author.data.url} rel="noopener" target="_blank">
+                <div class="flex flex-wrap gap-2.5 font-mono text-[11px]">
+                  <a
+                    href={author.data.url}
+                    rel="noopener"
+                    target="_blank"
+                    class="text-[var(--color-fg-muted)] no-underline transition-colors duration-[0.12s] ease-[var(--ease-out-soft)] hover:text-[var(--color-fg)]"
+                  >
                     ↗ {author.data.url.replace(/^https?:\/\//, '')}
                   </a>
                 </div>
@@ -245,22 +293,45 @@ if (translationKey) {
 
         {
           (prevEntry || nextEntry) && (
-            <nav class="pp-pn" aria-label={t('nav.adjacentPosts')}>
+            <nav
+              class="mt-3 grid grid-cols-2 gap-2.5 max-[560px]:grid-cols-1"
+              aria-label={t('nav.adjacentPosts')}
+            >
               {prevEntry ? (
-                <a class="pn-block" href={linkTo(prevEntry)}>
-                  <span class="l mono">← {t('blog.previousPost')}</span>
-                  <span class="t">{prevEntry.data.title}</span>
+                <a
+                  class="flex flex-col gap-1 rounded-lg border border-[var(--color-border)] px-4 py-3.5 text-inherit no-underline transition-colors duration-[0.12s] ease-[var(--ease-out-soft)] hover:border-[var(--color-border-strong)]"
+                  href={linkTo(prevEntry)}
+                >
+                  <span class="mono text-[11px] text-[var(--color-fg-subtle)]">
+                    ← {t('blog.previousPost')}
+                  </span>
+                  <span class="text-sm leading-[1.3] font-medium tracking-[-0.015em] text-[var(--color-fg)]">
+                    {prevEntry.data.title}
+                  </span>
                 </a>
               ) : (
-                <span class="pn-block pn-empty" aria-hidden="true" />
+                <span
+                  class="flex flex-col gap-1 rounded-lg border border-dashed border-[var(--color-border)] px-4 py-3.5 opacity-35"
+                  aria-hidden="true"
+                />
               )}
               {nextEntry ? (
-                <a class="pn-block next" href={linkTo(nextEntry)}>
-                  <span class="l mono">{t('blog.nextPost')} →</span>
-                  <span class="t">{nextEntry.data.title}</span>
+                <a
+                  class="flex flex-col gap-1 rounded-lg border border-[var(--color-border)] px-4 py-3.5 text-right text-inherit no-underline transition-colors duration-[0.12s] ease-[var(--ease-out-soft)] hover:border-[var(--color-border-strong)] max-[560px]:text-left"
+                  href={linkTo(nextEntry)}
+                >
+                  <span class="mono text-[11px] text-[var(--color-fg-subtle)]">
+                    {t('blog.nextPost')} →
+                  </span>
+                  <span class="text-sm leading-[1.3] font-medium tracking-[-0.015em] text-[var(--color-fg)]">
+                    {nextEntry.data.title}
+                  </span>
                 </a>
               ) : (
-                <span class="pn-block pn-empty" aria-hidden="true" />
+                <span
+                  class="flex flex-col gap-1 rounded-lg border border-dashed border-[var(--color-border)] px-4 py-3.5 opacity-35"
+                  aria-hidden="true"
+                />
               )}
             </nav>
           )
@@ -272,256 +343,14 @@ if (translationKey) {
   </article>
 </BaseLayout>
 
-<style>
-  .pp-shell {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 40px;
-  }
-  @media (max-width: 720px) {
-    .pp-shell {
-      padding: 0 24px;
-    }
-  }
-
-  /* ===== Header ===== */
-  .pp-header {
-    padding: 32px 0 32px;
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  /* ===== Hero ===== */
-  .pp-hero {
-    margin: 32px 0 0;
-    border: 1px solid var(--color-border);
-    border-radius: 14px;
-    overflow: hidden;
-    background: var(--color-bg);
-    aspect-ratio: 1200 / 630;
-  }
-  .pp-hero :global(img) {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .pp-crumb {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-    font-size: 11px;
-    color: var(--color-fg-subtle);
-    margin-bottom: 18px;
-    letter-spacing: 0.04em;
-  }
-  .pp-crumb a {
-    color: var(--color-fg-subtle);
-    text-decoration: none;
-    transition: color 0.12s var(--ease-out-soft);
-  }
-  .pp-crumb a:hover {
-    color: var(--color-fg);
-  }
-  .pp-crumb .sep {
-    color: var(--color-border-strong);
-  }
-  .pp-crumb .on {
-    color: var(--color-fg);
-  }
-
-  .pp-pretags {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    margin-bottom: 14px;
-  }
-  .chip {
-    display: inline-flex;
-    align-items: center;
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 999px;
-    border: 1px solid var(--color-border);
-    color: var(--color-fg-muted);
-    background: transparent;
-  }
-
-  .pp-header h1 {
-    margin: 0;
-    font-size: clamp(34px, 5.2vw, 48px);
-    font-weight: 500;
-    letter-spacing: -0.045em;
-    line-height: 1;
-    text-wrap: balance;
-    color: var(--color-fg);
-  }
-  .pp-dek {
-    margin: 16px 0 0;
-    font-size: clamp(16px, 1.4vw, 18px);
-    line-height: 1.55;
-    color: var(--color-fg-muted);
-    max-width: 62ch;
-    text-wrap: pretty;
-  }
-  .pp-meta {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-top: 22px;
-    flex-wrap: wrap;
-    font-size: 12px;
-    color: var(--color-fg-subtle);
-  }
-  .pp-meta .dot {
-    color: var(--color-border-strong);
-  }
-  .pp-meta .author {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--color-fg);
-  }
-  .pp-meta .av {
-    width: 22px;
-    height: 22px;
-    border-radius: 99px;
-    background: var(--color-surface-2);
-    border: 1px solid var(--color-border-strong);
-    display: inline-grid;
-    place-items: center;
-    font-size: 10px;
-    font-weight: 500;
-    color: var(--color-fg);
-  }
-  .badge-mono {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    padding: 2px 6px;
-    border: 1px solid var(--color-border);
-    border-radius: 4px;
-    color: var(--color-fg-muted);
-  }
-
-  /* ===== Body ===== */
-  .pp-body {
-    padding: 36px 0 80px;
-  }
-  .pp-prose {
-    max-width: 68ch;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  /* ===== Author block ===== */
-  .pp-author {
-    margin-top: 40px;
-    padding: 18px;
-    border: 1px solid var(--color-border);
-    border-radius: 10px;
-    display: flex;
-    gap: 14px;
-    background: var(--color-surface);
-  }
-  .pp-author .av {
-    width: 40px;
-    height: 40px;
-    border-radius: 99px;
-    background: var(--color-surface-2);
-    border: 1px solid var(--color-border-strong);
-    display: inline-grid;
-    place-items: center;
-    font-family: var(--font-mono);
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--color-fg);
-    flex-shrink: 0;
-  }
-  .pp-author .bio {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .pp-author .name {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--color-fg);
-  }
-  .pp-author .text {
-    font-size: 13px;
-    color: var(--color-fg-muted);
-    line-height: 1.55;
-    margin-bottom: 4px;
-  }
-  .pp-author .links {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    font-family: var(--font-mono);
-    font-size: 11px;
-  }
-  .pp-author .links a {
-    color: var(--color-fg-muted);
-    text-decoration: none;
-    transition: color 0.12s var(--ease-out-soft);
-  }
-  .pp-author .links a:hover {
-    color: var(--color-fg);
-  }
-
-  /* ===== Prev / next ===== */
-  .pp-pn {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 12px;
-  }
-  .pn-block {
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    padding: 14px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    text-decoration: none;
-    color: inherit;
-    transition: border-color 0.12s var(--ease-out-soft);
-  }
-  .pn-block:hover {
-    border-color: var(--color-border-strong);
-  }
-  .pn-empty {
-    border-style: dashed;
-    opacity: 0.35;
-  }
-  .pn-block .l {
-    font-size: 11px;
-    color: var(--color-fg-subtle);
-  }
-  .pn-block .t {
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: -0.015em;
-    color: var(--color-fg);
-    line-height: 1.3;
-  }
-  .pn-block.next {
-    text-align: right;
-  }
-  @media (max-width: 560px) {
-    .pp-pn {
-      grid-template-columns: 1fr;
-    }
-    .pn-block.next {
-      text-align: left;
-    }
-  }
-</style>
-
+<!--
+  tailwind-exception: MDX prose styling — `.pp-prose` selectors target
+  nodes generated by the MDX renderer at runtime through a <slot/>. There
+  is no Tailwind component-scope variant that reaches those nodes; the
+  single is:global block is simpler than dozens of [&>h2]/[&>p]/[&_code]
+  arbitrary variants on the prose container.
+-->
 <style is:global>
-  /* Prose styles for article body — mirrors PostPage's pp-prose. */
   .pp-prose > p {
     margin: 0;
     font-size: 16px;

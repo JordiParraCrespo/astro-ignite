@@ -29,8 +29,18 @@ const FEATURE_IDS = [
       heading={t('landing.features.headline')}
       meta={t('landing.features.meta')}
     />
+    <!--
+      The grid trims outer borders via :nth-child selectors that change with
+      column count. FeatureCell ships its own border-r / border-b; the
+      arbitrary descendant variants below cancel those at each breakpoint's
+      grid edge so only the outer rounded container border is visible.
+    -->
     <div
-      class="features grid grid-cols-3 max-[920px]:grid-cols-2 max-[560px]:grid-cols-1 overflow-hidden rounded-xl border border-border"
+      class="grid grid-cols-3 max-[920px]:grid-cols-2 max-[560px]:grid-cols-1 overflow-hidden rounded-xl border border-border
+        [&_.feat:nth-child(3n)]:border-r-0 [&_.feat:nth-last-child(-n+3)]:border-b-0
+        max-[920px]:[&_.feat]:border-r max-[920px]:[&_.feat]:border-b max-[920px]:[&_.feat]:border-[var(--color-border)]
+        max-[920px]:[&_.feat:nth-child(2n)]:border-r-0 max-[920px]:[&_.feat:nth-last-child(-n+2)]:border-b-0
+        max-[560px]:[&_.feat]:border-r-0 max-[560px]:[&_.feat:not(:last-child)]:border-b max-[560px]:[&_.feat:not(:last-child)]:border-[var(--color-border)]"
     >
       {
         FEATURE_IDS.map((f) => (
@@ -45,36 +55,3 @@ const FEATURE_IDS = [
     </div>
   </div>
 </section>
-
-<style>
-  /* Trim outer borders on the grid edges. FeatureCell ships its own `border-r`
-     and `border-b`; we cancel those at the grid's right/bottom edge so the
-     outer container's rounded border is the only visible perimeter line.
-     :global() is Astro's escape hatch for reaching into a child's scope. */
-  .features :global(.feat:nth-child(3n)) {
-    border-right: none;
-  }
-  .features :global(.feat:nth-last-child(-n + 3)) {
-    border-bottom: none;
-  }
-  @media (max-width: 920px) {
-    .features :global(.feat) {
-      border-right: 1px solid var(--color-border);
-      border-bottom: 1px solid var(--color-border);
-    }
-    .features :global(.feat:nth-child(2n)) {
-      border-right: none;
-    }
-    .features :global(.feat:nth-last-child(-n + 2)) {
-      border-bottom: none;
-    }
-  }
-  @media (max-width: 560px) {
-    .features :global(.feat) {
-      border-right: none;
-    }
-    .features :global(.feat:not(:last-child)) {
-      border-bottom: 1px solid var(--color-border);
-    }
-  }
-</style>

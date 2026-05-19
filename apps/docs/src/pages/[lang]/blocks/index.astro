@@ -7,6 +7,7 @@ export function getStaticPaths() {
 }
 
 import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
+import Text from '@/components/ui/text.astro';
 import { useTranslations, type TranslationKey } from '@/i18n';
 
 const t = useTranslations(Astro.currentLocale);
@@ -17,13 +18,13 @@ const blockNames = ['not-found-state'] as const;
 <ComponentsLayout title={t('blocks.index.title')} description={t('blocks.index.description')}>
   <main class="page">
     <header class="page__head">
-      <p class="page__eyebrow">{t('blocks.index.eyebrow')}</p>
-      <h1 class="page__title">{t('blocks.index.title')}</h1>
-      <p class="page__desc">
+      <Text variant="eyebrow" class="page__eyebrow">{t('blocks.index.eyebrow')}</Text>
+      <Text variant="h1" class="page__title">{t('blocks.index.title')}</Text>
+      <Text variant="lead" class="page__desc">
         {t('blocks.index.intro')}
         <code>npx astro-ignite add &lt;name&gt;</code>
         {t('blocks.index.introTail')}
-      </p>
+      </Text>
     </header>
 
     <ul class="grid">
@@ -31,8 +32,12 @@ const blockNames = ['not-found-state'] as const;
         blockNames.map((name) => (
           <li class="card">
             <a href={`/blocks/${name}`} class="card__link">
-              <h2 class="card__title">{name}</h2>
-              <p class="card__desc">{t(`blocks.summary.${name}` as TranslationKey)}</p>
+              <Text variant="h3" as="h2" class="card__title">
+                {name}
+              </Text>
+              <Text variant="small" class="card__desc">
+                {t(`blocks.summary.${name}` as TranslationKey)}
+              </Text>
             </a>
           </li>
         ))

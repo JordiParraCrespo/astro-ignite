@@ -21,7 +21,6 @@ const { entry } = Astro.props;
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const t = useTranslations(locale);
 
-// entry.id format from Astro 5 i18n collection: "<locale>/<slug>" (folder /index stripped).
 const slug = entry.id.split('/').slice(1).join('/');
 const url = `/projects/${slug}`;
 
@@ -66,13 +65,26 @@ const statusLabels = {
   schemas={schemas}
   preloadImages={[entry.data.heroImage]}
 >
-  <article class="project">
-    <header class="project-header">
-      <nav class="breadcrumbs" aria-label={t('nav.breadcrumbs')}>
-        <a href={getRelativeLocaleUrl(locale, '/projects')}>← {t('projects.backToProjects')}</a>
+  <article class="mx-auto max-w-[64rem] px-5 pt-8 pb-16">
+    <header
+      class="mb-12 [&_picture]:block [&_picture]:h-auto [&_picture]:w-full [&_picture]:overflow-hidden [&_picture]:rounded-xl [&_img]:block [&_img]:h-auto [&_img]:w-full [&_img]:overflow-hidden [&_img]:rounded-xl"
+    >
+      <nav class="mb-6 text-sm" aria-label={t('nav.breadcrumbs')}>
+        <a
+          href={getRelativeLocaleUrl(locale, '/projects')}
+          class="text-[var(--color-fg-muted)] no-underline hover:text-[var(--color-fg)]"
+        >
+          ← {t('projects.backToProjects')}
+        </a>
       </nav>
-      <h1>{entry.data.title}</h1>
-      <p class="project-summary">{entry.data.summary}</p>
+      <h1
+        class="m-0 mb-4 text-[clamp(2.25rem,6vw,3.5rem)] leading-[1.05] font-bold tracking-[-0.025em] text-[var(--color-fg)]"
+      >
+        {entry.data.title}
+      </h1>
+      <p class="m-0 mb-8 max-w-[48rem] text-xl leading-[1.5] text-[var(--color-fg-muted)]">
+        {entry.data.summary}
+      </p>
       <HeroImage
         src={entry.data.heroImage}
         alt={entry.data.heroImageAlt}
@@ -81,32 +93,34 @@ const statusLabels = {
       />
     </header>
 
-    <div class="project-body">
-      <aside class="project-meta">
-        <dl>
+    <div class="grid grid-cols-1 gap-10 min-[900px]:grid-cols-[16rem_1fr]">
+      <aside class="min-[900px]:sticky min-[900px]:top-20 min-[900px]:self-start">
+        <dl class="m-0 grid grid-cols-[max-content_1fr] gap-x-4 gap-y-2 text-[0.9375rem]">
           {
             entry.data.role && (
               <>
-                <dt>{t('projects.role')}</dt>
-                <dd>{entry.data.role}</dd>
+                <dt class="font-medium text-[var(--color-fg-muted)]">{t('projects.role')}</dt>
+                <dd class="m-0 text-[var(--color-fg)]">{entry.data.role}</dd>
               </>
             )
           }
           {
             entry.data.client && (
               <>
-                <dt>{t('projects.client')}</dt>
-                <dd>{entry.data.client}</dd>
+                <dt class="font-medium text-[var(--color-fg-muted)]">{t('projects.client')}</dt>
+                <dd class="m-0 text-[var(--color-fg)]">{entry.data.client}</dd>
               </>
             )
           }
-          <dt>{t('projects.statusLabel')}</dt>
-          <dd>{statusLabels[entry.data.status as keyof typeof statusLabels]}</dd>
+          <dt class="font-medium text-[var(--color-fg-muted)]">{t('projects.statusLabel')}</dt>
+          <dd class="m-0 text-[var(--color-fg)]">
+            {statusLabels[entry.data.status as keyof typeof statusLabels]}
+          </dd>
           {
             entry.data.datePublished && (
               <>
-                <dt>{t('projects.dateLabel')}</dt>
-                <dd>
+                <dt class="font-medium text-[var(--color-fg-muted)]">{t('projects.dateLabel')}</dt>
+                <dd class="m-0 text-[var(--color-fg)]">
                   <time datetime={entry.data.datePublished.toISOString()}>
                     {dateFmt.format(entry.data.datePublished)}
                   </time>
@@ -117,11 +131,13 @@ const statusLabels = {
           {
             entry.data.techStack.length > 0 && (
               <>
-                <dt>{t('projects.techStack')}</dt>
-                <dd>
-                  <ul class="tech-list">
+                <dt class="font-medium text-[var(--color-fg-muted)]">{t('projects.techStack')}</dt>
+                <dd class="m-0 text-[var(--color-fg)]">
+                  <ul class="m-0 flex list-none flex-wrap gap-1.5 p-0">
                     {entry.data.techStack.map((tech: string) => (
-                      <li>{tech}</li>
+                      <li class="rounded bg-[var(--color-surface-2)] px-2 py-0.5 text-[0.8125rem]">
+                        {tech}
+                      </li>
                     ))}
                   </ul>
                 </dd>
@@ -131,24 +147,39 @@ const statusLabels = {
         </dl>
         {
           (entry.data.links.live || entry.data.links.repo || entry.data.links.demo) && (
-            <ul class="project-links">
+            <ul class="m-0 mt-6 flex list-none flex-col gap-2 p-0 text-[0.9375rem]">
               {entry.data.links.live && (
                 <li>
-                  <a href={entry.data.links.live} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={entry.data.links.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="font-medium text-[var(--color-primary)] no-underline hover:underline"
+                  >
                     {t('projects.viewLive')} ↗
                   </a>
                 </li>
               )}
               {entry.data.links.repo && (
                 <li>
-                  <a href={entry.data.links.repo} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={entry.data.links.repo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="font-medium text-[var(--color-primary)] no-underline hover:underline"
+                  >
                     {t('projects.viewRepo')} ↗
                   </a>
                 </li>
               )}
               {entry.data.links.demo && (
                 <li>
-                  <a href={entry.data.links.demo} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={entry.data.links.demo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="font-medium text-[var(--color-primary)] no-underline hover:underline"
+                  >
                     {t('projects.viewDemo')} ↗
                   </a>
                 </li>
@@ -164,109 +195,3 @@ const statusLabels = {
     </div>
   </article>
 </BaseLayout>
-
-<style>
-  .project {
-    max-width: 64rem;
-    margin: 0 auto;
-    padding: 2rem 1.25rem 4rem;
-  }
-  .project-header {
-    margin-bottom: 3rem;
-  }
-  .breadcrumbs {
-    margin-bottom: 1.5rem;
-    font-size: 0.875rem;
-  }
-  .breadcrumbs a {
-    color: var(--color-fg-muted);
-    text-decoration: none;
-  }
-  .breadcrumbs a:hover {
-    color: var(--color-fg);
-  }
-  .project-header h1 {
-    font-size: clamp(2.25rem, 6vw, 3.5rem);
-    font-weight: 700;
-    line-height: 1.05;
-    letter-spacing: -0.025em;
-    margin: 0 0 1rem;
-    color: var(--color-fg);
-  }
-  .project-summary {
-    font-size: 1.25rem;
-    line-height: 1.5;
-    color: var(--color-fg-muted);
-    margin: 0 0 2rem;
-    max-width: 48rem;
-  }
-  .project-header :global(picture),
-  .project-header :global(img) {
-    border-radius: 0.75rem;
-    overflow: hidden;
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-  .project-body {
-    display: grid;
-    gap: 2.5rem;
-    grid-template-columns: 1fr;
-  }
-  .project-meta dl {
-    margin: 0;
-    display: grid;
-    grid-template-columns: max-content 1fr;
-    gap: 0.5rem 1rem;
-    font-size: 0.9375rem;
-  }
-  .project-meta dt {
-    color: var(--color-fg-muted);
-    font-weight: 500;
-  }
-  .project-meta dd {
-    margin: 0;
-    color: var(--color-fg);
-  }
-  .tech-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.375rem;
-  }
-  .tech-list li {
-    background: var(--color-surface-2);
-    padding: 0.125rem 0.5rem;
-    border-radius: 0.25rem;
-    font-size: 0.8125rem;
-  }
-  .project-links {
-    list-style: none;
-    padding: 0;
-    margin: 1.5rem 0 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    font-size: 0.9375rem;
-  }
-  .project-links a {
-    color: var(--color-primary);
-    text-decoration: none;
-    font-weight: 500;
-  }
-  .project-links a:hover {
-    text-decoration: underline;
-  }
-  @media (min-width: 900px) {
-    .project-body {
-      grid-template-columns: 16rem 1fr;
-    }
-    .project-meta {
-      position: sticky;
-      top: 5rem;
-      align-self: start;
-    }
-  }
-</style>

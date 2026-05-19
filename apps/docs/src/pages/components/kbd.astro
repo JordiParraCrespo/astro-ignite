@@ -2,6 +2,7 @@
 import ComponentsLayout from '@/layouts/ComponentsLayout.astro';
 import ComponentShowcase from '@/components/docs/ComponentShowcase.astro';
 import Kbd from '@/components/ui/kbd.astro';
+import Text from '@/components/ui/text.astro';
 import { useTranslations } from '@/i18n';
 
 const t = useTranslations(Astro.currentLocale);
@@ -14,19 +15,19 @@ const t = useTranslations(Astro.currentLocale);
     file="kbd.astro"
     anno="inline keyboard shortcut"
   >
-    <p class="line">
+    <Text variant="muted" class="line">
       {t('components.detail.kbd.line1Pre')}
       <Kbd>⌘</Kbd>
       <Kbd>K</Kbd>
       {t('components.detail.kbd.line1Post')}
-    </p>
-    <p class="line">
+    </Text>
+    <Text variant="muted" class="line">
       {t('components.detail.kbd.line2Pre')}
       <Kbd>Ctrl</Kbd>
       <Kbd>S</Kbd>{t('components.detail.kbd.line2Mid')}
       <Kbd>Ctrl</Kbd>
       <Kbd>Z</Kbd>{t('components.detail.kbd.line2Post')}
-    </p>
+    </Text>
   </ComponentShowcase>
 </ComponentsLayout>
 

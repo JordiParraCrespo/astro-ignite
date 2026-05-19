@@ -236,7 +236,7 @@ Before declaring the template ready, verify each item. **Do not skip.** This is 
 7. ☐ **Hide nav/sidebar items when the localized entry doesn't exist.** Don't ship links that 404.
 8. ☐ **`siteConfig.defaultOgImage` accepts `string | Record<string, string>`.** Even if shipping a single PNG, the type must allow per-locale.
 9. ☐ **JSON-LD via `<JsonLd schemas={[...siteSchemas(locale), ...]} />`.** `BaseLayout` merges site-wide schemas; pages add their own.
-10. ☐ **Above-the-fold uses scoped `<style>`; below-the-fold uses Tailwind.** Layered CSS strategy.
+10. ☐ **Tailwind-first; tokens resolved via `var(--color-*)`.** Components express colors / spacing / typography through Tailwind v4 utilities that resolve `--color-*` design tokens (`bg-[var(--color-bg)]`). Scoped `<style>` blocks only for keyframes, view-transition selectors, runtime-dynamic CSS from props, and MDX prose under `<slot/>`, each with a leading `<!-- tailwind-exception: <reason> -->` comment.
 11. ☐ **Anti-flash inline theme script in `<head>`.** Default-dark or default-light per `siteConfig.defaultTheme`.
 12. ☐ **No React/Vue/Svelte runtime.** Vanilla `<script>` blocks for interactivity. `npx astro add react` is one user command if they want islands.
 13. ☐ **Geist Sans + Geist Mono via `astro:fonts`.** Display preloaded, mono not. Bunny provider, latin + latin-ext subsets.
