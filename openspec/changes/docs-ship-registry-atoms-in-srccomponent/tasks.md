@@ -97,7 +97,7 @@ byte equality. No content edit is made.
       `packages/templates/docs/src/components/ui/`. Verify with
       `diff -q`. Covers **S1**, **S3**.
 
-- [ ] **T7.** tabs: copy `tabs.astro`, `tabs-content.astro`,
+- [x] **T7.** tabs: copy `tabs.astro`, `tabs-content.astro`,
       `tabs-list.astro`, `tabs-trigger.astro` from
       `packages/registry/base/tabs/` (or starter mirror) into
       `packages/templates/docs/src/components/ui/`. Verify with
