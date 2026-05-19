@@ -15,7 +15,7 @@ Status: idle
 
 ## State
 
-Feature: 35 — restructure-starter-template-component-o
-Spec: openspec/changes/restructure-starter-template-component-o/
-Run: openspec/changes/restructure-starter-template-component-o/runs/2026-05-18T15-55-30Z/
+Feature: 40 — docs-use-the-text-component-for-all-typo
+Spec: openspec/changes/docs-use-the-text-component-for-all-typo/
+Run: openspec/changes/docs-use-the-text-component-for-all-typo/runs/2026-05-19T01-24-38Z/
 Status: in_progress

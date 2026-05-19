@@ -17,6 +17,14 @@ repository root.
   the `Props` shape are byte-for-byte equal to the registry source.
   This is the docs equivalent of the starter mirror that already lives
   at `packages/templates/starter/src/components/ui/text.astro`.
+- NEW `packages/templates/docs/src/lib/cn.ts` — required `cn` helper
+  that the atom imports. Byte-equal to
+  `packages/templates/starter/src/lib/cn.ts` (and to the registry's
+  `packages/registry/lib/cn.ts`). The docs template did not previously
+  ship a `cn` helper because no atom under `src/components/ui/` existed
+  yet; installing the `<Text>` atom is what creates the dependency. T1
+  inventory § "Design-touched-but-missing infrastructure" records the
+  rationale.
 
 ### Atom (registry — only if a variant has to be added)
 
