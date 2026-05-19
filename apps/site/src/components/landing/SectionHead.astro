@@ -8,61 +8,27 @@ interface Props {
 const { eyebrow, heading, meta } = Astro.props;
 ---
 
-<div class="section-head">
-  <div class="section-lead">
-    <span class="eyebrow mono">{eyebrow}</span>
-    <h2>{heading}</h2>
+<div class="mb-10 flex items-end justify-between gap-10 max-[720px]:flex-col max-[720px]:items-start">
+  <div class="max-w-[45ch] [&_p]:mt-3 [&_p]:text-[16px] [&_p]:leading-[1.55] [&_p]:text-[var(--color-fg-muted)]">
+    <span
+      class="mono text-[11px] tracking-[0.18em] text-[var(--color-fg-muted)] uppercase"
+    >
+      {eyebrow}
+    </span>
+    <h2
+      class="mt-3 m-0 text-[clamp(32px,4.4vw,56px)] leading-[1.05] font-medium tracking-[-0.045em] text-balance"
+    >
+      {heading}
+    </h2>
     <slot />
   </div>
-  {meta && <p class="section-meta mono">{meta}</p>}
+  {
+    meta && (
+      <p
+        class="mono m-0 max-w-[30ch] text-right text-[12px] leading-[1.6] text-[var(--color-fg-muted)] max-[720px]:text-left"
+      >
+        {meta}
+      </p>
+    )
+  }
 </div>
-
-<style>
-  .section-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 40px;
-    margin-bottom: 40px;
-  }
-  .section-lead {
-    max-width: 45ch;
-  }
-  .section-lead :global(p) {
-    margin-top: 12px;
-    color: var(--color-fg-muted);
-    font-size: 16px;
-    line-height: 1.55;
-  }
-  .section-lead h2 {
-    font-size: clamp(32px, 4.4vw, 56px);
-    font-weight: 500;
-    letter-spacing: -0.045em;
-    line-height: 1.05;
-    margin: 12px 0 0;
-    text-wrap: balance;
-  }
-  .section-meta {
-    font-size: 12px;
-    color: var(--color-fg-muted);
-    max-width: 30ch;
-    text-align: right;
-    line-height: 1.6;
-    margin: 0;
-  }
-  .eyebrow {
-    font-size: 11px;
-    color: var(--color-fg-muted);
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-  }
-  @media (max-width: 720px) {
-    .section-head {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    .section-meta {
-      text-align: left;
-    }
-  }
-</style>
