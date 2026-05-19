@@ -1,0 +1,21 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import NotFoundHero from '@/components/not-found/NotFoundHero.astro';
+import { useTranslations } from '@/i18n';
+import { siteConfig } from '@/config/site';
+
+export function getStaticPaths() {
+  return siteConfig.locales
+    .filter((l) => l !== siteConfig.defaultLocale)
+    .map((lang) => ({ params: { lang } }));
+}
+
+Astro.response.status = 404;
+
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
+---
+
+<BaseLayout title={t('seo.404.title')} description={t('seo.404.description')} noindex={true}>
+  <NotFoundHero />
+</BaseLayout>
