@@ -15,7 +15,7 @@ Status: idle
 
 ## State
 
-Feature: 45 — wire-local-lighthouse-against-a-preview
-Spec: openspec/changes/wire-local-lighthouse-against-a-preview/
-Run: openspec/changes/wire-local-lighthouse-against-a-preview/runs/2026-05-19T03-52-23Z/
+Feature: 50 — docs-add-footer-chrome-parity-with-start
+Spec: openspec/changes/docs-add-footer-chrome-parity-with-start/
+Run: openspec/changes/docs-add-footer-chrome-parity-with-start/runs/2026-05-19T13-48-19Z/
 Status: in_progress

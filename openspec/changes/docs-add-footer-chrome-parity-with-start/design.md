@@ -121,6 +121,18 @@ template — the same files change in the same PR:
   — empty `## ADDED Requirements` block; the change is bound by the
   existing I1 / I3 / I4 / I5 invariants against the clean docs build.
 
+### Workflow artifacts (per the implementer protocol)
+
+- MOD `openspec/changes/docs-add-footer-chrome-parity-with-start/design.md`
+  — this file; amended in-flight by the implementer when workflow
+  paths need to be declared.
+- MOD `openspec/changes/docs-add-footer-chrome-parity-with-start/tasks.md`
+  — checkboxes flipped to `[x]` as tasks land.
+- MOD `openspec/changes/docs-add-footer-chrome-parity-with-start/runs/`
+  — run-scoped reports (`impl.md`, `audit.md`, `perf.md`, `review.md`)
+  emitted by the implementer / dispatchers / reviewer.
+- MOD `openspec/progress/current.md` — pointer to the active run dir.
+
 ## New signatures
 
 ### `Footer.astro` (template + apps/docs mirror)
