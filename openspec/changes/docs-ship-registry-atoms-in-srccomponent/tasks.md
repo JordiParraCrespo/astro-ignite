@@ -91,7 +91,7 @@ byte equality. No content edit is made.
       starter mirror) into `packages/templates/docs/src/components/ui/`.
       Verify with `diff -q`. Covers **S1**, **S3**.
 
-- [ ] **T6.** dropdown-menu: copy `dropdown-menu.astro` and
+- [x] **T6.** dropdown-menu: copy `dropdown-menu.astro` and
       `dropdown-menu-item.astro` from
       `packages/registry/base/dropdown-menu/` (or starter mirror) into
       `packages/templates/docs/src/components/ui/`. Verify with
