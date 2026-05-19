@@ -59,7 +59,7 @@ apps/docs/src/components/ui/text.astro` shows no divergence. Covers
 
 ## Refactor — docs template layouts
 
-- [ ] **T3.** `packages/templates/docs/src/layouts/DocsLayout.astro`:
+- [x] **T3.** `packages/templates/docs/src/layouts/DocsLayout.astro`:
       replace `<h1>{title}</h1>` with `<Text variant="h1">{title}</Text>`
       and `<p class="docs-lede">{description}</p>` with
       `<Text variant="lead" class="docs-lede">{description}</Text>`.
