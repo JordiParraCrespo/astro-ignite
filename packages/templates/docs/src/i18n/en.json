@@ -120,7 +120,8 @@
     "404": {
       "heading": "Page not found",
       "body": "The page you were looking for doesn't exist or has been moved.",
-      "back": "Back to home"
+      "back": "Back to home",
+      "search": "Search the docs"
     }
   },
   "sidebar": {
