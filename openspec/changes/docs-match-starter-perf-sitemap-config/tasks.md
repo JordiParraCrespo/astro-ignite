@@ -43,7 +43,7 @@ invariants `I<n>` from the cited capability specs.
 
 ## Phase 3 — Changeset
 
-- [ ] **T4.** Add a changeset under
+- [x] **T4.** Add a changeset under
       `.changeset/docs-perf-sitemap-defaults.md`. Body: summarise
       the docs-template configuration parity with starter
       (inline-stylesheets-always + sitemap priority defaults),
