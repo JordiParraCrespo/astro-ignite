@@ -5,8 +5,6 @@
  * Reads the `sidebar` config and renders grouped links. Highlights the
  * current page based on `Astro.url.pathname`. External links (starting with
  * `http`) get an icon + open-in-new-tab.
- *
- * Above-the-fold component — uses scoped <style> only.
  */
 
 import { getCollection } from 'astro:content';
@@ -15,6 +13,7 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 
 import Brand from '../common/Brand.astro';
 import SearchBox from './SearchBox.astro';
+import Text from '@/components/ui/text.astro';
 import { sidebar } from '@/config/sidebar';
 import { siteConfig } from '@/config/site';
 import { useTranslations } from '@/i18n';
@@ -57,38 +56,50 @@ const isActive = (slug: string) => {
   const target = hrefFor(slug).replace(/\/$/, '');
   return path === target;
 };
+
+const linkBase =
+  'flex items-center gap-2 rounded-[var(--radius-sm)] px-2 py-[5px] text-[13px] leading-normal text-[var(--color-fg-muted)] no-underline transition-colors duration-100 hover:bg-[var(--color-surface-2)] hover:text-[var(--color-fg)]';
+const linkActive = 'bg-[var(--color-surface-2)] font-medium text-[var(--color-fg)]';
 ---
 
-<aside class="sidebar" aria-label={t('nav.documentation')}>
-  <header class="sidebar-header">
+<aside
+  class="sidebar sticky top-0 flex h-screen flex-col gap-5 overflow-y-auto overflow-x-hidden border-r border-[var(--color-border)] bg-[var(--color-bg)] px-4 pb-8 pt-7"
+  aria-label={t('nav.documentation')}
+>
+  <header class="px-1">
     <Brand href="/" variant="lockup" size={0.42} />
   </header>
 
   <SearchBox />
 
-  <nav class="sidebar-nav" aria-label={t('nav.sidebar')}>
+  <nav class="flex flex-col gap-[22px]" aria-label={t('nav.sidebar')}>
     {
       sidebar.map((group) => {
-        // Only render items that exist in the current locale (or are external links).
         const visibleItems = group.items.filter(
           (item) => isExternal(item.slug) || hasLocalizedEntry(item.slug)
         );
         if (visibleItems.length === 0) return null;
         return (
-          <div class="sidebar-group">
-            <h2 class="sidebar-group-title mono">{group.group}</h2>
-            <ul>
+          <div class="flex flex-col gap-1">
+            <Text variant="eyebrow" as="h2" class="mono m-0 mb-[2px] px-2 py-1">
+              {group.group}
+            </Text>
+            <ul class="m-0 flex list-none flex-col gap-px p-0">
               {visibleItems.map((item) => (
                 <li>
                   <a
                     href={hrefFor(item.slug)}
-                    class:list={['sidebar-link', isActive(item.slug) && 'is-active']}
+                    class:list={[linkBase, isActive(item.slug) && linkActive]}
                     aria-current={isActive(item.slug) ? 'page' : undefined}
                     rel={isExternal(item.slug) ? 'noopener noreferrer' : undefined}
                     target={isExternal(item.slug) ? '_blank' : undefined}
                   >
                     <span>{item.label ?? titleForSlug(item.slug)}</span>
-                    {item.badge && <span class="sidebar-badge mono">{item.badge}</span>}
+                    {item.badge && (
+                      <span class="mono ml-auto rounded-[var(--radius-sm)] border border-[var(--color-border)] px-[5px] py-px text-[10px] text-[var(--color-fg-subtle)]">
+                        {item.badge}
+                      </span>
+                    )}
                     {isExternal(item.slug) && <span aria-hidden="true">↗</span>}
                   </a>
                 </li>
@@ -100,79 +111,3 @@ const isActive = (slug: string) => {
     }
   </nav>
 </aside>
-
-<style>
-  .sidebar {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    overflow-y: auto;
-    overflow-x: hidden;
-    border-right: 1px solid var(--color-border);
-    padding: 28px 16px 32px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    background: var(--color-bg);
-  }
-  .sidebar-header {
-    padding: 0 4px;
-  }
-  .sidebar-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
-  }
-  .sidebar-group {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .sidebar-group-title {
-    font-size: 10px;
-    color: var(--color-fg-muted);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding: 4px 8px;
-    margin: 0 0 2px;
-  }
-  .sidebar-group ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-  }
-  .sidebar-link {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 5px 8px;
-    border-radius: var(--radius-sm);
-    color: var(--color-fg-muted);
-    font-size: 13px;
-    text-decoration: none;
-    line-height: 1.5;
-    transition:
-      background 0.12s var(--ease-out-soft),
-      color 0.12s var(--ease-out-soft);
-  }
-  .sidebar-link:hover {
-    color: var(--color-fg);
-    background: var(--color-surface-2);
-  }
-  .sidebar-link.is-active {
-    color: var(--color-fg);
-    font-weight: 500;
-    background: var(--color-surface-2);
-  }
-  .sidebar-badge {
-    font-size: 10px;
-    color: var(--color-fg-subtle);
-    padding: 1px 5px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-sm);
-    margin-left: auto;
-  }
-</style>

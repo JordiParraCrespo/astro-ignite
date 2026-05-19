@@ -117,7 +117,7 @@ packages/templates/docs/src/lib/toast.ts` (exit 0). Run
 
 ## Apps mirror verification (conditional realignment)
 
-- [ ] **T9.** Re-verify the apps/docs parity claim against the new
+- [x] **T9.** Re-verify the apps/docs parity claim against the new
       docs-template state. From the repo root run
       `    for f in packages/templates/docs/src/components/ui/*.astro; do
   name=$(basename "$f")
@@ -135,7 +135,7 @@ diff -q packages/templates/docs/src/lib/toast.ts apps/docs/src/lib/toast.ts`
 
 ## CLI template cache refresh
 
-- [ ] **T10.** Run, from the repo root,
+- [x] **T10.** Run, from the repo root,
       `node packages/astro-ignite/scripts/copy-templates.mjs`. The
       script regenerates `packages/astro-ignite/templates/` from
       `packages/templates/`. Expected diff vs `main` for the docs
