@@ -210,7 +210,7 @@ thresholds)`;
 
 ## Phase 6 — Documentation
 
-- [ ] **T18.** Add a `## Performance gates` section to root
+- [x] **T18.** Add a `## Performance gates` section to root
       `AGENTS.md` (lands in `CLAUDE.md` via the symlink). Body:
       one paragraph defining the dual gate (local advisory + CI
       authoritative), a code-fence-or-list naming the commands
@@ -221,12 +221,12 @@ thresholds)`;
       gate is allowed to skip gracefully when Chrome is absent;
       CI never skips. Covers **S15**.
 
-- [ ] **T19.** Add a trailing one-line note to the
+- [x] **T19.** Add a trailing one-line note to the
       `pnpm perf:budget` entry in the "Common commands" block of
       `AGENTS.md` pointing at the new `## Performance gates`
       section. Covers **S15**.
 
-- [ ] **T20.** Confirm the new `autopilot/AGENTS.md` (T1) names
+- [x] **T20.** Confirm the new `autopilot/AGENTS.md` (T1) names
       the deployment contract verbatim and links the new section
       in root `AGENTS.md`. Covers **S15**.
 
