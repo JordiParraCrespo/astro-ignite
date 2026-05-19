@@ -26,6 +26,7 @@ in this section to gate which paths the implementer may write.
 - MOD `packages/templates/starter/src/components/contact/ContactSection.astro`
 - MOD `packages/templates/starter/src/components/not-found/NotFoundHero.astro`
 - MOD `packages/templates/starter/src/components/legal/CookieBanner.astro`
+- MOD `packages/templates/starter/src/components/image/Image.astro` (annotation-only — adds the `<!-- tailwind-exception: ... -->` comment so the S1 audit recognizes the legitimate `::before` content + dynamic blur background. The component itself is not part of the styling migration; it ships a justified pseudo-element block.)
 - MOD `packages/templates/starter/src/components/seo/SEO.astro` (only if it carries a `<style>` — verify before editing)
 - MOD `packages/templates/starter/src/components/seo/JsonLd.astro` (verify only)
 - MOD `packages/templates/starter/src/layouts/BaseLayout.astro`
@@ -42,7 +43,7 @@ in this section to gate which paths the implementer may write.
 ### Root documentation
 
 - MOD `AGENTS.md` (Tech-stack bullet on Tailwind / scoped `<style>` rewritten; Template-invariants item 4 rewritten)
-- MOD `.claude/skills/new-template/SKILL.md` (if its 15-item audit checklist still mentions the layered CSS strategy, update item 4 to "Tailwind-first; tokens resolved via `var(--color-*)`")
+- MOD `.agents/skills/new-template/SKILL.md` (canonical path — `.claude/skills/` is a symlink to `.agents/skills/`; if its 15-item audit checklist still mentions the layered CSS strategy, update item 4 to "Tailwind-first; tokens resolved via `var(--color-*)`")
 
 ### `apps/site/` — marketing mirror (mandatory per the architecture rules)
 
@@ -62,7 +63,7 @@ in this section to gate which paths the implementer may write.
 
 ### CLI template cache
 
-- MOD `packages/astro-ignite/templates/starter/**` — refreshed via `node packages/astro-ignite/scripts/copy-templates.mjs` after the starter source migration is complete. Do not hand-edit; the script regenerates the tree.
+- MOD `packages/astro-ignite/templates/starter/` — refreshed via `node packages/astro-ignite/scripts/copy-templates.mjs` after the starter source migration is complete. Do not hand-edit; the script regenerates the tree. (The committer parser does prefix matching on this entry, so files under this directory will match.)
 
 ### Audit & spec deltas
 
