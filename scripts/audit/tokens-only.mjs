@@ -1,6 +1,12 @@
 #!/usr/bin/env node
 // Audit: components reference design tokens, never raw zinc / hex.
-// Maps to: openspec/specs/templates-css-tokens/spec.md I1, I2, I3, I4.
+// Maps to: openspec/specs/templates-css-tokens/spec.md I1, I2, I3.
+//
+// The previous I4 ("Above-the-fold uses scoped <style> heuristic") was
+// retired by `migrate-starter-template-to-tailwind-css`. The `--layered`
+// flag stays accepted so older changes' design.md files do not break
+// their `pnpm audit:invariants --change <name>` invocations; it is a
+// no-op that prints a one-line deprecation notice on stderr and exits 0.
 
 import { join, relative } from 'node:path';
 import { readFile } from 'node:fs/promises';
@@ -10,6 +16,19 @@ const argv = process.argv.slice(2);
 const checkConfig = flag(argv, 'config');
 const checkDarkmode = flag(argv, 'darkmode');
 const checkLayered = flag(argv, 'layered');
+
+if (checkLayered) {
+  process.stderr.write(
+    'tokens-only: --layered is a deprecated no-op; the layered-CSS invariant was retired by migrate-starter-template-to-tailwind-css\n'
+  );
+  emitResult({
+    audit: 'tokens-only',
+    pass: true,
+    hits: [],
+    notes: '--layered: deprecated no-op',
+  });
+  process.exit(0);
+}
 
 const hits = [];
 
@@ -74,21 +93,6 @@ if (checkDarkmode) {
     const content = await readFile(gc, 'utf8');
     if (!/\.light\b/.test(content)) {
       hits.push({ file: relative(ROOT, gc), line: 0, snippet: 'no .light selector in global.css', message: 'tri-state darkmode wiring missing' });
-    }
-  }
-}
-
-if (checkLayered) {
-  // I4 — heuristic: above-the-fold components (Hero, Header) should have a <style> block
-  const aboveTheFold = ['Hero.astro', 'Header.astro', 'Nav.astro'];
-  for (const tpl of await templateDirs()) {
-    for (const name of aboveTheFold) {
-      const file = (await walkFiles(join(tpl, 'src'), (full, n) => n === name))[0];
-      if (!file) continue;
-      const content = await readFile(file, 'utf8');
-      if (!/<style/.test(content)) {
-        hits.push({ file: relative(ROOT, file), line: 0, snippet: `${name} has no <style> block — likely Tailwind-only above-the-fold`, message: 'layered CSS heuristic' });
-      }
     }
   }
 }

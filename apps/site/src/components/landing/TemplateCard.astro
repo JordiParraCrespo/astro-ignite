@@ -27,8 +27,12 @@ const {
 } = Astro.props;
 ---
 
-<article class="tpl">
-  <div class="tpl-preview">
+<article
+  class="flex flex-col overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] transition-colors duration-[0.12s] ease-[var(--ease-out-soft)] hover:border-[var(--color-border-strong)]"
+>
+  <div
+    class="relative aspect-[16/9] overflow-hidden border-b border-[var(--color-border)] bg-[var(--color-zinc-950)]"
+  >
     <Picture
       src={preview}
       alt={name}
@@ -41,22 +45,32 @@ const {
       loading={eager ? 'eager' : 'lazy'}
       {...eager ? { fetchpriority: 'high' as const } : {}}
       decoding="async"
-      class="tpl-preview-img"
+      class="block h-full w-full object-cover"
     />
   </div>
-  <div class="tpl-body">
-    <div class="tpl-row">
-      <h3>{name}</h3>
-      <span class="tpl-meta mono">{meta}</span>
+  <div class="flex flex-col gap-3 px-6 py-[22px]">
+    <div class="flex items-baseline justify-between gap-3">
+      <h3 class="m-0 text-[19px] font-medium tracking-[-0.025em] text-[var(--color-fg)]">{name}</h3>
+      <span class="mono text-[11px] text-[var(--color-fg-muted)]">{meta}</span>
     </div>
-    <p class="tpl-desc">{description}</p>
-    <div class="tpl-tags">
-      {tags.map((tag) => <span class="tag-chip mono">{tag}</span>)}
+    <p class="m-0 text-[14px] leading-[1.55] text-[var(--color-fg-muted)]">{description}</p>
+    <div class="mt-1 flex flex-wrap gap-1.5">
+      {
+        tags.map((tag) => (
+          <span class="mono rounded-full border border-[var(--color-border)] px-[9px] py-[3px] text-[11px] text-[var(--color-fg-muted)]">
+            {tag}
+          </span>
+        ))
+      }
     </div>
   </div>
-  <div class="tpl-foot">
-    <span class="tpl-install mono">
-      <span class="tpl-flag">$</span>
+  <div
+    class="flex items-center justify-between gap-4 border-t border-[var(--color-border)] bg-[var(--color-surface-2)] px-6 py-3.5"
+  >
+    <span
+      class="mono overflow-hidden text-[12px] text-ellipsis whitespace-nowrap text-[var(--color-fg-muted)]"
+    >
+      <span class="text-[var(--color-fg-subtle)]">$</span>
       {installCommand}
     </span>
     <a class="btn btn-outline btn-sm" href={previewUrl} target="_blank" rel="noopener">
@@ -64,93 +78,3 @@ const {
     </a>
   </div>
 </article>
-
-<style>
-  .tpl {
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-    overflow: hidden;
-    background: var(--color-surface);
-    display: flex;
-    flex-direction: column;
-    transition: border-color 0.12s var(--ease-out-soft);
-  }
-  .tpl:hover {
-    border-color: var(--color-border-strong);
-  }
-
-  .tpl-preview {
-    aspect-ratio: 16 / 9;
-    background: var(--color-zinc-950, #0a0a0a);
-    border-bottom: 1px solid var(--color-border);
-    position: relative;
-    overflow: hidden;
-  }
-  .tpl-preview-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-  .tpl-body {
-    padding: 22px 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .tpl-row {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 12px;
-  }
-  .tpl-row h3 {
-    margin: 0;
-    font-size: 19px;
-    font-weight: 500;
-    letter-spacing: -0.025em;
-    color: var(--color-fg);
-  }
-  .tpl-meta {
-    font-size: 11px;
-    color: var(--color-fg-muted);
-  }
-  .tpl-desc {
-    margin: 0;
-    font-size: 14px;
-    line-height: 1.55;
-    color: var(--color-fg-muted);
-  }
-  .tpl-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 4px;
-  }
-  .tag-chip {
-    font-size: 11px;
-    color: var(--color-fg-muted);
-    padding: 3px 9px;
-    border: 1px solid var(--color-border);
-    border-radius: 999px;
-  }
-  .tpl-foot {
-    border-top: 1px solid var(--color-border);
-    padding: 14px 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    background: var(--color-surface-2);
-  }
-  .tpl-install {
-    font-size: 12px;
-    color: var(--color-fg-muted);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .tpl-flag {
-    color: var(--color-fg-subtle);
-  }
-</style>
