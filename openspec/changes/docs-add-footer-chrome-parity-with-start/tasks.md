@@ -6,7 +6,7 @@ invariants (`I<n>`) it covers. The implementer commits each task via
 
 ## Template — `packages/templates/docs/`
 
-- [ ] **T1** — Add the three new keys to
+- [x] **T1** — Add the three new keys to
       `packages/templates/docs/src/i18n/en.json` (`footer.privacy`:
       `"Privacy"`, `footer.terms`: `"Terms"`, `footer.cookies`:
       `"Cookies"`) and to
@@ -14,7 +14,7 @@ invariants (`I<n>`) it covers. The implementer commits each task via
       `"Términos"`, `"Cookies"`). Confirm the two bundles stay
       key-parallel via a structural diff.
       _Covers: S4._
-- [ ] **T2** — Create
+- [x] **T2** — Create
       `packages/templates/docs/src/components/common/Footer.astro` per
       the signature in `design.md`. Compose `<Text>` from
       `@/components/ui/text.astro` for every body string; render the
@@ -27,7 +27,7 @@ invariants (`I<n>`) it covers. The implementer commits each task via
       do NOT add any `<script>`.
       _Covers: S2, S3, S5, S9; templates-i18n I5; templates-css-tokens
       I1, I4._
-- [ ] **T3** — Modify
+- [x] **T3** — Modify
       `packages/templates/docs/src/layouts/BaseLayout.astro` to import
       `Footer` from `@/components/common/Footer.astro` and render
       `<Footer />` between the `<slot />` and the `<CookieBanner />`.
@@ -37,20 +37,20 @@ invariants (`I<n>`) it covers. The implementer commits each task via
 
 ## Apps mirror — `apps/docs/`
 
-- [ ] **T4** — Mirror T1 in `apps/docs/src/i18n/en.json` and
+- [x] **T4** — Mirror T1 in `apps/docs/src/i18n/en.json` and
       `apps/docs/src/i18n/es.json`.
       _Covers: S4, S7._
-- [ ] **T5** — Mirror T2: create
+- [x] **T5** — Mirror T2: create
       `apps/docs/src/components/common/Footer.astro` — verbatim copy
       of the template component (alias imports resolve through the
       `apps/docs` `tsconfig`).
       _Covers: S2, S3, S5, S7._
-- [ ] **T6** — Mirror T3 in `apps/docs/src/layouts/BaseLayout.astro`.
+- [x] **T6** — Mirror T3 in `apps/docs/src/layouts/BaseLayout.astro`.
       _Covers: S1, S7._
 
 ## CLI cache — `packages/astro-ignite/templates/docs/`
 
-- [ ] **T7** — Refresh the CLI template cache by running
+- [x] **T7** — Refresh the CLI template cache by running
       `packages/astro-ignite/scripts/copy-templates.mjs` (or by
       copying the changed files by hand). The diff under
       `packages/astro-ignite/templates/docs/` should add
@@ -61,7 +61,7 @@ invariants (`I<n>`) it covers. The implementer commits each task via
 
 ## Changeset
 
-- [ ] **T8** — Add `.changeset/docs-add-footer-chrome-parity-with-start.md`
+- [x] **T8** — Add `.changeset/docs-add-footer-chrome-parity-with-start.md`
       naming `@astro-ignite/template-docs`, `@astro-ignite/docs`, and
       `astro-ignite` as `patch` bumps. Body explains the user-visible
       improvement (legal-page entry points, brand mark, attribution
@@ -72,30 +72,30 @@ invariants (`I<n>`) it covers. The implementer commits each task via
 
 ## Verification
 
-- [ ] **T9** — Confirm no new runtime dependency was added by diffing
+- [x] **T9** — Confirm no new runtime dependency was added by diffing
       `packages/templates/docs/package.json` and
       `apps/docs/package.json` against `main`.
       _Covers: S9; templates-perf I5._
-- [ ] **T10** — Run
+- [x] **T10** — Run
       `pnpm audit:invariants --change docs-add-footer-chrome-parity-with-start`
       and confirm `i18n-parallels`, `internal-links-localized`,
       `tokens-only`, and `tokens-only --layered` audits stay green.
       _Covers: S2, S3; templates-i18n I1, I2, I4, I5; templates-css-tokens
       I1, I4._
-- [ ] **T11** — Run `pnpm typecheck`, `pnpm format:check`, and
+- [x] **T11** — Run `pnpm typecheck`, `pnpm format:check`, and
       `pnpm test` from the workspace root; confirm all green.
       _Covers: S11._
-- [ ] **T12** — Run `pnpm scaffold:test`. Confirm the scaffolded
+- [x] **T12** — Run `pnpm scaffold:test`. Confirm the scaffolded
       playground built from the docs template includes the new Footer
       in its rendered HTML and the build does not regress.
       _Covers: S1, S8, S11._
-- [ ] **T13** — Run `pnpm perf:budget` against the docs build for `/`
+- [x] **T13** — Run `pnpm perf:budget` against the docs build for `/`
       and at least one inner page (e.g. `/introduction`). Confirm
       Lighthouse mobile Performance / Accessibility / Best Practices
       / SEO all ≥ 95 and total transfer is within the templates-perf
       budget.
       _Covers: S10; templates-perf I1, I2, I3, I4._
-- [ ] **T14** — Manual smoke: `pnpm dev:docs-template`. Confirm the
+- [x] **T14** — Manual smoke: `pnpm dev:docs-template`. Confirm the
       footer renders on `/`, on a `[...slug]` page (e.g.
       `/introduction`), on `/legal/privacy`, and on `/does-not-exist`
       (404). Confirm theme toggle still works and the footer's tokens
