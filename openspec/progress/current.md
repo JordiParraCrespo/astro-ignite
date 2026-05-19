@@ -15,7 +15,7 @@ Status: idle
 
 ## State
 
-Feature: 35 — restructure-starter-template-component-o
-Spec: openspec/changes/restructure-starter-template-component-o/
-Run: openspec/changes/restructure-starter-template-component-o/runs/2026-05-18T15-55-30Z/
+Feature: 37 — migrate-starter-template-to-tailwind-css
+Spec: openspec/changes/migrate-starter-template-to-tailwind-css/
+Run: openspec/changes/migrate-starter-template-to-tailwind-css/runs/2026-05-18T23-29-02Z/
 Status: in_progress

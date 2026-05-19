@@ -9,63 +9,24 @@ interface Props {
 const { command, copyLabel, copiedLabel, id } = Astro.props;
 ---
 
-<div class="cmd" {...id ? { id } : {}}>
+<div
+  class="cmd inline-flex w-fit max-w-full items-center justify-between gap-4 rounded-[10px] border border-[var(--color-border)] bg-[var(--color-surface-2)] py-2.5 pr-2.5 pl-4 font-mono text-[14px] max-[480px]:gap-2.5 max-[480px]:py-2 max-[480px]:pr-2 max-[480px]:pl-3 max-[480px]:text-[12px]"
+  {...id ? { id } : {}}
+>
   <span>
-    <span class="cmd-prompt">$</span><span class="cmd-text mono">{command}</span>
+    <span class="mr-1.5 text-[var(--color-fg)]">$</span><span class="mono text-[var(--color-fg)]"
+      >{command}</span
+    >
   </span>
-  <button class="cmd-copy" type="button" data-copy={command} data-copied={copiedLabel}>
+  <button
+    class="cmd-copy cursor-pointer appearance-none rounded border border-[var(--color-border)] bg-transparent px-2 py-1 font-mono text-[11px] text-[var(--color-fg)] transition-[color,border-color] duration-[0.12s] hover:border-[var(--color-border-strong)] hover:text-[var(--color-fg)]"
+    type="button"
+    data-copy={command}
+    data-copied={copiedLabel}
+  >
     {copyLabel}
   </button>
 </div>
-
-<style>
-  .cmd {
-    display: inline-flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 10px 10px 10px 16px;
-    border: 1px solid var(--color-border);
-    border-radius: 10px;
-    background: var(--color-surface-2);
-    font-family: var(--font-mono);
-    font-size: 14px;
-    width: fit-content;
-    max-width: 100%;
-  }
-  .cmd-prompt {
-    color: var(--color-fg);
-    margin-right: 6px;
-  }
-  .cmd-text {
-    color: var(--color-fg);
-  }
-  @media (max-width: 480px) {
-    .cmd {
-      font-size: 12px;
-      gap: 10px;
-      padding: 8px 8px 8px 12px;
-    }
-  }
-  .cmd-copy {
-    appearance: none;
-    background: transparent;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--color-fg);
-    border: 1px solid var(--color-border);
-    padding: 4px 8px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition:
-      color 0.12s,
-      border-color 0.12s;
-  }
-  .cmd-copy:hover {
-    color: var(--color-fg);
-    border-color: var(--color-border-strong);
-  }
-</style>
 
 <script>
   document.querySelectorAll<HTMLButtonElement>('.cmd-copy').forEach((btn) => {

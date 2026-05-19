@@ -11,6 +11,10 @@
  *   <Brand variant="lockup" />   default — mark + wordmark side by side
  *   <Brand variant="mark" />     just `>_` (favicon, small icon contexts)
  *   <Brand variant="word" />     just the wordmark (footer, dense places)
+ *
+ * Sizes computed from the `size` prop are exposed as inline CSS variables on
+ * the host element; the Tailwind utilities below consume them so the
+ * styling stays Tailwind-first while remaining prop-driven.
  */
 
 interface Props {
@@ -42,10 +46,16 @@ const caretWidth = 22 * size;
 const caretHeight = 6 * size;
 const caretLift = 4 * size;
 const caretMargin = 4 * size;
+
+const gapClass = variant === 'lockup' ? 'gap-[var(--ig-gap)]' : 'gap-0';
 ---
 
 <Tag
-  class:list={['ig-brand', `ig-brand-${variant}`, className]}
+  class:list={[
+    'inline-flex items-center text-[var(--color-fg)] leading-none tracking-[-0.04em] no-underline hover:text-[var(--color-fg)] [&:hover_.ig-caret]:bg-[var(--color-primary)]',
+    gapClass,
+    className,
+  ]}
   href={href}
   aria-label={href ? label : undefined}
   style={`
@@ -60,69 +70,20 @@ const caretMargin = 4 * size;
 >
   {
     variant !== 'word' && (
-      <span class="ig-mark mono" aria-hidden={variant === 'lockup' ? 'true' : undefined}>
-        <span class="ig-gt">{'>'}</span>
-        <span class="ig-caret caret" />
+      <span
+        class="mono inline-flex items-baseline font-mono text-[length:var(--ig-mono-size)] leading-none font-medium text-[var(--color-fg)]"
+        aria-hidden={variant === 'lockup' ? 'true' : undefined}
+      >
+        <span class="inline-block">{'>'}</span>
+        <span class="ig-caret caret ml-[var(--ig-caret-margin)] inline-block h-[var(--ig-caret-h)] w-[var(--ig-caret-w)] translate-y-[calc(var(--ig-caret-lift)*-1)] bg-[var(--color-fg)]" />
       </span>
     )
   }
-  {variant !== 'mark' && <span class="ig-word">astro-ignite</span>}
+  {
+    variant !== 'mark' && (
+      <span class="font-sans text-[length:var(--ig-sans-size)] font-medium tracking-[-0.04em] text-[var(--color-fg)] lowercase">
+        astro-ignite
+      </span>
+    )
+  }
 </Tag>
-
-<style>
-  .ig-brand {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--ig-gap);
-    text-decoration: none;
-    color: var(--color-fg);
-    line-height: 1;
-    letter-spacing: -0.04em;
-  }
-  a.ig-brand:hover {
-    color: var(--color-fg);
-  }
-  a.ig-brand:hover .ig-caret {
-    background: var(--color-primary);
-  }
-
-  /* Mark group: `>` + caret block */
-  .ig-mark {
-    font-family: var(--font-mono);
-    font-size: var(--ig-mono-size);
-    font-weight: 500;
-    line-height: 1;
-    color: var(--color-fg);
-    display: inline-flex;
-    align-items: baseline;
-  }
-  .ig-gt {
-    /* slight optical correction so the > sits on the baseline cleanly */
-    display: inline-block;
-  }
-  .ig-caret {
-    display: inline-block;
-    width: var(--ig-caret-w);
-    height: var(--ig-caret-h);
-    background: var(--color-fg);
-    margin-left: var(--ig-caret-margin);
-    transform: translateY(calc(var(--ig-caret-lift) * -1));
-  }
-
-  /* Wordmark — Geist Sans, always lowercase, tight tracking */
-  .ig-word {
-    font-family: var(--font-display);
-    font-size: var(--ig-sans-size);
-    font-weight: 500;
-    color: var(--color-fg);
-    text-transform: lowercase;
-    letter-spacing: -0.04em;
-  }
-
-  /* Compact lockup is the default — but the mark-only and word-only variants
-     drop the gap. */
-  .ig-brand-mark,
-  .ig-brand-word {
-    gap: 0;
-  }
-</style>
