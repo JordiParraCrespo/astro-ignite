@@ -55,10 +55,10 @@ state):
   audit invocation prints
   `✅ Critical CSS inlined in apps/docs/dist/index.html`.
 - S12 graceful skip when chrome absent → `scripts/perf/run.mjs:181-196`
-  + the branch at `:421-429`. Confirmed live: every run of the
-  audit and perf-budget on this host prints
-  `skipped — chrome not installed; run scripts/doctor/install-chrome.mjs`
-  and exits 0.
+  - the branch at `:421-429`. Confirmed live: every run of the
+    audit and perf-budget on this host prints
+    `skipped — chrome not installed; run scripts/doctor/install-chrome.mjs`
+    and exits 0.
 - S13 systemd unit declares writable npm cache →
   `autopilot/systemd/aig-runner.service:29-32`:
   `ProtectSystem=strict`, `PrivateTmp=true`,
