@@ -36,6 +36,9 @@ ignite` and `create-astro-ignite` minor).
   `specs/templates-perf/spec.md` and `specs/templates-seo-jsonld/spec.md`,
   and the run-directory artifacts `runs/<ts>/{impl,audit,perf,review,notes}.md`
   / `perf.txt`).
+- MOD `openspec/progress/current.md` — the implementer protocol
+  requires noting feature / run state in this file at the start of
+  the session and refreshing it as the run progresses.
 
 ## New signatures
 

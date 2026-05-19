@@ -17,13 +17,13 @@ invariants `I<n>` from the cited capability specs.
 
 ## Phase 1 — Docs template config
 
-- [ ] **T1.** Edit `packages/templates/docs/astro.config.mjs` to add
+- [x] **T1.** Edit `packages/templates/docs/astro.config.mjs` to add
       `inlineStylesheets: 'always'` inside the existing `build` block
       (alongside `format: 'directory'`). Preserve every other
       top-level config key (`site`, `trailingSlash`, `i18n`, `vite`)
       byte-for-byte. Covers **S1**, `templates-perf` I4.
 
-- [ ] **T2.** In the same file, extend the `sitemap({ … })`
+- [x] **T2.** In the same file, extend the `sitemap({ … })`
       integration call passed to `integrations`: - Add `priority: 0.7` as the default. - Keep `changefreq: 'weekly'`. - Add a `serialize(item)` function that lifts
       `new URL(item.url).pathname === '/'` to `item.priority = 1.0`,
       sets `item.priority = 0.3` when `item.url.includes('/legal/')`,

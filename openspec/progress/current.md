@@ -15,7 +15,7 @@ Status: idle
 
 ## State
 
-Feature: 35 — restructure-starter-template-component-o
-Spec: openspec/changes/restructure-starter-template-component-o/
-Run: openspec/changes/restructure-starter-template-component-o/runs/2026-05-18T15-55-30Z/
+Feature: 42 — docs-match-starter-perf-sitemap-config
+Spec: openspec/changes/docs-match-starter-perf-sitemap-config/
+Run: openspec/changes/docs-match-starter-perf-sitemap-config/runs/2026-05-19T03-10-57Z/
 Status: in_progress
