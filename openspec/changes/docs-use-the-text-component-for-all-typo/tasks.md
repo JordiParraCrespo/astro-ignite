@@ -103,7 +103,7 @@ apps/docs/src/components/ui/text.astro` shows no divergence. Covers
       The rest of the sidebar's scoped block stays — it's
       above-the-fold chrome. Covers **S3**, **S6**.
 
-- [ ] **T7.** `packages/templates/docs/src/components/legal/CookieBanner.astro`:
+- [x] **T7.** `packages/templates/docs/src/components/legal/CookieBanner.astro`:
       replace `<h2 id="cookie-banner-title">{…}</h2>` with
       `<Text variant="h4" as="h2" id="cookie-banner-title">{…}</Text>`
       and `<p id="cookie-banner-description">{…}</p>` with
