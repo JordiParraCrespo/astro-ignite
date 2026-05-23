@@ -15,7 +15,7 @@ Status: idle
 
 ## State
 
-Feature: 49 — docs-ship-registry-atoms-in-srccomponent
-Spec: openspec/changes/docs-ship-registry-atoms-in-srccomponent/
-Run: openspec/changes/docs-ship-registry-atoms-in-srccomponent/runs/2026-05-19T13-25-44Z/
+Feature: 55 — lint-auto-fix-tailwind-canonical-class-i
+Spec: openspec/changes/lint-auto-fix-tailwind-canonical-class-i/
+Run: openspec/changes/lint-auto-fix-tailwind-canonical-class-i/runs/2026-05-19T16-25-35Z/
 Status: in_progress

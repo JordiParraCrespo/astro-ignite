@@ -25,21 +25,21 @@ const t = useTranslations(locale);
     <h1 class="m-0 mb-3 text-[clamp(2rem,5vw,2.75rem)] leading-[1.1] font-bold tracking-[-0.02em]">
       {t('seo.projects.title')}
     </h1>
-    <p class="mx-auto m-0 max-w-[40rem] text-lg text-[var(--color-fg-muted)]">
+    <p class="m-0 mx-auto max-w-[40rem] text-lg text-(--color-fg-muted)">
       {t('seo.projects.description')}
     </p>
   </header>
 
   {
     projectCards.length === 0 ? (
-      <p class="py-12 text-center text-[var(--color-fg-muted)]">{t('projects.noProjects')}</p>
+      <p class="py-12 text-center text-(--color-fg-muted)">{t('projects.noProjects')}</p>
     ) : (
       <ul class="m-0 grid list-none grid-cols-1 gap-6 p-0 md:grid-cols-2">
         {projectCards.map(({ project, href }: ProjectCard) => (
           <li>
             <a
               href={href}
-              class="block overflow-hidden rounded-xl border border-[var(--color-border)] text-inherit no-underline transition-colors duration-150 ease-[var(--ease-out-soft)] hover:border-[var(--color-primary)] [&_picture]:block [&_picture]:aspect-[16/9] [&_picture]:h-auto [&_picture]:w-full [&_picture]:object-cover [&_img]:block [&_img]:aspect-[16/9] [&_img]:h-auto [&_img]:w-full [&_img]:object-cover"
+              class="block overflow-hidden rounded-xl border border-(--color-border) text-inherit no-underline transition-colors duration-150 ease-(--ease-out-soft) hover:border-(--color-primary) [&_img]:block [&_img]:aspect-[16/9] [&_img]:h-auto [&_img]:w-full [&_img]:object-cover [&_picture]:block [&_picture]:aspect-[16/9] [&_picture]:h-auto [&_picture]:w-full [&_picture]:object-cover"
             >
               <div>
                 <Image
@@ -54,13 +54,13 @@ const t = useTranslations(locale);
                 <h2 class="m-0 mb-2 text-xl leading-[1.3] font-semibold tracking-[-0.01em]">
                   {project.data.title}
                 </h2>
-                <p class="m-0 mb-4 text-[0.9375rem] leading-[1.5] text-[var(--color-fg-muted)]">
+                <p class="m-0 mb-4 text-[0.9375rem] leading-[1.5] text-(--color-fg-muted)">
                   {project.data.summary}
                 </p>
                 {project.data.techStack.length > 0 && (
                   <ul class="m-0 flex list-none flex-wrap gap-1.5 p-0">
                     {project.data.techStack.slice(0, 4).map((tech: string) => (
-                      <li class="rounded bg-[var(--color-surface-2)] px-2 py-0.5 text-xs text-[var(--color-fg-muted)]">
+                      <li class="rounded bg-(--color-surface-2) px-2 py-0.5 text-xs text-(--color-fg-muted)">
                         {tech}
                       </li>
                     ))}

@@ -17,13 +17,13 @@ const t = useTranslations(locale);
 ---
 
 <button
-  class="theme-toggle inline-flex cursor-pointer appearance-none items-center justify-center rounded-lg border-none bg-transparent p-2 text-[var(--color-fg-muted)] transition-[color,background-color] duration-150 ease-[var(--ease-out-soft)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-fg)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-ring,var(--color-fg))]"
+  class="theme-toggle inline-flex cursor-pointer appearance-none items-center justify-center rounded-lg border-none bg-transparent p-2 text-(--color-fg-muted) transition-[color,background-color] duration-150 ease-(--ease-out-soft) hover:bg-(--color-surface-2) hover:text-(--color-fg) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-ring,var(--color-fg))"
   type="button"
   aria-label={t('theme.label')}
   title={t('theme.label')}
 >
   <svg
-    class="block h-[1.125rem] w-[1.125rem] transition-transform duration-200 ease-[var(--ease-out-soft)] [.light_&]:rotate-180"
+    class="block h-[1.125rem] w-[1.125rem] transition-transform duration-200 ease-(--ease-out-soft) [.light_&]:rotate-180"
     aria-hidden="true"
     viewBox="0 0 24 24"
     width="20"

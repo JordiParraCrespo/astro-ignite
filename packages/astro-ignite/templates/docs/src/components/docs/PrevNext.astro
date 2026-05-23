@@ -45,14 +45,12 @@ const linkBase =
 {
   (prev || next) && (
     <nav
-      class="mt-16 grid grid-cols-2 gap-3 border-t border-[var(--color-border)] pt-6"
+      class="mt-16 grid grid-cols-2 gap-3 border-t border-(--color-border) pt-6"
       aria-label={t('nav.pageNavigation')}
     >
       {prev ? (
         <a class={linkBase} href={getRelativeLocaleUrl(locale, `/${prev.slug}`)}>
-          <span class="mono text-[11px] text-[var(--color-fg-muted)]">
-            ← {t('blog.previousPost')}
-          </span>
+          <span class="mono text-[11px] text-(--color-fg-muted)">← {t('blog.previousPost')}</span>
           <span class="text-sm font-medium tracking-[-0.01em]">
             {prev.label ?? titleForSlug(prev.slug)}
           </span>
@@ -62,7 +60,7 @@ const linkBase =
       )}
       {next && (
         <a class={linkBase + ' text-right'} href={getRelativeLocaleUrl(locale, `/${next.slug}`)}>
-          <span class="mono text-[11px] text-[var(--color-fg-muted)]">{t('blog.nextPost')} →</span>
+          <span class="mono text-[11px] text-(--color-fg-muted)">{t('blog.nextPost')} →</span>
           <span class="text-sm font-medium tracking-[-0.01em]">
             {next.label ?? titleForSlug(next.slug)}
           </span>

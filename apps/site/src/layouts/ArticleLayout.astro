@@ -162,33 +162,33 @@ if (translationKey) {
   preloadImages={[entry.data.heroImage]}
 >
   <article class="mx-auto max-w-[1100px] px-10 max-[720px]:px-6">
-    <header class="border-b border-[var(--color-border)] py-8">
+    <header class="border-b border-(--color-border) py-8">
       <nav
-        class="mono mb-[18px] flex flex-wrap items-center gap-1.5 text-[11px] tracking-[0.04em] text-[var(--color-fg-subtle)]"
+        class="mono mb-[18px] flex flex-wrap items-center gap-1.5 text-[11px] tracking-[0.04em] text-(--color-fg-subtle)"
         aria-label={t('nav.breadcrumbs')}
       >
         <a
           href={homeHref}
-          class="text-[var(--color-fg-subtle)] no-underline transition-colors duration-[0.12s] ease-[var(--ease-out-soft)] hover:text-[var(--color-fg)]"
+          class="text-(--color-fg-subtle) no-underline transition-colors duration-[0.12s] ease-(--ease-out-soft) hover:text-(--color-fg)"
         >
           {t('nav.home')}
         </a>
-        <span class="text-[var(--color-border-strong)]" aria-hidden="true">/</span>
+        <span class="text-(--color-border-strong)" aria-hidden="true">/</span>
         <a
           href={blogHref}
-          class="text-[var(--color-fg-subtle)] no-underline transition-colors duration-[0.12s] ease-[var(--ease-out-soft)] hover:text-[var(--color-fg)]"
+          class="text-(--color-fg-subtle) no-underline transition-colors duration-[0.12s] ease-(--ease-out-soft) hover:text-(--color-fg)"
         >
           {t('nav.blog')}
         </a>
-        <span class="text-[var(--color-border-strong)]" aria-hidden="true">/</span>
-        <span class="text-[var(--color-fg)]">{entry.data.title}</span>
+        <span class="text-(--color-border-strong)" aria-hidden="true">/</span>
+        <span class="text-(--color-fg)">{entry.data.title}</span>
       </nav>
 
       {
         tags.length > 0 && (
           <div class="mono mb-3.5 flex flex-wrap gap-1.5">
             {tags.map((tag: string) => (
-              <span class="inline-flex items-center rounded-full border border-[var(--color-border)] bg-transparent px-2 py-0.5 text-[10px] text-[var(--color-fg-muted)]">
+              <span class="inline-flex items-center rounded-full border border-(--color-border) bg-transparent px-2 py-0.5 text-[10px] text-(--color-fg-muted)">
                 #{tag}
               </span>
             ))}
@@ -197,33 +197,33 @@ if (translationKey) {
       }
 
       <h1
-        class="m-0 text-[clamp(34px,5.2vw,48px)] leading-none font-medium tracking-[-0.045em] text-balance text-[var(--color-fg)]"
+        class="m-0 text-[clamp(34px,5.2vw,48px)] leading-none font-medium tracking-[-0.045em] text-balance text-(--color-fg)"
       >
         {entry.data.title}
       </h1>
       <p
-        class="mt-4 max-w-[62ch] text-[clamp(16px,1.4vw,18px)] leading-[1.55] text-pretty text-[var(--color-fg-muted)]"
+        class="mt-4 max-w-[62ch] text-[clamp(16px,1.4vw,18px)] leading-[1.55] text-pretty text-(--color-fg-muted)"
       >
         {entry.data.description}
       </p>
 
       <div
-        class="mono mt-[22px] flex flex-wrap items-center gap-3 text-[12px] text-[var(--color-fg-subtle)]"
+        class="mono mt-[22px] flex flex-wrap items-center gap-3 text-[12px] text-(--color-fg-subtle)"
       >
-        <span class="inline-flex items-center gap-2 text-[var(--color-fg)]">
+        <span class="inline-flex items-center gap-2 text-(--color-fg)">
           <span
-            class="inline-grid h-[22px] w-[22px] place-items-center rounded-full border border-[var(--color-border-strong)] bg-[var(--color-surface-2)] text-[10px] font-medium text-[var(--color-fg)]"
+            class="inline-grid h-[22px] w-[22px] place-items-center rounded-full border border-(--color-border-strong) bg-(--color-surface-2) text-[10px] font-medium text-(--color-fg)"
           >
             {authorInitials}
           </span>
           {authorName}
         </span>
-        <span class="text-[var(--color-border-strong)]" aria-hidden="true">·</span>
+        <span class="text-(--color-border-strong)" aria-hidden="true">·</span>
         <time datetime={datePublishedIso}>{datePublishedText}</time>
         {
           dateModifiedText && (
             <>
-              <span class="text-[var(--color-border-strong)]" aria-hidden="true">
+              <span class="text-(--color-border-strong)" aria-hidden="true">
                 ·
               </span>
               <span>
@@ -232,9 +232,9 @@ if (translationKey) {
             </>
           )
         }
-        <span class="text-[var(--color-border-strong)]" aria-hidden="true">·</span>
+        <span class="text-(--color-border-strong)" aria-hidden="true">·</span>
         <span
-          class="rounded border border-[var(--color-border)] px-1.5 py-0.5 font-mono text-[10px] text-[var(--color-fg-muted)]"
+          class="rounded border border-(--color-border) px-1.5 py-0.5 font-mono text-[10px] text-(--color-fg-muted)"
         >
           {t('blog.readingTime', { minutes })}
         </span>
@@ -242,7 +242,7 @@ if (translationKey) {
     </header>
 
     <figure
-      class="mt-8 aspect-[1200/630] overflow-hidden rounded-[14px] border border-[var(--color-border)] bg-[var(--color-bg)] [&_img]:block [&_img]:h-full [&_img]:w-full [&_img]:object-cover"
+      class="mt-8 aspect-[1200/630] overflow-hidden rounded-[14px] border border-(--color-border) bg-(--color-bg) [&_img]:block [&_img]:h-full [&_img]:w-full [&_img]:object-cover"
     >
       <PriorityImage
         src={entry.data.heroImage}
@@ -258,18 +258,18 @@ if (translationKey) {
         <slot />
 
         <div
-          class="mt-10 flex gap-3.5 rounded-[10px] border border-[var(--color-border)] bg-[var(--color-surface)] p-[18px]"
+          class="mt-10 flex gap-3.5 rounded-[10px] border border-(--color-border) bg-(--color-surface) p-[18px]"
         >
           <span
-            class="inline-grid h-10 w-10 flex-shrink-0 place-items-center rounded-full border border-[var(--color-border-strong)] bg-[var(--color-surface-2)] font-mono text-[13px] font-medium text-[var(--color-fg)]"
+            class="inline-grid h-10 w-10 flex-shrink-0 place-items-center rounded-full border border-(--color-border-strong) bg-(--color-surface-2) font-mono text-[13px] font-medium text-(--color-fg)"
           >
             {authorInitials}
           </span>
           <div class="flex flex-col gap-1">
-            <span class="text-sm font-medium text-[var(--color-fg)]">{authorName}</span>
+            <span class="text-sm font-medium text-(--color-fg)">{authorName}</span>
             {
               authorBio && (
-                <span class="mb-1 text-[13px] leading-[1.55] text-[var(--color-fg-muted)]">
+                <span class="mb-1 text-[13px] leading-[1.55] text-(--color-fg-muted)">
                   {authorBio}
                 </span>
               )
@@ -281,7 +281,7 @@ if (translationKey) {
                     href={author.data.url}
                     rel="noopener"
                     target="_blank"
-                    class="text-[var(--color-fg-muted)] no-underline transition-colors duration-[0.12s] ease-[var(--ease-out-soft)] hover:text-[var(--color-fg)]"
+                    class="text-(--color-fg-muted) no-underline transition-colors duration-[0.12s] ease-(--ease-out-soft) hover:text-(--color-fg)"
                   >
                     ↗ {author.data.url.replace(/^https?:\/\//, '')}
                   </a>
@@ -299,37 +299,37 @@ if (translationKey) {
             >
               {prevEntry ? (
                 <a
-                  class="flex flex-col gap-1 rounded-lg border border-[var(--color-border)] px-4 py-3.5 text-inherit no-underline transition-colors duration-[0.12s] ease-[var(--ease-out-soft)] hover:border-[var(--color-border-strong)]"
+                  class="flex flex-col gap-1 rounded-lg border border-(--color-border) px-4 py-3.5 text-inherit no-underline transition-colors duration-[0.12s] ease-(--ease-out-soft) hover:border-(--color-border-strong)"
                   href={linkTo(prevEntry)}
                 >
-                  <span class="mono text-[11px] text-[var(--color-fg-subtle)]">
+                  <span class="mono text-[11px] text-(--color-fg-subtle)">
                     ← {t('blog.previousPost')}
                   </span>
-                  <span class="text-sm leading-[1.3] font-medium tracking-[-0.015em] text-[var(--color-fg)]">
+                  <span class="text-sm leading-[1.3] font-medium tracking-[-0.015em] text-(--color-fg)">
                     {prevEntry.data.title}
                   </span>
                 </a>
               ) : (
                 <span
-                  class="flex flex-col gap-1 rounded-lg border border-dashed border-[var(--color-border)] px-4 py-3.5 opacity-35"
+                  class="flex flex-col gap-1 rounded-lg border border-dashed border-(--color-border) px-4 py-3.5 opacity-35"
                   aria-hidden="true"
                 />
               )}
               {nextEntry ? (
                 <a
-                  class="flex flex-col gap-1 rounded-lg border border-[var(--color-border)] px-4 py-3.5 text-right text-inherit no-underline transition-colors duration-[0.12s] ease-[var(--ease-out-soft)] hover:border-[var(--color-border-strong)] max-[560px]:text-left"
+                  class="flex flex-col gap-1 rounded-lg border border-(--color-border) px-4 py-3.5 text-right text-inherit no-underline transition-colors duration-[0.12s] ease-(--ease-out-soft) hover:border-(--color-border-strong) max-[560px]:text-left"
                   href={linkTo(nextEntry)}
                 >
-                  <span class="mono text-[11px] text-[var(--color-fg-subtle)]">
+                  <span class="mono text-[11px] text-(--color-fg-subtle)">
                     {t('blog.nextPost')} →
                   </span>
-                  <span class="text-sm leading-[1.3] font-medium tracking-[-0.015em] text-[var(--color-fg)]">
+                  <span class="text-sm leading-[1.3] font-medium tracking-[-0.015em] text-(--color-fg)">
                     {nextEntry.data.title}
                   </span>
                 </a>
               ) : (
                 <span
-                  class="flex flex-col gap-1 rounded-lg border border-dashed border-[var(--color-border)] px-4 py-3.5 opacity-35"
+                  class="flex flex-col gap-1 rounded-lg border border-dashed border-(--color-border) px-4 py-3.5 opacity-35"
                   aria-hidden="true"
                 />
               )}

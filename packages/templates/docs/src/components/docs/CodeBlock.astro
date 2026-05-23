@@ -21,23 +21,23 @@ const { filename, language } = Astro.props;
 ---
 
 <div
-  class="code-block my-6 overflow-hidden rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface-2)]"
+  class="code-block my-6 overflow-hidden rounded-(--radius-md) border border-(--color-border) bg-(--color-surface-2)"
 >
   <div
-    class="flex items-center gap-2.5 border-b border-[var(--color-border)] px-3.5 py-2 text-[11px] text-[var(--color-fg-muted)]"
+    class="flex items-center gap-2.5 border-b border-(--color-border) px-3.5 py-2 text-[11px] text-(--color-fg-muted)"
   >
     <span class="mono flex-1">{filename ?? 'snippet'}</span>
-    {language && <span class="mono text-[var(--color-fg-subtle)]">{language}</span>}
+    {language && <span class="mono text-(--color-fg-subtle)">{language}</span>}
     <button
       type="button"
-      class="mono cursor-pointer appearance-none rounded-[var(--radius-sm)] border-0 bg-transparent px-1.5 py-0.5 text-[11px] text-[var(--color-fg-muted)] transition-colors duration-100 hover:bg-[var(--color-surface)] hover:text-[var(--color-fg)]"
+      class="mono cursor-pointer appearance-none rounded-(--radius-sm) border-0 bg-transparent px-1.5 py-0.5 text-[11px] text-(--color-fg-muted) transition-colors duration-100 hover:bg-(--color-surface) hover:text-(--color-fg)"
       data-copy-source
     >
       copy
     </button>
   </div>
   <pre
-    class="mono m-0 overflow-x-auto px-4 py-3.5 text-[13px] leading-[1.65] text-[var(--color-fg)]"><code class="bg-transparent p-0 font-mono"><slot /></code></pre>
+    class="mono m-0 overflow-x-auto px-4 py-3.5 text-[13px] leading-[1.65] text-(--color-fg)"><code class="bg-transparent p-0 font-mono"><slot /></code></pre>
 </div>
 
 <script>

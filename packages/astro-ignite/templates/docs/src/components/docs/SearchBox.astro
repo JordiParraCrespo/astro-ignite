@@ -24,7 +24,7 @@ const kbdBase =
 
 <button
   type="button"
-  class="flex w-full cursor-pointer appearance-none items-center gap-1.5 rounded-[var(--radius)] border border-[var(--color-border)] bg-[var(--color-surface)] px-2.5 py-[7px] text-left font-[inherit] text-[12px] leading-none text-[var(--color-fg-subtle)] transition-colors duration-100 hover:border-[var(--color-border-strong)] hover:text-[var(--color-fg-muted)]"
+  class="flex w-full cursor-pointer appearance-none items-center gap-1.5 rounded-(--radius) border border-(--color-border) bg-(--color-surface) px-2.5 py-[7px] text-left font-[inherit] text-[12px] leading-none text-(--color-fg-subtle) transition-colors duration-100 hover:border-(--color-border-strong) hover:text-(--color-fg-muted)"
   data-search-open
   aria-label={t('search.label')}
 >
@@ -36,7 +36,7 @@ const kbdBase =
 </button>
 
 <dialog
-  class="search-dialog fixed left-1/2 top-[12vh] m-0 -translate-x-1/2 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-0 font-[inherit] text-[14px] leading-[1.4] text-[var(--color-fg)] w-[min(640px,calc(100vw-32px))] max-h-[min(560px,calc(100vh-64px))]"
+  class="search-dialog fixed top-[12vh] left-1/2 m-0 max-h-[min(560px,calc(100vh-64px))] w-[min(640px,calc(100vw-32px))] -translate-x-1/2 overflow-hidden rounded-(--radius-lg) border border-(--color-border) bg-(--color-surface) p-0 font-[inherit] text-[14px] leading-[1.4] text-(--color-fg)"
   id="search-dialog"
   aria-label={t('search.label')}
   data-i18n-empty={t('search.empty')}
@@ -46,12 +46,12 @@ const kbdBase =
   data-i18n-docs-root={t('search.docsRoot')}
 >
   <form method="dialog" class="flex max-h-[inherit] flex-col" autocomplete="off">
-    <div class="flex items-center gap-2.5 border-b border-[var(--color-border)] px-4 py-3.5">
-      <span class="mono text-sm text-[var(--color-fg-muted)]" aria-hidden="true">⌕</span>
+    <div class="flex items-center gap-2.5 border-b border-(--color-border) px-4 py-3.5">
+      <span class="mono text-sm text-(--color-fg-muted)" aria-hidden="true">⌕</span>
       <input
         type="search"
         name="q"
-        class="m-0 flex-1 border-0 bg-transparent p-0 font-[inherit] text-[15px] text-[var(--color-fg)] outline-none placeholder:text-[var(--color-fg-subtle)]"
+        class="m-0 flex-1 border-0 bg-transparent p-0 font-[inherit] text-[15px] text-(--color-fg) outline-none placeholder:text-(--color-fg-subtle)"
         placeholder={t('search.placeholder')}
         aria-label={t('search.query')}
         autocomplete="off"
@@ -66,7 +66,7 @@ const kbdBase =
     >
     </div>
     <div
-      class="mono flex items-center gap-3.5 border-t border-[var(--color-border)] px-4 py-2.5 text-[11px] text-[var(--color-fg-subtle)]"
+      class="mono flex items-center gap-3.5 border-t border-(--color-border) px-4 py-2.5 text-[11px] text-(--color-fg-subtle)"
     >
       <span class="inline-flex items-center gap-1">
         <kbd class={kbdBase}>↑</kbd><kbd class={kbdBase}>↓</kbd>{' '}{t('search.navigate')}

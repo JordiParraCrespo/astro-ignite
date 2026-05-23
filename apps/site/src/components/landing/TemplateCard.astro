@@ -28,10 +28,10 @@ const {
 ---
 
 <article
-  class="flex flex-col overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] transition-colors duration-[0.12s] ease-[var(--ease-out-soft)] hover:border-[var(--color-border-strong)]"
+  class="flex flex-col overflow-hidden rounded-xl border border-(--color-border) bg-(--color-surface) transition-colors duration-[0.12s] ease-(--ease-out-soft) hover:border-(--color-border-strong)"
 >
   <div
-    class="relative aspect-[16/9] overflow-hidden border-b border-[var(--color-border)] bg-[var(--color-zinc-950)]"
+    class="relative aspect-[16/9] overflow-hidden border-b border-(--color-border) bg-(--color-zinc-950)"
   >
     <Picture
       src={preview}
@@ -50,14 +50,14 @@ const {
   </div>
   <div class="flex flex-col gap-3 px-6 py-[22px]">
     <div class="flex items-baseline justify-between gap-3">
-      <h3 class="m-0 text-[19px] font-medium tracking-[-0.025em] text-[var(--color-fg)]">{name}</h3>
-      <span class="mono text-[11px] text-[var(--color-fg-muted)]">{meta}</span>
+      <h3 class="m-0 text-[19px] font-medium tracking-[-0.025em] text-(--color-fg)">{name}</h3>
+      <span class="mono text-[11px] text-(--color-fg-muted)">{meta}</span>
     </div>
-    <p class="m-0 text-[14px] leading-[1.55] text-[var(--color-fg-muted)]">{description}</p>
+    <p class="m-0 text-[14px] leading-[1.55] text-(--color-fg-muted)">{description}</p>
     <div class="mt-1 flex flex-wrap gap-1.5">
       {
         tags.map((tag) => (
-          <span class="mono rounded-full border border-[var(--color-border)] px-[9px] py-[3px] text-[11px] text-[var(--color-fg-muted)]">
+          <span class="mono rounded-full border border-(--color-border) px-[9px] py-[3px] text-[11px] text-(--color-fg-muted)">
             {tag}
           </span>
         ))
@@ -65,12 +65,12 @@ const {
     </div>
   </div>
   <div
-    class="flex items-center justify-between gap-4 border-t border-[var(--color-border)] bg-[var(--color-surface-2)] px-6 py-3.5"
+    class="flex items-center justify-between gap-4 border-t border-(--color-border) bg-(--color-surface-2) px-6 py-3.5"
   >
     <span
-      class="mono overflow-hidden text-[12px] text-ellipsis whitespace-nowrap text-[var(--color-fg-muted)]"
+      class="mono overflow-hidden text-[12px] text-ellipsis whitespace-nowrap text-(--color-fg-muted)"
     >
-      <span class="text-[var(--color-fg-subtle)]">$</span>
+      <span class="text-(--color-fg-subtle)">$</span>
       {installCommand}
     </span>
     <a class="btn btn-outline btn-sm" href={previewUrl} target="_blank" rel="noopener">

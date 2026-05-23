@@ -87,7 +87,7 @@ const expected = [
   'src/components/seo/SEO.astro',
   'src/components/seo/JsonLd.astro',
   'src/components/image/Image.astro',
-  'src/components/image/HeroImage.astro',
+  'src/components/image/PriorityImage.astro',
   'src/layouts/BaseLayout.astro',
   'src/layouts/ArticleLayout.astro',
   'src/layouts/ProjectLayout.astro',

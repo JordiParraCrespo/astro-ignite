@@ -17,7 +17,7 @@ const sidePos = side === 'top' ? 'bottom-[calc(100%+6px)]' : 'top-[calc(100%+6px
   <span
     role="tooltip"
     class={cn(
-      'pointer-events-none absolute left-1/2 -translate-x-1/2 scale-[0.96] opacity-0 transition-[opacity,transform] duration-150 ease-out z-50 bg-fg text-bg text-xs leading-tight px-2 py-1.5 rounded-sm whitespace-nowrap group-hover:opacity-100 group-hover:scale-100 group-focus-within:opacity-100 group-focus-within:scale-100',
+      'pointer-events-none absolute left-1/2 z-50 -translate-x-1/2 scale-[0.96] rounded-sm bg-fg px-2 py-1.5 text-xs leading-tight whitespace-nowrap text-bg opacity-0 transition-[opacity,transform] duration-150 ease-out group-focus-within:scale-100 group-focus-within:opacity-100 group-hover:scale-100 group-hover:opacity-100',
       sidePos
     )}
   >

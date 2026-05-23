@@ -27,14 +27,14 @@ const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
       class="on-this-page sticky top-8 hidden max-h-[calc(100vh-64px)] flex-col gap-2.5 self-start overflow-y-auto px-4 lg:flex"
       aria-label={title}
     >
-      <div class="mono text-[10px] uppercase tracking-[0.12em] text-[var(--color-fg-muted)]">
+      <div class="mono text-[10px] tracking-[0.12em] text-(--color-fg-muted) uppercase">
         {title}
       </div>
       <ul class="m-0 flex list-none flex-col gap-1 p-0">
         {items.map((h) => (
           <li class:list={[h.depth === 3 && 'pl-3']}>
             <a
-              class="block rounded-r-[var(--radius-sm)] border-l-2 border-transparent px-2.5 py-1 text-[12px] leading-[1.45] text-[var(--color-fg-muted)] no-underline transition-colors duration-100 hover:text-[var(--color-fg)] data-[active]:border-l-[var(--color-fg)] data-[active]:font-medium data-[active]:text-[var(--color-fg)]"
+              class="block rounded-r-(--radius-sm) border-l-2 border-transparent px-2.5 py-1 text-[12px] leading-[1.45] text-(--color-fg-muted) no-underline transition-colors duration-100 hover:text-(--color-fg) data-[active]:border-l-(--color-fg) data-[active]:font-medium data-[active]:text-(--color-fg)"
               href={`#${h.slug}`}
               data-heading={h.slug}
             >

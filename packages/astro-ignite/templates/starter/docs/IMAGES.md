@@ -29,16 +29,16 @@ Defaults:
 - Quality 80
 - Blur placeholder (LQIP) — ~200 byte base64 thumbnail rendered as background while the real image loads
 
-## `<HeroImage>` — above-the-fold
+## `<PriorityImage>` — above-the-fold
 
 For the **single LCP image on the page** (hero section, blog post cover, project cover).
 
 ```astro
 ---
-import HeroImage from '@/components/image/HeroImage.astro';
+import PriorityImage from '@/components/image/PriorityImage.astro';
 ---
 
-<HeroImage src={post.data.heroImage} alt={post.data.heroImageAlt} width={1200} height={630} />
+<PriorityImage src={post.data.heroImage} alt={post.data.heroImageAlt} width={1200} height={630} />
 ```
 
 Defaults:
@@ -50,7 +50,7 @@ Defaults:
 - Quality 85 (slightly higher than content images — it's the LCP element)
 - **No blur placeholder** — would compete with the LCP image
 
-`width` and `height` are **required** on `<HeroImage>` so the layout reserves the slot before any CSS loads (zero CLS).
+`width` and `height` are **required** on `<PriorityImage>` so the layout reserves the slot before any CSS loads (zero CLS).
 
 ## Hero preload via BaseLayout
 
@@ -58,7 +58,7 @@ Components can't reach into `<head>`, so pages with a hero pass it explicitly:
 
 ```astro
 <BaseLayout title="…" description="…" preloadImages={[heroImage]}>
-  <HeroImage src={heroImage} alt="…" width={1200} height={630} />
+  <PriorityImage src={heroImage} alt="…" width={1200} height={630} />
 </BaseLayout>
 ```
 
@@ -121,4 +121,4 @@ import mobile from './mobile.jpg';
 </picture>
 ```
 
-For `<HeroImage>` art direction, build a small variant of the component that takes `mobileSrc` + `desktopSrc` props.
+For `<PriorityImage>` art direction, build a small variant of the component that takes `mobileSrc` + `desktopSrc` props.

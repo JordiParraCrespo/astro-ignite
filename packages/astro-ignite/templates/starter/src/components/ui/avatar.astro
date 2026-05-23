@@ -29,7 +29,7 @@ const sizes: Record<Size, string> = {
 
 <span
   class={cn(
-    'inline-flex items-center justify-center rounded-full overflow-hidden bg-surface-2 text-fg-muted shrink-0 select-none',
+    'inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-surface-2 text-fg-muted select-none',
     sizes[size],
     className
   )}
@@ -41,7 +41,7 @@ const sizes: Record<Size, string> = {
         alt={alt}
         loading="lazy"
         decoding="async"
-        class="w-full h-full object-cover block"
+        class="block h-full w-full object-cover"
       />
     ) : (
       <span class="text-[0.4em] font-semibold tracking-[0.02em]" aria-hidden="true">

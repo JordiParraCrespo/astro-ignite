@@ -324,6 +324,25 @@
         "A changeset under .changeset/ documents the addition as a non-breaking refactor for end users who scaffolded the docs template earlier and want to mirror the chrome back."
       ],
       "issue": 50
+    },
+    {
+      "id": 17,
+      "name": "lint-auto-fix-tailwind-canonical-class-i",
+      "title": "Lint: auto-fix Tailwind canonical class issues via eslint-plugin-better-tailwindcss",
+      "capabilities": ["templates-css-tokens"],
+      "description": "# Lint: auto-fix Tailwind canonical class issues via eslint-plugin-better-tailwindcss\n\n## Problem\n\nThe Tailwind CSS IntelliSense extension surfaces `suggestCanonicalClasses` warnings across the templates — e.g.\n\n```\ntext-[length:var(--ig-sans-size)]   →   text-(length:--ig-sans-size)\n```\n\nThe hint shows up inline in the editor, but **nothing in our toolchain auto-fixes it**:\n\n- `prettier` + `prettier-plugin-astro` don't rewrite arbitrary values.\n- The current `eslint.config.js` ships `@eslint/js`, `typescript-eslint`, `eslint-plugin-astro`, `eslint-plugin-jsx-a11y` — no Tailwind plugin.\n- The `suggestCanonicalClasses` rule lives in `@tailwindcss/language-server` and is only available as a per-editor code action.\n\nResult: drift accumulates between the long-form arbitrary syntax (`text-[length:var(--foo)]`) and Tailwind v4's compact CSS-variable syntax (`text-(length:--foo)`), unsorted class lists, and stray whitespace inside `class=\\\"…\\\"`. We can't pre-commit / CI-gate any of that today.\n\n## Proposed approach\n\nAdd `eslint-plugin-better-tailwindcss` (the actively-maintained fork of `eslint-plugin-tailwindcss` with Tailwind v4 support) and wire three auto-fixable rules:\n\n1. **`better-",
+      "acceptance": [
+        "eslint-plugin-better-tailwindcss is added to devDependencies at the repo root with a pinned version, and the lockfile is updated in the same change.",
+        "eslint.config.js registers the plugin and enables better-tailwindcss/enforce-shorthand-css-variables, better-tailwindcss/sort-classes, and better-tailwindcss/no-unnecessary-whitespace as 'error', with the plugin's entryPoint setting pointed at each template's src/styles/global.css so the rules see the project's @theme tokens.",
+        "A pnpm lint:fix script exists in the root package.json that runs eslint . --fix across the workspace, mirroring the existing recursive pnpm lint filter (apps/playground/ excluded).",
+        "No raw long-form arbitrary-CSS-variable class — text-[length:var(--…)], text-[color:var(--…)], text-[var(--…)], bg-[color:var(--…)], bg-[var(--…)], border-[color:var(--…)], border-[var(--…)], ring-[color:var(--…)], ring-[var(--…)] — remains under packages/templates/**, packages/registry/**, or apps/{site,docs}/src/** that the three rules can auto-fix; running pnpm lint exits 0 with no better-tailwindcss errors or warnings.",
+        "After the auto-fix sweep, pnpm format, pnpm format:check, pnpm lint, pnpm typecheck, pnpm test, and pnpm audit:invariants --change lint-auto-fix-tailwind-canonical-class-i all exit 0.",
+        "pnpm scaffold:test passes; the rendered output of the starter and docs templates is visually unchanged (the rules only rewrite class strings into shorter canonical form — no DOM, no token, and no behavior change).",
+        "packages/astro-ignite/templates/starter/ and packages/astro-ignite/templates/docs/ are refreshed via node packages/astro-ignite/scripts/copy-templates.mjs so the CLI cache mirrors the rewritten source byte-for-byte (modulo the documented intentional differences in copy-templates.mjs).",
+        "No new runtime dependency is added to any packages/templates/*/package.json or apps/*/package.json — eslint-plugin-better-tailwindcss is devDependencies-only at the root.",
+        "A changeset under .changeset/ describes the addition as a non-breaking lint hardening for downstream users who scaffolded an earlier version, with a one-line note telling them how to opt in (copy the eslint.config.js block and run pnpm lint:fix)."
+      ],
+      "issue": 55
     }
   ]
 }

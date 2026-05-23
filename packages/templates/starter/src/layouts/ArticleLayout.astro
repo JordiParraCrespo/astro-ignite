@@ -98,12 +98,12 @@ const dateFmt = new Intl.DateTimeFormat(locale, {
 >
   <article class="mx-auto max-w-[48rem] px-5 pt-8 pb-16">
     <header
-      class="mb-10 [&_picture]:block [&_picture]:h-auto [&_picture]:w-full [&_picture]:overflow-hidden [&_picture]:rounded-xl [&_img]:block [&_img]:h-auto [&_img]:w-full [&_img]:overflow-hidden [&_img]:rounded-xl"
+      class="mb-10 [&_img]:block [&_img]:h-auto [&_img]:w-full [&_img]:overflow-hidden [&_img]:rounded-xl [&_picture]:block [&_picture]:h-auto [&_picture]:w-full [&_picture]:overflow-hidden [&_picture]:rounded-xl"
     >
       <nav class="mb-6 text-sm" aria-label={t('nav.breadcrumbs')}>
         <a
           href={getRelativeLocaleUrl(locale, '/blog')}
-          class="text-[var(--color-fg-muted)] no-underline hover:text-[var(--color-fg)]"
+          class="text-(--color-fg-muted) no-underline hover:text-(--color-fg)"
         >
           ← {t('blog.backToBlog')}
         </a>
