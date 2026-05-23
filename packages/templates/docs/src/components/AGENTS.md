@@ -1,0 +1,33 @@
+# Components
+
+UI for the docs site. Organized by intent, not by page.
+
+## Layout
+
+- `ui/` — **atoms** (shadcn-style, from the astro-ignite registry, owned
+  here). Singletons flat (`button.astro`, …); compound families in their
+  own folder (`card/`, `tabs/`, `accordion/`, `dialog/`,
+  `dropdown-menu/`), one file per part.
+- `docs/` — the documentation chrome: `SidebarNav`, `OnThisPage`,
+  `Breadcrumbs`, `PrevNext`, `SearchBox` (the `<dialog>`-based command
+  palette), `Callout`, `CodeBlock`, `ComponentShowcase`.
+- `common/` — site chrome (`Header`, `Footer`, `Brand`, `ThemeToggle`,
+  `LocaleSwitcher`, `Analytics`).
+- `seo/` — `SEO.astro` + `JsonLd.astro` (the page's `@graph` node).
+- `legal/` — `CookieBanner.astro` (consent gate). `not-found/` — 404 hero.
+
+## Rules (enforced)
+
+- **Astro + vanilla JS only** — no React/Vue/Svelte/Radix. Native HTML
+  primitives: `<details name>` (accordion), `<dialog>` (dialog + search),
+  popover API (dropdown), CSS (tooltip), custom elements (`ai-tabs`,
+  `ai-toaster`).
+- **Design tokens only** — Tailwind v4 utilities resolving `--color-*`
+  (`bg-[var(--color-bg)]`); never raw zinc/hex.
+- **Scoped `<style>` only for what Tailwind can't express**, each with a
+  leading `<!-- tailwind-exception: <reason> -->` comment.
+- **No comments** unless the _why_ is non-obvious; **no single-class
+  atoms**.
+- Merge classes with `cn` from `src/lib/cn.ts`.
+
+Shared atoms belong in the registry first, then here.
