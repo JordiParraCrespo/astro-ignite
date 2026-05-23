@@ -63,7 +63,7 @@ const linkActive = 'bg-[var(--color-surface-2)] font-medium text-[var(--color-fg
 ---
 
 <aside
-  class="sidebar sticky top-0 flex h-screen flex-col gap-5 overflow-y-auto overflow-x-hidden border-r border-[var(--color-border)] bg-[var(--color-bg)] px-4 pb-8 pt-7"
+  class="sidebar sticky top-0 flex h-screen flex-col gap-5 overflow-x-hidden overflow-y-auto border-r border-(--color-border) bg-(--color-bg) px-4 pt-7 pb-8"
   aria-label={t('nav.documentation')}
 >
   <header class="px-1">
@@ -96,7 +96,7 @@ const linkActive = 'bg-[var(--color-surface-2)] font-medium text-[var(--color-fg
                   >
                     <span>{item.label ?? titleForSlug(item.slug)}</span>
                     {item.badge && (
-                      <span class="mono ml-auto rounded-[var(--radius-sm)] border border-[var(--color-border)] px-[5px] py-px text-[10px] text-[var(--color-fg-subtle)]">
+                      <span class="mono ml-auto rounded-(--radius-sm) border border-(--color-border) px-[5px] py-px text-[10px] text-(--color-fg-subtle)">
                         {item.badge}
                       </span>
                     )}

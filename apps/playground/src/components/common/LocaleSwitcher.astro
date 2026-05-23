@@ -39,7 +39,7 @@ const localeLabels: Record<string, string> = {
   siteConfig.locales.length > 1 && (
     <details class="relative">
       <summary
-        class="inline-flex cursor-pointer list-none items-center gap-1.5 rounded-lg p-2 text-sm text-[var(--color-fg-muted)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-fg)] [&::-webkit-details-marker]:hidden"
+        class="inline-flex cursor-pointer list-none items-center gap-1.5 rounded-lg p-2 text-sm text-(--color-fg-muted) hover:bg-(--color-surface-2) hover:text-(--color-fg) [&::-webkit-details-marker]:hidden"
         aria-label={t('locale.switch')}
         title={t('locale.switch')}
       >
@@ -61,7 +61,7 @@ const localeLabels: Record<string, string> = {
       </summary>
       <ul
         role="menu"
-        class="absolute top-[calc(100%+0.5rem)] right-0 z-30 m-0 min-w-[8rem] list-none rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] p-1 shadow-[0_8px_16px_-8px_rgb(0_0_0_/_0.2)]"
+        class="absolute top-[calc(100%+0.5rem)] right-0 z-30 m-0 min-w-[8rem] list-none rounded-lg border border-(--color-border) bg-(--color-bg) p-1 shadow-[0_8px_16px_-8px_rgb(0_0_0_/_0.2)]"
       >
         {siteConfig.locales.map((loc) => (
           <li>
@@ -70,7 +70,7 @@ const localeLabels: Record<string, string> = {
               hreflang={siteConfig.hreflang[loc] ?? loc}
               aria-current={loc === currentLocale ? 'true' : undefined}
               data-active={loc === currentLocale ? '' : null}
-              class="block rounded-md px-2.5 py-2 text-sm text-[var(--color-fg)] no-underline transition-colors duration-100 ease-[var(--ease-out-soft)] hover:bg-[var(--color-surface-2)] data-[active]:font-medium data-[active]:text-[var(--color-primary)]"
+              class="block rounded-md px-2.5 py-2 text-sm text-(--color-fg) no-underline transition-colors duration-100 ease-(--ease-out-soft) hover:bg-(--color-surface-2) data-[active]:font-medium data-[active]:text-(--color-primary)"
             >
               {localeLabels[loc] ?? loc}
             </a>

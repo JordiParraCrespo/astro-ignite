@@ -41,15 +41,20 @@ output stay identical. Visual parity is the gate.
 
 In:
 
-- Root `package.json` (`devDependencies` + `lint:fix` script).
-- Root `eslint.config.js` (register plugin + three rules at `error`,
-  per-template `entryPoint` settings).
+- `eslint-plugin-better-tailwindcss` as a pinned `devDependency` at the
+  workspace root **and** in `packages/templates/{starter,docs}/package.json`
+  (those templates ship their own `eslint.config.js`).
+- The plugin block (three rules at `error`, `entryPoint` per package) in the
+  root `eslint.config.js` **and** in each template's own `eslint.config.js`
+  (flat config does not cascade).
+- A `lint:fix` script: root `pnpm -r --filter=!playground lint:fix` plus a
+  sibling `eslint src --fix` in every package that defines `lint`.
 - Auto-fix sweep over class strings under:
   - `packages/templates/starter/src/**/*.astro`
   - `packages/templates/docs/src/**/*.astro`
-  - `packages/registry/base/**/*.astro`
   - `apps/site/src/**/*.astro`
   - `apps/docs/src/**/*.astro`
+    (`packages/registry/base/**` has no arbitrary-CSS-variable classes.)
 - Refreshed CLI template cache at `packages/astro-ignite/templates/{starter,docs}/`
   via `node packages/astro-ignite/scripts/copy-templates.mjs`.
 - One changeset documenting the addition as a non-breaking lint hardening.
@@ -70,7 +75,7 @@ Out:
 
 ## Scenarios
 
-### S1 — `enforce-shorthand-css-variables` rewrites the long form
+### S1 — `enforce-consistent-variable-syntax` rewrites the long form
 
 - **GIVEN** a starter component contains
   `class="text-[length:var(--ig-sans-size)] text-[var(--color-fg-muted)]"`
@@ -79,7 +84,7 @@ Out:
   `class="text-(length:--ig-sans-size) text-(--color-fg-muted)"`
   and `pnpm lint` exits 0 with no `better-tailwindcss` errors remaining.
 
-### S2 — `sort-classes` and `no-unnecessary-whitespace` apply
+### S2 — `enforce-consistent-class-order` and `no-unnecessary-whitespace` apply
 
 - **GIVEN** an Astro file contains `class="  pb-4  pt-2  flex   gap-2 "`
   (out-of-order classes, leading / trailing / internal extra whitespace)
@@ -92,7 +97,7 @@ Out:
 
 - **GIVEN** a follow-up PR re-introduces `class="bg-[var(--color-bg)]"`
 - **WHEN** `pnpm lint` runs in CI
-- **THEN** ESLint exits non-zero with a `better-tailwindcss/enforce-shorthand-css-variables`
+- **THEN** ESLint exits non-zero with a `better-tailwindcss/enforce-consistent-variable-syntax`
   error pointing at the offending file and line, and the PR cannot merge
   until the contributor runs `pnpm lint:fix`.
 
@@ -107,8 +112,9 @@ Out:
 
 ### S5 — `entryPoint` resolves project tokens
 
-- **GIVEN** `eslint.config.js` registers `better-tailwindcss` with overrides
-  that point each template's source tree at its own `src/styles/global.css`
+- **GIVEN** each config (root + each template's own `eslint.config.js`)
+  registers `better-tailwindcss` with `entryPoint: 'src/styles/global.css'`,
+  and `pnpm lint` runs `eslint src` from each package directory
 - **WHEN** ESLint lints
   `packages/templates/starter/src/components/common/Hero.astro`
 - **THEN** the plugin loads `packages/templates/starter/src/styles/global.css`
@@ -129,12 +135,15 @@ Out:
 
 ### S7 — No new runtime dependency lands in a template
 
-- **GIVEN** the change adds `eslint-plugin-better-tailwindcss`
-- **WHEN** `git diff` is inspected against every `packages/templates/*/package.json`
-  and `apps/*/package.json`
-- **THEN** the diff is empty — the plugin lives only in the root
-  `devDependencies`, and `pnpm audit:invariants --change lint-auto-fix-tailwind-canonical-class-i`
-  passes the `no-new-runtime-deps` check on every template.
+- **GIVEN** the change adds `eslint-plugin-better-tailwindcss` to the
+  `devDependencies` of the root and of `packages/templates/{starter,docs}/
+package.json` (so the templates' shipped `eslint.config.js` resolves)
+- **WHEN** `git diff` is inspected against every template's `package.json`
+- **THEN** the only dependency change is under `devDependencies` — no
+  `dependencies` (runtime) entry is added — and
+  `pnpm audit:invariants --change lint-auto-fix-tailwind-canonical-class-i`
+  passes the runtime-dep check (`scripts/perf/run.mjs --deps`) on every
+  template.
 
 ### S8 — Changeset documents the lint hardening
 

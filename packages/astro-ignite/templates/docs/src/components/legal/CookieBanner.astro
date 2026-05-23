@@ -23,7 +23,7 @@ const cookiesPolicyUrl = getRelativeLocaleUrl(locale, '/legal/cookies');
 
 <aside
   id="cookie-banner"
-  class="cookie-banner fixed bottom-5 left-5 right-5 z-50 ml-auto max-w-[26rem] rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-5 text-[0.9rem] leading-[1.5] text-[var(--color-fg)] shadow-[0_10px_25px_-10px_rgb(0_0_0_/_0.25)] sm:left-auto"
+  class="cookie-banner fixed right-5 bottom-5 left-5 z-50 ml-auto max-w-[26rem] rounded-xl border border-(--color-border) bg-(--color-bg) p-5 text-[0.9rem] leading-[1.5] text-(--color-fg) shadow-[0_10px_25px_-10px_rgb(0_0_0_/_0.25)] sm:left-auto"
   role="region"
   aria-labelledby="cookie-banner-title"
   aria-describedby="cookie-banner-description"
@@ -38,21 +38,21 @@ const cookiesPolicyUrl = getRelativeLocaleUrl(locale, '/legal/cookies');
     <button
       type="button"
       data-cookie-action="decline"
-      class="cursor-pointer rounded-lg border border-[var(--color-border)] bg-transparent px-3.5 py-2 font-[inherit] text-sm font-medium text-[var(--color-fg-muted)] transition-opacity duration-150 hover:text-[var(--color-fg)]"
+      class="cursor-pointer rounded-lg border border-(--color-border) bg-transparent px-3.5 py-2 font-[inherit] text-sm font-medium text-(--color-fg-muted) transition-opacity duration-150 hover:text-(--color-fg)"
     >
       {t('cookies.banner.decline')}
     </button>
     <button
       type="button"
       data-cookie-action="accept"
-      class="cursor-pointer rounded-lg border border-transparent bg-[var(--color-fg)] px-3.5 py-2 font-[inherit] text-sm font-medium text-[var(--color-bg)] transition-opacity duration-150 hover:opacity-90"
+      class="cursor-pointer rounded-lg border border-transparent bg-(--color-fg) px-3.5 py-2 font-[inherit] text-sm font-medium text-(--color-bg) transition-opacity duration-150 hover:opacity-90"
     >
       {t('cookies.banner.accept')}
     </button>
   </div>
   <a
     href={cookiesPolicyUrl}
-    class="text-[0.8125rem] text-[var(--color-fg-muted)] underline underline-offset-2 hover:text-[var(--color-fg)]"
+    class="text-[0.8125rem] text-(--color-fg-muted) underline underline-offset-2 hover:text-(--color-fg)"
   >
     {t('cookies.banner.policyLink')}
   </a>

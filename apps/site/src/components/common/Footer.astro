@@ -29,18 +29,18 @@ const ghUrl = siteConfig.social.github ?? 'https://github.com/JordiParraCrespo/a
 ---
 
 <footer
-  class="border-t border-[var(--color-border)] pt-10 pb-14 font-mono text-[12px] text-[var(--color-fg-muted)]"
+  class="border-t border-(--color-border) pt-10 pb-14 font-mono text-[12px] text-(--color-fg-muted)"
 >
   <div
-    class="mx-auto flex max-w-[1200px] flex-wrap justify-between gap-8 px-10 max-[720px]:px-6 [&_a]:text-[var(--color-fg-muted)] [&_a]:no-underline [&_a]:transition-colors [&_a]:duration-[0.12s] [&_a]:ease-[var(--ease-out-soft)] hover:[&_a]:text-[var(--color-fg)]"
+    class="mx-auto flex max-w-[1200px] flex-wrap justify-between gap-8 px-10 max-[720px]:px-6 [&_a]:text-(--color-fg-muted) [&_a]:no-underline [&_a]:transition-colors [&_a]:duration-[0.12s] [&_a]:ease-(--ease-out-soft) hover:[&_a]:text-(--color-fg)"
   >
     <div class="flex max-w-[36ch] flex-col gap-3">
       <Brand variant="lockup" size={0.32} />
-      <p class="mono m-0 text-[12px] text-[var(--color-fg-muted)]">{t('landing.footer.lede')}</p>
+      <p class="mono m-0 text-[12px] text-(--color-fg-muted)">{t('landing.footer.lede')}</p>
     </div>
     <div class="flex flex-wrap gap-12">
       <div class="flex flex-col gap-2">
-        <span class="mb-1 text-[var(--color-fg)]">{t('landing.footer.productHead')}</span>
+        <span class="mb-1 text-(--color-fg)">{t('landing.footer.productHead')}</span>
         <a href={`${homeRoot}/#templates`}>{t('landing.nav.templates')}</a>
         <a href={blogHref}>{t('landing.nav.blog')}</a>
         <a href={docsUrl} target="_blank" rel="noopener">{t('landing.nav.docs')}</a>
@@ -48,14 +48,14 @@ const ghUrl = siteConfig.social.github ?? 'https://github.com/JordiParraCrespo/a
         <a href={`${ghUrl}/releases`} rel="noopener">{t('landing.nav.changelog')}</a>
       </div>
       <div class="flex flex-col gap-2">
-        <span class="mb-1 text-[var(--color-fg)]">{t('landing.footer.resourcesHead')}</span>
+        <span class="mb-1 text-(--color-fg)">{t('landing.footer.resourcesHead')}</span>
         <a href={ghUrl} rel="noopener">GitHub</a>
         <a href={`${ghUrl}/issues`} rel="noopener">{t('landing.footer.issues')}</a>
         <a href={`${ghUrl}/discussions`} rel="noopener">{t('landing.footer.discussions')}</a>
         <a href="https://www.npmjs.com/package/create-astro-ignite" rel="noopener">npm</a>
       </div>
       <div class="flex flex-col gap-2">
-        <span class="mb-1 text-[var(--color-fg)]">{t('landing.footer.legalHead')}</span>
+        <span class="mb-1 text-(--color-fg)">{t('landing.footer.legalHead')}</span>
         <a href={`${ghUrl}/blob/main/LICENSE`} rel="noopener">{t('landing.footer.license')}</a>
         <a href={privacyHref}>{t('landing.footer.privacy')}</a>
         <a href={termsHref}>{t('landing.footer.terms')}</a>

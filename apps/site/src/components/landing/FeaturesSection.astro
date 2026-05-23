@@ -36,11 +36,11 @@ const FEATURE_IDS = [
       grid edge so only the outer rounded container border is visible.
     -->
     <div
-      class="grid grid-cols-3 max-[920px]:grid-cols-2 max-[560px]:grid-cols-1 overflow-hidden rounded-xl border border-border
-        [&_.feat:nth-child(3n)]:border-r-0 [&_.feat:nth-last-child(-n+3)]:border-b-0
-        max-[920px]:[&_.feat]:border-r max-[920px]:[&_.feat]:border-b max-[920px]:[&_.feat]:border-[var(--color-border)]
-        max-[920px]:[&_.feat:nth-child(2n)]:border-r-0 max-[920px]:[&_.feat:nth-last-child(-n+2)]:border-b-0
-        max-[560px]:[&_.feat]:border-r-0 max-[560px]:[&_.feat:not(:last-child)]:border-b max-[560px]:[&_.feat:not(:last-child)]:border-[var(--color-border)]"
+      class="grid grid-cols-3 overflow-hidden rounded-xl border border-border max-[920px]:grid-cols-2 max-[560px]:grid-cols-1
+        max-[920px]:[&_.feat]:border-r max-[920px]:[&_.feat]:border-b
+        max-[920px]:[&_.feat]:border-(--color-border) max-[560px]:[&_.feat]:border-r-0 max-[560px]:[&_.feat:not(:last-child)]:border-b
+        max-[560px]:[&_.feat:not(:last-child)]:border-(--color-border) max-[920px]:[&_.feat:nth-child(2n)]:border-r-0
+        [&_.feat:nth-child(3n)]:border-r-0 max-[920px]:[&_.feat:nth-last-child(-n+2)]:border-b-0 [&_.feat:nth-last-child(-n+3)]:border-b-0"
     >
       {
         FEATURE_IDS.map((f) => (

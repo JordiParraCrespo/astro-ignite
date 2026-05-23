@@ -31,7 +31,7 @@ const siteName = siteConfig.name[locale] ?? siteConfig.name[siteConfig.defaultLo
 ---
 
 <header
-  class="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[color-mix(in_oklch,var(--color-bg)_92%,transparent)] backdrop-blur-[12px]"
+  class="sticky top-0 z-40 border-b border-(--color-border) bg-[color-mix(in_oklch,var(--color-bg)_92%,transparent)] backdrop-blur-[12px]"
 >
   <nav
     class="mx-auto flex max-w-[80rem] items-center justify-between gap-4 px-5 py-3.5"
@@ -41,7 +41,7 @@ const siteName = siteConfig.name[locale] ?? siteConfig.name[siteConfig.defaultLo
 
     <button
       type="button"
-      class="nav-toggle inline-flex cursor-pointer appearance-none items-center rounded-lg border-none bg-transparent p-2 text-[var(--color-fg)] hover:bg-[var(--color-surface-2)] md:hidden"
+      class="nav-toggle inline-flex cursor-pointer appearance-none items-center rounded-lg border-none bg-transparent p-2 text-(--color-fg) hover:bg-(--color-surface-2) md:hidden"
       aria-controls="primary-nav-menu"
       aria-expanded="false"
       aria-label={t('nav.openMenu')}
@@ -55,7 +55,7 @@ const siteName = siteConfig.name[locale] ?? siteConfig.name[siteConfig.defaultLo
 
     <div
       id="primary-nav-menu"
-      class="nav-menu hidden md:flex md:items-center md:gap-4 [&.open]:absolute [&.open]:top-full [&.open]:right-0 [&.open]:left-0 [&.open]:block [&.open]:border-b [&.open]:border-[var(--color-border)] [&.open]:bg-[var(--color-bg)] [&.open]:px-5 [&.open]:pt-4 [&.open]:pb-6 md:[&.open]:static md:[&.open]:border-0 md:[&.open]:bg-transparent md:[&.open]:p-0"
+      class="nav-menu hidden md:flex md:items-center md:gap-4 [&.open]:absolute [&.open]:top-full [&.open]:right-0 [&.open]:left-0 [&.open]:block [&.open]:border-b [&.open]:border-(--color-border) [&.open]:bg-(--color-bg) [&.open]:px-5 [&.open]:pt-4 [&.open]:pb-6 md:[&.open]:static md:[&.open]:border-0 md:[&.open]:bg-transparent md:[&.open]:p-0"
     >
       <ul
         class="m-0 flex list-none gap-6 p-0 [.nav-menu.open_&]:flex-col [.nav-menu.open_&]:items-start [.nav-menu.open_&]:gap-3.5 md:[.nav-menu.open_&]:flex-row md:[.nav-menu.open_&]:items-center md:[.nav-menu.open_&]:gap-6"
@@ -65,7 +65,7 @@ const siteName = siteConfig.name[locale] ?? siteConfig.name[siteConfig.defaultLo
             <li>
               <a
                 href={link.href}
-                class="text-[0.9375rem] font-medium text-[var(--color-fg-muted)] no-underline transition-colors duration-150 ease-[var(--ease-out-soft)] hover:text-[var(--color-fg)] [.nav-menu.open_&]:text-[1.125rem] md:[.nav-menu.open_&]:text-[0.9375rem]"
+                class="text-[0.9375rem] font-medium text-(--color-fg-muted) no-underline transition-colors duration-150 ease-(--ease-out-soft) hover:text-(--color-fg) [.nav-menu.open_&]:text-[1.125rem] md:[.nav-menu.open_&]:text-[0.9375rem]"
               >
                 {link.label}
               </a>
@@ -74,7 +74,7 @@ const siteName = siteConfig.name[locale] ?? siteConfig.name[siteConfig.defaultLo
         }
       </ul>
       <div
-        class="ml-4 flex items-center gap-2 [.nav-menu.open_&]:mt-4 [.nav-menu.open_&]:ml-0 [.nav-menu.open_&]:w-full [.nav-menu.open_&]:justify-start [.nav-menu.open_&]:border-t [.nav-menu.open_&]:border-[var(--color-border)] [.nav-menu.open_&]:pt-4 md:[.nav-menu.open_&]:mt-0 md:[.nav-menu.open_&]:ml-4 md:[.nav-menu.open_&]:w-auto md:[.nav-menu.open_&]:border-0 md:[.nav-menu.open_&]:pt-0"
+        class="ml-4 flex items-center gap-2 [.nav-menu.open_&]:mt-4 [.nav-menu.open_&]:ml-0 [.nav-menu.open_&]:w-full [.nav-menu.open_&]:justify-start [.nav-menu.open_&]:border-t [.nav-menu.open_&]:border-(--color-border) [.nav-menu.open_&]:pt-4 md:[.nav-menu.open_&]:mt-0 md:[.nav-menu.open_&]:ml-4 md:[.nav-menu.open_&]:w-auto md:[.nav-menu.open_&]:border-0 md:[.nav-menu.open_&]:pt-0"
       >
         <LocaleSwitcher />
         <ThemeToggle />

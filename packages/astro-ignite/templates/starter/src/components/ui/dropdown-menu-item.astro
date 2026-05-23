@@ -10,7 +10,7 @@ export type Props = (AsButton | AsAnchor) & { class?: string; destructive?: bool
 const { class: className, href, destructive = false, ...rest } = Astro.props;
 
 const classes = cn(
-  'flex items-center gap-2 w-full px-2 py-1.5 rounded-[calc(var(--radius)-2px)] bg-transparent border-none font-inherit text-[13px] leading-snug text-left no-underline cursor-pointer hover:bg-surface-2 focus-visible:bg-surface-2 focus-visible:outline-none',
+  'font-inherit flex w-full cursor-pointer items-center gap-2 rounded-[calc(var(--radius)-2px)] border-none bg-transparent px-2 py-1.5 text-left text-[13px] leading-snug no-underline hover:bg-surface-2 focus-visible:bg-surface-2 focus-visible:outline-none',
   destructive ? 'text-danger' : 'text-fg',
   className
 );

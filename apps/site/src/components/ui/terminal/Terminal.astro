@@ -14,7 +14,7 @@ const { path, shell, label, class: className } = Astro.props;
 
 <div
   class:list={[
-    'min-w-0 max-w-full overflow-hidden rounded-xl border border-term-border bg-term-bg shadow-terminal',
+    'max-w-full min-w-0 overflow-hidden rounded-xl border border-term-border bg-term-bg shadow-terminal',
     className,
   ]}
   aria-label={label}

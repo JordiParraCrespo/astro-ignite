@@ -27,32 +27,32 @@ const cookiesPolicyUrl = getRelativeLocaleUrl(locale, '/legal/cookies');
 
 <aside
   id="cookie-banner"
-  class="fixed right-5 bottom-5 left-5 z-50 ml-auto max-w-[26rem] rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-5 text-[0.9rem] leading-[1.5] text-[var(--color-fg)] shadow-[0_10px_25px_-10px_rgb(0_0_0_/_0.25)] sm:left-auto [html[data-consent=recorded]_&]:hidden"
+  class="fixed right-5 bottom-5 left-5 z-50 ml-auto max-w-[26rem] rounded-xl border border-(--color-border) bg-(--color-bg) p-5 text-[0.9rem] leading-[1.5] text-(--color-fg) shadow-[0_10px_25px_-10px_rgb(0_0_0_/_0.25)] sm:left-auto [html[data-consent=recorded]_&]:hidden"
   role="region"
   aria-labelledby="cookie-banner-title"
   aria-describedby="cookie-banner-description"
 >
   <h2 id="cookie-banner-title" class="m-0 mb-1 text-base font-semibold">{t('cookies.banner.title')}</h2>
-  <p id="cookie-banner-description" class="m-0 mb-3.5 text-[var(--color-fg-muted)]">{t('cookies.banner.description')}</p>
+  <p id="cookie-banner-description" class="m-0 mb-3.5 text-(--color-fg-muted)">{t('cookies.banner.description')}</p>
   <div class="mb-2.5 flex justify-end gap-2">
     <button
       type="button"
       data-cookie-action="decline"
-      class="cursor-pointer rounded-lg border border-[var(--color-border)] bg-transparent px-3.5 py-2 font-[inherit] text-sm font-medium text-[var(--color-fg-muted)] transition-opacity duration-150 ease-[var(--ease-out-soft)] hover:text-[var(--color-fg)]"
+      class="cursor-pointer rounded-lg border border-(--color-border) bg-transparent px-3.5 py-2 font-[inherit] text-sm font-medium text-(--color-fg-muted) transition-opacity duration-150 ease-(--ease-out-soft) hover:text-(--color-fg)"
     >
       {t('cookies.banner.decline')}
     </button>
     <button
       type="button"
       data-cookie-action="accept"
-      class="cursor-pointer rounded-lg border border-transparent bg-[var(--color-fg)] px-3.5 py-2 font-[inherit] text-sm font-medium text-[var(--color-bg)] transition-opacity duration-150 ease-[var(--ease-out-soft)] hover:opacity-90"
+      class="cursor-pointer rounded-lg border border-transparent bg-(--color-fg) px-3.5 py-2 font-[inherit] text-sm font-medium text-(--color-bg) transition-opacity duration-150 ease-(--ease-out-soft) hover:opacity-90"
     >
       {t('cookies.banner.accept')}
     </button>
   </div>
   <a
     href={cookiesPolicyUrl}
-    class="text-[0.8125rem] text-[var(--color-fg-muted)] underline underline-offset-2 hover:text-[var(--color-fg)]"
+    class="text-[0.8125rem] text-(--color-fg-muted) underline underline-offset-2 hover:text-(--color-fg)"
   >
     {t('cookies.banner.policyLink')}
   </a>

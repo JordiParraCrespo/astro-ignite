@@ -41,7 +41,7 @@ const cta = siteConfig.nav.cta ?? null;
 ---
 
 <header
-  class="sticky top-0 z-50 border-b border-[var(--color-border)] bg-[color-mix(in_oklab,var(--color-bg)_72%,transparent)] [backdrop-filter:saturate(140%)_blur(14px)] [-webkit-backdrop-filter:saturate(140%)_blur(14px)]"
+  class="sticky top-0 z-50 border-b border-(--color-border) bg-[color-mix(in_oklab,var(--color-bg)_72%,transparent)] [backdrop-filter:saturate(140%)_blur(14px)] [-webkit-backdrop-filter:saturate(140%)_blur(14px)]"
   aria-label={t('nav.primary')}
 >
   <div
@@ -49,15 +49,15 @@ const cta = siteConfig.nav.cta ?? null;
   >
     <Brand href={homeUrl} variant="lockup" size={0.34} label={siteName} />
     <span
-      class="mono inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-2)] px-2.5 py-[5px] pl-2 text-[12px] text-[var(--color-fg-muted)] max-[920px]:hidden"
+      class="mono inline-flex items-center gap-2 rounded-full border border-(--color-border) bg-(--color-surface-2) px-2.5 py-[5px] pl-2 text-[12px] text-(--color-fg-muted) max-[920px]:hidden"
     >
-      <span class="h-[6px] w-[6px] rounded-full bg-[var(--color-fg)]" aria-hidden="true"></span>v0.1.0 · pre-1.0
+      <span class="h-[6px] w-[6px] rounded-full bg-(--color-fg)" aria-hidden="true"></span>v0.1.0 · pre-1.0
     </span>
     <div class="ml-auto flex items-center gap-4 max-[720px]:gap-3 max-[420px]:gap-1.5">
       {
         navLinks.map((link) => (
           <a
-            class="text-[13px] text-[var(--color-fg-muted)] no-underline transition-colors duration-[0.12s] ease-[var(--ease-out-soft)] hover:text-[var(--color-fg)] max-[560px]:hidden data-[nav-key=github]:max-[720px]:hidden"
+            class="text-[13px] text-(--color-fg-muted) no-underline transition-colors duration-[0.12s] ease-(--ease-out-soft) hover:text-(--color-fg) data-[nav-key=github]:max-[720px]:hidden max-[560px]:hidden"
             data-nav-key={link.key}
             href={resolveHref(link)}
             target={link.external ? '_blank' : undefined}

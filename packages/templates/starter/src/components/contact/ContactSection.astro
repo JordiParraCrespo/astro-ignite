@@ -19,13 +19,13 @@ const inputError = result?.error && isInputError(result.error) ? result.error : 
     <h1 class="m-0 mb-3 text-[clamp(2rem,5vw,2.75rem)] leading-[1.1] font-bold tracking-[-0.02em]">
       {t('seo.contact.title')}
     </h1>
-    <p class="m-0 text-lg text-[var(--color-fg-muted)]">{t('seo.contact.description')}</p>
+    <p class="m-0 text-lg text-(--color-fg-muted)">{t('seo.contact.description')}</p>
   </header>
 
   {
     result && !result.error && (
       <div
-        class="mb-6 rounded-lg border px-4 py-3.5 text-[0.9375rem] border-[color-mix(in_oklch,var(--color-success)_30%,transparent)] bg-[color-mix(in_oklch,var(--color-success)_12%,var(--color-bg))] text-[var(--color-success)]"
+        class="mb-6 rounded-lg border border-[color-mix(in_oklch,var(--color-success)_30%,transparent)] bg-[color-mix(in_oklch,var(--color-success)_12%,var(--color-bg))] px-4 py-3.5 text-[0.9375rem] text-(--color-success)"
         role="status"
       >
         ✓ {t('contact.success')}
@@ -36,7 +36,7 @@ const inputError = result?.error && isInputError(result.error) ? result.error : 
   {
     result?.error && !inputError && (
       <div
-        class="mb-6 rounded-lg border px-4 py-3.5 text-[0.9375rem] border-[color-mix(in_oklch,var(--color-danger)_30%,transparent)] bg-[color-mix(in_oklch,var(--color-danger)_10%,var(--color-bg))] text-[var(--color-danger)]"
+        class="mb-6 rounded-lg border border-[color-mix(in_oklch,var(--color-danger)_30%,transparent)] bg-[color-mix(in_oklch,var(--color-danger)_10%,var(--color-bg))] px-4 py-3.5 text-[0.9375rem] text-(--color-danger)"
         role="alert"
       >
         ✗ {t('contact.error')}
@@ -47,13 +47,11 @@ const inputError = result?.error && isInputError(result.error) ? result.error : 
   <form
     method="POST"
     action={actions.contact}
-    class="flex flex-col gap-5 [&_input]:rounded-lg [&_input]:border [&_input]:border-[var(--color-border)] [&_input]:bg-[var(--color-bg)] [&_input]:px-3 [&_input]:py-2.5 [&_input]:font-[inherit] [&_input]:text-base [&_input]:text-[var(--color-fg)] [&_input]:transition-colors [&_input]:duration-150 [&_input]:ease-[var(--ease-out-soft)] focus-visible:[&_input]:border-[var(--color-primary)] focus-visible:[&_input]:shadow-[0_0_0_3px_color-mix(in_oklch,var(--color-primary)_25%,transparent)] focus-visible:[&_input]:outline-none [&_textarea]:rounded-lg [&_textarea]:border [&_textarea]:border-[var(--color-border)] [&_textarea]:bg-[var(--color-bg)] [&_textarea]:px-3 [&_textarea]:py-2.5 [&_textarea]:font-[inherit] [&_textarea]:text-base [&_textarea]:text-[var(--color-fg)] [&_textarea]:transition-colors [&_textarea]:duration-150 [&_textarea]:ease-[var(--ease-out-soft)] focus-visible:[&_textarea]:border-[var(--color-primary)] focus-visible:[&_textarea]:shadow-[0_0_0_3px_color-mix(in_oklch,var(--color-primary)_25%,transparent)] focus-visible:[&_textarea]:outline-none"
+    class="flex flex-col gap-5 [&_input]:rounded-lg [&_input]:border [&_input]:border-(--color-border) [&_input]:bg-(--color-bg) [&_input]:px-3 [&_input]:py-2.5 [&_input]:font-[inherit] [&_input]:text-base [&_input]:text-(--color-fg) [&_input]:transition-colors [&_input]:duration-150 [&_input]:ease-(--ease-out-soft) focus-visible:[&_input]:border-(--color-primary) focus-visible:[&_input]:shadow-[0_0_0_3px_color-mix(in_oklch,var(--color-primary)_25%,transparent)] focus-visible:[&_input]:outline-none [&_textarea]:rounded-lg [&_textarea]:border [&_textarea]:border-(--color-border) [&_textarea]:bg-(--color-bg) [&_textarea]:px-3 [&_textarea]:py-2.5 [&_textarea]:font-[inherit] [&_textarea]:text-base [&_textarea]:text-(--color-fg) [&_textarea]:transition-colors [&_textarea]:duration-150 [&_textarea]:ease-(--ease-out-soft) focus-visible:[&_textarea]:border-(--color-primary) focus-visible:[&_textarea]:shadow-[0_0_0_3px_color-mix(in_oklch,var(--color-primary)_25%,transparent)] focus-visible:[&_textarea]:outline-none"
     novalidate
   >
     <div class="flex flex-col gap-1.5">
-      <label for="name" class="text-sm font-medium text-[var(--color-fg)]"
-        >{t('contact.name')}</label
-      >
+      <label for="name" class="text-sm font-medium text-(--color-fg)">{t('contact.name')}</label>
       <input
         id="name"
         name="name"
@@ -65,7 +63,7 @@ const inputError = result?.error && isInputError(result.error) ? result.error : 
       />
       {
         inputError?.fields.name && (
-          <p id="name-error" class="m-0 text-[0.8125rem] text-[var(--color-danger)]">
+          <p id="name-error" class="m-0 text-[0.8125rem] text-(--color-danger)">
             {t('contact.validation.nameRequired')}
           </p>
         )
@@ -73,9 +71,7 @@ const inputError = result?.error && isInputError(result.error) ? result.error : 
     </div>
 
     <div class="flex flex-col gap-1.5">
-      <label for="email" class="text-sm font-medium text-[var(--color-fg)]"
-        >{t('contact.email')}</label
-      >
+      <label for="email" class="text-sm font-medium text-(--color-fg)">{t('contact.email')}</label>
       <input
         id="email"
         name="email"
@@ -87,7 +83,7 @@ const inputError = result?.error && isInputError(result.error) ? result.error : 
       />
       {
         inputError?.fields.email && (
-          <p id="email-error" class="m-0 text-[0.8125rem] text-[var(--color-danger)]">
+          <p id="email-error" class="m-0 text-[0.8125rem] text-(--color-danger)">
             {t('contact.validation.emailInvalid')}
           </p>
         )
@@ -95,7 +91,7 @@ const inputError = result?.error && isInputError(result.error) ? result.error : 
     </div>
 
     <div class="flex flex-col gap-1.5">
-      <label for="message" class="text-sm font-medium text-[var(--color-fg)]"
+      <label for="message" class="text-sm font-medium text-(--color-fg)"
         >{t('contact.message')}</label
       >
       <textarea
@@ -107,7 +103,7 @@ const inputError = result?.error && isInputError(result.error) ? result.error : 
         aria-describedby={inputError?.fields.message ? 'message-error' : undefined}></textarea>
       {
         inputError?.fields.message && (
-          <p id="message-error" class="m-0 text-[0.8125rem] text-[var(--color-danger)]">
+          <p id="message-error" class="m-0 text-[0.8125rem] text-(--color-danger)">
             {t('contact.validation.messageTooShort')}
           </p>
         )

@@ -29,7 +29,7 @@ const accentByVariant: Record<Variant, string> = {
 <div
   role="alert"
   class={cn(
-    'flex gap-3 px-4 py-3.5 rounded-md border bg-surface-2 text-fg',
+    'flex gap-3 rounded-md border bg-surface-2 px-4 py-3.5 text-fg',
     borderByVariant[variant],
     className
   )}
@@ -39,7 +39,7 @@ const accentByVariant: Record<Variant, string> = {
     Astro.slots.has('icon') && (
       <div
         class={cn(
-          'shrink-0 w-[18px] h-[18px] rounded-full border-[1.5px] border-current grid place-items-center font-mono text-[11px] font-semibold leading-none',
+          'grid h-[18px] w-[18px] shrink-0 place-items-center rounded-full border-[1.5px] border-current font-mono text-[11px] leading-none font-semibold',
           accentByVariant[variant]
         )}
       >
@@ -47,12 +47,12 @@ const accentByVariant: Record<Variant, string> = {
       </div>
     )
   }
-  <div class="flex flex-col gap-1 flex-1 min-w-0">
+  <div class="flex min-w-0 flex-1 flex-col gap-1">
     {
       Astro.slots.has('title') && (
         <div
           class={cn(
-            'font-semibold text-sm leading-tight',
+            'text-sm leading-tight font-semibold',
             variant !== 'default' && accentByVariant[variant]
           )}
         >
@@ -60,6 +60,6 @@ const accentByVariant: Record<Variant, string> = {
         </div>
       )
     }
-    <div class="text-fg-muted text-[13px] leading-normal"><slot /></div>
+    <div class="text-[13px] leading-normal text-fg-muted"><slot /></div>
   </div>
 </div>

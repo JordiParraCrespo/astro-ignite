@@ -59,11 +59,11 @@ const dateFmt = new Intl.DateTimeFormat(locale, {
   <article class="mx-auto max-w-[42rem] px-5 pt-8 pb-16">
     <header class="mb-8">
       <h1
-        class="m-0 mb-2 text-[clamp(1.75rem,4vw,2.25rem)] leading-[1.2] font-bold tracking-[-0.02em] text-[var(--color-fg)]"
+        class="m-0 mb-2 text-[clamp(1.75rem,4vw,2.25rem)] leading-[1.2] font-bold tracking-[-0.02em] text-(--color-fg)"
       >
         {entry.data.title}
       </h1>
-      <p class="m-0 flex flex-wrap gap-2 text-sm text-[var(--color-fg-muted)]">
+      <p class="m-0 flex flex-wrap gap-2 text-sm text-(--color-fg-muted)">
         <span>
           {t('legal.lastUpdated')}:
           <time datetime={entry.data.lastUpdated.toISOString()}>
@@ -76,7 +76,7 @@ const dateFmt = new Intl.DateTimeFormat(locale, {
     </header>
 
     <div
-      class="prose [&_blockquote]:my-6 [&_blockquote]:rounded-r-md [&_blockquote]:border-l-[3px] [&_blockquote]:border-l-[var(--color-warning)] [&_blockquote]:bg-[var(--color-surface-2)] [&_blockquote]:px-4 [&_blockquote]:py-3"
+      class="prose [&_blockquote]:my-6 [&_blockquote]:rounded-r-md [&_blockquote]:border-l-[3px] [&_blockquote]:border-l-(--color-warning) [&_blockquote]:bg-(--color-surface-2) [&_blockquote]:px-4 [&_blockquote]:py-3"
     >
       <slot />
     </div>

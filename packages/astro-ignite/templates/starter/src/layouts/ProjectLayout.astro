@@ -69,12 +69,12 @@ const statusLabels = {
 >
   <article class="mx-auto max-w-[64rem] px-5 pt-8 pb-16">
     <header
-      class="mb-12 [&_picture]:block [&_picture]:h-auto [&_picture]:w-full [&_picture]:overflow-hidden [&_picture]:rounded-xl [&_img]:block [&_img]:h-auto [&_img]:w-full [&_img]:overflow-hidden [&_img]:rounded-xl"
+      class="mb-12 [&_img]:block [&_img]:h-auto [&_img]:w-full [&_img]:overflow-hidden [&_img]:rounded-xl [&_picture]:block [&_picture]:h-auto [&_picture]:w-full [&_picture]:overflow-hidden [&_picture]:rounded-xl"
     >
       <nav class="mb-6 text-sm" aria-label={t('nav.breadcrumbs')}>
         <a
           href={getRelativeLocaleUrl(locale, '/projects')}
-          class="text-[var(--color-fg-muted)] no-underline hover:text-[var(--color-fg)]"
+          class="text-(--color-fg-muted) no-underline hover:text-(--color-fg)"
         >
           ← {t('projects.backToProjects')}
         </a>
@@ -95,28 +95,28 @@ const statusLabels = {
           {
             entry.data.role && (
               <>
-                <dt class="font-medium text-[var(--color-fg-muted)]">{t('projects.role')}</dt>
-                <dd class="m-0 text-[var(--color-fg)]">{entry.data.role}</dd>
+                <dt class="font-medium text-(--color-fg-muted)">{t('projects.role')}</dt>
+                <dd class="m-0 text-(--color-fg)">{entry.data.role}</dd>
               </>
             )
           }
           {
             entry.data.client && (
               <>
-                <dt class="font-medium text-[var(--color-fg-muted)]">{t('projects.client')}</dt>
-                <dd class="m-0 text-[var(--color-fg)]">{entry.data.client}</dd>
+                <dt class="font-medium text-(--color-fg-muted)">{t('projects.client')}</dt>
+                <dd class="m-0 text-(--color-fg)">{entry.data.client}</dd>
               </>
             )
           }
-          <dt class="font-medium text-[var(--color-fg-muted)]">{t('projects.statusLabel')}</dt>
-          <dd class="m-0 text-[var(--color-fg)]">
+          <dt class="font-medium text-(--color-fg-muted)">{t('projects.statusLabel')}</dt>
+          <dd class="m-0 text-(--color-fg)">
             {statusLabels[entry.data.status as keyof typeof statusLabels]}
           </dd>
           {
             entry.data.datePublished && (
               <>
-                <dt class="font-medium text-[var(--color-fg-muted)]">{t('projects.dateLabel')}</dt>
-                <dd class="m-0 text-[var(--color-fg)]">
+                <dt class="font-medium text-(--color-fg-muted)">{t('projects.dateLabel')}</dt>
+                <dd class="m-0 text-(--color-fg)">
                   <time datetime={entry.data.datePublished.toISOString()}>
                     {dateFmt.format(entry.data.datePublished)}
                   </time>
@@ -127,11 +127,11 @@ const statusLabels = {
           {
             entry.data.techStack.length > 0 && (
               <>
-                <dt class="font-medium text-[var(--color-fg-muted)]">{t('projects.techStack')}</dt>
-                <dd class="m-0 text-[var(--color-fg)]">
+                <dt class="font-medium text-(--color-fg-muted)">{t('projects.techStack')}</dt>
+                <dd class="m-0 text-(--color-fg)">
                   <ul class="m-0 flex list-none flex-wrap gap-1.5 p-0">
                     {entry.data.techStack.map((tech: string) => (
-                      <li class="rounded bg-[var(--color-surface-2)] px-2 py-0.5 text-[0.8125rem]">
+                      <li class="rounded bg-(--color-surface-2) px-2 py-0.5 text-[0.8125rem]">
                         {tech}
                       </li>
                     ))}
@@ -150,7 +150,7 @@ const statusLabels = {
                     href={entry.data.links.live}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="font-medium text-[var(--color-primary)] no-underline hover:underline"
+                    class="font-medium text-(--color-primary) no-underline hover:underline"
                   >
                     {t('projects.viewLive')} ↗
                   </a>
@@ -162,7 +162,7 @@ const statusLabels = {
                     href={entry.data.links.repo}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="font-medium text-[var(--color-primary)] no-underline hover:underline"
+                    class="font-medium text-(--color-primary) no-underline hover:underline"
                   >
                     {t('projects.viewRepo')} ↗
                   </a>
@@ -174,7 +174,7 @@ const statusLabels = {
                     href={entry.data.links.demo}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="font-medium text-[var(--color-primary)] no-underline hover:underline"
+                    class="font-medium text-(--color-primary) no-underline hover:underline"
                   >
                     {t('projects.viewDemo')} ↗
                   </a>

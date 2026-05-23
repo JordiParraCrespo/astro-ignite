@@ -6,4 +6,4 @@ export type Props = HTMLAttributes<'p'> & { class?: string };
 const { class: className, ...rest } = Astro.props;
 ---
 
-<p class={cn('text-fg-muted text-sm leading-normal m-0', className)} {...rest}><slot /></p>
+<p class={cn('m-0 text-sm leading-normal text-fg-muted', className)} {...rest}><slot /></p>

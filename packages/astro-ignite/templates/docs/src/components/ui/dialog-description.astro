@@ -5,4 +5,4 @@ export type Props = { class?: string };
 const { class: className } = Astro.props;
 ---
 
-<p class={cn('text-fg-muted text-sm leading-normal m-0', className)}><slot /></p>
+<p class={cn('m-0 text-sm leading-normal text-fg-muted', className)}><slot /></p>

@@ -65,12 +65,12 @@ const wrapperGap = variant === 'lockup' ? 'gap-[var(--ig-gap)]' : 'gap-0';
   {
     variant !== 'word' && (
       <span
-        class="mono inline-flex items-baseline font-medium leading-none text-[length:var(--ig-mono-size)] text-[var(--color-fg)]"
+        class="mono inline-flex items-baseline text-(length:--ig-mono-size) leading-none font-medium text-(--color-fg)"
         aria-hidden={variant === 'lockup' ? 'true' : undefined}
       >
         <span class="inline-block">{'>'}</span>
         <span
-          class="ig-caret caret inline-block bg-[var(--color-fg)] w-[var(--ig-caret-w)] h-[var(--ig-caret-h)] ml-[var(--ig-caret-margin)]"
+          class="ig-caret caret ml-(--ig-caret-margin) inline-block h-(--ig-caret-h) w-(--ig-caret-w) bg-(--color-fg)"
           style={`transform: translateY(calc(var(--ig-caret-lift) * -1));`}
         />
       </span>
@@ -78,7 +78,7 @@ const wrapperGap = variant === 'lockup' ? 'gap-[var(--ig-gap)]' : 'gap-0';
   }
   {
     variant !== 'mark' && (
-      <span class="font-medium lowercase text-[length:var(--ig-sans-size)] tracking-[-0.04em] text-[var(--color-fg)]">
+      <span class="text-(length:--ig-sans-size) font-medium tracking-[-0.04em] text-(--color-fg) lowercase">
         astro-ignite
       </span>
     )

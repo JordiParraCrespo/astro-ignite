@@ -57,7 +57,7 @@ const dateFmt = new Intl.DateTimeFormat(locale, {
   type="website"
   schemas={schemas}
 >
-  <article class="mx-auto max-w-[42rem] px-5 pb-16 pt-8">
+  <article class="mx-auto max-w-[42rem] px-5 pt-8 pb-16">
     <header class="mb-8">
       <Text variant="h1">{entry.data.title}</Text>
       <Text variant="muted" class="m-0 flex flex-wrap gap-2">
@@ -72,9 +72,7 @@ const dateFmt = new Intl.DateTimeFormat(locale, {
       </Text>
     </header>
 
-    <div
-      class="docs-prose legal-prose max-w-[64ch] text-[15px] leading-[1.65] text-[var(--color-fg)]"
-    >
+    <div class="docs-prose legal-prose max-w-[64ch] text-[15px] leading-[1.65] text-(--color-fg)">
       <slot />
     </div>
   </article>

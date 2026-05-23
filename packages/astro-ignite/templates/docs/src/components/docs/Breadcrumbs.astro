@@ -33,26 +33,21 @@ const crumbs = [
 ---
 
 <nav
-  class="mono flex flex-wrap items-center gap-1.5 text-[11px] tracking-[-0.005em] text-[var(--color-fg-muted)]"
+  class="mono flex flex-wrap items-center gap-1.5 text-[11px] tracking-[-0.005em] text-(--color-fg-muted)"
   aria-label={t('nav.breadcrumbs')}
 >
   {
     crumbs.map((c, i) => (
       <>
         {c.href ? (
-          <a
-            class="text-[var(--color-fg-muted)] no-underline hover:text-[var(--color-fg)]"
-            href={c.href}
-          >
+          <a class="text-(--color-fg-muted) no-underline hover:text-(--color-fg)" href={c.href}>
             {c.label}
           </a>
         ) : (
-          <span class:list={[i === crumbs.length - 1 ? 'text-[var(--color-fg)]' : null]}>
-            {c.label}
-          </span>
+          <span class:list={[i === crumbs.length - 1 ? 'text-(--color-fg)' : null]}>{c.label}</span>
         )}
         {i < crumbs.length - 1 && (
-          <span class="text-[var(--color-fg-subtle)]" aria-hidden="true">
+          <span class="text-(--color-fg-subtle)" aria-hidden="true">
             /
           </span>
         )}

@@ -32,7 +32,7 @@ const rssHref = locale === siteConfig.defaultLocale ? '/rss.xml' : `/${locale}/r
         </div>
 
         <div class="mt-6 flex flex-wrap items-center justify-between gap-4">
-          <span class="mono text-[12px] text-[var(--color-fg-muted)] [&_a]:text-[var(--color-fg-muted)] [&_a]:no-underline [&_a]:transition-colors [&_a]:duration-[0.12s] [&_a]:ease-[var(--ease-out-soft)] hover:[&_a]:text-[var(--color-fg)]">
+          <span class="mono text-[12px] text-(--color-fg-muted) [&_a]:text-(--color-fg-muted) [&_a]:no-underline [&_a]:transition-colors [&_a]:duration-[0.12s] [&_a]:ease-(--ease-out-soft) hover:[&_a]:text-(--color-fg)">
             {t('landing.blog.articles', { count: blogCards.length })} · <a href={rssHref}>RSS ↗</a>
           </span>
           <a class="btn btn-ghost btn-sm" href={blogHref}>

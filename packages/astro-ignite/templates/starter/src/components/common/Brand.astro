@@ -52,7 +52,7 @@ const gapClass = variant === 'lockup' ? 'gap-[var(--ig-gap)]' : 'gap-0';
 
 <Tag
   class:list={[
-    'inline-flex items-center text-[var(--color-fg)] leading-none tracking-[-0.04em] no-underline hover:text-[var(--color-fg)] [&:hover_.ig-caret]:bg-[var(--color-primary)]',
+    'inline-flex items-center leading-none tracking-[-0.04em] text-(--color-fg) no-underline hover:text-(--color-fg) [&:hover_.ig-caret]:bg-(--color-primary)',
     gapClass,
     className,
   ]}
@@ -71,17 +71,17 @@ const gapClass = variant === 'lockup' ? 'gap-[var(--ig-gap)]' : 'gap-0';
   {
     variant !== 'word' && (
       <span
-        class="mono inline-flex items-baseline font-mono text-[length:var(--ig-mono-size)] leading-none font-medium text-[var(--color-fg)]"
+        class="mono inline-flex items-baseline font-mono text-(length:--ig-mono-size) leading-none font-medium text-(--color-fg)"
         aria-hidden={variant === 'lockup' ? 'true' : undefined}
       >
         <span class="inline-block">{'>'}</span>
-        <span class="ig-caret caret ml-[var(--ig-caret-margin)] inline-block h-[var(--ig-caret-h)] w-[var(--ig-caret-w)] translate-y-[calc(var(--ig-caret-lift)*-1)] bg-[var(--color-fg)]" />
+        <span class="ig-caret caret ml-(--ig-caret-margin) inline-block h-(--ig-caret-h) w-(--ig-caret-w) translate-y-[calc(var(--ig-caret-lift)*-1)] bg-(--color-fg)" />
       </span>
     )
   }
   {
     variant !== 'mark' && (
-      <span class="font-sans text-[length:var(--ig-sans-size)] font-medium tracking-[-0.04em] text-[var(--color-fg)] lowercase">
+      <span class="font-sans text-(length:--ig-sans-size) font-medium tracking-[-0.04em] text-(--color-fg) lowercase">
         astro-ignite
       </span>
     )

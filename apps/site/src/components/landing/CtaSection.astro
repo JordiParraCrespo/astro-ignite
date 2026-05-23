@@ -16,23 +16,23 @@ const t = useTranslations(locale);
 <section class="pb-24 max-[720px]:pb-16">
   <div class="page mx-auto max-w-[1200px] px-10 max-[720px]:px-6">
     <div
-      class="flex flex-col items-center gap-6 rounded-2xl border border-[var(--color-border)] p-12 text-center [background:radial-gradient(ellipse_60%_100%_at_50%_0%,var(--color-surface-2)_0%,var(--color-bg)_70%)] max-[560px]:gap-[18px] max-[560px]:rounded-[14px] max-[560px]:px-5 max-[560px]:py-8"
+      class="flex flex-col items-center gap-6 rounded-2xl border border-(--color-border) p-12 text-center [background:radial-gradient(ellipse_60%_100%_at_50%_0%,var(--color-surface-2)_0%,var(--color-bg)_70%)] max-[560px]:gap-[18px] max-[560px]:rounded-[14px] max-[560px]:px-5 max-[560px]:py-8"
     >
       <span
-        class="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-2)] px-2.5 py-[5px] pl-2 text-[12px] text-[var(--color-fg)]"
+        class="inline-flex items-center gap-2 rounded-full border border-(--color-border) bg-(--color-surface-2) px-2.5 py-[5px] pl-2 text-[12px] text-(--color-fg)"
       >
-        <span class="h-[6px] w-[6px] rounded-full bg-[var(--color-fg)]" aria-hidden="true"></span>
+        <span class="h-[6px] w-[6px] rounded-full bg-(--color-fg)" aria-hidden="true"></span>
         <span class="mono">{t('landing.cta.pill')}</span>
       </span>
       <h2
         class="m-0 max-w-[18ch] text-[clamp(28px,4.4vw,56px)] leading-[1.05] font-medium tracking-[-0.045em] text-balance"
       >
         {t('landing.cta.headlineLead')}{' '}
-        <span class="text-[var(--color-fg-muted)]">{t('landing.cta.headlineMuted')}</span>{
+        <span class="text-(--color-fg-muted)">{t('landing.cta.headlineMuted')}</span>{
           t('landing.cta.headlineTail')
         }
       </h2>
-      <p class="m-0 max-w-[52ch] text-[16px] leading-[1.55] text-[var(--color-fg-muted)]">
+      <p class="m-0 max-w-[52ch] text-[16px] leading-[1.55] text-(--color-fg-muted)">
         {t('landing.cta.lede')}
       </p>
       <CommandLine

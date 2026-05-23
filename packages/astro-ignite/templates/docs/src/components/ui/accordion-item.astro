@@ -12,11 +12,11 @@ const { title, open = false, class: className } = Astro.props;
 
 <details class={cn('group border-b border-border', className)} open={open}>
   <summary
-    class="flex items-center justify-between gap-4 py-4 cursor-pointer font-medium text-fg select-none list-none [&::-webkit-details-marker]:hidden focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring focus-visible:rounded-[2px]"
+    class="flex cursor-pointer list-none items-center justify-between gap-4 py-4 font-medium text-fg select-none focus-visible:rounded-[2px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring [&::-webkit-details-marker]:hidden"
   >
     <span>{title}</span>
     <svg
-      class="text-fg-muted shrink-0 transition-transform duration-200 group-open:rotate-180"
+      class="shrink-0 text-fg-muted transition-transform duration-200 group-open:rotate-180"
       width="14"
       height="14"
       viewBox="0 0 14 14"
@@ -31,5 +31,5 @@ const { title, open = false, class: className } = Astro.props;
         stroke-linejoin="round"></path>
     </svg>
   </summary>
-  <div class="pb-4 text-fg-muted text-sm leading-relaxed"><slot /></div>
+  <div class="pb-4 text-sm leading-relaxed text-fg-muted"><slot /></div>
 </details>
