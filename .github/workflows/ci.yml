@@ -16,6 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        id: checkout
+        continue-on-error: true
+      - if: steps.checkout.outcome == 'failure'
+        uses: actions/checkout@v6
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v6
         with:
@@ -38,6 +42,10 @@ jobs:
         node: [22, 24]
     steps:
       - uses: actions/checkout@v6
+        id: checkout
+        continue-on-error: true
+      - if: steps.checkout.outcome == 'failure'
+        uses: actions/checkout@v6
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v6
         with:
@@ -55,6 +63,10 @@ jobs:
         template: [starter, docs]
     steps:
       - uses: actions/checkout@v6
+        id: checkout
+        continue-on-error: true
+      - if: steps.checkout.outcome == 'failure'
+        uses: actions/checkout@v6
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v6
         with:
@@ -96,6 +108,10 @@ jobs:
       COREPACK_ENABLE_STRICT: '0'
     steps:
       - uses: actions/checkout@v6
+        id: checkout
+        continue-on-error: true
+      - if: steps.checkout.outcome == 'failure'
+        uses: actions/checkout@v6
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v6
         with:
@@ -120,6 +136,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        id: checkout
+        continue-on-error: true
+      - if: steps.checkout.outcome == 'failure'
+        uses: actions/checkout@v6
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v6
         with:
@@ -156,6 +176,10 @@ jobs:
         app: [site, docs]
     steps:
       - uses: actions/checkout@v6
+        id: checkout
+        continue-on-error: true
+      - if: steps.checkout.outcome == 'failure'
+        uses: actions/checkout@v6
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v6
         with:
