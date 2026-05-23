@@ -72,7 +72,7 @@ For consistent numbers: run Lighthouse CI in a clean Docker container, 3 runs pe
 | Footgun                                                     | Symptom                                   | Fix                                              |
 | ----------------------------------------------------------- | ----------------------------------------- | ------------------------------------------------ |
 | Adding `client:load` to a React island                      | TBT spikes, JS payload grows              | Use `client:idle` or `client:visible` instead    |
-| Forgetting `width`/`height` on hero                         | Layout shift (CLS)                        | Set both — required on `<HeroImage>`             |
+| Forgetting `width`/`height` on hero                         | Layout shift (CLS)                        | Set both — required on `<PriorityImage>`             |
 | Inline `<img>` instead of `<Image>`                         | No AVIF/WebP, no responsive srcset        | Use the wrapper                                  |
 | Loading multiple font weights eagerly                       | LCP delayed                               | Preload only the weight rendering above the fold |
 | Adding `prefers-color-scheme` `@media` blocks for dark mode | Conflicts with the `.dark` class strategy | Use the `.dark` selector pattern in `global.css` |
@@ -108,7 +108,7 @@ Run via `npx lhci autorun`.
 Common things that drop Lighthouse mobile from 100 → 95 in production:
 
 - Heavy embedded third-party (YouTube embeds, Twitter widgets, Stripe pricing tables): 5-15 points off Performance.
-- Large above-the-fold images without `<HeroImage>` props correctly set: 3-8 points.
+- Large above-the-fold images without `<PriorityImage>` props correctly set: 3-8 points.
 - Forgotten `client:load` on what should be a `client:visible` component: variable, can be huge.
 - Cumulative layout shift from web fonts without metric overrides: 5-10 points (we use `astro:fonts` to prevent this).
 

@@ -20,7 +20,7 @@ import { useTranslations } from '@/i18n';
 import { blogPostingSchema, breadcrumbListSchema, personSchema } from '@/lib/jsonld';
 
 import BaseLayout from './BaseLayout.astro';
-import HeroImage from '@/components/image/HeroImage.astro';
+import PriorityImage from '@/components/image/PriorityImage.astro';
 import Text from '@/components/ui/text.astro';
 
 interface Props {
@@ -124,7 +124,7 @@ const dateFmt = new Intl.DateTimeFormat(locale, {
           {dateFmt.format(entry.data.datePublished)}
         </time>
       </Text>
-      <HeroImage
+      <PriorityImage
         src={entry.data.heroImage}
         alt={entry.data.heroImageAlt}
         width={1200}
