@@ -2,8 +2,8 @@
  * RSS feed for the default locale, served at /rss.xml.
  *
  * Surfaces the most recently updated docs entries from the default locale,
- * sorted newest-first by `lastUpdated`. Per-locale feeds (e.g. /es/rss.xml)
- * are a follow-up.
+ * sorted newest-first by `lastUpdated`. Per-locale feeds for other locales
+ * live at /[lang]/rss.xml (sibling file).
  */
 
 import rss from '@astrojs/rss';

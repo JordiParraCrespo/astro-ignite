@@ -60,6 +60,10 @@
     "404": {
       "title": "Page not found",
       "description": "The page you were looking for doesn't exist."
+    },
+    "500": {
+      "title": "Something went wrong",
+      "description": "An unexpected error occurred on our end."
     }
   },
   "blog": {
@@ -132,6 +136,11 @@
     "404": {
       "heading": "Page not found",
       "body": "The page you were looking for doesn't exist or has been moved.",
+      "back": "Back to home"
+    },
+    "500": {
+      "heading": "Something went wrong",
+      "body": "An unexpected error occurred on our end. Please try again in a moment.",
       "back": "Back to home"
     }
   },

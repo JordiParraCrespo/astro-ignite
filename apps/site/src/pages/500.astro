@@ -1,0 +1,63 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { useTranslations } from '@/i18n';
+import { siteConfig } from '@/config/site';
+
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
+
+// SSR (output: 'server') defaults responses to 200. Force 500 so crawlers
+// + tests see the right status when the server error page renders.
+Astro.response.status = 500;
+---
+
+<BaseLayout title={t('seo.500.title')} description={t('seo.500.description')} noindex={true}>
+  <section class="server-error">
+    <p class="code">500</p>
+    <h1>{t('errors.500.heading')}</h1>
+    <p class="message">{t('errors.500.body')}</p>
+    <a href="/" class="btn">{t('errors.500.back')} →</a>
+  </section>
+</BaseLayout>
+
+<style>
+  .server-error {
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: 5rem 1.25rem;
+    text-align: center;
+  }
+  .code {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--color-fg-muted);
+    letter-spacing: 0.1em;
+    margin: 0 0 1rem;
+  }
+  .server-error h1 {
+    font-size: clamp(2rem, 5vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.75rem;
+  }
+  .message {
+    color: var(--color-fg-muted);
+    margin: 0 0 2rem;
+    font-size: 1.0625rem;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.625rem 1.125rem;
+    border-radius: 0.5rem;
+    background: var(--color-fg);
+    color: var(--color-bg);
+    text-decoration: none;
+    font-size: 0.9375rem;
+    font-weight: 500;
+  }
+  .btn:hover {
+    opacity: 0.9;
+  }
+</style>
