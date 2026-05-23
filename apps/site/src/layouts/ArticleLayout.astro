@@ -16,7 +16,7 @@ import { siteConfig } from '@/config/site';
 import { useTranslations } from '@/i18n';
 import { absoluteUrl, blogPostingSchema, breadcrumbListSchema, personSchema } from '@/lib/jsonld';
 
-import HeroImage from '@/components/image/HeroImage.astro';
+import PriorityImage from '@/components/image/PriorityImage.astro';
 
 import BaseLayout from './BaseLayout.astro';
 
@@ -244,7 +244,7 @@ if (translationKey) {
     <figure
       class="mt-8 aspect-[1200/630] overflow-hidden rounded-[14px] border border-(--color-border) bg-(--color-bg) [&_img]:block [&_img]:h-full [&_img]:w-full [&_img]:object-cover"
     >
-      <HeroImage
+      <PriorityImage
         src={entry.data.heroImage}
         alt={entry.data.heroImageAlt}
         width={1200}
