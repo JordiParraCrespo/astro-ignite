@@ -1,6 +1,6 @@
 # Fonts
 
-This site uses **Geist Sans** + **Geist Mono** via Astro 5's built-in `astro:fonts` integration with the Bunny Fonts provider. Self-hosted, subsetted, with automatic fallback metric overrides for zero CLS on font swap.
+This site uses **Geist Sans** + **Geist Mono** via Astro's built-in `astro:fonts` integration with the Bunny Fonts provider. Self-hosted, subsetted, with automatic fallback metric overrides for zero CLS on font swap.
 
 ## Why Geist
 

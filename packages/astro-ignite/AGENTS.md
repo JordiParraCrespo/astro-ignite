@@ -42,8 +42,8 @@ thin `npx` shim that calls into this package — see its AGENTS.md.
   (current rule: email/Resend deps are removed when
   `<template>/src/lib/email/index.ts` is absent). Apply the same
   `fileExists`-gated pattern for any new template-specific dep.
-- Templates that use Astro Actions pin `@astrojs/node@^9` (not v10,
-  which requires Astro 6).
+- Templates that use Astro Actions pin `@astrojs/node@^10` (the adapter major that
+  pairs with Astro 6).
 - Package-manager detection covers pnpm, npm, yarn, bun via
   `process.env.npm_config_user_agent`; default falls back to pnpm.
 

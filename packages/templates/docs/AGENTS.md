@@ -12,7 +12,7 @@ The site ships with: docs content collection, full-text search, sidebar + TOC, l
 
 ## Stack snapshot
 
-- **Astro 5** — static output (no adapter; this template has no server-side Actions)
+- **Astro 6** — static output (no adapter; this template has no server-side Actions)
 - **Tailwind v4** — layered with scoped `<style>` blocks above the fold
 - **Geist Sans + Geist Mono** — self-hosted via `astro:fonts`, zero CLS
 - **schema-dts** typed JSON-LD composed via `@graph`
