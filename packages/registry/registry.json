@@ -37,18 +37,27 @@
       "type": "registry:ui",
       "registryDependencies": ["cn"],
       "files": [
-        { "path": "base/card/card.astro", "target": "src/components/ui/card.astro" },
-        { "path": "base/card/card-header.astro", "target": "src/components/ui/card-header.astro" },
-        { "path": "base/card/card-title.astro", "target": "src/components/ui/card-title.astro" },
+        { "path": "base/card/card.astro", "target": "src/components/ui/card/card.astro" },
+        {
+          "path": "base/card/card-header.astro",
+          "target": "src/components/ui/card/card-header.astro"
+        },
+        {
+          "path": "base/card/card-title.astro",
+          "target": "src/components/ui/card/card-title.astro"
+        },
         {
           "path": "base/card/card-description.astro",
-          "target": "src/components/ui/card-description.astro"
+          "target": "src/components/ui/card/card-description.astro"
         },
         {
           "path": "base/card/card-content.astro",
-          "target": "src/components/ui/card-content.astro"
+          "target": "src/components/ui/card/card-content.astro"
         },
-        { "path": "base/card/card-footer.astro", "target": "src/components/ui/card-footer.astro" }
+        {
+          "path": "base/card/card-footer.astro",
+          "target": "src/components/ui/card/card-footer.astro"
+        }
       ]
     },
     {
@@ -104,13 +113,16 @@
       "type": "registry:ui",
       "registryDependencies": ["cn"],
       "files": [
-        { "path": "base/tabs/tabs.astro", "target": "src/components/ui/tabs.astro" },
-        { "path": "base/tabs/tabs-list.astro", "target": "src/components/ui/tabs-list.astro" },
+        { "path": "base/tabs/tabs.astro", "target": "src/components/ui/tabs/tabs.astro" },
+        { "path": "base/tabs/tabs-list.astro", "target": "src/components/ui/tabs/tabs-list.astro" },
         {
           "path": "base/tabs/tabs-trigger.astro",
-          "target": "src/components/ui/tabs-trigger.astro"
+          "target": "src/components/ui/tabs/tabs-trigger.astro"
         },
-        { "path": "base/tabs/tabs-content.astro", "target": "src/components/ui/tabs-content.astro" }
+        {
+          "path": "base/tabs/tabs-content.astro",
+          "target": "src/components/ui/tabs/tabs-content.astro"
+        }
       ]
     },
     {
@@ -118,10 +130,13 @@
       "type": "registry:ui",
       "registryDependencies": ["cn"],
       "files": [
-        { "path": "base/accordion/accordion.astro", "target": "src/components/ui/accordion.astro" },
+        {
+          "path": "base/accordion/accordion.astro",
+          "target": "src/components/ui/accordion/accordion.astro"
+        },
         {
           "path": "base/accordion/accordion-item.astro",
-          "target": "src/components/ui/accordion-item.astro"
+          "target": "src/components/ui/accordion/accordion-item.astro"
         }
       ]
     },
@@ -130,14 +145,14 @@
       "type": "registry:ui",
       "registryDependencies": ["cn"],
       "files": [
-        { "path": "base/dialog/dialog.astro", "target": "src/components/ui/dialog.astro" },
+        { "path": "base/dialog/dialog.astro", "target": "src/components/ui/dialog/dialog.astro" },
         {
           "path": "base/dialog/dialog-title.astro",
-          "target": "src/components/ui/dialog-title.astro"
+          "target": "src/components/ui/dialog/dialog-title.astro"
         },
         {
           "path": "base/dialog/dialog-description.astro",
-          "target": "src/components/ui/dialog-description.astro"
+          "target": "src/components/ui/dialog/dialog-description.astro"
         }
       ]
     },
@@ -148,11 +163,11 @@
       "files": [
         {
           "path": "base/dropdown-menu/dropdown-menu.astro",
-          "target": "src/components/ui/dropdown-menu.astro"
+          "target": "src/components/ui/dropdown-menu/dropdown-menu.astro"
         },
         {
           "path": "base/dropdown-menu/dropdown-menu-item.astro",
-          "target": "src/components/ui/dropdown-menu-item.astro"
+          "target": "src/components/ui/dropdown-menu/dropdown-menu-item.astro"
         }
       ]
     },
