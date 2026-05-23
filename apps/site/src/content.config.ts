@@ -9,7 +9,8 @@
  *   - draft + featured booleans default to false
  */
 
-import { defineCollection, reference, z } from 'astro:content';
+import { defineCollection, reference } from 'astro:content';
+import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
 
 const blog = defineCollection({
@@ -27,7 +28,7 @@ const blog = defineCollection({
       tags: z.array(z.string()).default([]),
       draft: z.boolean().default(false),
       featured: z.boolean().default(false),
-      canonical: z.string().url().optional(),
+      canonical: z.url().optional(),
       noindex: z.boolean().default(false),
       // Stable cross-locale identifier — shared across translations so hreflang
       // can pair posts whose URL slugs were translated (e.g. EN
@@ -51,10 +52,10 @@ const projects = defineCollection({
       techStack: z.array(z.string()).default([]),
       links: z
         .object({
-          live: z.string().url().optional(),
-          repo: z.string().url().optional(),
-          demo: z.string().url().optional(),
-          caseStudy: z.string().url().optional(),
+          live: z.url().optional(),
+          repo: z.url().optional(),
+          demo: z.url().optional(),
+          caseStudy: z.url().optional(),
         })
         .default({}),
       role: z.string().optional(),
@@ -72,15 +73,15 @@ const authors = defineCollection({
       name: z.string().min(1),
       bio: z.record(z.string(), z.string()),
       image: image(),
-      url: z.string().url().optional(),
-      email: z.string().email().optional(),
+      url: z.url().optional(),
+      email: z.email().optional(),
       social: z
         .object({
-          twitter: z.string().url().optional(),
-          github: z.string().url().optional(),
-          linkedin: z.string().url().optional(),
-          mastodon: z.string().url().optional(),
-          bluesky: z.string().url().optional(),
+          twitter: z.url().optional(),
+          github: z.url().optional(),
+          linkedin: z.url().optional(),
+          mastodon: z.url().optional(),
+          bluesky: z.url().optional(),
         })
         .default({}),
     }),

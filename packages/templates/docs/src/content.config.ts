@@ -11,7 +11,8 @@
  *   with locale-aware parallels in `[lang]/legal/[...slug].astro`.
  */
 
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
 
 const docs = defineCollection({
@@ -20,7 +21,7 @@ const docs = defineCollection({
     title: z.string().min(1).max(70),
     description: z.string().min(40).max(160),
     /** Optional canonical URL for republished content. */
-    canonical: z.string().url().optional(),
+    canonical: z.url().optional(),
     /** Hide from sidebar + sitemap. Page still renders if hit directly. */
     draft: z.boolean().default(false),
     /** Hide from search engines. */
