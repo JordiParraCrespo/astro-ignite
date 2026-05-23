@@ -40,6 +40,10 @@
       "title": "Page not found",
       "description": "The page you were looking for doesn't exist."
     },
+    "500": {
+      "title": "Something went wrong",
+      "description": "An unexpected error occurred on our end."
+    },
     "home": {
       "title": "Home",
       "description": "Bootstrap a production-grade Astro site with top-tier SEO and performance defaults."
@@ -125,6 +129,11 @@
       "body": "The page you were looking for doesn't exist or has been moved.",
       "back": "Back to home",
       "search": "Search the docs"
+    },
+    "500": {
+      "heading": "Something went wrong",
+      "body": "An unexpected error occurred on our end. Please try again in a moment.",
+      "back": "Back to home"
     }
   },
   "sidebar": {

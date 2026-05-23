@@ -43,6 +43,11 @@ Every page that exists at `/foo` SHALL have a sibling at
 `src/pages/[lang]/foo.astro` whose `getStaticPaths` emits exactly one
 entry per `siteConfig.locales` minus the default locale.
 
+Astro's special error pages (`404.astro`, `500.astro`) are exempt: they
+are matched by name and emitted once at the root, so a `[lang]/` parallel
+would never be used as the handler. They localize their copy at render
+time via `Astro.currentLocale`.
+
 #### Scenario: Adding a top-level page
 
 - **GIVEN** the contributor adds `src/pages/pricing.astro`
