@@ -11,7 +11,7 @@
  */
 
 import { defineAction } from 'astro:actions';
-import { z } from 'astro:schema';
+import { z } from 'astro/zod';
 
 import { sendContactEmail } from '@/lib/email';
 
@@ -20,7 +20,7 @@ export const server = {
     accept: 'form',
     input: z.object({
       name: z.string().min(1).max(100),
-      email: z.string().email().max(254),
+      email: z.email().max(254),
       message: z.string().min(10).max(5000),
       _website: z.string().max(0).optional(),
     }),
