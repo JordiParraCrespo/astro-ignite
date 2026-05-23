@@ -6,7 +6,7 @@
  * email transport is configured in `src/lib/email/`.
  *
  * Forms post to `actions.contact` directly via `<form action={actions.contact}>`
- * — Astro 5 handles progressive enhancement. The page calls
+ * — Astro 6 handles progressive enhancement. The page calls
  * `Astro.getActionResult()` to read the result on the rendered response.
  */
 

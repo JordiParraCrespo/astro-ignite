@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Audit: scaffold.ts strips deps the target template doesn't need;
-// templates using Actions pin @astrojs/node@^9; no scaffolded output
+// templates using Actions pin @astrojs/node@^10; no scaffolded output
 // imports from astro-ignite/*; PM detection covers pnpm/npm/yarn/bun.
 // Maps to: openspec/specs/cli-scaffold/spec.md I1-I4.
 
@@ -29,7 +29,7 @@ if (exists(scaffold)) {
 }
 
 if (checkAdapter) {
-  // I2 — every template that uses Astro Actions pins @astrojs/node@^9
+  // I2 — every template that uses Astro Actions pins @astrojs/node@^10
   for (const tpl of await templateDirs()) {
     const pkgPath = join(tpl, 'package.json');
     if (!exists(pkgPath)) continue;
@@ -45,8 +45,8 @@ if (checkAdapter) {
       const adapter = deps['@astrojs/node'];
       if (!adapter) {
         hits.push({ file: relative(ROOT, pkgPath), line: 0, snippet: 'template uses Actions but @astrojs/node not pinned', message: 'I2 adapter missing' });
-      } else if (!/\^?9(\.|$)/.test(adapter)) {
-        hits.push({ file: relative(ROOT, pkgPath), line: 0, snippet: `@astrojs/node pinned to ${adapter}; required ^9`, message: 'I2 wrong adapter major' });
+      } else if (!/\^?10(\.|$)/.test(adapter)) {
+        hits.push({ file: relative(ROOT, pkgPath), line: 0, snippet: `@astrojs/node pinned to ${adapter}; required ^10`, message: 'I2 wrong adapter major' });
       }
     }
   }

@@ -1,5 +1,5 @@
 /**
- * Content collections — typed via Zod, loaded via Astro 5's `glob` loader.
+ * Content collections — typed via Zod, loaded via Astro 6's `glob` loader.
  *
  * Conventions:
  *   - Per-locale folder structure: src/content/<collection>/<locale>/<slug>...

@@ -48,7 +48,7 @@ export async function blockResend(page: Page): Promise<EmailBlocker> {
   page.on('request', (req) => {
     if (req.method() !== 'POST') return;
     const url = req.url();
-    // Astro 5 form actions post to either `/_actions/<name>` or `?_astroAction=<name>`
+    // Astro 6 form actions post to either `/_actions/<name>` or `?_astroAction=<name>`
     // depending on the runtime; count either pattern.
     if (url.includes('/_actions/') || url.includes('_astroAction=')) {
       actionHits++;

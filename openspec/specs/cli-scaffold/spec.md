@@ -47,11 +47,11 @@ exercises this).
 
 - **GIVEN** the user picks `starter` (which uses Actions + email)
 - **WHEN** the scaffold writes `package.json`
-- **THEN** `resend` and `@astrojs/node@^9` are present.
+- **THEN** `resend` and `@astrojs/node@^10` are present.
 
 ### Requirement: Adapter pin
 
-Templates that use Astro Actions SHALL pin `@astrojs/node@^9`. The
+Templates that use Astro Actions SHALL pin `@astrojs/node@^10`. The
 combination of Astro v6 with `@astrojs/node@^10` is not supported until
 the rest of the stack migrates.
 
@@ -89,6 +89,6 @@ answer. It never force-initializes a repo over an existing one.
 | Id  | Statement                                                                                    | Audit                                                   |
 | --- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
 | I1  | `rewritePackageJson` strips email deps if `src/lib/email/index.ts` is absent in the template | `node scripts/audit/cli-dep-stripping.mjs`              |
-| I2  | Templates using Actions pin `@astrojs/node@^9`                                               | `node scripts/audit/cli-dep-stripping.mjs --adapter`    |
+| I2  | Templates using Actions pin `@astrojs/node@^10`                                              | `node scripts/audit/cli-dep-stripping.mjs --adapter`    |
 | I3  | No scaffolded output imports from `astro-ignite/*`                                           | `node scripts/audit/cli-dep-stripping.mjs --no-imports` |
 | I4  | Package manager detection covers pnpm / npm / yarn / bun                                     | `node scripts/audit/cli-dep-stripping.mjs --pm`         |

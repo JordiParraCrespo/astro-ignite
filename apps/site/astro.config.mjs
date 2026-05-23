@@ -13,7 +13,8 @@ export default defineConfig({
   trailingSlash: 'ignore',
   output: 'server',
   adapter: cloudflare({
-    platformProxy: { enabled: true },
+    // @astrojs/cloudflare v13 dropped `platformProxy`; the Cloudflare Vite
+    // plugin now wires local bindings from the wrangler config automatically.
     imageService: 'compile',
   }),
   build: {
