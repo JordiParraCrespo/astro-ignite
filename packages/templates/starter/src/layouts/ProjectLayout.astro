@@ -11,7 +11,7 @@ import { useTranslations } from '@/i18n';
 import { breadcrumbListSchema, creativeWorkSchema } from '@/lib/jsonld';
 
 import BaseLayout from './BaseLayout.astro';
-import HeroImage from '@/components/image/HeroImage.astro';
+import PriorityImage from '@/components/image/PriorityImage.astro';
 import Text from '@/components/ui/text.astro';
 
 interface Props {
@@ -81,7 +81,7 @@ const statusLabels = {
       </nav>
       <Text variant="h1" class="mb-4">{entry.data.title}</Text>
       <Text variant="lead" class="mb-8 max-w-[48rem]">{entry.data.summary}</Text>
-      <HeroImage
+      <PriorityImage
         src={entry.data.heroImage}
         alt={entry.data.heroImageAlt}
         width={1200}

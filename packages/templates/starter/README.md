@@ -30,7 +30,7 @@ Open the URL printed in your terminal. The site has a working blog, projects sho
 src/
 ├── actions/              # Astro Actions (server-side form handlers)
 ├── components/           # UI components
-│   ├── image/            # Image + HeroImage wrappers
+│   ├── image/            # Image + PriorityImage wrappers
 │   └── seo/              # SEO + JsonLd
 ├── config/site.ts        # Site-wide configuration — edit this first
 ├── content/              # Content collections
