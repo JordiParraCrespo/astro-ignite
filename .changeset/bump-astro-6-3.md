@@ -12,6 +12,12 @@ Dependency bumps (starter, docs, and the `apps/*` mirrors):
 - `@astrojs/mdx` `^4` → `^5`
 - `@astrojs/sitemap` `^3.2` → `^3.7`
 - `@astrojs/cloudflare` `^12` → `^13` + add `wrangler@^4.94` (apps/site)
+- `@tailwindcss/vite` + `tailwindcss` `^4.0.0-beta.8` → `^4.3.0`
+- pin `vite` `^7.3.3` explicitly (the latest Vite compatible with Astro
+  6.3, which requires `vite@^7.3.2`; Vite 8 needs Astro 7). Without an
+  explicit pin a fresh install resolves a second `vite@8` for
+  `@tailwindcss/vite`, which breaks the Tailwind plugin
+  (`Missing field tsconfigPaths`).
 
 **Breaking — Node floor raised to `>=22.12.0`.** Astro 6 requires Node
 22.12+, so the repo `engines` and the CI Node matrix move from 20 → 22

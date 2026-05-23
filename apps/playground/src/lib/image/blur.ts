@@ -33,7 +33,7 @@ const cache = new Map<string, string>();
  * `import hero from './hero.jpg'`, the resulting object's `src` is a URL but
  * the file lives somewhere predictable from the project root.
  *
- * Astro 5's `ImageMetadata` doesn't expose the source path directly. This
+ * Astro 6's `ImageMetadata` doesn't expose the source path directly. This
  * helper does best-effort resolution; if it fails, callers should treat that
  * as a signal to skip LQIP.
  */
