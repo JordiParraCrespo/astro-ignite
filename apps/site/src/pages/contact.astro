@@ -1,6 +1,4 @@
 ---
-import { actions, isInputError } from 'astro:actions';
-
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { useTranslations } from '@/i18n';
 import { siteConfig } from '@/config/site';
@@ -9,10 +7,11 @@ import { breadcrumbListSchema, contactPageSchema } from '@/lib/jsonld';
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const t = useTranslations(locale);
 
-// Astro Actions form handling — works with progressive enhancement.
-// Method-override for the form means submissions land here as POST.
-const result = Astro.getActionResult(actions.contact);
-const inputError = result?.error && isInputError(result.error) ? result.error : null;
+// Static page — the form posts to the /api/contact Pages Function, which sends
+// the email and redirects back here with ?status=sent|error. The inline script
+// below surfaces the matching banner; the form works without JS (the email
+// still sends), only the on-page confirmation needs it.
+const here = Astro.url.pathname;
 
 const schemas = [
   breadcrumbListSchema([
@@ -39,79 +38,31 @@ const schemas = [
       <p class="lede">{t('seo.contact.description')}</p>
     </header>
 
-    {
-      result && !result.error && (
-        <div class="alert alert-success" role="status">
-          ✓ {t('contact.success')}
-        </div>
-      )
-    }
+    <div
+      id="contact-status"
+      class="alert"
+      hidden
+      data-sent={`✓ ${t('contact.success')}`}
+      data-error={`✗ ${t('contact.error')}`}
+    >
+    </div>
 
-    {
-      result?.error && !inputError && (
-        <div class="alert alert-error" role="alert">
-          ✗ {t('contact.error')}
-        </div>
-      )
-    }
-
-    <form method="POST" action={actions.contact} class="contact-form" novalidate>
+    <form method="POST" action="/api/contact" class="contact-form">
+      <input type="hidden" name="_redirect" value={here} />
       <div class="field">
         <label for="name">{t('contact.name')}</label>
-        <input
-          id="name"
-          name="name"
-          type="text"
-          required
-          autocomplete="name"
-          aria-invalid={inputError?.fields.name ? 'true' : undefined}
-          aria-describedby={inputError?.fields.name ? 'name-error' : undefined}
-        />
-        {
-          inputError?.fields.name && (
-            <p id="name-error" class="field-error">
-              {t('contact.validation.nameRequired')}
-            </p>
-          )
-        }
+        <input id="name" name="name" type="text" required maxlength="100" autocomplete="name" />
       </div>
 
       <div class="field">
         <label for="email">{t('contact.email')}</label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          required
-          autocomplete="email"
-          aria-invalid={inputError?.fields.email ? 'true' : undefined}
-          aria-describedby={inputError?.fields.email ? 'email-error' : undefined}
-        />
-        {
-          inputError?.fields.email && (
-            <p id="email-error" class="field-error">
-              {t('contact.validation.emailInvalid')}
-            </p>
-          )
-        }
+        <input id="email" name="email" type="email" required maxlength="254" autocomplete="email" />
       </div>
 
       <div class="field">
         <label for="message">{t('contact.message')}</label>
-        <textarea
-          id="message"
-          name="message"
-          rows="6"
-          required
-          aria-invalid={inputError?.fields.message ? 'true' : undefined}
-          aria-describedby={inputError?.fields.message ? 'message-error' : undefined}></textarea>
-        {
-          inputError?.fields.message && (
-            <p id="message-error" class="field-error">
-              {t('contact.validation.messageTooShort')}
-            </p>
-          )
-        }
+        <textarea id="message" name="message" rows="6" required minlength="10" maxlength="5000"
+        ></textarea>
       </div>
 
       {/* Honeypot — bots fill this, humans don't */}
@@ -126,6 +77,22 @@ const schemas = [
     </form>
   </section>
 </BaseLayout>
+
+<script is:inline>
+  (() => {
+    const status = new URLSearchParams(location.search).get('status');
+    if (status !== 'sent' && status !== 'error') return;
+    const el = document.getElementById('contact-status');
+    if (!el) return;
+    const ok = status === 'sent';
+    el.classList.add(ok ? 'alert-success' : 'alert-error');
+    el.setAttribute('role', ok ? 'status' : 'alert');
+    el.textContent = ok ? el.dataset.sent : el.dataset.error;
+    el.hidden = false;
+    // Drop the query param so a refresh doesn't re-show the banner.
+    history.replaceState(null, '', location.pathname);
+  })();
+</script>
 
 <style>
   .page {
@@ -197,11 +164,6 @@ const schemas = [
     outline: none;
     border-color: var(--color-primary);
     box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-primary) 25%, transparent);
-  }
-  .field-error {
-    color: var(--color-danger);
-    font-size: 0.8125rem;
-    margin: 0;
   }
 
   .honeypot {

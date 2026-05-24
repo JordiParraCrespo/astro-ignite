@@ -2,7 +2,6 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
-import cloudflare from '@astrojs/cloudflare';
 import tailwindcss from '@tailwindcss/vite';
 
 import { siteConfig } from './src/config/site.ts';
@@ -11,12 +10,10 @@ import { siteConfig } from './src/config/site.ts';
 export default defineConfig({
   site: siteConfig.url,
   trailingSlash: 'ignore',
-  output: 'server',
-  adapter: cloudflare({
-    // @astrojs/cloudflare v13 dropped `platformProxy`; the Cloudflare Vite
-    // plugin now wires local bindings from the wrangler config automatically.
-    imageService: 'compile',
-  }),
+  // Fully static: every page prerenders to HTML, deployed to Cloudflare Pages.
+  // The contact form posts to a Pages Function (functions/api/contact.ts), which
+  // is the only server-side piece — so the site itself needs no adapter.
+  output: 'static',
   build: {
     format: 'directory',
     // Inline ALL stylesheets so the first paint never waits on a CSS round-trip.
