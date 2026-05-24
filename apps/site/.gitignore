@@ -22,6 +22,10 @@ pnpm-debug.log*
 .env.*.local
 !.env.example
 
+# cloudflare pages functions — local secrets for `wrangler pages dev`
+.dev.vars
+.wrangler/
+
 # editors
 .vscode/*
 !.vscode/extensions.json
