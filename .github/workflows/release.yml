@@ -3,25 +3,38 @@
 # Triggered from Actions -> Release -> Run workflow. The workflow:
 #   1. Applies any pending changesets (bumps versions, writes CHANGELOG,
 #      and refreshes pnpm-lock.yaml via .github/changeset-version.js).
-#   2. Commits the version bumps back to the branch it ran on.
-#   3. Builds both publishable packages.
-#   4. Publishes to npm via `changeset publish` and pushes the git tags.
+#   2. Builds both publishable packages.
+#   3. Publishes to npm via `changeset publish`.
+#   4. Only after a successful publish, commits the version bumps and pushes
+#      them (plus the git tags) back to the branch it ran on.
+#
+# The bump is committed locally *before* publish (so `changeset publish`
+# tags the version-bump commit) but pushed *after* — if the publish fails,
+# nothing is pushed, so a re-run starts from a clean slate instead of an
+# orphaned "versions bumped but nothing on npm" state.
 #
 # Prerelease mode is respected automatically — when `.changeset/pre.json`
 # exists, publishes go to the configured dist-tag (e.g. `beta`) instead
 # of `latest`.
 #
-# The `dry_run` input runs steps 1 and 3 but skips the commit, the npm
-# publish, and the tag push, so you can sanity-check what would happen.
+# The `dry_run` input runs steps 1 and 2 but skips the publish, the commit,
+# and the push, so you can sanity-check what would happen.
 #
 # Publishable packages (kept in sync at the same version):
 #   - astro-ignite           (primary CLI: bootstrap + future subcommands)
 #   - create-astro-ignite    (shim that runs `astro-ignite bootstrap`)
 #
 # Publishing uses npm Trusted Publishing (OIDC) — no NPM_TOKEN needed.
-# `changeset publish` shells out to `npm publish`, which exchanges the
-# GitHub OIDC token (id-token: write) for a short-lived npm credential and
-# attaches build provenance automatically.
+# `changeset publish` detects this pnpm repo and shells out to `pnpm
+# publish`, which exchanges the GitHub OIDC token (id-token: write) for a
+# short-lived npm credential and attaches build provenance automatically.
+#
+# IMPORTANT: pnpm gained OIDC trusted-publishing support in 11.0.7, and
+# 11.1.3 fixed its interaction with the `_authToken=${NODE_AUTH_TOKEN}`
+# line `actions/setup-node` writes. The repo's pinned pnpm (packageManager
+# field) predates this, so this job pins a newer pnpm just for the release
+# via the action-setup `version:` input (it takes precedence over the
+# packageManager field). Keep this >= 11.1.3.
 #
 # Required setup:
 #   - On npmjs.com, add a Trusted Publisher to EACH package
@@ -33,9 +46,6 @@
 #         Environment name:   Prod   (must match the `environment:` below)
 #   - Settings -> Actions -> General -> Workflow permissions:
 #       Read and write permissions (so the version-bump commit can push).
-#
-# Requires npm >= 11.5.1 and Node >= 22.14.0; the Node 22 toolchain ships an
-# older npm, so the workflow upgrades npm before publishing.
 
 name: Release
 
@@ -43,7 +53,7 @@ on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: 'Dry run (version + build only, no commit, no publish)'
+        description: 'Dry run (version + build only, no publish, no commit)'
         type: boolean
         default: false
 
@@ -64,18 +74,17 @@ jobs:
         with:
           fetch-depth: 0
 
+      # Pin a pnpm with OIDC trusted-publishing support (>= 11.1.3); this
+      # overrides the older pnpm in the repo's packageManager field for this
+      # job only. See the header note above.
       - uses: pnpm/action-setup@v6
+        with:
+          version: 11.3.0
 
       - uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: pnpm
-          registry-url: https://registry.npmjs.org
-
-      # Trusted Publishing needs npm >= 11.5.1; the Node 22 toolchain ships
-      # npm 10.x, so upgrade before the publish step.
-      - name: Upgrade npm for Trusted Publishing
-        run: npm install -g npm@latest
 
       - run: pnpm install --frozen-lockfile
 
@@ -84,6 +93,8 @@ jobs:
       - name: Apply pending changesets
         run: node .github/changeset-version.js
 
+      # Commit locally so `changeset publish` tags this commit, but do not
+      # push yet — the push happens only after a successful publish.
       - name: Commit version bumps
         if: ${{ !inputs.dry_run }}
         run: |
@@ -92,7 +103,6 @@ jobs:
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add .
             git commit -m "chore(release): version packages"
-            git push
           else
             echo "No version changes to commit."
           fi
@@ -111,6 +121,10 @@ jobs:
         if: ${{ !inputs.dry_run }}
         run: pnpm changeset publish
 
-      - name: Push tags
+      # Publish succeeded — now persist the bump commit and the tags that
+      # `changeset publish` created.
+      - name: Push commit and tags
         if: ${{ !inputs.dry_run }}
-        run: git push --tags
+        run: |
+          git push
+          git push --tags
