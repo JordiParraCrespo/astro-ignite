@@ -1,0 +1,116 @@
+# Manual release workflow.
+#
+# Triggered from Actions -> Release -> Run workflow. The workflow:
+#   1. Applies any pending changesets (bumps versions, writes CHANGELOG,
+#      and refreshes pnpm-lock.yaml via .github/changeset-version.js).
+#   2. Commits the version bumps back to the branch it ran on.
+#   3. Builds both publishable packages.
+#   4. Publishes to npm via `changeset publish` and pushes the git tags.
+#
+# Prerelease mode is respected automatically — when `.changeset/pre.json`
+# exists, publishes go to the configured dist-tag (e.g. `beta`) instead
+# of `latest`.
+#
+# The `dry_run` input runs steps 1 and 3 but skips the commit, the npm
+# publish, and the tag push, so you can sanity-check what would happen.
+#
+# Publishable packages (kept in sync at the same version):
+#   - astro-ignite           (primary CLI: bootstrap + future subcommands)
+#   - create-astro-ignite    (shim that runs `astro-ignite bootstrap`)
+#
+# Publishing uses npm Trusted Publishing (OIDC) — no NPM_TOKEN needed.
+# `changeset publish` shells out to `npm publish`, which exchanges the
+# GitHub OIDC token (id-token: write) for a short-lived npm credential and
+# attaches build provenance automatically.
+#
+# Required setup:
+#   - On npmjs.com, add a Trusted Publisher to EACH package
+#     (astro-ignite and create-astro-ignite):
+#       Settings -> Trusted Publisher -> GitHub Actions
+#         Organization/user:  JordiParraCrespo
+#         Repository:         astro-ignite
+#         Workflow filename:  release.yml
+#         Environment name:   Prod   (must match the `environment:` below)
+#   - Settings -> Actions -> General -> Workflow permissions:
+#       Read and write permissions (so the version-bump commit can push).
+#
+# Requires npm >= 11.5.1 and Node >= 22.14.0; the Node 22 toolchain ships an
+# older npm, so the workflow upgrades npm before publishing.
+
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (version + build only, no commit, no publish)'
+        type: boolean
+        default: false
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  release:
+    name: Release
+    if: ${{ github.repository_owner == 'JordiParraCrespo' }}
+    runs-on: ubuntu-latest
+    environment: Prod
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      # Trusted Publishing needs npm >= 11.5.1; the Node 22 toolchain ships
+      # npm 10.x, so upgrade before the publish step.
+      - name: Upgrade npm for Trusted Publishing
+        run: npm install -g npm@latest
+
+      - run: pnpm install --frozen-lockfile
+
+      # Bumps versions, writes CHANGELOG, and refreshes the lockfile so the
+      # committed bumps don't ship with a stale pnpm-lock.yaml.
+      - name: Apply pending changesets
+        run: node .github/changeset-version.js
+
+      - name: Commit version bumps
+        if: ${{ !inputs.dry_run }}
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add .
+            git commit -m "chore(release): version packages"
+            git push
+          else
+            echo "No version changes to commit."
+          fi
+
+      # `changeset publish` does not build — it only runs each package's
+      # prepack hook. Both publishable packages must be built first so their
+      # dist/ output exists in the tarball.
+      - name: Build packages
+        run: |
+          pnpm --filter astro-ignite build
+          pnpm --filter create-astro-ignite build
+
+      # Authenticates via OIDC (id-token: write) — no NODE_AUTH_TOKEN.
+      # Provenance is attached automatically.
+      - name: Publish to npm
+        if: ${{ !inputs.dry_run }}
+        run: pnpm changeset publish
+
+      - name: Push tags
+        if: ${{ !inputs.dry_run }}
+        run: git push --tags
