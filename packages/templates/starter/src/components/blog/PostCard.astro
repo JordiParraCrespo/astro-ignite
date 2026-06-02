@@ -1,0 +1,69 @@
+---
+/**
+ * Blog post card — image, title, date + reading time, description, tag chips.
+ * The whole card is a single link, so tags render as plain chips (a nested
+ * <a> would be invalid). Tag links live on the post page header instead.
+ */
+
+import type { CollectionEntry } from 'astro:content';
+
+import Image from '@/components/image/Image.astro';
+import Text from '@/components/ui/text.astro';
+import { useTranslations } from '@/i18n';
+import { siteConfig } from '@/config/site';
+import { readingTimeMinutes } from '@/lib/reading-time';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  href: string;
+  sizes?: string;
+}
+
+const { post, href, sizes = '(min-width: 768px) 384px, 100vw' } = Astro.props;
+
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
+const dateFmt = new Intl.DateTimeFormat(locale, {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+const minutes = readingTimeMinutes(post.body);
+---
+
+<a
+  href={href}
+  class="block overflow-hidden rounded-xl border border-(--color-border) text-inherit no-underline transition-[border-color,transform] duration-150 ease-(--ease-out-soft) hover:border-(--color-primary) [&_img]:block [&_img]:aspect-[16/9] [&_img]:h-auto [&_img]:w-full [&_img]:object-cover [&_picture]:block [&_picture]:aspect-[16/9] [&_picture]:h-auto [&_picture]:w-full [&_picture]:object-cover"
+>
+  <div>
+    <Image
+      src={post.data.heroImage}
+      alt={post.data.heroImageAlt}
+      width={800}
+      height={420}
+      sizes={sizes}
+    />
+  </div>
+  <div class="p-5">
+    <Text variant="h3" as="h2" class="mb-2">{post.data.title}</Text>
+    <Text variant="muted" as="p" class="mb-3 flex flex-wrap items-center gap-x-2">
+      <time datetime={post.data.datePublished.toISOString()}>
+        {dateFmt.format(post.data.datePublished)}
+      </time>
+      <span aria-hidden="true">·</span>
+      <span>{t('blog.readingTime', { minutes })}</span>
+    </Text>
+    <Text variant="body" tone="muted" class="mb-3">{post.data.description}</Text>
+    {
+      post.data.tags.length > 0 && (
+        <ul class="m-0 flex list-none flex-wrap gap-1.5 p-0">
+          {post.data.tags.slice(0, 4).map((tag: string) => (
+            <li class="rounded bg-(--color-surface-2) px-2 py-0.5 text-[0.75rem] text-(--color-fg-muted)">
+              {tag}
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+</a>

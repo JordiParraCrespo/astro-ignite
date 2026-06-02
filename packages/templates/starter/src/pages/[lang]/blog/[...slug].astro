@@ -7,37 +7,43 @@
  * locale in siteConfig.locales EXCEPT the default.
  */
 
-import { getCollection, render } from 'astro:content';
+import { render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 
 import ArticleLayout from '@/layouts/ArticleLayout.astro';
-import { siteConfig } from '@/config/site';
+import {
+  getPostsForLocale,
+  adjacentPosts,
+  relatedPosts,
+  nonDefaultLocales,
+  postSlug,
+} from '@/lib/blog';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog', (e: CollectionEntry<'blog'>) => !e.data.draft);
-  return posts.flatMap((entry: CollectionEntry<'blog'>) => {
-    const segments = entry.id.split('/');
-    const lang = segments[0]!;
-    if (lang === siteConfig.defaultLocale) return [];
-    if (!siteConfig.locales.includes(lang)) return [];
-    const slug = segments.slice(1).join('/');
-    return [
-      {
-        params: { lang, slug },
-        props: { entry },
-      },
-    ];
-  });
+  const paths = [];
+  for (const lang of nonDefaultLocales()) {
+    const posts = await getPostsForLocale(lang);
+    for (const entry of posts) {
+      paths.push({
+        params: { lang, slug: postSlug(entry) },
+        props: { entry, ...adjacentPosts(posts, entry), related: relatedPosts(posts, entry) },
+      });
+    }
+  }
+  return paths;
 }
 
 interface Props {
   entry: CollectionEntry<'blog'>;
+  prev?: CollectionEntry<'blog'>;
+  next?: CollectionEntry<'blog'>;
+  related: CollectionEntry<'blog'>[];
 }
 
-const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { entry, prev, next, related } = Astro.props;
+const { Content, headings } = await render(entry);
 ---
 
-<ArticleLayout entry={entry}>
+<ArticleLayout entry={entry} prev={prev} next={next} related={related} headings={headings}>
   <Content />
 </ArticleLayout>

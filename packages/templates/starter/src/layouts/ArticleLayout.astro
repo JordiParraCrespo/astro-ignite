@@ -4,32 +4,45 @@
  *
  * - Auto-supplies BlogPosting + BreadcrumbList JSON-LD from the entry
  * - Hero image with eager loading + preload
- * - Title + author + date byline
+ * - Title + author + date byline + reading time + tag links
+ * - In-page table of contents from the article's headings
  * - Prose container for the slot (MDX content)
- * - Optional `related` slot for related-posts component
+ * - Related posts + previous/next navigation in the footer
  */
 
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import { getEntry } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
+import type { MarkdownHeading } from 'astro';
 
 import type { Thing } from 'schema-dts';
 
 import { siteConfig } from '@/config/site';
 import { useTranslations } from '@/i18n';
 import { blogPostingSchema, breadcrumbListSchema, personSchema } from '@/lib/jsonld';
+import { readingTimeMinutes } from '@/lib/reading-time';
+import { tagSlug } from '@/lib/blog';
 
 import BaseLayout from './BaseLayout.astro';
 import PriorityImage from '@/components/image/PriorityImage.astro';
 import Text from '@/components/ui/text.astro';
+import TableOfContents from '@/components/blog/TableOfContents.astro';
+import RelatedPosts from '@/components/blog/RelatedPosts.astro';
+import PostNav from '@/components/blog/PostNav.astro';
 
 interface Props {
   entry: CollectionEntry<'blog'>;
+  prev?: CollectionEntry<'blog'>;
+  next?: CollectionEntry<'blog'>;
+  related?: CollectionEntry<'blog'>[];
+  headings?: MarkdownHeading[];
 }
 
-const { entry } = Astro.props;
+const { entry, prev, next, related = [], headings = [] } = Astro.props;
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const t = useTranslations(locale);
+
+const minutes = readingTimeMinutes(entry.body);
 
 // entry.id format: `<locale>/<slug>` (e.g. "en/welcome").
 const slugSegments = entry.id.split('/');
@@ -109,7 +122,7 @@ const dateFmt = new Intl.DateTimeFormat(locale, {
         </a>
       </nav>
       <Text variant="h1" class="mb-4">{entry.data.title}</Text>
-      <Text variant="muted" class="mb-8 flex flex-wrap items-center gap-2">
+      <Text variant="muted" class="mb-4 flex flex-wrap items-center gap-2">
         {
           author && (
             <>
@@ -123,7 +136,25 @@ const dateFmt = new Intl.DateTimeFormat(locale, {
         <time datetime={entry.data.datePublished.toISOString()}>
           {dateFmt.format(entry.data.datePublished)}
         </time>
+        <span aria-hidden="true">·</span>
+        <span>{t('blog.readingTime', { minutes })}</span>
       </Text>
+      {
+        entry.data.tags.length > 0 && (
+          <ul class="m-0 mb-8 flex list-none flex-wrap gap-2 p-0" aria-label={t('blog.tagsLabel')}>
+            {entry.data.tags.map((tag: string) => (
+              <li>
+                <a
+                  href={getRelativeLocaleUrl(locale, `/blog/tags/${tagSlug(tag)}`)}
+                  class="inline-block rounded bg-(--color-surface-2) px-2 py-0.5 text-[0.8125rem] text-(--color-fg-muted) no-underline transition-colors duration-150 ease-(--ease-out-soft) hover:text-(--color-fg)"
+                >
+                  {tag}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
       <PriorityImage
         src={entry.data.heroImage}
         alt={entry.data.heroImageAlt}
@@ -132,11 +163,15 @@ const dateFmt = new Intl.DateTimeFormat(locale, {
       />
     </header>
 
+    <TableOfContents headings={headings} />
+
     <div class="prose">
       <slot />
     </div>
 
-    <slot name="related" />
+    <PostNav prev={prev} next={next} />
+
+    <RelatedPosts posts={related} />
   </article>
 </BaseLayout>
 

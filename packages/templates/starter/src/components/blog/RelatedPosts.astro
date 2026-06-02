@@ -1,0 +1,47 @@
+---
+/**
+ * Related-posts grid shown beneath an article. Reuses the blog PostCard.
+ * Renders nothing when there are no related posts.
+ */
+
+import type { CollectionEntry } from 'astro:content';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
+import PostCard from '@/components/blog/PostCard.astro';
+import Text from '@/components/ui/text.astro';
+import { useTranslations } from '@/i18n';
+import { siteConfig } from '@/config/site';
+import { postSlug } from '@/lib/blog';
+
+interface Props {
+  posts: CollectionEntry<'blog'>[];
+}
+
+const { posts } = Astro.props;
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
+---
+
+{
+  posts.length > 0 && (
+    <section
+      class="mt-16 border-t border-(--color-border) pt-10"
+      aria-label={t('blog.relatedPosts')}
+    >
+      <Text variant="h2" class="mb-6">
+        {t('blog.relatedPosts')}
+      </Text>
+      <ul class="m-0 grid list-none gap-6 p-0 sm:grid-cols-2 md:grid-cols-3">
+        {posts.map((post) => (
+          <li>
+            <PostCard
+              post={post}
+              href={getRelativeLocaleUrl(locale, `/blog/${postSlug(post)}`)}
+              sizes="(min-width: 768px) 240px, 100vw"
+            />
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
