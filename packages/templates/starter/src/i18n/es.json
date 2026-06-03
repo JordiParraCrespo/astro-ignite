@@ -81,7 +81,18 @@
     "featured": "Destacada · más reciente",
     "readArticle": "Leer artículo →",
     "previousPost": "Entrada anterior",
-    "nextPost": "Siguiente entrada"
+    "nextPost": "Siguiente entrada",
+    "relatedPosts": "Entradas relacionadas",
+    "tableOfContents": "En esta página",
+    "tagsLabel": "Etiquetas",
+    "tagTitle": "Entradas etiquetadas con {tag}",
+    "tagDescription": "Todas las entradas etiquetadas con {tag}.",
+    "pagination": {
+      "label": "Paginación",
+      "newer": "← Más recientes",
+      "older": "Más antiguas →",
+      "pageInfo": "Página {current} de {total}"
+    }
   },
   "projects": {
     "viewProject": "Ver proyecto",

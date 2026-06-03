@@ -1,71 +1,54 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { getRelativeLocaleUrl } from 'astro:i18n';
 
-import Image from '@/components/image/Image.astro';
+import PostCard from '@/components/blog/PostCard.astro';
+import Pagination from '@/components/blog/Pagination.astro';
 import Text from '@/components/ui/text.astro';
 import { useTranslations } from '@/i18n';
 import { siteConfig } from '@/config/site';
-
-export type PostCard = {
-  post: CollectionEntry<'blog'>;
-  href: string;
-  dateText: string;
-  dateIso: string;
-};
+import { postSlug, type PageMeta } from '@/lib/blog';
 
 interface Props {
-  postCards: PostCard[];
+  posts: CollectionEntry<'blog'>[];
+  /** Heading override — defaults to the blog SEO title. */
+  title?: string;
+  /** Subheading override — defaults to the blog SEO description. */
+  description?: string;
+  /** Pagination metadata; when omitted (or single-page) no control renders. */
+  page?: PageMeta;
 }
 
-const { postCards } = Astro.props;
+const { posts, title, description, page } = Astro.props;
 
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const t = useTranslations(locale);
+
+const heading = title ?? t('seo.blog.title');
+const subheading = description ?? t('seo.blog.description');
 ---
 
 <section class="mx-auto max-w-[64rem] px-5 pt-12 pb-16">
   <header class="mb-10">
-    <Text variant="h1" class="mb-3">{t('seo.blog.title')}</Text>
-    <Text variant="lead">{t('seo.blog.description')}</Text>
+    <Text variant="h1" class="mb-3">{heading}</Text>
+    <Text variant="lead">{subheading}</Text>
   </header>
 
   {
-    postCards.length === 0 ? (
+    posts.length === 0 ? (
       <Text variant="lead" class="py-12 text-center">
         {t('blog.noPosts')}
       </Text>
     ) : (
       <ul class="m-0 grid list-none gap-6 p-0 md:grid-cols-2">
-        {postCards.map(({ post, href, dateText, dateIso }: PostCard) => (
+        {posts.map((post) => (
           <li>
-            <a
-              href={href}
-              class="block overflow-hidden rounded-xl border border-(--color-border) text-inherit no-underline transition-[border-color,transform] duration-150 ease-(--ease-out-soft) hover:border-(--color-primary) [&_img]:block [&_img]:aspect-[16/9] [&_img]:h-auto [&_img]:w-full [&_img]:object-cover [&_picture]:block [&_picture]:aspect-[16/9] [&_picture]:h-auto [&_picture]:w-full [&_picture]:object-cover"
-            >
-              <div>
-                <Image
-                  src={post.data.heroImage}
-                  alt={post.data.heroImageAlt}
-                  width={800}
-                  height={420}
-                  sizes="(min-width: 768px) 384px, 100vw"
-                />
-              </div>
-              <div class="p-5">
-                <Text variant="h3" as="h2" class="mb-2">
-                  {post.data.title}
-                </Text>
-                <Text variant="muted" as="p" class="mb-3">
-                  <time datetime={dateIso}>{dateText}</time>
-                </Text>
-                <Text variant="body" tone="muted">
-                  {post.data.description}
-                </Text>
-              </div>
-            </a>
+            <PostCard post={post} href={getRelativeLocaleUrl(locale, `/blog/${postSlug(post)}`)} />
           </li>
         ))}
       </ul>
     )
   }
+
+  {page && <Pagination page={page} />}
 </section>

@@ -81,7 +81,18 @@
     "featured": "Featured · most recent",
     "readArticle": "Read article →",
     "previousPost": "Previous post",
-    "nextPost": "Next post"
+    "nextPost": "Next post",
+    "relatedPosts": "Related posts",
+    "tableOfContents": "On this page",
+    "tagsLabel": "Tags",
+    "tagTitle": "Posts tagged {tag}",
+    "tagDescription": "All posts tagged {tag}.",
+    "pagination": {
+      "label": "Pagination",
+      "newer": "← Newer",
+      "older": "Older →",
+      "pageInfo": "Page {current} of {total}"
+    }
   },
   "projects": {
     "viewProject": "View project",
