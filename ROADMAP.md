@@ -87,7 +87,7 @@ Removed in May (`68ee3e8`) when publish was failing; restore from history.
 
 ### 7. Launch QA + announce (the gate)
 
-- [ ] **Stranger test:** clean machine, `npm create astro-ignite` from the *published* package (not the workspace), following only public docs: scaffold → dev → customize → build → deploy. Every friction point is a blocker; nothing else found that week is.
+- [ ] **Stranger test:** clean machine, `npm create astro-ignite` from the _published_ package (not the workspace), following only public docs: scaffold → dev → customize → build → deploy. Every friction point is a blocker; nothing else found that week is.
 - [ ] AI-ready cold-run (Checkpoint 4 acceptance) passes on the published package.
 - [ ] One launch banner via the existing banner pipeline. No other launch assets.
 - [ ] Announce, staggered: Astro Discord `#showcase` (soft launch, catch breakage) → X → Show HN.
@@ -97,12 +97,12 @@ Removed in May (`68ee3e8`) when publish was failing; restore from history.
 
 ## Version ladder (post-launch — the answer to "should I add this?")
 
-| Version | Theme | Contents |
-| ------- | ----- | -------- |
-| **0.2.0** | Launch | Everything above. Nothing else. |
+| Version   | Theme                            | Contents                                                                                                                                                                                             |
+| --------- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **0.2.0** | Launch                           | Everything above. Nothing else.                                                                                                                                                                      |
 | **0.3.0** | More templates + customizability | `blog` template (split from starter); `astro-ignite add <component>` command (the headline); scaffolded **test suite for agents to verify their changes**; registry blocks tier (PricingCard first). |
-| **0.4.0** | Deploy customization in the CLI | Adapter/deploy-target selection at scaffold time (CF Pages / Netlify / Vercel / Node); deeper customization prompts. |
-| Later | — | doctor/harness-in-templates, more blocks, examples gallery. |
+| **0.4.0** | Deploy customization in the CLI  | Adapter/deploy-target selection at scaffold time (CF Pages / Netlify / Vercel / Node); deeper customization prompts.                                                                                 |
+| Later     | —                                | doctor/harness-in-templates, more blocks, examples gallery.                                                                                                                                          |
 
 ## Explicitly cut from launch
 
