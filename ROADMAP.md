@@ -106,6 +106,7 @@ Removed in May (`68ee3e8`) when publish was failing; restore from history.
 ### 7. Launch QA + announce (the gate)
 
 - [ ] **Stranger test:** clean machine, `npm create astro-ignite` from the _published_ package (not the workspace), following only public docs: scaffold → dev → customize → build → deploy. Every friction point is a blocker; nothing else found that week is.
+- [ ] **Manual verify (automation deliberately looks away here):** the starter contact form end-to-end (Astro Actions flow — its e2e spec is permanently skipped, `tests/e2e/starter/contact.spec.ts`) and the docs built-site search (Pagefind WASM — `tests/e2e/docs-template-built/search-built.spec.ts` is permanently skipped). Both are headline features; both must be exercised by hand at launch QA.
 - [ ] AI-ready cold-run (Checkpoint 4 acceptance) passes on the published package.
 - [ ] One launch banner via the existing banner pipeline. No other launch assets.
 - [ ] Announce, staggered: Astro Discord `#showcase` (soft launch, catch breakage) → X → Show HN.

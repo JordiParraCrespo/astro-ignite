@@ -17,11 +17,12 @@
       "name": "templates-ship-prettier-formatting",
       "title": "Templates: ship prettier formatting config in scaffolded output",
       "capabilities": ["cli-scaffold"],
-      "description": "ROADMAP.md Checkpoint 5. Both templates ship ESLint already; formatting is missing. Ship prettier + prettier-plugin-astro config and a format script in the scaffolded output of starter and docs, so a fresh scaffold has the full lint+format toolchain out of the box.",
+      "description": "ROADMAP.md Checkpoint 5. Both templates ship ESLint already; formatting is missing. Ship prettier + prettier-plugin-astro config and a format script in the scaffolded output of starter and docs, so a fresh scaffold has the full lint+format toolchain out of the box. Also closes the registry verification blind spot: packages/registry has no lint/typecheck scripts and the better-tailwindcss ESLint rules disable themselves on registry files (no tailwind dep), so the atom source of truth escapes the canonical-class gate that its template mirrors enforce.",
       "acceptance": [
         "packages/templates/{starter,docs} each ship a prettier config (with prettier-plugin-astro) and format / format:check scripts in package.json",
         "A fresh scaffold of each template passes its own format:check and lint with zero errors and zero warnings",
         "apps/site and apps/docs mirror the config; packages/astro-ignite/templates/ cache refreshed via copy-templates",
+        "packages/registry gains lint and typecheck scripts wired into the workspace recursion; the better-tailwindcss rules run for real on registry sources (entryPoint or tailwind devDep resolved) and pass clean",
         "No new runtime dependency in any template package.json (devDependencies only)",
         "pnpm scaffold:test passes; a changeset documents the addition"
       ]
