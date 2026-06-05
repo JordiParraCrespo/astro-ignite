@@ -23,17 +23,33 @@ done when the stranger test passes — not when the ideas run out.
 
 ## Launch checkpoints (0.2.0)
 
-### 0. Housekeeping (do first, small)
+### 0. Housekeeping — DONE 2026-06-05
 
-- [ ] Merge `feat/starter-blog-features` (reading time, prev/next, related, ToC, tags, pagination); mirror to `apps/site` where blog surfaces exist.
-- [ ] Archive the 14 completed-but-unarchived changes so `pnpm queue` reflects reality; do not treat the current queue as truth.
-- [ ] Rewrite `openspec/feature_list.json`: move `blog-only-template`, `registry-block-pricing-card`, `doctor-shipped-in-templates` to post-launch; add the checkpoints below as the new pending features so the harness builds the launch, not expansion.
+Executed as a full stale-state sweep + verification pass. Record:
+
+**Cleaned:**
+
+- [x] Merge `feat/starter-blog-features` — landed as #69. (apps/site mirror deliberately deferred to Checkpoint 2 — one mirror pass after design, not two.)
+- [x] Archive the 14 shipped-but-unarchived changes to `openspec/archive/2026-06-05-*` — each verified shipped on main (artifact-checked per acceptance) before archiving. `pnpm doctor` went 1 error → 0.
+- [x] Rewrite `openspec/feature_list.json` — now contains only the five harness-shaped launch features (#18–#22: prettier-in-templates, six guides, component reference, AI-ready skills, demo blog content). Post-launch features deleted from the queue; the version ladder below is their record. Human-owned checkpoints (design, release, launch QA) intentionally stay out of the queue.
+- [x] Branches: 24 stale local + 32 stale remote deleted (all verified squash-merged, fully merged, or deliberately abandoned). Stale `/tmp/aig-fix-39` worktree pruned. Remaining: `main`, `changeset-release/main`, `ci/manual-release-workflow`.
+- [x] PRs: #11 (Hermes review action) closed as pre-launch housekeeping. #66 (manual release workflow) kept — it seeds Checkpoint 6. #22 (changesets version PR) kept — it's automation.
+- [x] Unformatted `ROADMAP.md` on main fixed (was breaking `format:check`).
+
+**Verified (what works):** `format:check` ✅ · `typecheck` ✅ (3 cosmetic hints) · `test` ✅ 9/9 · `audit:invariants` ✅ 9/9 · `lint` ✅ all packages · `scaffold:test` ✅ (assert mode) · `test:e2e` ✅ 45 passed / 7 skipped / 0 failed · `pnpm doctor` ✅ 0 errors.
+
+**Known-not-working (accepted, tracked):**
+
+- `pnpm perf:budget` skips locally — no Chrome on this machine; CI Lighthouse gate covers it. Install before Checkpoint 1 (see prereq there).
+- openspec CLI not installed — archiving stays manual (worked fine).
+- Leftover cosmetic typecheck hints: unused `interface Props` in `blog/page/[page].astro` ×2, deprecated `tseslint.config` signature — fold into any upcoming starter touch.
 
 ### 1. Design — starter + docs (LAUNCH BLOCKER, in progress)
 
 Designed in Claude Design. Owner: Jordi. Blast radius decision still open
 (reskin vs restyle vs redesign) — to be settled when the design lands.
 
+- [ ] Prereq: install Chrome locally (`sudo node scripts/doctor/install-chrome.mjs`) so `pnpm perf:budget` gives fast local Lighthouse loops during design iteration.
 - [ ] Starter pages designed: home, blog index, blog post, projects, about, contact, 404.
 - [ ] Docs pages designed: landing, doc page, search, 404.
 - [ ] Design applied to `packages/templates/{starter,docs}` (tokens-first; honor the tokens-only + Tailwind-first invariants).
@@ -46,6 +62,7 @@ Designed in Claude Design. Owner: Jordi. Blast radius decision still open
 The deployed templates ARE the launch demo; every shipped feature must be visible.
 
 - [ ] Demo content exercises the new blog features: enough posts to trigger pagination, overlapping tags, meaningful related posts (~5–6 posts; hero images via the banner pipeline — **after** design settles).
+- [ ] Mirror the #69 blog features (Pagination, PostCard, PostNav, RelatedPosts, TableOfContents, tags/page routes) to `apps/site` as part of the post-design mirror sweep — deferred from Checkpoint 0; apps/site is a customized mirror, so this is judgment work, not copying.
 - [ ] Accuracy sweep: scaffolded README/AGENTS.md claims match reality (known: starter `README.md` still describes the pre-#37 "layered CSS strategy").
 - **Done when:** a stranger clicking two pages deep on starter./docs.astroignite.dev sees every advertised feature working.
 
@@ -79,7 +96,7 @@ Scaffolded output ships `.claude/skills/` so agents follow best practices.
 
 Removed in May (`68ee3e8`) when publish was failing; restore from history.
 
-- [ ] Restore `.github/workflows/release.yml`: changesets version-PR automation + publish behind manual `workflow_dispatch` (no auto-publish on merge).
+- [ ] Restore `.github/workflows/release.yml`: changesets version-PR automation + publish behind manual `workflow_dispatch` (no auto-publish on merge). **PR #66 already implements this — rebase on main, review against these requirements, land it.**
 - [ ] Fix the May failure (NPM_TOKEN / `Prod` environment / version-exists check — diagnose on restore).
 - [ ] **Dry run early, not at launch:** flush the 21 pending changesets as a quiet pre-release to prove the pipeline, so the launch publish is routine.
 - [ ] Launch version: **`0.2.0`**.
