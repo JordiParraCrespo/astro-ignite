@@ -155,16 +155,27 @@ const dateFmt = new Intl.DateTimeFormat(Astro.currentLocale ?? 'en', {
     @apply border-0 bg-transparent p-0 text-[length:inherit];
   }
   /* Shiki transformers: full-width line bands for `{1,3}` / `[!code highlight]`
-     and `[!code ++]` / `[!code --]`. Token-resolved, build-time only. */
+     and `[!code ++]` / `[!code --]`, plus a line-number gutter on multi-line
+     blocks. Token-resolved, build-time only. */
   .docs-prose .astro-code code {
     @apply inline-block min-w-full;
   }
   .docs-prose .astro-code .line {
     @apply inline-block w-full;
   }
+  .docs-prose .astro-code code:has(.line:nth-child(2)) {
+    counter-reset: docs-ln;
+  }
+  .docs-prose .astro-code code:has(.line:nth-child(2)) .line {
+    counter-increment: docs-ln;
+  }
+  .docs-prose .astro-code code:has(.line:nth-child(2)) .line::before {
+    content: counter(docs-ln);
+    @apply mr-5 inline-block w-6 text-right text-[var(--color-fg-subtle)] select-none;
+  }
   .docs-prose .astro-code .line.highlighted {
-    background: color-mix(in oklch, var(--color-primary) 14%, transparent);
-    box-shadow: inset 2px 0 var(--color-primary);
+    background: color-mix(in oklch, var(--color-fg) 7%, transparent);
+    box-shadow: inset 2px 0 var(--color-fg);
   }
   .docs-prose .astro-code .line.diff.add {
     background: color-mix(in oklch, var(--color-success) 16%, transparent);

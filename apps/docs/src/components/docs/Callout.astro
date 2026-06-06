@@ -2,9 +2,10 @@
 /**
  * Callout / admonition block — used inside MDX content.
  *
- * Variants: note, tip, warning, danger. Each has a different border + label
- * color drawn from theme tokens. Quietly styled to match the rest of the
- * design system — no shouting boxes.
+ * Variants: note, tip, warning, danger. Each is a full-border tinted box with
+ * a leading icon, a title, and body copy. Status colors resolve through the
+ * design tokens (success / warning / danger); the tint + border are derived
+ * from them via color-mix so the block adapts to light and dark themes.
  *
  * Usage in MDX:
  *   <Callout variant="warning" title="Heads up">
@@ -24,8 +25,8 @@ const { variant = 'note', title } = Astro.props;
 const defaultTitles: Record<Variant, string> = {
   note: 'Note',
   tip: 'Tip',
-  warning: 'Warning',
-  danger: 'Heads up',
+  warning: 'Heads up',
+  danger: 'Warning',
 };
 
 const heading = title ?? defaultTitles[variant];
@@ -33,58 +34,143 @@ const heading = title ?? defaultTitles[variant];
 
 <aside
   class:list={['callout', `callout-${variant}`]}
-  role={variant === 'danger' ? 'alert' : undefined}
+  role={variant === 'danger' || variant === 'warning' ? 'alert' : undefined}
 >
-  <div class="callout-title mono">{heading}</div>
-  <div class="callout-body">
-    <slot />
+  <span class="callout-icon" aria-hidden="true">
+    {
+      variant === 'note' && (
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="16" x2="12" y2="12" />
+          <line x1="12" y1="8" x2="12.01" y2="8" />
+        </svg>
+      )
+    }
+    {
+      variant === 'tip' && (
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M12 2v4" />
+          <path d="m4.93 4.93 2.83 2.83" />
+          <path d="m16.24 7.76 2.83-2.83" />
+          <circle cx="12" cy="14" r="6" />
+          <path d="M9 20h6" />
+        </svg>
+      )
+    }
+    {
+      variant === 'warning' && (
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="m10.29 3.86-8.06 14a2 2 0 0 0 1.71 3h16.12a2 2 0 0 0 1.71-3l-8.06-14a2 2 0 0 0-3.42 0z" />
+          <line x1="12" y1="9" x2="12" y2="13" />
+          <line x1="12" y1="17" x2="12.01" y2="17" />
+        </svg>
+      )
+    }
+    {
+      variant === 'danger' && (
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <line x1="15" y1="9" x2="9" y2="15" />
+          <line x1="9" y1="9" x2="15" y2="15" />
+        </svg>
+      )
+    }
+  </span>
+  <div class="callout-content">
+    <div class="callout-title">{heading}</div>
+    <div class="callout-body"><slot /></div>
   </div>
 </aside>
 
+<!-- tailwind-exception: per-variant tint + border are derived from the status tokens via color-mix(), and the icon column is a prop-driven layout — clearer as one scoped block than arbitrary-value utilities -->
 <style>
   .callout {
-    margin: 1.5rem 0;
-    padding: 14px 16px 14px 18px;
-    border-left: 2px solid var(--color-fg);
-    background: var(--color-surface-2);
-    border-radius: 0 var(--radius) var(--radius) 0;
     display: flex;
-    flex-direction: column;
-    gap: 6px;
+    gap: 12px;
+    margin: 1.5rem 0;
+    padding: 12px 14px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface-2);
+  }
+  .callout-icon {
+    display: flex;
+    flex-shrink: 0;
+    margin-top: 1px;
+    color: var(--color-fg);
+  }
+  .callout-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+  .callout-content {
+    min-width: 0;
   }
   .callout-title {
-    font-size: 11px;
-    color: var(--color-fg-muted);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-fg);
+    letter-spacing: -0.005em;
   }
   .callout-body {
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--color-fg);
+    margin-top: 2px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--color-fg-muted);
   }
   .callout-body :global(p:last-child) {
     margin-bottom: 0;
   }
 
   .callout-tip {
-    border-left-color: var(--color-success);
+    border-color: color-mix(in oklch, var(--color-success) 28%, transparent);
+    background: color-mix(in oklch, var(--color-success) 8%, transparent);
   }
-  .callout-tip .callout-title {
+  .callout-tip .callout-icon {
     color: var(--color-success);
   }
 
   .callout-warning {
-    border-left-color: var(--color-warning);
+    border-color: color-mix(in oklch, var(--color-warning) 30%, transparent);
+    background: color-mix(in oklch, var(--color-warning) 8%, transparent);
   }
-  .callout-warning .callout-title {
+  .callout-warning .callout-icon {
     color: var(--color-warning);
   }
 
   .callout-danger {
-    border-left-color: var(--color-danger);
+    border-color: color-mix(in oklch, var(--color-danger) 30%, transparent);
+    background: color-mix(in oklch, var(--color-danger) 7%, transparent);
   }
-  .callout-danger .callout-title {
+  .callout-danger .callout-icon {
     color: var(--color-danger);
   }
 </style>

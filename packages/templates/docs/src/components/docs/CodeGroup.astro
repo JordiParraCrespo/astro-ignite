@@ -43,47 +43,54 @@ const { class: className } = Astro.props;
   }
   .code-group__tabs {
     display: flex;
-    align-items: center;
-    gap: 2px;
+    align-items: stretch;
+    gap: 0;
+    padding: 0 8px;
     border-bottom: 1px solid var(--color-border);
-    padding: 6px 8px;
+    background: var(--color-surface-2);
   }
   .code-group__tab {
     appearance: none;
     cursor: pointer;
     border: 0;
+    border-bottom: 1.5px solid transparent;
+    margin-bottom: -1px;
     background: transparent;
-    border-radius: var(--radius-sm);
-    padding: 4px 8px;
+    padding: 9px 12px;
     font-family: var(--font-mono, monospace);
     font-size: 11px;
     color: var(--color-fg-muted);
-    transition:
-      background-color 0.1s,
-      color 0.1s;
+    transition: color 0.1s;
   }
   .code-group__tab:hover {
     color: var(--color-fg);
   }
   .code-group__tab[data-active='true'] {
-    background: var(--color-surface);
     color: var(--color-fg);
+    border-bottom-color: var(--color-fg);
+    font-weight: 500;
   }
   .code-group__copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     margin-left: auto;
     appearance: none;
     cursor: pointer;
     border: 0;
     background: transparent;
-    border-radius: var(--radius-sm);
-    padding: 4px 8px;
+    padding: 0 10px;
     font-family: var(--font-mono, monospace);
     font-size: 11px;
     color: var(--color-fg-muted);
+    transition: color 0.1s;
   }
   .code-group__copy:hover {
-    background: var(--color-surface);
     color: var(--color-fg);
+  }
+  .code-group__copy svg {
+    width: 12px;
+    height: 12px;
   }
 </style>
 
@@ -134,16 +141,18 @@ const { class: className } = Astro.props;
         const copy = document.createElement('button');
         copy.type = 'button';
         copy.className = 'code-group__copy';
-        copy.textContent = 'copy';
+        copy.innerHTML =
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span data-copy-label>copy</span>';
+        const copyLabel = copy.querySelector('[data-copy-label]')!;
         copy.addEventListener('click', async () => {
           const active = blocks.find((b) => !b.hidden);
           const pre = active?.querySelector('pre');
           if (!pre || !navigator.clipboard) return;
           try {
             await navigator.clipboard.writeText(pre.textContent ?? '');
-            copy.textContent = 'copied';
+            copyLabel.textContent = 'copied';
             setTimeout(() => {
-              copy.textContent = 'copy';
+              copyLabel.textContent = 'copy';
             }, 1200);
           } catch {
             // Permissions denied — silently fail.
