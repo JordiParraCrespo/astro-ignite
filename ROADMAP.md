@@ -162,3 +162,18 @@ Removed in May (`68ee3e8`) when publish was failing; restore from history.
 3. Extra tooling beyond lint + format — only if a concrete need appears (Checkpoint 5).
 4. ~~View Transitions (Astro `<ClientRouter />`) — include in v1?~~ — **RESOLVED: deferred post-launch** (version ladder, "Later"). SEO-safe, but trades against the zero-JS/Lighthouse pitch; revisit when the perf budget has headroom.
 5. AI-native docs scope — how much of the Mintlify-style AI layer lands at launch. Recommended (and reflected above): the static/cheap slice in 0.2.0 (four docs MDX components, per-page `.md`, `/llms-full.txt`, copy/open-in-AI menu — each makes the "build docs with AI agents" claim demonstrably true and adds ~zero runtime cost); the agentic slice (MCP-from-docs, Ask-AI search) deferred to 0.3.0 since it needs a model key / generated artifact and shouldn't gate launch.
+
+## Architecture & tech-debt (post-launch)
+
+From an architecture review (the `improve-codebase-architecture` skill, 2026-06-06) —
+"deepening" refactors that turn shallow, duplicated modules into deep, testable ones.
+**None gate launch** — the cut rule holds, no launch claim depends on them. Recorded so
+future architecture passes don't re-derive them; sequence after 0.2.0, opportunistically
+when already touching the area.
+
+- [x] **Consolidate Chrome detection** — `findChrome` was byte-duplicated in `scripts/perf/run.mjs` and `scripts/doctor/chrome-installed.mjs`; now one `scripts/lib/chrome.mjs` both import, so the graceful-skip contract has a single home. Shipped 2026-06-06 (#73).
+- [ ] **Registry as the deep source for atoms** (highest leverage) — ~156 byte-identical atom files live across `packages/registry` + both templates + `apps/*` with no module owning them, and `registry.json`'s `registryDependencies` are read by nobody (`scaffold.ts` copies the template tree verbatim). Give the registry a `materialize()` step + a CI drift check so the copies are generated, not hand-maintained. **Build-time only** — the scaffolded output stays fully copied and owned (the shadcn-style, zero-runtime-dep invariant is non-negotiable). Natural companion to the 0.3.0 shadcn-consumable registry work (Checkpoint 2b).
+- [ ] **Feature-rule table in `scaffold.ts`** — dep-stripping is hardcoded to email (`fileExists('src/lib/email/index.ts')`); replace with a declarative `{ detect, deps }` table so a new feature/template is one row. **Defer until the second rule exists** (e.g. "Actions ⇒ pin `@astrojs/node`") — one rule is a premature seam.
+- [ ] **Test seam for the perf gate** — the build → boot → Lighthouse → compare → report pipeline (and the chrome-missing skip) is buried in a 166-line `main()` in `scripts/perf/run.mjs`; inject the spawn/Lighthouse I/O as ports so the skip and boot-failure paths are testable without spawning a real process.
+- [ ] **Invariant registry behind the audit suite** — `scripts/audit/run-all.mjs` discovers per-change audits by regex-scraping design.md prose, and the invariant → audit mapping has no machine-readable home; add a `defineAudit()` harness + a registry (compiled from the `openspec/specs/<cap>/spec.md` tables) consumed by both run-all and doctor. Touches the harness itself — bigger blast radius; treat the registry half as speculative.
+- **Not doing:** collapsing the i18n `[lang]/` parallel routes (~95% duplicate, ~660 LOC). Contradicts the locked `i18n-parallels` invariant — the parallel files are deliberate (per-page static routes + localized hreflang). Reopen that invariant first if the manual mirroring ever becomes a real maintenance drag.
