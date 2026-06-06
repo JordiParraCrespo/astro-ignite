@@ -19,7 +19,7 @@ Non-trivial work in this repo goes through a spec-driven, file-mediated subagent
 
 Set `OPENSPEC_TELEMETRY=0` (already in `.env.example`) when the OpenSpec CLI install path is wired.
 
-**Driving the harness from a phone.** The harness can run as a GitHub-event autopilot via Claude Code Routines — see [`.claude/routines/README.md`](./.claude/routines/README.md). Three routines (author next spec → review PR → advance on merge) turn the human-approval gate into "merge the PR from your phone". The `SessionStart` hook at `scripts/cloud/bootstrap.sh` (wired in `.claude/settings.json`) installs deps and prints `pnpm queue` so every cloud/routine session boots ready.
+**Driving the harness from a phone.** The harness can run as a GitHub-event autopilot via Claude Code Routines — see [`.claude/routines/README.md`](./.claude/routines/README.md). **GitHub issues are the work queue; labels pick the flow:** `flow:direct` builds straight from the issue → reviewer → PR; `flow:spec` drafts a spec → you review/edit `tasks.md` → another agent codes it → reviewer. A scheduled `dispatch` routine turns issues into work (issue events can't trigger routines natively); native PR triggers drive `review` and `advance-on-merge`, so every gate is a "merge the PR from your phone". The `SessionStart` hook at `scripts/cloud/bootstrap.sh` (wired in `.claude/settings.json`) installs deps and prints `pnpm queue` so every cloud/routine session boots ready.
 
 ## Principles
 

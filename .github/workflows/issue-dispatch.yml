@@ -1,0 +1,42 @@
+# Optional real-time bridge: when an issue gets a `flow:` label, fire the
+# `Harness — dispatch issues` routine's API endpoint so you don't wait for the
+# next schedule tick. Safe no-op until both repo secrets are set:
+#   CLAUDE_ROUTINE_URL    — the routine's API trigger URL
+#   CLAUDE_ROUTINE_TOKEN  — the routine's bearer token (generated once, shown once)
+# See .claude/routines/README.md → "Optional: instant dispatch".
+name: Dispatch issue to Claude routine
+
+on:
+  issues:
+    types: [opened, labeled]
+
+permissions:
+  contents: read
+
+jobs:
+  fire:
+    # Only when the issue carries a flow label.
+    if: >-
+      contains(github.event.issue.labels.*.name, 'flow:direct') ||
+      contains(github.event.issue.labels.*.name, 'flow:spec')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fire the dispatch routine
+        env:
+          URL: ${{ secrets.CLAUDE_ROUTINE_URL }}
+          TOKEN: ${{ secrets.CLAUDE_ROUTINE_TOKEN }}
+          ISSUE: ${{ github.event.issue.number }}
+        run: |
+          if [ -z "$URL" ] || [ -z "$TOKEN" ]; then
+            echo "CLAUDE_ROUTINE_URL / CLAUDE_ROUTINE_TOKEN not set — skipping."
+            echo "The scheduled dispatch routine will still pick this issue up."
+            exit 0
+          fi
+          # Pass only the issue number; the routine fetches the body itself
+          # (avoids interpolating untrusted issue text into the request).
+          curl -sS -X POST "$URL" \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "anthropic-beta: experimental-cc-routine-2026-04-01" \
+            -H "anthropic-version: 2023-06-01" \
+            -H "Content-Type: application/json" \
+            -d "{\"text\": \"Dispatch GitHub issue #${ISSUE}.\"}"
