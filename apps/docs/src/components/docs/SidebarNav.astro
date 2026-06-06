@@ -67,11 +67,26 @@ const isActive = (slug: string) => {
 <aside class="sidebar" aria-label={t('nav.documentation')}>
   <header class="sidebar-header">
     <Brand href="/" variant="lockup" size={0.42} />
+    <button
+      type="button"
+      class="sidebar-toggle"
+      data-docs-nav-toggle
+      aria-controls="docs-nav-panel"
+      aria-expanded="false"
+      aria-label={t('nav.openMenu')}
+    >
+      <span class="sidebar-toggle-bars" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
   </header>
 
-  <SearchBox />
+  <div id="docs-nav-panel" class="sidebar-panel" data-docs-nav-panel>
+    <SearchBox />
 
-  <nav class="sidebar-nav" aria-label={t('nav.sidebar')}>
+    <nav class="sidebar-nav" aria-label={t('nav.sidebar')}>
     {
       sidebar.map((group) => {
         // Render external links, direct paths, and doc-collection entries that
@@ -124,8 +139,28 @@ const isActive = (slug: string) => {
         );
       })
     }
-  </nav>
+    </nav>
+  </div>
 </aside>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-docs-nav-toggle]');
+  const panel = document.getElementById('docs-nav-panel');
+  if (toggle && panel) {
+    const setOpen = (open: boolean) => {
+      panel.classList.toggle('open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+    };
+    toggle.addEventListener('click', () => setOpen(!panel.classList.contains('open')));
+    panel.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') setOpen(false);
+    });
+    window.matchMedia('(min-width: 768px)').addEventListener('change', (e) => {
+      if (e.matches) setOpen(false);
+    });
+  }
+</script>
 
 <style>
   .sidebar {
@@ -142,7 +177,65 @@ const isActive = (slug: string) => {
     background: var(--color-bg);
   }
   .sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
     padding: 0 4px;
+  }
+  .sidebar-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  /* The hamburger toggle is mobile-only; the panel is always open on desktop. */
+  .sidebar-toggle {
+    display: none;
+    cursor: pointer;
+    appearance: none;
+    border: 0;
+    background: transparent;
+    border-radius: var(--radius-sm);
+    padding: 8px;
+    color: var(--color-fg);
+    transition: background 0.12s var(--ease-out-soft);
+  }
+  .sidebar-toggle:hover {
+    background: var(--color-surface-2);
+  }
+  .sidebar-toggle-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 20px;
+  }
+  .sidebar-toggle-bars span {
+    display: block;
+    height: 2px;
+    border-radius: 1px;
+    background: currentColor;
+  }
+  @media (max-width: 767.98px) {
+    .sidebar {
+      position: static;
+      height: auto;
+      overflow: visible;
+      border-right: none;
+      border-bottom: 1px solid var(--color-border);
+      padding: 12px 16px;
+      gap: 12px;
+    }
+    .sidebar-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .sidebar-panel {
+      display: none;
+    }
+    .sidebar-panel.open {
+      display: flex;
+    }
   }
   .sidebar-nav {
     display: flex;
