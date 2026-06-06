@@ -1,0 +1,38 @@
+---
+/**
+ * CardGroup — lays its children out in a responsive grid. Pair with the `Card`
+ * atom (or plain anchors) to build the link grids docs landing pages use.
+ *
+ * Usage in MDX:
+ *   <CardGroup cols={2}>
+ *     <Card>…</Card>
+ *     <Card>…</Card>
+ *   </CardGroup>
+ */
+
+interface Props {
+  cols?: 2 | 3 | 4;
+  class?: string;
+}
+
+const { cols = 2, class: className } = Astro.props;
+---
+
+<div class:list={['card-group', className]} style={`--card-group-cols:${cols}`}>
+  <slot />
+</div>
+
+<!-- tailwind-exception: column count is a runtime prop (cols) fed into grid-template-columns through a CSS var, which Tailwind utilities can't parameterize -->
+<style>
+  .card-group {
+    display: grid;
+    grid-template-columns: repeat(var(--card-group-cols, 2), minmax(0, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  @media (max-width: 640px) {
+    .card-group {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

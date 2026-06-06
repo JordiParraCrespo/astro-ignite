@@ -154,6 +154,27 @@ const dateFmt = new Intl.DateTimeFormat(Astro.currentLocale ?? 'en', {
   .docs-prose pre code {
     @apply border-0 bg-transparent p-0 text-[length:inherit];
   }
+  /* Shiki transformers: full-width line bands for `{1,3}` / `[!code highlight]`
+     and `[!code ++]` / `[!code --]`. Token-resolved, build-time only. */
+  .docs-prose .astro-code code {
+    @apply inline-block min-w-full;
+  }
+  .docs-prose .astro-code .line {
+    @apply inline-block w-full;
+  }
+  .docs-prose .astro-code .line.highlighted {
+    background: color-mix(in oklch, var(--color-primary) 14%, transparent);
+    box-shadow: inset 2px 0 var(--color-primary);
+  }
+  .docs-prose .astro-code .line.diff.add {
+    background: color-mix(in oklch, var(--color-success) 16%, transparent);
+    box-shadow: inset 2px 0 var(--color-success);
+  }
+  .docs-prose .astro-code .line.diff.remove {
+    background: color-mix(in oklch, var(--color-danger) 16%, transparent);
+    box-shadow: inset 2px 0 var(--color-danger);
+    opacity: 0.65;
+  }
   .docs-prose hr {
     @apply my-8 border-0 border-t border-[var(--color-border)];
   }

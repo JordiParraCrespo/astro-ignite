@@ -7,40 +7,63 @@ tags: [getting-started]
 
 import Callout from '@/components/docs/Callout.astro';
 import CodeBlock from '@/components/docs/CodeBlock.astro';
+import CodeGroup from '@/components/docs/CodeGroup.astro';
+import Steps from '@/components/docs/Steps.astro';
+import Step from '@/components/docs/Step.astro';
 
 ## Prerequisites
 
 - Node 20.11+ or 22 LTS
 - A package manager — pnpm (recommended), npm, yarn, or bun
 
-## Scaffold a new site
+<Steps>
+  <Step title="Scaffold a new site">
+    Run the create command with your package manager of choice:
 
-<CodeBlock filename="terminal" language="bash">
-{`npm create astro-ignite@latest my-site`}
-</CodeBlock>
+    <CodeGroup>
+      <CodeBlock filename="npm">{`npm create astro-ignite@latest my-site`}</CodeBlock>
+      <CodeBlock filename="pnpm">{`pnpm create astro-ignite my-site`}</CodeBlock>
+      <CodeBlock filename="yarn">{`yarn create astro-ignite my-site`}</CodeBlock>
+      <CodeBlock filename="bun">{`bun create astro-ignite my-site`}</CodeBlock>
+    </CodeGroup>
 
-You'll be asked six questions. Pick or accept defaults; the whole flow takes around fifteen seconds.
+    You'll be asked six questions. Pick or accept defaults; the whole flow takes around fifteen seconds.
 
-<Callout variant="tip" title="Two equivalent commands">
-  `npm create astro-ignite@latest` is a shim that runs `npx astro-ignite bootstrap` under the hood. Both produce identical projects — pick whichever feels natural. See [Releases](/releases) for why both exist.
-</Callout>
+    <Callout variant="tip" title="Two equivalent commands">
+      `npm create astro-ignite@latest` is a shim that runs `npx astro-ignite bootstrap` under the hood. Both produce identical projects — pick whichever feels natural. See [Releases](/releases) for why both exist.
+    </Callout>
 
-## Run it
+  </Step>
 
-<CodeBlock filename="terminal" language="bash">
-{`cd my-site
+  <Step title="Run it">
+    <CodeBlock filename="terminal" language="bash">
+      {`cd my-site
 pnpm install
 pnpm dev`}
-</CodeBlock>
+    </CodeBlock>
 
-Open the URL printed in your terminal. You should see a working site with a styled hero, a blog with two example posts, a projects showcase, an about page, a working contact form (logs to console in dev), legal pages, a cookie banner, and a dark-mode toggle.
+    Open the URL printed in your terminal. You should see a working site with a styled hero, a blog with two example posts, a projects showcase, an about page, a working contact form (logs to console in dev), legal pages, a cookie banner, and a dark-mode toggle.
 
-<Callout variant="tip" title="Preview before you scaffold">
-  Both templates are deployed live from `main`:
-  [`starter.astroignite.dev`](https://starter.astroignite.dev) and
-  [`docs-starter.astroignite.dev`](https://docs-starter.astroignite.dev). See
-  [Templates](/templates) for which one to pick.
-</Callout>
+    <Callout variant="tip" title="Preview before you scaffold">
+      Both templates are deployed live from `main`:
+      [`starter.astroignite.dev`](https://starter.astroignite.dev) and
+      [`docs-starter.astroignite.dev`](https://docs-starter.astroignite.dev). See
+      [Templates](/templates) for which one to pick.
+    </Callout>
+
+  </Step>
+
+  <Step title="Make it yours">
+    Edit these first; grow into the rest over time:
+
+    1. **Brand colors + tokens** in `src/styles/global.css` (`@theme` block)
+    2. **Site identity** in `src/config/site.ts` — name, URL, organization, social
+    3. **OG image** at `public/og/og-default.png` (placeholder ships)
+    4. **Legal pages** in `src/content/legal/{locale}/*.mdx` — placeholders need filling, then **review with counsel before publishing**
+    5. **Author bio** in `src/content/authors/jordi.json`
+
+  </Step>
+</Steps>
 
 <Callout variant="tip" title="No account signups required">
   In dev, missing env vars fall back to console logs — `pnpm dev` produces a
@@ -48,12 +71,4 @@ Open the URL printed in your terminal. You should see a working site with a styl
   `PUBLIC_PLAUSIBLE_DOMAIN` only when you go to production.
 </Callout>
 
-## What to edit first
-
-1. **Brand colors + tokens** in `src/styles/global.css` (`@theme` block)
-2. **Site identity** in `src/config/site.ts` — name, URL, organization, social
-3. **OG image** at `public/og/og-default.png` (placeholder ships)
-4. **Legal pages** in `src/content/legal/{locale}/*.mdx` — placeholders need filling, then **review with counsel before publishing**
-5. **Author bio** in `src/content/authors/jordi.json`
-
-The rest you can grow into over time.
+Next, see [Writing content](/authoring) for the components you can drop into any MDX page.

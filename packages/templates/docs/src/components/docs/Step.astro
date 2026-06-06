@@ -1,0 +1,75 @@
+---
+/**
+ * Step — a single item inside <Steps>. The number badge and the rail that
+ * connects consecutive steps are drawn with a CSS counter + pseudo-elements,
+ * so reordering renumbers automatically.
+ */
+
+interface Props {
+  title?: string;
+}
+
+const { title } = Astro.props;
+---
+
+<li class="step">
+  {title && <div class="step-title">{title}</div>}
+  <div class="step-body"><slot /></div>
+</li>
+
+<!-- tailwind-exception: counter-increment, the ::before number badge, and the ::after connecting rail are pseudo-element + counter CSS Tailwind cannot express -->
+<style>
+  .step {
+    counter-increment: step;
+    position: relative;
+    padding-left: 2.5rem;
+    padding-bottom: 1.5rem;
+  }
+  .step:last-child {
+    padding-bottom: 0;
+  }
+  .step::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: grid;
+    place-items: center;
+    width: 1.65rem;
+    height: 1.65rem;
+    border-radius: 9999px;
+    border: 1px solid var(--color-border-strong);
+    background: var(--color-surface-2);
+    color: var(--color-fg);
+    font-family: var(--font-mono, monospace);
+    font-size: 12px;
+    z-index: 1;
+  }
+  .step::after {
+    content: '';
+    position: absolute;
+    left: calc(1.65rem / 2 - 0.5px);
+    top: 1.65rem;
+    bottom: 0;
+    width: 1px;
+    background: var(--color-border);
+  }
+  .step:last-child::after {
+    display: none;
+  }
+  .step-title {
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 1.65rem;
+    color: var(--color-fg);
+    margin-bottom: 0.35rem;
+  }
+  .step-body {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--color-fg-muted);
+  }
+  .step-body :global(p:last-child) {
+    margin-bottom: 0;
+  }
+</style>
