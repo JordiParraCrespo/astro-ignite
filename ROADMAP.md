@@ -133,7 +133,7 @@ Removed in May (`68ee3e8`) when publish was failing; restore from history.
 | **0.2.0** | Launch                           | Everything above. Nothing else.                                                                                                                                                                      |
 | **0.3.0** | More templates + customizability | `blog` template (split from starter); `astro-ignite add <component>` command (the headline) + **registry MCP server** (agents browse/install atoms); scaffolded **test suite for agents to verify their changes**; registry blocks tier (PricingCard first); more atoms (`command`/⌘K palette, `breadcrumb`, pagination-as-atom). |
 | **0.4.0** | Deploy customization in the CLI  | Adapter/deploy-target selection at scaffold time (CF Pages / Netlify / Vercel / Node); deeper customization prompts.                                                                                 |
-| Later     | —                                | doctor/harness-in-templates, more blocks, examples gallery.                                                                                                                                          |
+| Later     | —                                | **View Transitions (Astro `<ClientRouter />`)** — deferred pending the zero-JS/Lighthouse trade-off (SEO-safe; cost is the perf pitch, plus Plausible pageview re-fire + theme re-apply on `astro:after-swap`); doctor/harness-in-templates; more blocks; examples gallery. |
 
 ## Explicitly cut from launch
 
@@ -151,4 +151,4 @@ Removed in May (`68ee3e8`) when publish was failing; restore from history.
 1. Design blast radius — reskin / restyle / redesign (Checkpoint 1; restyle-with-fixed-page-list recommended).
 2. ~~The seventh skill — which one, if any~~ — **RESOLVED: `customize-theme`** (Checkpoint 4).
 3. Extra tooling beyond lint + format — only if a concrete need appears (Checkpoint 5).
-4. **View Transitions (Astro `<ClientRouter />`)** — include in v1? SEO-safe (MPA: every route stays a real server-rendered HTML document, so the crawlable/indexable surface is unchanged). The real trade-off is the **zero-runtime-JS pitch / Lighthouse budget** (it ships a client-router script on every page), plus it requires re-firing Plausible pageviews and re-applying the theme on `astro:after-swap`. Pending decision — not yet in a checkpoint.
+4. ~~View Transitions (Astro `<ClientRouter />`) — include in v1?~~ — **RESOLVED: deferred post-launch** (version ladder, "Later"). SEO-safe, but trades against the zero-JS/Lighthouse pitch; revisit when the perf budget has headroom.
