@@ -45,7 +45,7 @@ const statusLabels = {
               href={href}
               class="block overflow-hidden rounded-xl border border-(--color-border) text-inherit no-underline transition-colors duration-150 ease-(--ease-out-soft) hover:border-(--color-primary)"
             >
-              <div class="relative aspect-[16/9] border-b border-(--color-border) bg-[length:18px_18px] bg-[linear-gradient(135deg,var(--color-border)_25%,var(--color-surface-2)_25%,var(--color-surface-2)_50%,var(--color-border)_50%,var(--color-border)_75%,var(--color-surface-2)_75%)]">
+              <div class="relative aspect-[16/9] border-b border-(--color-border) bg-[linear-gradient(135deg,var(--color-border)_25%,var(--color-surface-2)_25%,var(--color-surface-2)_50%,var(--color-border)_50%,var(--color-border)_75%,var(--color-surface-2)_75%)] bg-[length:18px_18px]">
                 <span class="absolute top-2.5 left-2.5 rounded-full border border-(--color-border-strong) bg-(--color-surface) px-2 py-0.5 font-mono text-[0.625rem] text-(--color-fg-muted)">
                   {statusLabels[project.data.status as keyof typeof statusLabels]}
                 </span>
