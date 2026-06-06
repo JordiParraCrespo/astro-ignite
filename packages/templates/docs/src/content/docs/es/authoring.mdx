@@ -1,0 +1,106 @@
+---
+title: Escribir contenido
+description: Los componentes MDX que puedes usar en cualquier página de documentación — pasos, tarjetas, código en pestañas, marcos y bloques de código resaltados.
+lastUpdated: 2026-06-06
+tags: [guía]
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
+import CodeGroup from '@/components/docs/CodeGroup.astro';
+import CardGroup from '@/components/docs/CardGroup.astro';
+import Frame from '@/components/docs/Frame.astro';
+import Steps from '@/components/docs/Steps.astro';
+import Step from '@/components/docs/Step.astro';
+import Card from '@/components/ui/card/card.astro';
+import CardHeader from '@/components/ui/card/card-header.astro';
+import CardTitle from '@/components/ui/card/card-title.astro';
+import CardDescription from '@/components/ui/card/card-description.astro';
+
+Cada componente de abajo está registrado en el renderizador de documentación en
+`src/components/docs/mdx-components.ts` — impórtalo al inicio de cualquier archivo
+`.mdx` y úsalo en línea. Son Astro + JS puro, resueltos por tokens, y tuyos para editar.
+
+## Pasos
+
+Usa `<Steps>` con `<Step title="…">` anidados para guías ordenadas. Los números
+y la línea conectora se dibujan con un contador CSS, así que reordenar renumera
+automáticamente.
+
+<Steps>
+  <Step title="Añade el import">Importa `Steps` y `Step` al inicio de tu archivo MDX.</Step>
+  <Step title="Envuelve tus acciones">Cada `<Step>` se convierte en un elemento numerado.</Step>
+  <Step title="Publica">Sin JS de cliente, sin configuración.</Step>
+</Steps>
+
+```mdx
+<Steps>
+  <Step title="Añade el import">…</Step>
+  <Step title="Envuelve tus acciones">…</Step>
+</Steps>
+```
+
+## Grupos de tarjetas
+
+`<CardGroup cols={2|3|4}>` coloca las tarjetas en una cuadrícula responsiva que
+colapsa a una columna en móvil. Combínalo con el átomo `Card`.
+
+<CardGroup cols={2}>
+  <Card>
+    <CardHeader>
+      <CardTitle>Tokens</CardTitle>
+      <CardDescription>Edita `global.css` para recolorear todo el sitio.</CardDescription>
+    </CardHeader>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>i18n</CardTitle>
+      <CardDescription>Rutas paralelas por idioma, listas cuando las necesites.</CardDescription>
+    </CardHeader>
+  </Card>
+</CardGroup>
+
+## Código en pestañas
+
+`<CodeGroup>` combina varios `<CodeBlock>` en un panel con pestañas. El
+`filename` de cada hijo se convierte en una pestaña — el patrón npm/pnpm/yarn,
+o curl/python/node para una API.
+
+<CodeGroup>
+  <CodeBlock filename="npm">{`npm i astro-ignite`}</CodeBlock>
+  <CodeBlock filename="pnpm">{`pnpm add astro-ignite`}</CodeBlock>
+  <CodeBlock filename="yarn">{`yarn add astro-ignite`}</CodeBlock>
+</CodeGroup>
+
+## Código resaltado
+
+Los bloques de código admiten resaltado de líneas y marcadores de diff en tiempo
+de compilación (transformadores de Shiki — coste cero en cliente). Añade
+`{1,3-5}` tras el lenguaje, o anota las líneas en línea.
+
+```js {2}
+const config = {
+  primary: 'var(--color-primary)', // resaltado
+  border: 'var(--color-border)',
+};
+```
+
+```js
+const before = 1; // [!code --]
+const after = 2; // [!code ++]
+```
+
+## Marcos
+
+`<Frame caption="…">` centra y enmarca contenido multimedia para que las
+capturas y diagramas se vean intencionales. Coloca dentro un átomo `Image` o un
+`<img>` normal.
+
+<Frame caption="Una figura enmarcada con leyenda">
+  <img src="/og/og-default.png" alt="Tarjeta de previsualización Open Graph" width="600" height="315" />
+</Frame>
+
+<Callout variant="note" title="Crea el tuyo">
+  Estos componentes viven en `src/components/docs/`. Copia uno como plantilla para un
+  componente nuevo y regístralo en `mdx-components.ts` para usarlo en todas las páginas.
+</Callout>

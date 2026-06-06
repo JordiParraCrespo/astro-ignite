@@ -7,40 +7,63 @@ tags: [empezar]
 
 import Callout from '@/components/docs/Callout.astro';
 import CodeBlock from '@/components/docs/CodeBlock.astro';
+import CodeGroup from '@/components/docs/CodeGroup.astro';
+import Steps from '@/components/docs/Steps.astro';
+import Step from '@/components/docs/Step.astro';
 
 ## Requisitos
 
 - Node 20.11+ o 22 LTS
 - Un gestor de paquetes — pnpm (recomendado), npm, yarn o bun
 
-## Crear un sitio nuevo
+<Steps>
+  <Step title="Crear un sitio nuevo">
+    Ejecuta el comando de creación con el gestor de paquetes que prefieras:
 
-<CodeBlock filename="terminal" language="bash">
-{`npm create astro-ignite@latest mi-sitio`}
-</CodeBlock>
+    <CodeGroup>
+      <CodeBlock filename="npm">{`npm create astro-ignite@latest mi-sitio`}</CodeBlock>
+      <CodeBlock filename="pnpm">{`pnpm create astro-ignite mi-sitio`}</CodeBlock>
+      <CodeBlock filename="yarn">{`yarn create astro-ignite mi-sitio`}</CodeBlock>
+      <CodeBlock filename="bun">{`bun create astro-ignite mi-sitio`}</CodeBlock>
+    </CodeGroup>
 
-Se te harán seis preguntas. Acepta los valores por defecto o cámbialos; el flujo dura unos quince segundos.
+    Se te harán seis preguntas. Acepta los valores por defecto o cámbialos; el flujo dura unos quince segundos.
 
-<Callout variant="tip" title="Dos comandos equivalentes">
-  `npm create astro-ignite@latest` es un shim que por debajo ejecuta `npx astro-ignite bootstrap`. Ambos producen proyectos idénticos — usa el que te resulte más natural. Mira [Publicaciones](/es/releases) para saber por qué existen ambos.
-</Callout>
+    <Callout variant="tip" title="Dos comandos equivalentes">
+      `npm create astro-ignite@latest` es un shim que por debajo ejecuta `npx astro-ignite bootstrap`. Ambos producen proyectos idénticos — usa el que te resulte más natural. Mira [Publicaciones](/es/releases) para saber por qué existen ambos.
+    </Callout>
 
-## Ejecutarlo
+  </Step>
 
-<CodeBlock filename="terminal" language="bash">
-{`cd mi-sitio
+  <Step title="Ejecutarlo">
+    <CodeBlock filename="terminal" language="bash">
+      {`cd mi-sitio
 pnpm install
 pnpm dev`}
-</CodeBlock>
+    </CodeBlock>
 
-Abre la URL que aparece en tu terminal. Verás un sitio funcional con un hero estilizado, un blog con dos entradas de ejemplo, una sección de proyectos, una página "acerca de", un formulario de contacto operativo (registra en consola en dev), páginas legales, un banner de cookies y un selector de modo oscuro.
+    Abre la URL que aparece en tu terminal. Verás un sitio funcional con un hero estilizado, un blog con dos entradas de ejemplo, una sección de proyectos, una página "acerca de", un formulario de contacto operativo (registra en consola en dev), páginas legales, un banner de cookies y un selector de modo oscuro.
 
-<Callout variant="tip" title="Previsualiza antes de generar">
-  Ambas plantillas se despliegan continuamente desde `main`:
-  [`starter.astroignite.dev`](https://starter.astroignite.dev) y
-  [`docs-starter.astroignite.dev`](https://docs-starter.astroignite.dev). Mira
-  [Plantillas](/es/templates) para decidir cuál te conviene.
-</Callout>
+    <Callout variant="tip" title="Previsualiza antes de generar">
+      Ambas plantillas se despliegan continuamente desde `main`:
+      [`starter.astroignite.dev`](https://starter.astroignite.dev) y
+      [`docs-starter.astroignite.dev`](https://docs-starter.astroignite.dev). Mira
+      [Plantillas](/es/templates) para decidir cuál te conviene.
+    </Callout>
+
+  </Step>
+
+  <Step title="Hazlo tuyo">
+    Edita esto primero; el resto puede crecer contigo con el tiempo:
+
+    1. **Colores y tokens** en `src/styles/global.css` (bloque `@theme`)
+    2. **Identidad del sitio** en `src/config/site.ts` — nombre, URL, organización, redes
+    3. **Imagen OG** en `public/og/og-default.png` (se incluye un placeholder)
+    4. **Páginas legales** en `src/content/legal/{locale}/*.mdx` — los placeholders necesitan ser revisados, luego **revísalos con un abogado antes de publicar**
+    5. **Bio de autor** en `src/content/authors/jordi.json`
+
+  </Step>
+</Steps>
 
 <Callout variant="tip" title="Sin necesidad de registrarse">
   En desarrollo, las variables de entorno faltantes muestran logs en consola — `pnpm dev` produce
@@ -48,12 +71,4 @@ Abre la URL que aparece en tu terminal. Verás un sitio funcional con un hero es
   `PUBLIC_PLAUSIBLE_DOMAIN` solo cuando vayas a producción.
 </Callout>
 
-## Qué editar primero
-
-1. **Colores y tokens** en `src/styles/global.css` (bloque `@theme`)
-2. **Identidad del sitio** en `src/config/site.ts` — nombre, URL, organización, redes
-3. **Imagen OG** en `public/og/og-default.png` (se incluye un placeholder)
-4. **Páginas legales** en `src/content/legal/{locale}/*.mdx` — los placeholders necesitan ser revisados, luego **revísalos con un abogado antes de publicar**
-5. **Bio de autor** en `src/content/authors/jordi.json`
-
-El resto puede crecer contigo con el tiempo.
+A continuación, consulta [Escribir contenido](/es/authoring) para ver los componentes que puedes usar en cualquier página MDX.

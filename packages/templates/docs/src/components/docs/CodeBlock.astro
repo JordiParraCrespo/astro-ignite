@@ -22,8 +22,10 @@ const { filename, language } = Astro.props;
 
 <div
   class="code-block my-6 overflow-hidden rounded-(--radius-md) border border-(--color-border) bg-(--color-surface-2)"
+  data-filename={filename ?? 'snippet'}
 >
   <div
+    data-cb-header
     class="flex items-center gap-2.5 border-b border-(--color-border) px-3.5 py-2 text-[11px] text-(--color-fg-muted)"
   >
     <span class="mono flex-1">{filename ?? 'snippet'}</span>

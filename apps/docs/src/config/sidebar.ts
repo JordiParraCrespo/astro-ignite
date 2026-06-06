@@ -42,6 +42,7 @@ export const sidebar: SidebarGroup[] = [
     items: [
       { slug: 'introduction' },
       { slug: 'quick-start' },
+      { slug: 'authoring' },
       { slug: 'templates' },
       { slug: 'features' },
     ],

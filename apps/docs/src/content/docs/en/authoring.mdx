@@ -1,0 +1,106 @@
+---
+title: Writing content
+description: The MDX components you can drop into any documentation page — steps, cards, tabbed code, frames, and highlighted code blocks.
+lastUpdated: 2026-06-06
+tags: [guide]
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
+import CodeGroup from '@/components/docs/CodeGroup.astro';
+import CardGroup from '@/components/docs/CardGroup.astro';
+import Frame from '@/components/docs/Frame.astro';
+import Steps from '@/components/docs/Steps.astro';
+import Step from '@/components/docs/Step.astro';
+import Card from '@/components/ui/card/card.astro';
+import CardHeader from '@/components/ui/card/card-header.astro';
+import CardTitle from '@/components/ui/card/card-title.astro';
+import CardDescription from '@/components/ui/card/card-description.astro';
+
+Every component below is wired into the docs renderer in
+`src/components/docs/mdx-components.ts` — import it at the top of any `.mdx`
+file and use it inline. They are plain Astro + vanilla JS, token-resolved, and
+yours to edit.
+
+## Steps
+
+Use `<Steps>` with nested `<Step title="…">` for ordered walkthroughs. Numbers
+and the connecting rail are drawn with a CSS counter, so reordering renumbers
+automatically.
+
+<Steps>
+  <Step title="Add the import">Import `Steps` and `Step` at the top of your MDX file.</Step>
+  <Step title="Wrap your actions">Each `<Step>` becomes a numbered item.</Step>
+  <Step title="Ship">No client JS, no configuration.</Step>
+</Steps>
+
+```mdx
+<Steps>
+  <Step title="Add the import">…</Step>
+  <Step title="Wrap your actions">…</Step>
+</Steps>
+```
+
+## Card groups
+
+`<CardGroup cols={2|3|4}>` lays cards out in a responsive grid that collapses to
+one column on mobile. Pair it with the `Card` atom.
+
+<CardGroup cols={2}>
+  <Card>
+    <CardHeader>
+      <CardTitle>Tokens</CardTitle>
+      <CardDescription>Edit `global.css` to reskin the whole site.</CardDescription>
+    </CardHeader>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>i18n</CardTitle>
+      <CardDescription>Parallel routes per locale, ready when you are.</CardDescription>
+    </CardHeader>
+  </Card>
+</CardGroup>
+
+## Tabbed code
+
+`<CodeGroup>` combines several `<CodeBlock>` children into one tabbed panel.
+Each child's `filename` becomes a tab — the npm/pnpm/yarn pattern, or
+curl/python/node for an API.
+
+<CodeGroup>
+  <CodeBlock filename="npm">{`npm i astro-ignite`}</CodeBlock>
+  <CodeBlock filename="pnpm">{`pnpm add astro-ignite`}</CodeBlock>
+  <CodeBlock filename="yarn">{`yarn add astro-ignite`}</CodeBlock>
+</CodeGroup>
+
+## Highlighted code
+
+Fenced code blocks support line highlighting and diff markers at build time
+(Shiki transformers — zero client cost). Add `{1,3-5}` after the language, or
+annotate lines inline.
+
+```js {2}
+const config = {
+  primary: 'var(--color-primary)', // highlighted
+  border: 'var(--color-border)',
+};
+```
+
+```js
+const before = 1; // [!code --]
+const after = 2; // [!code ++]
+```
+
+## Frames
+
+`<Frame caption="…">` centers and frames media so screenshots and diagrams look
+intentional. Drop an `Image` atom or a plain `<img>` inside.
+
+<Frame caption="A framed, captioned figure">
+  <img src="/og/og-default.png" alt="Open Graph preview card" width="600" height="315" />
+</Frame>
+
+<Callout variant="note" title="Add your own">
+  These components live in `src/components/docs/`. Copy one as a template for a new
+  component, then register it in `mdx-components.ts` to use it across every doc page.
+</Callout>
