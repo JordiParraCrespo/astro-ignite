@@ -24,7 +24,6 @@ import { readingTimeMinutes } from '@/lib/reading-time';
 import { tagSlug } from '@/lib/blog';
 
 import BaseLayout from './BaseLayout.astro';
-import PriorityImage from '@/components/image/PriorityImage.astro';
 import Text from '@/components/ui/text.astro';
 import TableOfContents from '@/components/blog/TableOfContents.astro';
 import RelatedPosts from '@/components/blog/RelatedPosts.astro';
@@ -53,6 +52,13 @@ const authorBio = author?.data.bio[locale] ?? author?.data.bio[siteConfig.defaul
 
 const url = `/blog/${slug}`;
 
+// Posts no longer ship a hero image; OG falls back to a per-post ogImage when
+// set, otherwise the site-wide default banner.
+const defaultOg =
+  typeof siteConfig.defaultOgImage === 'string'
+    ? siteConfig.defaultOgImage
+    : (siteConfig.defaultOgImage[locale] ?? siteConfig.defaultOgImage[siteConfig.defaultLocale]);
+
 const crumbs = [
   { name: t('nav.home'), url: '/' },
   { name: t('nav.blog'), url: '/blog' },
@@ -68,8 +74,7 @@ const schemas: Thing[] = [
     datePublished: entry.data.datePublished,
     dateModified: entry.data.dateModified,
     authorSlug: entry.data.author.id,
-    image: entry.data.ogImage?.src ?? entry.data.heroImage.src,
-    imageAlt: entry.data.heroImageAlt,
+    image: entry.data.ogImage?.src ?? defaultOg,
     keywords: entry.data.tags,
     inLanguage: locale,
   }),
@@ -102,17 +107,14 @@ const dateFmt = new Intl.DateTimeFormat(locale, {
 <BaseLayout
   title={entry.data.title}
   description={entry.data.description}
-  image={entry.data.ogImage ?? entry.data.heroImage}
-  imageAlt={entry.data.heroImageAlt}
+  image={entry.data.ogImage}
   type="article"
   noindex={entry.data.noindex}
   schemas={schemas}
-  preloadImages={[entry.data.heroImage]}
+  preloadImages={entry.data.ogImage ? [entry.data.ogImage] : []}
 >
   <article class="mx-auto max-w-[48rem] px-5 pt-8 pb-16">
-    <header
-      class="mb-10 [&_img]:block [&_img]:h-auto [&_img]:w-full [&_img]:overflow-hidden [&_img]:rounded-xl [&_picture]:block [&_picture]:h-auto [&_picture]:w-full [&_picture]:overflow-hidden [&_picture]:rounded-xl"
-    >
+    <header class="mb-10">
       <nav class="mb-6 text-sm" aria-label={t('nav.breadcrumbs')}>
         <a
           href={getRelativeLocaleUrl(locale, '/blog')}
@@ -155,12 +157,15 @@ const dateFmt = new Intl.DateTimeFormat(locale, {
           </ul>
         )
       }
-      <PriorityImage
-        src={entry.data.heroImage}
-        alt={entry.data.heroImageAlt}
-        width={1200}
-        height={630}
-      />
+      <div
+        class="relative aspect-[1200/420] overflow-hidden rounded-xl border border-(--color-border) bg-[radial-gradient(ellipse_80%_120%_at_30%_30%,var(--color-surface-2),var(--color-bg))]"
+        aria-hidden="true"
+      >
+        <span
+          class="pointer-events-none absolute right-6 bottom-4 font-mono text-6xl font-medium text-(--color-fg) opacity-[0.07] select-none"
+          >&gt;_</span
+        >
+      </div>
     </header>
 
     <TableOfContents headings={headings} />
