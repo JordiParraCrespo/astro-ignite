@@ -28,6 +28,10 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm format:check
       - run: pnpm lint
+      # Gate the locked-practice invariants authoritatively. The reviewer
+      # routine also runs these, but a phone-merged PR must not be able to
+      # bypass them — CI is the backstop.
+      - run: pnpm audit:invariants
       - run: pnpm --filter create-astro-ignite typecheck
       - run: pnpm --filter @astro-ignite/template-starter typecheck
       - run: pnpm --filter @astro-ignite/template-docs typecheck

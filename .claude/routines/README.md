@@ -51,9 +51,10 @@ Branch / PR conventions the routines rely on:
 
 1. **Install the Claude GitHub App** on `JordiParraCrespo/astro-ignite` — PR
    triggers require it. The trigger form prompts you if it's missing.
-2. **Create the four labels** on the repo: `flow:direct`, `flow:spec`,
-   `aig:active`, `aig:blocked` (Issues → Labels, or let the dispatch routine
-   create them on first run).
+2. **Create the four labels** (`flow:direct`, `flow:spec`, `aig:active`,
+   `aig:blocked`) and drop the unused default ones: open the **Actions** tab →
+   **Sync harness labels** → **Run workflow** (works from the GitHub mobile app).
+   That's `.github/workflows/labels.yml`; it's idempotent and needs no secrets.
 3. At **[claude.ai/code/routines](https://claude.ai/code/routines)** → **New
    routine**, create the three routines above. For each: set the repo to
    `astro-ignite`, paste the matching file as Instructions, pick the **Default**
