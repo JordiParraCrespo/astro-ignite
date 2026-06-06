@@ -1,6 +1,18 @@
 {
   "$comment": "Project-wide Claude Code settings. Personal overrides go in settings.local.json (gitignored). See AGENTS.md.",
   "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/scripts/cloud/bootstrap.sh",
+            "timeout": 300000
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "Edit|Write|MultiEdit",
