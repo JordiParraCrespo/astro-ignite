@@ -23,10 +23,10 @@ import { spawn, spawnSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { createServer } from 'node:net';
-import { homedir } from 'node:os';
 import { join, relative } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { latestRunDir } from '../lib/state.mjs';
+import { findChrome } from '../lib/chrome.mjs';
 
 export const ROOT = fileURLToPath(new URL('../..', import.meta.url));
 
@@ -217,23 +217,6 @@ function argFrom(argv, name) {
 }
 
 // --- Private helpers ---
-
-function findChrome() {
-  const probes = [
-    ['which', 'google-chrome'],
-    ['which', 'chrome'],
-    ['which', 'chromium'],
-  ];
-  for (const [cmd, name] of probes) {
-    const r = spawnSync(cmd, [name], { encoding: 'utf8' });
-    if (r.status === 0 && r.stdout.trim()) return r.stdout.trim();
-  }
-  const pathProbes = ['/usr/local/bin/chrome', join(homedir(), '.local/bin/chrome')];
-  for (const p of pathProbes) {
-    if (existsSync(p)) return p;
-  }
-  return null;
-}
 
 function findFreePort() {
   return new Promise((resolve, reject) => {
