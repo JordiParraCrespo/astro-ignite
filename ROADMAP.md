@@ -13,7 +13,8 @@ Launch an MVP worth publishing: **two templates (starter + docs)** that are
 2. easy and clean for agents to modify (**AI-ready**: shipped skills + invariant guides),
 3. documented (customization guides + full base-component reference),
 4. tooling-complete out of the box (lint, format),
-5. shipped through a stable release pipeline as **`0.2.0`**, then announced.
+5. shadcn-consumable (every atom installable into any project via `npx shadcn add @astro-ignite/*`),
+6. shipped through a stable release pipeline as **`0.2.0`**, then announced.
 
 **The cut rule:** a feature is in scope only if its absence makes a launch claim
 false. Everything else goes to the version ladder at the bottom. The launch is
@@ -65,14 +66,25 @@ The deployed templates ARE the launch demo; every shipped feature must be visibl
 - [ ] Demo content exercises the new blog features: enough posts to trigger pagination, overlapping tags, meaningful related posts (~5–6 posts; hero images via the banner pipeline — **after** design settles).
 - [ ] Mirror the #69 blog features (Pagination, PostCard, PostNav, RelatedPosts, TableOfContents, tags/page routes) to `apps/site` as part of the post-design mirror sweep — deferred from Checkpoint 0; apps/site is a customized mirror, so this is judgment work, not copying.
 - [ ] Accuracy sweep: scaffolded README/AGENTS.md claims match reality (known: starter `README.md` still describes the pre-#37 "layered CSS strategy").
+- [ ] **MDX prose components** (top-tier blog polish): ship `src/components/mdx/` with `Callout`/admonition, `CodeBlock` (copy button + filename), and `Figure` (captioned image), wired into the blog/projects MDX render. First thing a stranger sees on a post — and it exercises the "components are the product" pitch. Tokens-only, no framework.
+- [ ] **Blog search**: bring the docs template's proven Pagefind setup to the starter blog (index at build, search UI in the blog chrome). Search is table-stakes for top Astro templates; the docs side already does it, so this is reuse, not new ground.
+- [ ] **Per-post OG images**: generate a per-post OG card via the existing claude-design banner pipeline (HTML → headless Chrome → PNG), replacing the single static `og-default.png` for posts. Stays inside the no-satori/@vercel/og rule because it uses the sanctioned pipeline. Lands with/after design (Checkpoint 1) since it reuses the banner CSS/tokens.
 - **Done when:** a stranger clicking two pages deep on starter./docs.astroignite.dev sees every advertised feature working.
+
+### 2b. Registry — form atoms + shadcn-consumable (NEW for v1)
+
+Two gaps that make the "shadcn-style CLI" claim aspirational rather than true.
+
+- [ ] **Form atoms** (the credibility gap — "shadcn-style" with no form controls is a tell): add `select`, `checkbox`, `radio-group`, `switch` to `packages/registry` and both templates' `src/components/ui/`. Native HTML, no framework, tokens-only, a11y-clean. Refactor the starter contact form to consume them.
+- [ ] **shadcn-schema-conformant, publicly consumable registry** (the headline shadcn-2025 move — see [CLI 3.0 / namespaces](https://ui.shadcn.com/docs/registry/namespace)): make `registry.json` conform to the shadcn 3.0 registry schema and emit per-item JSON (`/r/<name>.json`) at build, hosted on the site, so `npx shadcn@latest add @astro-ignite/<name>` copies an atom into _any_ project (shadcn's registry copies arbitrary files — it doesn't care the atoms are `.astro`). Namespace: `@astro-ignite`. This is the cheap on-ramp to the AI-native story too: shadcn's MCP server can already read a schema-conformant registry (the registry MCP server itself is 0.3.0).
+- **Done when:** a stranger can `npx shadcn add @astro-ignite/button` into a blank project and get a working file; the starter contact form is built from the shipped form atoms.
 
 ### 3. Docs site ready
 
 Today the docs site only answers "what is this?" — launch needs "how do I?".
 
 - [ ] Six guides (closed list): theming/tokens (the showpiece), adding content, adding a locale, deploying (incl. contact form on static hosts), contact-form email setup, using components.
-- [ ] Component reference: one page per registry item (19 UI items + cn), each with live demo (`ComponentShowcase`), code example, props table, and "ships pre-installed; copy from the registry to use elsewhere". **No `add` command at launch** — wording must never imply one. Distill from the template `docs/` deep-dives where possible.
+- [ ] Component reference: one page per registry item (23 UI items + cn — incl. the four new form atoms from Checkpoint 2b), each with live demo (`ComponentShowcase`), code example, props table, and "ships pre-installed; copy from the registry to use elsewhere". **No `add` command at launch** — wording must never imply one. Distill from the template `docs/` deep-dives where possible.
 - [ ] Accuracy pass on the 7 existing pages.
 - [ ] English first; Spanish translated once content freezes (ES at launch, written last).
 - **Done when:** the list above is checked. New page ideas go post-launch.
@@ -83,7 +95,7 @@ Scaffolded output ships `.claude/skills/` so agents follow best practices.
 
 - [ ] Starter skills: `add-blog-post`, `add-project`, `add-page` (creates the `[lang]/` parallel + nav + JSON-LD node), `add-locale`.
 - [ ] Docs skills: `add-doc-page`, `add-locale`.
-- [ ] One reserved slot for a seventh skill (e.g. `customize-theme` if the design phase makes the token story crisp enough to proceduralize). **Hard cap: 7.**
+- [ ] Seventh skill: **`customize-theme`** — proceduralize the token-edit → full-reskin story (the theming guide in Checkpoint 3 is its companion showpiece). Resolves Open Decision #2. **Hard cap: 7.**
 - **Acceptance test (the definition of "AI-ready"):** fresh scaffold → Claude Code cold, no extra context → one-line request per skill ("add a blog post about coffee") → result passes `pnpm typecheck && pnpm build` + relevant invariant audits, and renders in both locales when two are configured.
 
 ### 5. Template tooling complete
@@ -119,14 +131,15 @@ Removed in May (`68ee3e8`) when publish was failing; restore from history.
 | Version   | Theme                            | Contents                                                                                                                                                                                             |
 | --------- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **0.2.0** | Launch                           | Everything above. Nothing else.                                                                                                                                                                      |
-| **0.3.0** | More templates + customizability | `blog` template (split from starter); `astro-ignite add <component>` command (the headline); scaffolded **test suite for agents to verify their changes**; registry blocks tier (PricingCard first). |
+| **0.3.0** | More templates + customizability | `blog` template (split from starter); `astro-ignite add <component>` command (the headline) + **registry MCP server** (agents browse/install atoms); scaffolded **test suite for agents to verify their changes**; registry blocks tier (PricingCard first); more atoms (`command`/⌘K palette, `breadcrumb`, pagination-as-atom). |
 | **0.4.0** | Deploy customization in the CLI  | Adapter/deploy-target selection at scaffold time (CF Pages / Netlify / Vercel / Node); deeper customization prompts.                                                                                 |
-| Later     | —                                | doctor/harness-in-templates, more blocks, examples gallery.                                                                                                                                          |
+| Later     | —                                | **View Transitions (Astro `<ClientRouter />`)** — deferred pending the zero-JS/Lighthouse trade-off (SEO-safe; cost is the perf pitch, plus Plausible pageview re-fire + theme re-apply on `astro:after-swap`); doctor/harness-in-templates; more blocks; examples gallery. |
 
 ## Explicitly cut from launch
 
 - `blog-only` template → 0.3.0
-- `astro-ignite add` → 0.3.0 (docs wording must not imply it exists)
+- `astro-ignite add` (the native CLI command) → 0.3.0 (docs wording must not imply it exists). NOTE: the registry IS shadcn-consumable at launch via `npx shadcn add @astro-ignite/*` (Checkpoint 2b) — that's schema conformance + hosting, not a new command.
+- Registry MCP server, `command`/⌘K palette, `breadcrumb` atom → 0.3.0
 - Scaffolded test suite → 0.3.0
 - Registry blocks / PricingCard → 0.3.0
 - Deploy customization → 0.4.0
@@ -136,5 +149,6 @@ Removed in May (`68ee3e8`) when publish was failing; restore from history.
 ## Open decisions (settle when reached, not now)
 
 1. Design blast radius — reskin / restyle / redesign (Checkpoint 1; restyle-with-fixed-page-list recommended).
-2. The seventh skill — which one, if any (Checkpoint 4).
+2. ~~The seventh skill — which one, if any~~ — **RESOLVED: `customize-theme`** (Checkpoint 4).
 3. Extra tooling beyond lint + format — only if a concrete need appears (Checkpoint 5).
+4. ~~View Transitions (Astro `<ClientRouter />`) — include in v1?~~ — **RESOLVED: deferred post-launch** (version ladder, "Later"). SEO-safe, but trades against the zero-JS/Lighthouse pitch; revisit when the perf budget has headroom.
