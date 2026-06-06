@@ -1,13 +1,18 @@
 ---
 /**
- * Blog post card — image, title, date + reading time, description, tag chips.
- * The whole card is a single link, so tags render as plain chips (a nested
- * <a> would be invalid). Tag links live on the post page header instead.
+ * Blog post card — gradient cover, title, date + reading time, description,
+ * tag chips. The whole card is a single link, so tags render as plain chips
+ * (a nested <a> would be invalid). Tag links live on the post page header
+ * instead.
+ *
+ * The cover is a token-resolved gradient rather than a hero image: each post
+ * gets one of a few grayscale gradient variants (picked deterministically
+ * from its id) so a grid of cards reads as varied without shipping any
+ * placeholder art.
  */
 
 import type { CollectionEntry } from 'astro:content';
 
-import Image from '@/components/image/Image.astro';
 import Text from '@/components/ui/text.astro';
 import { useTranslations } from '@/i18n';
 import { siteConfig } from '@/config/site';
@@ -16,10 +21,9 @@ import { readingTimeMinutes } from '@/lib/reading-time';
 interface Props {
   post: CollectionEntry<'blog'>;
   href: string;
-  sizes?: string;
 }
 
-const { post, href, sizes = '(min-width: 768px) 384px, 100vw' } = Astro.props;
+const { post, href } = Astro.props;
 
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const t = useTranslations(locale);
@@ -29,20 +33,33 @@ const dateFmt = new Intl.DateTimeFormat(locale, {
   day: 'numeric',
 });
 const minutes = readingTimeMinutes(post.body);
+
+// Token-resolved gradient covers — one per post, chosen deterministically so
+// the same post always renders the same variant across index + related grids.
+const COVER_VARIANTS = [
+  'bg-[radial-gradient(ellipse_80%_100%_at_30%_40%,var(--color-surface-2),var(--color-bg))]',
+  'bg-[radial-gradient(circle_at_72%_28%,var(--color-surface-2),var(--color-bg)_70%)]',
+  'bg-[linear-gradient(135deg,var(--color-surface-2),var(--color-bg)_72%)]',
+  'bg-[conic-gradient(from_210deg_at_35%_40%,var(--color-surface-2),var(--color-bg),var(--color-surface-2))]',
+];
+const variant = [...post.id].reduce((sum, ch) => sum + ch.charCodeAt(0), 0) % COVER_VARIANTS.length;
 ---
 
 <a
   href={href}
-  class="block overflow-hidden rounded-xl border border-(--color-border) text-inherit no-underline transition-[border-color,transform] duration-150 ease-(--ease-out-soft) hover:border-(--color-primary) [&_img]:block [&_img]:aspect-[16/9] [&_img]:h-auto [&_img]:w-full [&_img]:object-cover [&_picture]:block [&_picture]:aspect-[16/9] [&_picture]:h-auto [&_picture]:w-full [&_picture]:object-cover"
+  class="block overflow-hidden rounded-xl border border-(--color-border) text-inherit no-underline transition-[border-color,transform] duration-150 ease-(--ease-out-soft) hover:border-(--color-primary)"
 >
-  <div>
-    <Image
-      src={post.data.heroImage}
-      alt={post.data.heroImageAlt}
-      width={800}
-      height={420}
-      sizes={sizes}
-    />
+  <div
+    class:list={[
+      'relative aspect-[16/9] border-b border-(--color-border)',
+      COVER_VARIANTS[variant],
+    ]}
+  >
+    <span
+      aria-hidden="true"
+      class="pointer-events-none absolute right-4 bottom-3 font-mono text-4xl font-medium text-(--color-fg) opacity-[0.07] select-none"
+      >&gt;_</span
+    >
   </div>
   <div class="p-5">
     <Text variant="h3" as="h2" class="mb-2">{post.data.title}</Text>

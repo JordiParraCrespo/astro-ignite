@@ -1,7 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 
-import Image from '@/components/image/Image.astro';
 import Text from '@/components/ui/text.astro';
 import { useTranslations } from '@/i18n';
 import { siteConfig } from '@/config/site';
@@ -19,6 +18,12 @@ const { projectCards } = Astro.props;
 
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const t = useTranslations(locale);
+
+const statusLabels = {
+  shipped: t('projects.status.shipped'),
+  'in-progress': t('projects.status.in-progress'),
+  archived: t('projects.status.archived'),
+} as const;
 ---
 
 <section class="mx-auto max-w-[80rem] px-5 pt-12 pb-16">
@@ -38,16 +43,12 @@ const t = useTranslations(locale);
           <li>
             <a
               href={href}
-              class="block overflow-hidden rounded-xl border border-(--color-border) text-inherit no-underline transition-colors duration-150 ease-(--ease-out-soft) hover:border-(--color-primary) [&_img]:block [&_img]:aspect-[16/9] [&_img]:h-auto [&_img]:w-full [&_img]:object-cover [&_picture]:block [&_picture]:aspect-[16/9] [&_picture]:h-auto [&_picture]:w-full [&_picture]:object-cover"
+              class="block overflow-hidden rounded-xl border border-(--color-border) text-inherit no-underline transition-colors duration-150 ease-(--ease-out-soft) hover:border-(--color-primary)"
             >
-              <div>
-                <Image
-                  src={project.data.heroImage}
-                  alt={project.data.heroImageAlt}
-                  width={800}
-                  height={420}
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                />
+              <div class="relative aspect-[16/9] border-b border-(--color-border) bg-[length:18px_18px] bg-[linear-gradient(135deg,var(--color-border)_25%,var(--color-surface-2)_25%,var(--color-surface-2)_50%,var(--color-border)_50%,var(--color-border)_75%,var(--color-surface-2)_75%)]">
+                <span class="absolute top-2.5 left-2.5 rounded-full border border-(--color-border-strong) bg-(--color-surface) px-2 py-0.5 font-mono text-[0.625rem] text-(--color-fg-muted)">
+                  {statusLabels[project.data.status as keyof typeof statusLabels]}
+                </span>
               </div>
               <div class="p-5">
                 <Text variant="h3" as="h2" class="mb-2">

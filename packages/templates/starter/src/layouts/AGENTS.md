@@ -12,9 +12,9 @@ contract — content pages and route files compose them.
   `preloadImages={[…]}`. Components can't reach into `<head>`, so a page
   with a hero passes its image up through this prop.
 - `ArticleLayout.astro` / `ProjectLayout.astro` — blog post / project
-  detail shells. They render the hero through
-  `components/image/PriorityImage.astro` (eager, `fetchpriority="high"`,
-  no blur placeholder) and preload it via `BaseLayout`.
+  detail shells. The hero is a token-resolved CSS gradient cover (no
+  image asset); OG/social previews come from the optional `ogImage`
+  field, falling back to the site-wide default banner via `SEO.astro`.
 - `LegalLayout.astro` — privacy/terms/cookies prose shell.
 
 ## Rules

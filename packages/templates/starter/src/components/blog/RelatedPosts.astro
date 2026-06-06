@@ -34,11 +34,7 @@ const t = useTranslations(locale);
       <ul class="m-0 grid list-none gap-6 p-0 sm:grid-cols-2 md:grid-cols-3">
         {posts.map((post) => (
           <li>
-            <PostCard
-              post={post}
-              href={getRelativeLocaleUrl(locale, `/blog/${postSlug(post)}`)}
-              sizes="(min-width: 768px) 240px, 100vw"
-            />
+            <PostCard post={post} href={getRelativeLocaleUrl(locale, `/blog/${postSlug(post)}`)} />
           </li>
         ))}
       </ul>
