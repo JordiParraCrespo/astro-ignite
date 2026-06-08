@@ -31,6 +31,9 @@
   --color-bg: var(--color-zinc-950);
   --color-surface: var(--color-zinc-950);
   --color-surface-2: var(--color-zinc-900);
+  /* Accent endpoint for the card cover gradients (blog + projects). Distinct
+     from surface-2 so light mode can carry more contrast than zinc-100→50. */
+  --color-cover-accent: var(--color-zinc-900);
   --color-fg: var(--color-zinc-50);
   --color-fg-muted: var(--color-zinc-400);
   /* zinc-400 on zinc-950 ≈ 8:1 (AA pass). Was zinc-500 (~4:1, fails AA). */
@@ -61,8 +64,7 @@
 
   /* Shadows — barely-there (dark default) */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.4);
-  --shadow:
-    0 1px 3px 0 rgb(0 0 0 / 0.5), 0 1px 2px -1px rgb(0 0 0 / 0.4);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.5), 0 1px 2px -1px rgb(0 0 0 / 0.4);
 
   /* Containers */
   --container-prose: 65ch;
@@ -78,6 +80,7 @@
   --color-bg: var(--color-zinc-50);
   --color-surface: #ffffff;
   --color-surface-2: var(--color-zinc-100);
+  --color-cover-accent: var(--color-zinc-200);
   --color-fg: var(--color-zinc-950);
   --color-fg-muted: var(--color-zinc-500);
   /* zinc-500 on zinc-50 ≈ 4.8:1 (AA pass). Was zinc-400 (~2.4:1, fails AA). */
@@ -88,8 +91,7 @@
   --color-primary-fg: var(--color-zinc-50);
   --color-ring: var(--color-zinc-900);
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow:
-    0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.06);
 }
 
 /*
@@ -108,10 +110,7 @@
     background: var(--color-bg);
     color: var(--color-fg);
     font-family: var(--font-display);
-    font-feature-settings:
-      'cv11',
-      'ss03',
-      'ss01';
+    font-feature-settings: 'cv11', 'ss03', 'ss01';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -159,9 +158,7 @@
   code,
   pre {
     font-family: var(--font-mono);
-    font-feature-settings:
-      'zero',
-      'ss01';
+    font-feature-settings: 'zero', 'ss01';
   }
 
   /* Skip link — visually hidden until focused, jumps to <main id="main"> */
@@ -202,9 +199,7 @@
 /* Mono helper — apply Geist Mono with the right OpenType features */
 .mono {
   font-family: var(--font-mono);
-  font-feature-settings:
-    'zero',
-    'ss01';
+  font-feature-settings: 'zero', 'ss01';
 }
 
 /* Caret blink — used by the brand mark and terminal blocks */

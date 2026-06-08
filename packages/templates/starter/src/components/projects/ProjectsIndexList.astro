@@ -24,12 +24,22 @@ const statusLabels = {
   'in-progress': t('projects.status.in-progress'),
   archived: t('projects.status.archived'),
 } as const;
+
+// Token-resolved gradient covers, matching the blog cards — one per project,
+// chosen deterministically from its id so the same project always renders the
+// same variant.
+const COVER_VARIANTS = [
+  'bg-[radial-gradient(ellipse_80%_100%_at_30%_40%,var(--color-cover-accent),var(--color-bg))]',
+  'bg-[radial-gradient(circle_at_72%_28%,var(--color-cover-accent),var(--color-bg)_70%)]',
+  'bg-[linear-gradient(135deg,var(--color-cover-accent),var(--color-bg)_72%)]',
+  'bg-[conic-gradient(from_210deg_at_35%_40%,var(--color-cover-accent),var(--color-bg),var(--color-cover-accent))]',
+];
 ---
 
-<section class="relative isolate mx-auto max-w-[80rem] px-5 pt-12 pb-16">
+<section class="relative isolate mx-auto max-w-[64rem] px-5 pt-12 pb-16">
   <div
     aria-hidden="true"
-    class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[26rem] bg-[radial-gradient(ellipse_60%_100%_at_50%_0%,var(--color-surface-2),transparent_70%)]"
+    class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[26rem] bg-[radial-gradient(ellipse_60%_100%_at_50%_0%,var(--color-cover-accent),transparent_70%)]"
   >
   </div>
   <header class="mb-10 text-center">
@@ -44,37 +54,46 @@ const statusLabels = {
       </Text>
     ) : (
       <ul class="m-0 grid list-none grid-cols-1 gap-6 p-0 md:grid-cols-2">
-        {projectCards.map(({ project, href }: ProjectCard) => (
-          <li>
-            <a
-              href={href}
-              class="block overflow-hidden rounded-xl border border-(--color-border) text-inherit no-underline transition-colors duration-150 ease-(--ease-out-soft) hover:border-(--color-primary)"
-            >
-              <div class="relative aspect-[16/9] border-b border-(--color-border) bg-[linear-gradient(135deg,var(--color-border)_25%,var(--color-surface-2)_25%,var(--color-surface-2)_50%,var(--color-border)_50%,var(--color-border)_75%,var(--color-surface-2)_75%)] bg-[length:18px_18px]">
-                <span class="absolute top-2.5 left-2.5 rounded-full border border-(--color-border-strong) bg-(--color-surface) px-2 py-0.5 font-mono text-[0.625rem] text-(--color-fg-muted)">
-                  {statusLabels[project.data.status as keyof typeof statusLabels]}
-                </span>
-              </div>
-              <div class="p-5">
-                <Text variant="h3" as="h2" class="mb-2">
-                  {project.data.title}
-                </Text>
-                <Text variant="body" tone="muted" class="mb-4">
-                  {project.data.summary}
-                </Text>
-                {project.data.techStack.length > 0 && (
-                  <ul class="m-0 flex list-none flex-wrap gap-1.5 p-0">
-                    {project.data.techStack.slice(0, 4).map((tech: string) => (
-                      <li class="rounded bg-(--color-surface-2) px-2 py-0.5 text-xs text-(--color-fg-muted)">
-                        {tech}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            </a>
-          </li>
-        ))}
+        {projectCards.map(({ project, href }: ProjectCard) => {
+          const variant =
+            [...project.id].reduce((sum, ch) => sum + ch.charCodeAt(0), 0) % COVER_VARIANTS.length;
+          return (
+            <li>
+              <a
+                href={href}
+                class="block overflow-hidden rounded-xl border border-(--color-border) text-inherit no-underline transition-colors duration-150 ease-(--ease-out-soft) hover:border-(--color-primary)"
+              >
+                <div
+                  class:list={[
+                    'relative aspect-[16/9] border-b border-(--color-border)',
+                    COVER_VARIANTS[variant],
+                  ]}
+                >
+                  <span class="absolute top-2.5 left-2.5 rounded-full border border-(--color-border-strong) bg-(--color-surface) px-2 py-0.5 font-mono text-[0.625rem] text-(--color-fg-muted)">
+                    {statusLabels[project.data.status as keyof typeof statusLabels]}
+                  </span>
+                </div>
+                <div class="p-5">
+                  <Text variant="h3" as="h2" class="mb-2">
+                    {project.data.title}
+                  </Text>
+                  <Text variant="body" tone="muted" class="mb-4">
+                    {project.data.summary}
+                  </Text>
+                  {project.data.techStack.length > 0 && (
+                    <ul class="m-0 flex list-none flex-wrap gap-1.5 p-0">
+                      {project.data.techStack.slice(0, 4).map((tech: string) => (
+                        <li class="rounded bg-(--color-surface-2) px-2 py-0.5 text-xs text-(--color-fg-muted)">
+                          {tech}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </a>
+            </li>
+          );
+        })}
       </ul>
     )
   }
