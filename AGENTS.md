@@ -166,7 +166,7 @@ The local gate is allowed to skip when no `chrome` / `google-chrome` / `chromium
 ### How to make the local gate green
 
 1. Run `scripts/doctor/install-chrome.mjs` (idempotent; pinned Chrome for Testing version). On the runner this needs sudo so it can write under `/opt/chrome-for-testing/` and `/usr/local/bin/`.
-2. On the autopilot runner the systemd unit at `autopilot/systemd/aig-runner.service` must be deployed so `~/.npm/_cacache/` is writable — `npx lighthouse` fetches into the cache on first use. `pnpm doctor`'s `npm-cache-writable` check warns when this is missing.
+2. `~/.npm/_cacache/` must be writable — `npx lighthouse` fetches into the cache on first use. `pnpm doctor`'s `npm-cache-writable` check warns when a sandbox or ownership issue blocks it.
 3. Re-run `pnpm perf:budget` (or `pnpm perf:budget --page /` for a single page). Stdout shows per-metric numeric lines.
 
 ## Banner & hero images
