@@ -1,0 +1,130 @@
+---
+title: Adding content
+description: Write a blog post, a project case study, or a docs page — the per-locale folder layout, frontmatter schemas, and the parallel-route rule.
+lastUpdated: 2026-06-09
+tags: [guide]
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import Steps from '@/components/docs/Steps.astro';
+import Step from '@/components/docs/Step.astro';
+
+Content lives in **typed content collections** under `src/content/`. Each
+collection has a Zod schema in `src/content.config.ts`, so a missing or malformed
+field is a build error, not a broken page. Two rules hold everywhere:
+
+- **Per-locale folders.** Every collection nests by locale:
+  `src/content/<collection>/<locale>/<slug>`. The default locale is `en`.
+- **Add files, not routes.** The catch-all routes enumerate the collection and
+  emit one page per entry. You never register a route by hand.
+
+## Blog post
+
+The `blog` collection loads `*/*.mdx` — i.e. `<locale>/<slug>.mdx`.
+
+<Steps>
+  <Step title="Create the file">
+    `src/content/blog/en/my-first-post.mdx`
+  </Step>
+  <Step title="Fill the frontmatter">
+    The schema requires `title` (≤70), `description` (70–160), `datePublished`,
+    and an `author` reference; the rest are optional:
+
+    ```mdx
+    ---
+    title: Shipping faster with astro-ignite
+    description: How an opinionated, fully-owned starter cut our time-to-first-deploy from an afternoon to a coffee break.
+    datePublished: 2026-06-09
+    author: jordi
+    tags: [astro, dx]
+    ogImage: ./_assets/og-shipping.png
+    ---
+
+    Your MDX body here. Plain Markdown is styled by the layout's prose
+    utility; import any component (e.g. from src/components/ui/) to go
+    beyond it.
+    ```
+
+    Note: `ogImage` is the post's **social preview** image — post cards and
+    detail pages render a token-resolved gradient cover, not a hero image.
+    Omit it and OG falls back to the site-wide default banner.
+
+  </Step>
+  <Step title="See it">
+    `pnpm dev` → the post is live at `/blog/my-first-post`, listed on `/blog`,
+    and folded into pagination, tags, and related-posts automatically.
+  </Step>
+</Steps>
+
+<Callout variant="note" title="author is a reference">
+  `author` points at an entry in the `authors` collection
+  (`src/content/authors/<name>.json`). Use an author that exists, or add one.
+</Callout>
+
+## Project case study
+
+The `projects` collection loads `*/*/index.mdx` — each project is a **folder**
+(`<locale>/<slug>/index.mdx`) so it can carry its own assets. It adds `summary`,
+`techStack`, `links` (live / repo / demo / caseStudy), and a `status`
+(`shipped` | `in-progress` | `archived`):
+
+```mdx
+---
+title: Acme redesign
+description: A ground-up rebuild of Acme's marketing site on Astro, shipping Lighthouse 100s and a 60% faster LCP.
+summary: Full redesign and rebuild, from Figma to production in six weeks.
+datePublished: 2026-05-01
+techStack: [Astro, TypeScript, Tailwind]
+links:
+  live: https://acme.example.com
+status: shipped
+---
+```
+
+Lives at `/projects/acme-redesign`.
+
+## Docs page
+
+In the **docs** template, the `docs` collection loads `<locale>/<slug>.mdx`.
+Frontmatter is `title` + `description` (40–160), with optional `tags`,
+`lastUpdated`, and `draft`:
+
+```mdx
+---
+title: Configuration
+description: Every setting in site.ts and what it controls, with sensible defaults for a first deploy.
+tags: [reference]
+---
+
+## Section
+
+Sidebar, breadcrumbs, on-this-page, and prev/next all derive from the
+collection — add this file and it slots into the nav.
+```
+
+Reshape the sidebar order/grouping in `src/config/sidebar.ts`.
+
+## The parallel-route rule
+
+This is where content and custom pages differ:
+
+- **Collection content** (blog, projects, docs) is served by catch-all routes
+  (`[...slug].astro` for the default locale, `[lang]/[...slug].astro` for the
+  rest). They already handle every locale — so a localized post is just a second
+  file under the target locale folder. Nothing else to wire.
+- **Hand-written `.astro` pages** (e.g. `src/pages/about.astro`) must ship a
+  **parallel** at `src/pages/[lang]/about.astro` whose `getStaticPaths` emits one
+  entry per non-default locale. A page at `/foo` with no `/[lang]/foo` is an
+  i18n gap the invariant audit will flag.
+
+<Callout variant="tip" title="Until you add a second locale">
+  With the default `siteConfig.locales: ['en']`, the `[lang]/` routes stay
+  dormant — they emit nothing. They light up the moment you add a locale (see
+  [Adding a locale](/adding-a-locale)).
+</Callout>
+
+## Drafts
+
+Every content schema ships a `draft: boolean` (default `false`). Set
+`draft: true` to keep an entry out of listings, the sitemap, and the build's
+published set while you work on it.

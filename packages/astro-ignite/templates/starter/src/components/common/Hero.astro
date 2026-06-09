@@ -9,6 +9,7 @@
  */
 
 import Button from '@/components/ui/button.astro';
+import Text from '@/components/ui/text.astro';
 
 interface Props {
   eyebrow?: string;
@@ -25,21 +26,19 @@ const { eyebrow, title, description, primaryCta, secondaryCta } = Astro.props;
   <div class="mx-auto max-w-[56rem] text-center">
     {
       eyebrow && (
-        <p class="mb-6 inline-block rounded-full bg-(--color-surface-2) px-3 py-1 text-[0.8125rem] font-medium tracking-[0.01em] text-(--color-fg-muted)">
+        <Text
+          variant="small"
+          as="p"
+          weight="medium"
+          tone="muted"
+          class="mb-6 inline-block rounded-full bg-(--color-surface-2) px-3 py-1 tracking-[0.01em]"
+        >
           {eyebrow}
-        </p>
+        </Text>
       )
     }
-    <h1
-      class="mb-5 text-[clamp(2.25rem,6vw,4.5rem)] leading-[1.05] font-bold tracking-[-0.025em] text-balance text-(--color-fg)"
-    >
-      {title}
-    </h1>
-    <p
-      class="mx-auto mb-8 max-w-[40rem] text-[clamp(1.0625rem,1.8vw,1.25rem)] leading-[1.5] text-balance text-(--color-fg-muted)"
-    >
-      {description}
-    </p>
+    <Text variant="display" as="h1" class="mb-5 text-balance">{title}</Text>
+    <Text variant="lead" class="mx-auto mb-8 max-w-[40rem] text-balance">{description}</Text>
     {
       (primaryCta || secondaryCta) && (
         <div class="flex flex-wrap justify-center gap-3">

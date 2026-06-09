@@ -3,6 +3,11 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
 import tailwindcss from '@tailwindcss/vite';
+import {
+  transformerMetaHighlight,
+  transformerNotationHighlight,
+  transformerNotationDiff,
+} from '@shikijs/transformers';
 
 import { siteConfig } from './src/config/site.ts';
 
@@ -10,6 +15,18 @@ import { siteConfig } from './src/config/site.ts';
 export default defineConfig({
   site: siteConfig.url,
   trailingSlash: 'ignore',
+  markdown: {
+    // Build-time Shiki transformers — zero client cost. Enables, on fenced
+    // code blocks: line highlighting via `{1,3-5}` meta or `// [!code highlight]`,
+    // and diff markers via `// [!code ++]` / `// [!code --]`. Styled in global.css.
+    shikiConfig: {
+      transformers: [
+        transformerMetaHighlight(),
+        transformerNotationHighlight(),
+        transformerNotationDiff(),
+      ],
+    },
+  },
   build: {
     format: 'directory',
     // Inline ALL stylesheets so the first paint never waits on a CSS round-trip.

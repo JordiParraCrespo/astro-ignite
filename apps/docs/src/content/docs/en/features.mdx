@@ -42,9 +42,9 @@ Privacy policy, cookie policy, and terms of service templates as content-collect
 
 ## Component registry
 
-A shadcn-style registry of pure-Astro primitives. Copy-paste with `npx astro-ignite add <name>` — components land in `src/components/ui/` and you own them.
+A shadcn-style registry of pure-Astro primitives. They ship **pre-installed** in `src/components/ui/` in both templates — you own every line. To reuse one in another project, copy it from the registry source.
 
-- 18 primitives: button, card, dialog, dropdown-menu, tabs, accordion, toast, …
+- 19 primitives: button, link, text, badge, card, input, textarea, label, separator, alert, avatar, skeleton, kbd, tabs, accordion, dialog, dropdown-menu, tooltip, toast
 - Zero React/Vue/Svelte runtime — behaviour is custom elements + the native popover/dialog APIs
 - Browse every primitive live under [Components](/components)
 
@@ -61,7 +61,7 @@ A Zinc-based design system in CSS variables, dark by default, with a no-flash th
 Lighthouse 100s on mobile, CI-enforced. Pure-Astro output, image optimization, font preloading, and zero client JS on most pages.
 
 - `Image` from `astro:assets` for responsive `srcset` + AVIF/WebP
-- Critical CSS inlined per page; non-critical deferred
+- `inlineStylesheets: 'always'` ships the full stylesheet in the HTML on first paint — no render-blocking CSS round-trip
 - See [Benchmarks](/benchmarks) for the numbers and how to reproduce them
 
 ## Content collections

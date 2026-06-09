@@ -1,0 +1,56 @@
+---
+/**
+ * Blog pagination control. Renders newer/older links + a "Page X of Y" label.
+ * URLs are precomputed (locale-aware) by the caller; this component only
+ * presents them. Hidden entirely when there is a single page.
+ */
+
+import Text from '@/components/ui/text.astro';
+import { useTranslations } from '@/i18n';
+import { siteConfig } from '@/config/site';
+import type { PageMeta } from '@/lib/blog';
+
+interface Props {
+  page: PageMeta;
+}
+
+const { page } = Astro.props;
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
+
+const linkClass =
+  'rounded-lg border border-(--color-border) px-3.5 py-2 text-sm font-medium text-(--color-fg-muted) no-underline transition-colors duration-150 ease-(--ease-out-soft) hover:border-(--color-primary) hover:text-(--color-fg)';
+const disabledClass =
+  'rounded-lg border border-(--color-border) px-3.5 py-2 text-sm font-medium text-(--color-fg-subtle) opacity-50';
+---
+
+{
+  page.total > 1 && (
+    <nav
+      class="mt-12 flex items-center justify-between gap-4"
+      aria-label={t('blog.pagination.label')}
+    >
+      {page.prevUrl ? (
+        <a href={page.prevUrl} rel="prev" class={linkClass}>
+          {t('blog.pagination.newer')}
+        </a>
+      ) : (
+        <span class={disabledClass} aria-hidden="true">
+          {t('blog.pagination.newer')}
+        </span>
+      )}
+      <Text variant="small" tone="muted">
+        {t('blog.pagination.pageInfo', { current: page.current, total: page.total })}
+      </Text>
+      {page.nextUrl ? (
+        <a href={page.nextUrl} rel="next" class={linkClass}>
+          {t('blog.pagination.older')}
+        </a>
+      ) : (
+        <span class={disabledClass} aria-hidden="true">
+          {t('blog.pagination.older')}
+        </span>
+      )}
+    </nav>
+  )
+}
