@@ -30,7 +30,7 @@ const { class: className } = Astro.props;
   <slot />
 </ai-code-group>
 
-<!-- tailwind-exception: structural overrides reach into slotted CodeBlock children via :global(), and the synthesized tab strip is built in script — neither is expressible as utilities on this element -->
+<!-- tailwind-exception: structural overrides reach into slotted CodeBlock children via :global() — not expressible as utilities on this element. The synthesized tab strip is styled with utility classes assigned in the script below (scoped styles can't reach runtime-created elements). -->
 <style>
   .code-group :global(.code-block) {
     margin: 0;
@@ -40,57 +40,6 @@ const { class: className } = Astro.props;
   }
   .code-group :global(.code-block [data-cb-header]) {
     display: none;
-  }
-  .code-group__tabs {
-    display: flex;
-    align-items: stretch;
-    gap: 0;
-    padding: 0 8px;
-    border-bottom: 1px solid var(--color-border);
-    background: var(--color-surface-2);
-  }
-  .code-group__tab {
-    appearance: none;
-    cursor: pointer;
-    border: 0;
-    border-bottom: 1.5px solid transparent;
-    margin-bottom: -1px;
-    background: transparent;
-    padding: 9px 12px;
-    font-family: var(--font-mono, monospace);
-    font-size: 11px;
-    color: var(--color-fg-muted);
-    transition: color 0.1s;
-  }
-  .code-group__tab:hover {
-    color: var(--color-fg);
-  }
-  .code-group__tab[data-active='true'] {
-    color: var(--color-fg);
-    border-bottom-color: var(--color-fg);
-    font-weight: 500;
-  }
-  .code-group__copy {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-left: auto;
-    appearance: none;
-    cursor: pointer;
-    border: 0;
-    background: transparent;
-    padding: 0 10px;
-    font-family: var(--font-mono, monospace);
-    font-size: 11px;
-    color: var(--color-fg-muted);
-    transition: color 0.1s;
-  }
-  .code-group__copy:hover {
-    color: var(--color-fg);
-  }
-  .code-group__copy svg {
-    width: 12px;
-    height: 12px;
   }
 </style>
 
@@ -102,7 +51,7 @@ const { class: className } = Astro.props;
         if (blocks.length === 0) return;
 
         const tabs = document.createElement('div');
-        tabs.className = 'code-group__tabs';
+        tabs.className = 'flex items-stretch border-b border-border bg-surface-2 px-2';
         tabs.setAttribute('role', 'tablist');
 
         const buttons: HTMLButtonElement[] = [];
@@ -123,7 +72,8 @@ const { class: className } = Astro.props;
           const name = block.dataset.filename || `tab ${i + 1}`;
           const btn = document.createElement('button');
           btn.type = 'button';
-          btn.className = 'code-group__tab';
+          btn.className =
+            '-mb-px cursor-pointer appearance-none border-0 border-b-[1.5px] border-solid border-transparent bg-transparent px-3 py-[9px] font-mono text-[11px] text-fg-muted transition-colors duration-100 hover:text-fg data-[active=true]:border-fg data-[active=true]:font-medium data-[active=true]:text-fg';
           btn.setAttribute('role', 'tab');
           btn.textContent = name;
           btn.addEventListener('click', () => activate(i));
@@ -140,9 +90,10 @@ const { class: className } = Astro.props;
 
         const copy = document.createElement('button');
         copy.type = 'button';
-        copy.className = 'code-group__copy';
+        copy.className =
+          'ml-auto inline-flex cursor-pointer appearance-none items-center gap-1.5 border-0 bg-transparent px-2.5 font-mono text-[11px] text-fg-muted transition-colors duration-100 hover:text-fg';
         copy.innerHTML =
-          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span data-copy-label>copy</span>';
+          '<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span data-copy-label>copy</span>';
         const copyLabel = copy.querySelector('[data-copy-label]')!;
         copy.addEventListener('click', async () => {
           const active = blocks.find((b) => !b.hidden);
