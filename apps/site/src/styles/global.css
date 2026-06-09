@@ -74,12 +74,10 @@
 
   /* Shadows — barely-there (dark default) */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.4);
-  --shadow:
-    0 1px 3px 0 rgb(0 0 0 / 0.5), 0 1px 2px -1px rgb(0 0 0 / 0.4);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.5), 0 1px 2px -1px rgb(0 0 0 / 0.4);
 
   /* Terminal mock shadow — theme-invariant (used on the hero terminal mockup) */
-  --shadow-terminal:
-    0 30px 60px -20px rgb(0 0 0 / 0.8), 0 0 0 1px var(--color-zinc-800);
+  --shadow-terminal: 0 30px 60px -20px rgb(0 0 0 / 0.8), 0 0 0 1px var(--color-zinc-800);
 
   /* Containers */
   --container-prose: 65ch;
@@ -108,8 +106,7 @@
   --color-primary-fg: var(--color-zinc-50);
   --color-ring: var(--color-zinc-900);
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow:
-    0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.06);
 }
 
 /*
@@ -132,10 +129,7 @@
     background: var(--color-bg);
     color: var(--color-fg);
     font-family: var(--font-display);
-    font-feature-settings:
-      'cv11',
-      'ss03',
-      'ss01';
+    font-feature-settings: 'cv11', 'ss03', 'ss01';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -183,9 +177,7 @@
   code,
   pre {
     font-family: var(--font-mono);
-    font-feature-settings:
-      'zero',
-      'ss01';
+    font-feature-settings: 'zero', 'ss01';
   }
 
   /* Skip link — visually hidden until focused, jumps to <main id="main"> */
@@ -226,9 +218,7 @@
 /* Mono helper — apply Geist Mono with the right OpenType features */
 .mono {
   font-family: var(--font-mono);
-  font-feature-settings:
-    'zero',
-    'ss01';
+  font-feature-settings: 'zero', 'ss01';
 }
 
 /* Caret blink — used by the brand mark and terminal blocks */
@@ -282,6 +272,142 @@
   background-size: 56px 56px;
   -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 30%, transparent 80%);
   mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 30%, transparent 80%);
+}
+
+/* =============================================================================
+ * Article prose — long-form MDX post body (ArticleLayout's `<slot/>`).
+ *
+ * A Tailwind v4 `@utility` so `class="pp-prose"` composes with variants. The
+ * styled nodes are raw HTML the MDX renderer emits into the slot; descendant
+ * selectors reach them — nothing here is outside Tailwind's scope.
+ * ============================================================================= */
+
+@utility pp-prose {
+  & > p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--color-fg-muted);
+  }
+  & > h2 {
+    margin: 24px 0 0;
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1.25;
+    color: var(--color-fg);
+  }
+  & > h3 {
+    margin: 12px 0 0;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.35;
+    color: var(--color-fg);
+  }
+  & > h2 + p,
+  & > h3 + p {
+    margin-top: 0;
+  }
+  & p a,
+  & a:not(.pn-block):not(.btn) {
+    color: var(--color-fg);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--color-border-strong);
+    text-decoration-thickness: 1px;
+    transition: text-decoration-color 0.12s ease;
+  }
+  & p a:hover {
+    text-decoration-color: var(--color-fg);
+  }
+  & ul,
+  & ol {
+    margin: 0;
+    padding-left: 1.5rem;
+    color: var(--color-fg-muted);
+    font-size: 16px;
+    line-height: 1.7;
+  }
+  & li {
+    margin-bottom: 0.5rem;
+  }
+  & code {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    padding: 1px 6px;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    background: var(--color-surface-2);
+    color: var(--color-fg);
+  }
+  & pre {
+    margin: 0;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--color-fg);
+    overflow-x: auto;
+  }
+  & pre code {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    font-size: inherit;
+  }
+  & blockquote {
+    padding: 8px 0 8px 20px;
+    border-left: 2px solid var(--color-fg);
+    margin: 4px 0;
+    color: var(--color-fg);
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    line-height: 1.45;
+  }
+  & blockquote p {
+    margin: 0;
+    color: var(--color-fg);
+    font-size: 18px;
+    font-weight: 500;
+  }
+  & hr {
+    border: 0;
+    border-top: 1px solid var(--color-border);
+    margin: 2rem 0;
+  }
+  & table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.25rem 0;
+    font-size: 14px;
+  }
+  & th,
+  & td {
+    border-bottom: 1px solid var(--color-border);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    color: var(--color-fg-muted);
+  }
+  & th {
+    color: var(--color-fg);
+    font-weight: 500;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  & img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    border: 1px solid var(--color-border);
+  }
 }
 
 /* =============================================================================
