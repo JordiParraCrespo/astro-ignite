@@ -6,7 +6,10 @@
   "type": "module",
   "scripts": {
     "build:registry": "node ./scripts/build-registry.mjs",
-    "test": "vitest run"
+    "test": "vitest run",
+    "lint": "eslint base lib",
+    "lint:fix": "eslint base lib --fix",
+    "typecheck": "tsc --noEmit"
   },
   "files": [
     "base",
@@ -18,6 +21,15 @@
     "./registry.json": "./registry.json"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "eslint": "^9.39.4",
+    "eslint-plugin-astro": "^1.3.1",
+    "eslint-plugin-better-tailwindcss": "4.5.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "globals": "^17.6.0",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.59.4",
     "vitest": "^4.1.7"
   }
 }

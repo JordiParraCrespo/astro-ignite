@@ -60,6 +60,8 @@ execSync(
 const expected = [
   'package.json',
   '.gitignore',
+  '.prettierrc.json',
+  '.prettierignore',
   'tsconfig.json',
   'astro.config.mjs',
   'eslint.config.js',
@@ -154,11 +156,11 @@ console.log('    ✓ package.json correctly rewritten');
 
 // 7. assert site.ts substitution worked
 const siteTs = readFileSync(resolve(playground, 'src/config/site.ts'), 'utf8');
-if (!/url:\s*"https:\/\/example\.com"/.test(siteTs)) {
+if (!/url:\s*'https:\/\/example\.com'/.test(siteTs)) {
   console.error('    ✗ site.ts URL not substituted');
   process.exit(1);
 }
-if (!/locales:\s*\["en"\]/.test(siteTs)) {
+if (!/locales:\s*\['en'\]/.test(siteTs)) {
   console.error('    ✗ site.ts locales not substituted');
   process.exit(1);
 }
@@ -178,6 +180,9 @@ execSync(`${pm} run check`, { stdio: 'inherit', cwd: playground });
 
 console.log(`\n  → ${pm} run lint`);
 execSync(`${pm} run lint`, { stdio: 'inherit', cwd: playground });
+
+console.log(`\n  → ${pm} run format:check`);
+execSync(`${pm} run format:check`, { stdio: 'inherit', cwd: playground });
 
 console.log(`\n  → ${pm} run build`);
 execSync(`${pm} run build`, { stdio: 'inherit', cwd: playground });

@@ -1,0 +1,21 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
+import Button from '@/components/ui/button.astro';
+import Text from '@/components/ui/text.astro';
+import { useTranslations } from '@/i18n';
+import { siteConfig } from '@/config/site';
+
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
+const homeHref = getRelativeLocaleUrl(locale, '/');
+---
+
+<section class="mx-auto flex max-w-[40rem] flex-col items-center gap-8 px-5 py-20 text-center">
+  <div class="flex flex-col items-center gap-3">
+    <Text variant="eyebrow" class="font-mono">500</Text>
+    <Text variant="h1">{t('errors.500.heading')}</Text>
+    <Text variant="lead">{t('errors.500.body')}</Text>
+  </div>
+  <Button href={homeHref} variant="default">{t('errors.500.back')} →</Button>
+</section>

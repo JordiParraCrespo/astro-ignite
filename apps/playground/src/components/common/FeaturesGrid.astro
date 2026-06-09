@@ -1,4 +1,5 @@
 ---
+import Text from '@/components/ui/text.astro';
 import { useTranslations } from '@/i18n';
 import { siteConfig } from '@/config/site';
 
@@ -49,11 +50,7 @@ const features = [
 
 <section class="px-5 pt-12 pb-16">
   <div class="mx-auto max-w-7xl">
-    <h2
-      class="mb-6 text-center text-[clamp(1.5rem,3vw,2rem)] font-semibold tracking-[-0.02em] text-fg"
-    >
-      {t('home.featuresHeading')}
-    </h2>
+    <Text variant="h2" class="mb-6 text-center">{t('home.featuresHeading')}</Text>
     <div class="grid grid-cols-1 overflow-hidden rounded-lg border border-border md:grid-cols-3">
       {
         features.map((f) => (
@@ -66,8 +63,12 @@ const features = [
                 {f.tag}
               </span>
             </div>
-            <h4 class="mt-0.5 mb-0 text-sm font-medium tracking-[-0.02em] text-fg">{f.title}</h4>
-            <p class="m-0 text-xs leading-[1.55] text-fg-subtle">{f.body}</p>
+            <Text variant="h4" class="mt-0.5">
+              {f.title}
+            </Text>
+            <Text variant="small" tone="subtle" class="leading-[1.55]">
+              {f.body}
+            </Text>
           </div>
         ))
       }

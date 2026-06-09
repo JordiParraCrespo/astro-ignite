@@ -60,6 +60,10 @@
     "404": {
       "title": "Page not found",
       "description": "The page you were looking for doesn't exist."
+    },
+    "500": {
+      "title": "Something went wrong",
+      "description": "An unexpected error occurred on our end."
     }
   },
   "blog": {
@@ -77,7 +81,18 @@
     "featured": "Featured · most recent",
     "readArticle": "Read article →",
     "previousPost": "Previous post",
-    "nextPost": "Next post"
+    "nextPost": "Next post",
+    "relatedPosts": "Related posts",
+    "tableOfContents": "On this page",
+    "tagsLabel": "Tags",
+    "tagTitle": "Posts tagged {tag}",
+    "tagDescription": "All posts tagged {tag}.",
+    "pagination": {
+      "label": "Pagination",
+      "newer": "← Newer",
+      "older": "Older →",
+      "pageInfo": "Page {current} of {total}"
+    }
   },
   "projects": {
     "viewProject": "View project",
@@ -132,6 +147,11 @@
     "404": {
       "heading": "Page not found",
       "body": "The page you were looking for doesn't exist or has been moved.",
+      "back": "Back to home"
+    },
+    "500": {
+      "heading": "Something went wrong",
+      "body": "An unexpected error occurred on our end. Please try again in a moment.",
       "back": "Back to home"
     }
   },

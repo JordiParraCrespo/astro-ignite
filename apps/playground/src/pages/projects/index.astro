@@ -1,6 +1,4 @@
 ---
-import { getCollection } from 'astro:content';
-import type { CollectionEntry } from 'astro:content';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
@@ -9,28 +7,17 @@ import type { ProjectCard } from '@/components/projects/ProjectsIndexList.astro'
 import { useTranslations } from '@/i18n';
 import { siteConfig } from '@/config/site';
 import { breadcrumbListSchema, collectionPageSchema } from '@/lib/jsonld';
+import { getProjectsForLocale, projectSlug } from '@/lib/projects';
 
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const t = useTranslations(locale);
 
-const projects = (
-  await getCollection(
-    'projects',
-    (entry: CollectionEntry<'projects'>) => entry.id.startsWith(`${locale}/`) && !entry.data.draft
-  )
-).sort(
-  (a: CollectionEntry<'projects'>, b: CollectionEntry<'projects'>) =>
-    +b.data.datePublished - +a.data.datePublished
-);
+const projects = await getProjectsForLocale(locale, 'desc');
 
-const projectCards: ProjectCard[] = projects.map((project: CollectionEntry<'projects'>) => {
-  // entry.id format from Astro 6 i18n collection: "<locale>/<slug>" (folder /index stripped).
-  const slug = project.id.split('/').slice(1).join('/');
-  return {
-    project,
-    href: getRelativeLocaleUrl(locale, `/projects/${slug}`),
-  };
-});
+const projectCards: ProjectCard[] = projects.map((project) => ({
+  project,
+  href: getRelativeLocaleUrl(locale, `/projects/${projectSlug(project)}`),
+}));
 
 const schemas = [
   breadcrumbListSchema([
