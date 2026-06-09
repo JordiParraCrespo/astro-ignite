@@ -47,8 +47,8 @@ export async function sendContactEmail(input: ContactEmailInput): Promise<void> 
       from,
       to,
       reply_to: input.email,
-      subject: `New contact form submission from ${input.name}`,
-      text: `From: ${input.name} <${input.email}>\n\n${input.message}`,
+      subject: `[${input.subject}] New contact form submission from ${input.name}`,
+      text: `From: ${input.name} <${input.email}>\nSubject: ${input.subject}\n\n${input.message}`,
     }),
   });
 

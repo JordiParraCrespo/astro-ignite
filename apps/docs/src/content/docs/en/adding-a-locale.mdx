@@ -1,0 +1,91 @@
+---
+title: Adding a locale
+description: Turn on a second language — the locales array, the parallel content and UI strings it expects, and what the LocaleSwitcher does with gaps.
+lastUpdated: 2026-06-09
+tags: [guide]
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import Steps from '@/components/docs/Steps.astro';
+import Step from '@/components/docs/Step.astro';
+
+i18n is wired from the start. The default `siteConfig.locales: ['en']` keeps the
+parallel routes dormant; adding a locale is a config edit plus the translated
+files to back it.
+
+<Steps>
+  <Step title="Add the locale to siteConfig">
+    In `src/config/site.ts`, add the code to `locales` and give it the per-locale
+    metadata the config already keys by language:
+
+    ```ts {3}
+    export const siteConfig = {
+      defaultLocale: 'en',
+      locales: ['en', 'es'],
+      name: { en: 'Acme', es: 'Acme' },
+      description: { en: '…', es: '…' },
+      // hreflang already maps common codes: es → es-ES, etc.
+    };
+    ```
+
+    `astro.config.mjs` reads `i18n.locales` straight from here — there's nothing
+    to change there. The default locale stays at `/`; the new one routes under
+    `/<lang>/`.
+
+  </Step>
+
+  <Step title="Add the UI-string dictionary">
+    Copy `src/i18n/en.json` to `src/i18n/<locale>.json` and translate the values.
+    Keep **exactly the same keys** — `en.json` defines the dictionary shape, so a
+    missing key is a type error and an extra one is ignored.
+
+    ```bash
+    cp src/i18n/en.json src/i18n/es.json
+    # then translate the values in es.json
+    ```
+
+  </Step>
+
+  <Step title="Translate the content">
+    For every collection entry that should exist in the new locale, add a sibling
+    under that locale's folder, keeping the **same slug**:
+
+    ```text
+    src/content/blog/en/launch.mdx
+    src/content/blog/es/launch.mdx   ← same slug, translated body + frontmatter
+    ```
+
+    The catch-all routes pick these up automatically — `/blog/launch` and
+    `/es/blog/launch` both render.
+
+  </Step>
+
+  <Step title="Mirror any hand-written pages">
+    Custom `.astro` pages need a `[lang]/` parallel (see
+    [Adding content](/adding-content)). The shipped pages already have theirs, so
+    they start working in the new locale as soon as it's in `locales`.
+  </Step>
+</Steps>
+
+## What the LocaleSwitcher does with gaps
+
+You don't have to translate everything at once. The `LocaleSwitcher` appears in
+the chrome the moment there's more than one locale, and the navigation degrades
+gracefully:
+
+- **A sidebar / nav item whose slug has no entry in the current locale is
+  hidden** — so a Spanish reader never sees a link that would 404. An empty
+  group disappears entirely.
+- Internal links resolve through `getRelativeLocaleUrl(lang, path)`, so they
+  always point at the right locale prefix.
+
+<Callout variant="note" title="hreflang is automatic">
+  The sitemap emits `hreflang` alternates for every locale you configure, and
+  each localized page links its siblings — search engines see the relationships
+  without extra work.
+</Callout>
+
+<Callout variant="tip" title="Untranslated content stays invisible, not broken">
+  Ship a locale with only the pages you've translated. Add the rest over time;
+  each new file just appears. There's no half-localized 404 state to manage.
+</Callout>

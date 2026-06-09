@@ -82,7 +82,7 @@ The deployed templates ARE the launch demo; every shipped feature must be visibl
 
 Two gaps that make the "shadcn-style CLI" claim aspirational rather than true.
 
-- [ ] **Form atoms** (the credibility gap — "shadcn-style" with no form controls is a tell): add `select`, `checkbox`, `radio-group`, `switch` to `packages/registry` and both templates' `src/components/ui/`. Native HTML, no framework, tokens-only, a11y-clean. Refactor the starter contact form to consume them.
+- [x] **Form atoms** (the credibility gap — "shadcn-style" with no form controls is a tell): add `select`, `checkbox`, `radio-group`, `switch` to `packages/registry` and both templates' `src/components/ui/`. Native HTML, no framework, tokens-only, a11y-clean. Refactor the starter contact form to consume them.
 - [ ] **shadcn-schema-conformant, publicly consumable registry** (the headline shadcn-2025 move — see [CLI 3.0 / namespaces](https://ui.shadcn.com/docs/registry/namespace)): make `registry.json` conform to the shadcn 3.0 registry schema and emit per-item JSON (`/r/<name>.json`) at build, hosted on the site, so `npx shadcn@latest add @astro-ignite/<name>` copies an atom into _any_ project (shadcn's registry copies arbitrary files — it doesn't care the atoms are `.astro`). Namespace: `@astro-ignite`. This is the cheap on-ramp to the AI-native story too: shadcn's MCP server can already read a schema-conformant registry (the registry MCP server itself is 0.3.0).
 - **Done when:** a stranger can `npx shadcn add @astro-ignite/button` into a blank project and get a working file; the starter contact form is built from the shipped form atoms.
 
@@ -90,10 +90,10 @@ Two gaps that make the "shadcn-style CLI" claim aspirational rather than true.
 
 Today the docs site only answers "what is this?" — launch needs "how do I?".
 
-- [ ] Six guides (closed list): theming/tokens (the showpiece), adding content, adding a locale, deploying (incl. contact form on static hosts), contact-form email setup, using components.
-- [ ] Component reference: one page per registry item (23 UI items + cn — incl. the four new form atoms from Checkpoint 2b), each with live demo (`ComponentShowcase`), code example, props table, and "ships pre-installed; copy from the registry to use elsewhere". **No `add` command at launch** — wording must never imply one. Distill from the template `docs/` deep-dives where possible.
-- [ ] Accuracy pass on the 7 existing pages.
-- [ ] **AI-native docs surface** (the visible proof the docs are agent-first — all static, no backend): a per-page raw-Markdown route (`[...slug].md`), a `/llms-full.txt` full-content file alongside the existing `/llms.txt` index, and a contextual "**Copy as Markdown / View raw / Open in ChatGPT / Open in Claude**" menu in the doc header (deep-links carry the page URL as context). This is the launch-claim slice of the "build docs with AI agents" pitch; agentic Ask-AI search + MCP-from-docs stay on the ladder.
+- [x] Six guides (closed list): theming/tokens (the showpiece), adding content, adding a locale, deploying (incl. contact form on static hosts), contact-form email setup, using components.
+- [ ] Component reference: one page per registry item (23 UI items + cn — incl. the four new form atoms from Checkpoint 2b), each with live demo (`ComponentShowcase`), code example, props table, and "ships pre-installed; copy from the registry to use elsewhere". **No `add` command at launch** — wording must never imply one. Distill from the template `docs/` deep-dives where possible. _Deferred: waits for the 2b form atoms so it documents the final registry, not a stale one._
+- [x] Accuracy pass on the 7 existing pages.
+- [x] **AI-native docs surface** (the visible proof the docs are agent-first — all static, no backend): a per-page raw-Markdown route (`[...slug].md`), a `/llms-full.txt` full-content file alongside the existing `/llms.txt` index, and a contextual "**Copy as Markdown / View raw / Open in ChatGPT / Open in Claude**" menu in the doc header (deep-links carry the page URL as context). This is the launch-claim slice of the "build docs with AI agents" pitch; agentic Ask-AI search + MCP-from-docs stay on the ladder.
 - [ ] English first; Spanish translated once content freezes (ES at launch, written last).
 - **Done when:** the list above is checked. New page ideas go post-launch.
 

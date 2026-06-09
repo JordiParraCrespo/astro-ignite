@@ -1,0 +1,117 @@
+---
+title: Using components
+description: How the pre-installed atoms work — props and variants, the cn class helper, compound families, and reusing them in another project.
+lastUpdated: 2026-06-09
+tags: [guide]
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
+
+Both templates ship the full set of base components **pre-installed** in
+`src/components/ui/` — copied from the astro-ignite registry, owned by your repo.
+There's no install step and no runtime dependency; you import them like any local
+file and edit them freely.
+
+```astro
+---
+import Button from '@/components/ui/button.astro';
+---
+
+<Button variant="outline" size="sm" href="/contact">Get in touch</Button>
+```
+
+Browse every atom rendered live, with props and source, under
+[Components](/components).
+
+## Props & variants
+
+Atoms are typed Astro components. They follow a consistent shape:
+
+- **Variant + size props** where it makes sense. `Button` takes
+  `variant` (`default` · `secondary` · `outline` · `ghost` · `destructive` ·
+  `link`) and `size` (`sm` · `md` · `lg` · `icon`).
+- **Polymorphic `as`-by-`href`.** Pass `href` and the component renders an
+  `<a>`; omit it and you get a `<button>`. The correct native attributes are
+  typed for each case.
+- **A `class` passthrough.** Anything you pass is merged onto the base classes
+  (see `cn` below), so you can extend without forking.
+- **`...rest` spread.** Remaining attributes (`type`, `aria-*`, `data-*`, …)
+  land on the underlying element.
+
+<Callout variant="note" title="Tokens, not hardcoded color">
+  Variants are written in token-resolving Tailwind utilities (`bg-primary`,
+  `text-fg`, `border-border`). That's why a [theme](/theming) edit restyles every
+  atom at once — and why your overrides should use tokens too.
+</Callout>
+
+## The `cn` helper
+
+Every atom merges classes with `cn` from `src/lib/cn.ts`. It flattens strings,
+arrays, and conditional objects into one class string:
+
+<CodeBlock filename="example.astro">{`import { cn } from '@/lib/cn';
+
+cn('px-3', 'py-2', isActive && 'bg-surface-2', { 'opacity-50': disabled });
+// → "px-3 py-2 bg-surface-2"  (falsy values dropped)`}</CodeBlock>
+
+<Callout variant="note" title="It joins, it doesn't de-conflict">
+  `cn` is a small conditional joiner — it does **not** resolve conflicting
+  Tailwind classes the way `tailwind-merge` would. If you pass `p-2` _and_ `p-4`,
+  both end up in the string; let the later utility or `!important` win, or drop
+  the one you don't want.
+</Callout>
+
+## Compound families
+
+Five families ship as multiple parts — one file per part — so you compose the
+structure yourself. Import the parts you need:
+
+<CodeBlock filename="card-example.astro">{`---
+import Card from '@/components/ui/card/card.astro';
+import CardHeader from '@/components/ui/card/card-header.astro';
+import CardTitle from '@/components/ui/card/card-title.astro';
+import CardDescription from '@/components/ui/card/card-description.astro';
+import CardContent from '@/components/ui/card/card-content.astro';
+---
+
+<Card>
+  <CardHeader>
+    <CardTitle>Plan</CardTitle>
+    <CardDescription>Everything you need to launch.</CardDescription>
+  </CardHeader>
+  <CardContent>…</CardContent>
+</Card>`}</CodeBlock>
+
+The families and their parts:
+
+| Family | Parts |
+| --- | --- |
+| `card` | card, card-header, card-title, card-description, card-content, card-footer |
+| `tabs` | tabs, tabs-list, tabs-trigger, tabs-content |
+| `accordion` | accordion, accordion-item |
+| `dialog` | dialog, dialog-title, dialog-description |
+| `dropdown-menu` | dropdown-menu, dropdown-menu-item |
+
+Interactive ones use native primitives — `<dialog>` for dialog, the popover API
+for dropdown-menu, `<details name>` for accordion, and the `<ai-tabs>` custom
+element for tabs. No React, no Radix, no framework runtime.
+
+## Toasts
+
+Toasts are imperative. Render `<Toaster />` once (the layouts already do), then
+fire one from anywhere with the helper:
+
+<CodeBlock filename="example.ts">{`import { toast } from '@/lib/toast';
+
+toast('Saved', { description: 'Your changes are live.' });`}</CodeBlock>
+
+It dispatches a `window` event the `<Toaster />` listens for.
+
+## Reusing a component elsewhere
+
+These atoms aren't published as an importable library — you own the copies in
+your project. To use one in a **different** project, copy the file (and its `cn`
+dependency) from the registry source at
+[`packages/registry/base/`](https://github.com/JordiParraCrespo/astro-ignite/tree/main/packages/registry/base).
+Compound families bring their whole folder.
