@@ -7,6 +7,13 @@ Small, owned helpers. Named exports, no side-effecting imports.
 - `cn.ts` — class-merge helper used by every component.
 - `toast.ts` — `toast(...)` dispatches a `window` event consumed by
   `<Toaster />` (`components/ui/toaster.astro`).
+- `blog.ts` — single source of truth for the `blog` collection
+  (locale-filtered fetch + sort, adjacency, related posts, tag counts,
+  pagination meta). Routes don't query the collection directly.
+- `projects.ts` — same role for the `projects` collection:
+  `getProjectsForLocale(locale, order)` (locale-filtered, sorted by
+  `datePublished`; `order` is `'asc' | 'desc'`, default `'desc'`) and
+  `projectSlug(project)` to strip the locale prefix off an entry id.
 - `image/blur.ts` — blur-placeholder data for non-LCP images (heroes use
   `PriorityImage`, which deliberately has no blur).
 - `jsonld/` — typed `schema-dts` node builders, one per type
