@@ -1,0 +1,15 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ServerErrorHero from '@/components/error/ServerErrorHero.astro';
+import { useTranslations } from '@/i18n';
+import { siteConfig } from '@/config/site';
+
+Astro.response.status = 500;
+
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
+---
+
+<BaseLayout title={t('seo.500.title')} description={t('seo.500.description')} noindex={true}>
+  <ServerErrorHero />
+</BaseLayout>

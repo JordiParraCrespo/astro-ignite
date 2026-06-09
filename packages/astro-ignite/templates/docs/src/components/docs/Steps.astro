@@ -1,0 +1,34 @@
+---
+/**
+ * Steps — ordered, numbered walkthrough for tutorials and quickstarts.
+ *
+ * Numbers and the connecting rail are drawn by `Step.astro` via a CSS counter,
+ * so steps renumber automatically when reordered. No client JS.
+ *
+ * Usage in MDX:
+ *   <Steps>
+ *     <Step title="Install">…</Step>
+ *     <Step title="Configure">…</Step>
+ *   </Steps>
+ */
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<ol class:list={['steps', className]}>
+  <slot />
+</ol>
+
+<!-- tailwind-exception: CSS counter reset that drives the auto-numbered steps in Step.astro — not expressible as a Tailwind utility -->
+<style>
+  .steps {
+    counter-reset: step;
+    list-style: none;
+    margin: 1.5rem 0;
+    padding: 0;
+  }
+</style>

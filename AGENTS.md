@@ -19,6 +19,8 @@ Non-trivial work in this repo goes through a spec-driven, file-mediated subagent
 
 Set `OPENSPEC_TELEMETRY=0` (already in `.env.example`) when the OpenSpec CLI install path is wired.
 
+**Driving the harness from a phone.** The harness can run as a GitHub-event autopilot via Claude Code Routines — see [`.claude/routines/README.md`](./.claude/routines/README.md). **GitHub issues are the work queue; labels pick the flow:** `flow:direct` builds straight from the issue → reviewer → PR; `flow:spec` drafts a spec → you review/edit `tasks.md` → another agent codes it → reviewer. A scheduled `dispatch` routine turns issues into work (issue events can't trigger routines natively); native PR triggers drive `review` and `advance-on-merge`, so every gate is a "merge the PR from your phone". The `SessionStart` hook at `scripts/cloud/bootstrap.sh` (wired in `.claude/settings.json`) installs deps and prints `pnpm queue` so every cloud/routine session boots ready.
+
 ## Principles
 
 The technical foundations that drive the project. The sections below (`Workspace layout`, `CLI architecture`, `Template invariants`, etc.) elaborate; everything in those sections should be readable as a consequence of one of the principles below.
@@ -166,7 +168,7 @@ The local gate is allowed to skip when no `chrome` / `google-chrome` / `chromium
 ### How to make the local gate green
 
 1. Run `scripts/doctor/install-chrome.mjs` (idempotent; pinned Chrome for Testing version). On the runner this needs sudo so it can write under `/opt/chrome-for-testing/` and `/usr/local/bin/`.
-2. On the autopilot runner the systemd unit at `autopilot/systemd/aig-runner.service` must be deployed so `~/.npm/_cacache/` is writable — `npx lighthouse` fetches into the cache on first use. `pnpm doctor`'s `npm-cache-writable` check warns when this is missing.
+2. `~/.npm/_cacache/` must be writable — `npx lighthouse` fetches into the cache on first use. `pnpm doctor`'s `npm-cache-writable` check warns when a sandbox or ownership issue blocks it.
 3. Re-run `pnpm perf:budget` (or `pnpm perf:budget --page /` for a single page). Stdout shows per-metric numeric lines.
 
 ## Banner & hero images

@@ -1,0 +1,69 @@
+---
+/**
+ * Per-locale paginated blog index for pages 2…N at /<lang>/blog/page/<n>.
+ * Default-locale pagination lives at /blog/page/<n> (sibling tree).
+ */
+
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import BlogIndexList from '@/components/blog/BlogIndexList.astro';
+import { useTranslations } from '@/i18n';
+import { siteConfig } from '@/config/site';
+import { breadcrumbListSchema, collectionPageSchema } from '@/lib/jsonld';
+import { getPostsForLocale, nonDefaultLocales, POSTS_PER_PAGE, type PageMeta } from '@/lib/blog';
+
+export async function getStaticPaths() {
+  const paths = [];
+  for (const lang of nonDefaultLocales()) {
+    const all = await getPostsForLocale(lang);
+    const totalPages = Math.max(1, Math.ceil(all.length / POSTS_PER_PAGE));
+    for (let p = 2; p <= totalPages; p++) {
+      paths.push({ params: { lang, page: String(p) }, props: { pageNum: p } });
+    }
+  }
+  return paths;
+}
+
+interface Props {
+  pageNum: number;
+}
+
+const { pageNum } = Astro.props;
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
+
+const all = await getPostsForLocale(locale);
+const totalPages = Math.max(1, Math.ceil(all.length / POSTS_PER_PAGE));
+const posts = all.slice((pageNum - 1) * POSTS_PER_PAGE, pageNum * POSTS_PER_PAGE);
+
+const page: PageMeta = {
+  current: pageNum,
+  total: totalPages,
+  prevUrl:
+    pageNum === 2
+      ? getRelativeLocaleUrl(locale, '/blog')
+      : getRelativeLocaleUrl(locale, `/blog/page/${pageNum - 1}`),
+  nextUrl:
+    pageNum < totalPages ? getRelativeLocaleUrl(locale, `/blog/page/${pageNum + 1}`) : undefined,
+};
+
+const pageTitle = `${t('seo.blog.title')} · ${t('blog.pagination.pageInfo', { current: pageNum, total: totalPages })}`;
+
+const schemas = [
+  breadcrumbListSchema([
+    { name: t('nav.home'), url: '/' },
+    { name: t('nav.blog'), url: '/blog' },
+  ]),
+  collectionPageSchema({
+    url: `/blog/page/${pageNum}`,
+    title: pageTitle,
+    description: t('seo.blog.description'),
+    inLanguage: locale,
+  }),
+];
+---
+
+<BaseLayout title={pageTitle} description={t('seo.blog.description')} schemas={schemas}>
+  <BlogIndexList posts={posts} page={page} />
+</BaseLayout>

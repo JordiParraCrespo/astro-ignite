@@ -2,6 +2,7 @@
 import { actions, isInputError } from 'astro:actions';
 
 import Button from '@/components/ui/button.astro';
+import Text from '@/components/ui/text.astro';
 import { useTranslations } from '@/i18n';
 import { siteConfig } from '@/config/site';
 
@@ -16,10 +17,8 @@ const inputError = result?.error && isInputError(result.error) ? result.error : 
 
 <section class="mx-auto max-w-[36rem] px-5 pt-12 pb-16">
   <header class="mb-8">
-    <h1 class="m-0 mb-3 text-[clamp(2rem,5vw,2.75rem)] leading-[1.1] font-bold tracking-[-0.02em]">
-      {t('seo.contact.title')}
-    </h1>
-    <p class="m-0 text-lg text-(--color-fg-muted)">{t('seo.contact.description')}</p>
+    <Text variant="h1" class="mb-3">{t('seo.contact.title')}</Text>
+    <Text variant="lead">{t('seo.contact.description')}</Text>
   </header>
 
   {
@@ -63,9 +62,9 @@ const inputError = result?.error && isInputError(result.error) ? result.error : 
       />
       {
         inputError?.fields.name && (
-          <p id="name-error" class="m-0 text-[0.8125rem] text-(--color-danger)">
+          <Text variant="small" id="name-error" class="text-(--color-danger)">
             {t('contact.validation.nameRequired')}
-          </p>
+          </Text>
         )
       }
     </div>
@@ -83,9 +82,9 @@ const inputError = result?.error && isInputError(result.error) ? result.error : 
       />
       {
         inputError?.fields.email && (
-          <p id="email-error" class="m-0 text-[0.8125rem] text-(--color-danger)">
+          <Text variant="small" id="email-error" class="text-(--color-danger)">
             {t('contact.validation.emailInvalid')}
-          </p>
+          </Text>
         )
       }
     </div>
@@ -103,9 +102,9 @@ const inputError = result?.error && isInputError(result.error) ? result.error : 
         aria-describedby={inputError?.fields.message ? 'message-error' : undefined}></textarea>
       {
         inputError?.fields.message && (
-          <p id="message-error" class="m-0 text-[0.8125rem] text-(--color-danger)">
+          <Text variant="small" id="message-error" class="text-(--color-danger)">
             {t('contact.validation.messageTooShort')}
-          </p>
+          </Text>
         )
       }
     </div>

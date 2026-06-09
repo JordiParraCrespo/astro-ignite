@@ -23,10 +23,12 @@ import SidebarNav from '@/components/docs/SidebarNav.astro';
 import OnThisPage from '@/components/docs/OnThisPage.astro';
 import Breadcrumbs from '@/components/docs/Breadcrumbs.astro';
 import PrevNext from '@/components/docs/PrevNext.astro';
+import AiActions from '@/components/docs/AiActions.astro';
 import ThemeToggle from '@/components/common/ThemeToggle.astro';
 import LocaleSwitcher from '@/components/common/LocaleSwitcher.astro';
 import Text from '@/components/ui/text.astro';
 import { breadcrumbListSchema, webPageSchema } from '@/lib/jsonld';
+import { mdHref } from '@/lib/docs-md';
 import { siteConfig } from '@/config/site';
 
 interface Props {
@@ -74,6 +76,7 @@ const dateFmt = new Intl.DateTimeFormat(Astro.currentLocale ?? 'en', {
       <div class="mb-6 flex items-center justify-between">
         <Breadcrumbs currentSlug={slug} currentTitle={title} />
         <div class="flex items-center gap-1.5">
+          <AiActions markdownPath={mdHref(entry.id)} />
           <LocaleSwitcher />
           <ThemeToggle />
         </div>
@@ -153,6 +156,38 @@ const dateFmt = new Intl.DateTimeFormat(Astro.currentLocale ?? 'en', {
   }
   .docs-prose pre code {
     @apply border-0 bg-transparent p-0 text-[length:inherit];
+  }
+  /* Shiki transformers: full-width line bands for `{1,3}` / `[!code highlight]`
+     and `[!code ++]` / `[!code --]`, plus a line-number gutter on multi-line
+     blocks. Token-resolved, build-time only. */
+  .docs-prose .astro-code code {
+    @apply inline-block min-w-full;
+  }
+  .docs-prose .astro-code .line {
+    @apply inline-block w-full;
+  }
+  .docs-prose .astro-code code:has(.line:nth-child(2)) {
+    counter-reset: docs-ln;
+  }
+  .docs-prose .astro-code code:has(.line:nth-child(2)) .line {
+    counter-increment: docs-ln;
+  }
+  .docs-prose .astro-code code:has(.line:nth-child(2)) .line::before {
+    content: counter(docs-ln);
+    @apply mr-5 inline-block w-6 text-right text-[var(--color-fg-subtle)] select-none;
+  }
+  .docs-prose .astro-code .line.highlighted {
+    background: color-mix(in oklch, var(--color-fg) 7%, transparent);
+    box-shadow: inset 2px 0 var(--color-fg);
+  }
+  .docs-prose .astro-code .line.diff.add {
+    background: color-mix(in oklch, var(--color-success) 16%, transparent);
+    box-shadow: inset 2px 0 var(--color-success);
+  }
+  .docs-prose .astro-code .line.diff.remove {
+    background: color-mix(in oklch, var(--color-danger) 16%, transparent);
+    box-shadow: inset 2px 0 var(--color-danger);
+    opacity: 0.65;
   }
   .docs-prose hr {
     @apply my-8 border-0 border-t border-[var(--color-border)];

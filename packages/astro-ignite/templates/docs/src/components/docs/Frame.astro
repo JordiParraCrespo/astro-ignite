@@ -1,0 +1,55 @@
+---
+/**
+ * Frame — a centered, bordered, optionally captioned wrapper for media.
+ * Makes screenshots and diagrams look intentional. Pair with the `Image`
+ * atom or a plain <img>.
+ *
+ * Usage in MDX:
+ *   <Frame caption="The scaffold prompt flow">
+ *     <Image src={shot} alt="CLI prompts" />
+ *   </Frame>
+ */
+
+interface Props {
+  caption?: string;
+  class?: string;
+}
+
+const { caption, class: className } = Astro.props;
+---
+
+<figure class:list={['frame', className]}>
+  <div class="frame-inner"><slot /></div>
+  {caption && <figcaption class="frame-caption">{caption}</figcaption>}
+</figure>
+
+<!-- tailwind-exception: figure/figcaption media framing plus :global() radius applied to slotted <img> content Tailwind can't target -->
+<style>
+  .frame {
+    margin: 1.5rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .frame-inner {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface-2);
+    display: flex;
+    justify-content: center;
+  }
+  .frame-inner :global(img) {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: var(--radius);
+  }
+  .frame-caption {
+    font-size: 13px;
+    color: var(--color-fg-muted);
+    text-align: center;
+  }
+</style>

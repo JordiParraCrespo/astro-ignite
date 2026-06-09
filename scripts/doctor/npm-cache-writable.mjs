@@ -1,9 +1,5 @@
 // doctor check: `~/.npm/_cacache/` is writable so `npx lighthouse`
 // (and any other on-demand npx fetch) can populate the cache.
-//
-// On the autopilot runner, the systemd unit at
-// `autopilot/systemd/aig-runner.service` controls this — its
-// `ReadWritePaths=` must grant write access to the npm cache.
 
 import { mkdir, writeFile, unlink } from 'node:fs/promises';
 import { homedir } from 'node:os';
@@ -25,7 +21,7 @@ export async function check() {
         warn(
           'npm-cache-writable',
           `npm cache not writable at ${cacheDir} (${code}). npx-driven fetches (Lighthouse, @puppeteer/browsers, etc.) will fail.`,
-          'Deploy autopilot/systemd/aig-runner.service and restart aig-runner so ReadWritePaths= grants the npm cache write access.',
+          'Grant write access to ~/.npm/_cacache (fix ownership, or widen the sandbox/ReadWritePaths= if one wraps this process).'
         ),
       ];
     }
@@ -33,7 +29,7 @@ export async function check() {
       warn(
         'npm-cache-writable',
         `unexpected error probing ${cacheDir}: ${err && err.message ? err.message : String(err)}`,
-        'Investigate the failure — npx fetches require this path writable.',
+        'Investigate the failure — npx fetches require this path writable.'
       ),
     ];
   }

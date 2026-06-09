@@ -1,0 +1,42 @@
+# One-tap label setup for the issue-driven harness (see .claude/routines/README.md).
+# Run from the Actions tab → "Sync harness labels" → Run workflow (works from the
+# GitHub mobile app). Creates the flow:* / aig:* labels and removes the default
+# GitHub labels the harness doesn't use. Idempotent — safe to re-run.
+name: Sync harness labels
+
+on:
+  workflow_dispatch:
+    inputs:
+      delete_legacy:
+        description: 'Delete the default GitHub labels (bug, enhancement, …)'
+        type: boolean
+        default: true
+
+permissions:
+  issues: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Create harness labels
+        run: |
+          gh label create "flow:direct" --color 0E8A16 --force \
+            --description "Build straight from the issue, then review"
+          gh label create "flow:spec"   --color 1D76DB --force \
+            --description "Spec-driven: draft spec, you review/edit, code, review"
+          gh label create "aig:active"  --color FBCA04 --force \
+            --description "Harness is working this issue (prevents double pickup)"
+          gh label create "aig:blocked" --color B60205 --force \
+            --description "Needs your input; question is on the issue"
+
+      - name: Delete legacy default labels
+        if: ${{ inputs.delete_legacy }}
+        run: |
+          for l in "bug" "documentation" "duplicate" "enhancement" \
+                   "good first issue" "help wanted" "invalid" "question" "wontfix"; do
+            gh label delete "$l" --yes || echo "no '$l' label — skipping"
+          done

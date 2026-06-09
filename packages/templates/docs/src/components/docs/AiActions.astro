@@ -1,0 +1,179 @@
+---
+/**
+ * AiActions — the "use this page with AI" menu in the doc header.
+ *
+ * Copy the page as Markdown, view the raw `.md`, or open it in ChatGPT /
+ * Claude with the page URL handed over as context. Progressive enhancement:
+ * the links work without JS; only "Copy as Markdown" needs the clipboard.
+ */
+
+import { siteConfig } from '@/config/site';
+import { useTranslations } from '@/i18n';
+
+export interface Props {
+  /** Path the page's raw Markdown is served at, e.g. `/quick-start.md`. */
+  markdownPath: string;
+}
+
+const { markdownPath } = Astro.props;
+const t = useTranslations(Astro.currentLocale ?? siteConfig.defaultLocale);
+
+// The AI deep-links need a publicly fetchable URL; the in-page copy reads the
+// same-origin relative path so it also works in dev and on preview deploys.
+const origin = (Astro.site ?? new URL(siteConfig.url)).origin;
+const mdUrl = origin + markdownPath;
+const prompt = `Read ${mdUrl} so I can ask questions about this documentation page.`;
+const chatgptUrl = `https://chatgpt.com/?hints=search&q=${encodeURIComponent(prompt)}`;
+const claudeUrl = `https://claude.ai/new?q=${encodeURIComponent(prompt)}`;
+
+const itemClass =
+  'flex w-full cursor-pointer items-center gap-2 rounded-[calc(var(--radius)-2px)] border-none bg-transparent px-2 py-1.5 text-left text-[13px] leading-snug text-(--color-fg) no-underline hover:bg-(--color-surface-2) focus-visible:bg-(--color-surface-2) focus-visible:outline-none';
+---
+
+<div class="ai-actions relative">
+  <button
+    type="button"
+    popovertarget="ai-actions-menu"
+    aria-label={t('aiActions.label')}
+    title={t('aiActions.label')}
+    class="ai-actions-trigger inline-flex cursor-pointer items-center gap-1.5 rounded-lg border-0 bg-transparent p-2 text-sm text-(--color-fg-muted) transition-colors duration-150 [anchor-name:--ai-actions] hover:bg-(--color-surface-2) hover:text-(--color-fg) focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-ring)"
+  >
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      width="16"
+      height="16"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path
+        d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"
+      ></path>
+    </svg>
+    <span class="font-medium">{t('aiActions.copyPage')}</span>
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      width="14"
+      height="14"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="m6 9 6 6 6-6"></path>
+    </svg>
+  </button>
+
+  <div
+    id="ai-actions-menu"
+    popover="auto"
+    class="absolute [inset:auto] mt-1 min-w-[15rem] rounded-md border border-(--color-border) bg-(--color-bg) p-1 text-(--color-fg) shadow-[0_8px_16px_-8px_rgb(0_0_0/0.25)] [position-anchor:--ai-actions] [position-area:bottom_span-left] [&:not(:popover-open)]:hidden"
+  >
+    <button
+      type="button"
+      class={itemClass}
+      data-ai-copy
+      data-md-path={markdownPath}
+      data-copied-label={t('aiActions.copied')}
+    >
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        width="15"
+        height="15"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+      </svg>
+      <span data-copy-label>{t('aiActions.copyMarkdown')}</span>
+    </button>
+
+    <a href={markdownPath} class={itemClass}>
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        width="15"
+        height="15"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <path d="M14 2v6h6"></path>
+      </svg>
+      {t('aiActions.viewMarkdown')}
+    </a>
+
+    <div class="my-1 h-px bg-(--color-border)"></div>
+
+    <a href={chatgptUrl} target="_blank" rel="noopener noreferrer" class={itemClass}>
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        width="15"
+        height="15"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+      {t('aiActions.openChatgpt')}
+    </a>
+
+    <a href={claudeUrl} target="_blank" rel="noopener noreferrer" class={itemClass}>
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        width="15"
+        height="15"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+      {t('aiActions.openClaude')}
+    </a>
+  </div>
+</div>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('[data-ai-copy]');
+  const label = btn?.querySelector<HTMLElement>('[data-copy-label]');
+  if (btn && label) {
+    const original = label.textContent ?? '';
+    const copied = btn.dataset.copiedLabel ?? original;
+    const path = btn.dataset.mdPath ?? '';
+    let reset: ReturnType<typeof setTimeout> | undefined;
+    btn.addEventListener('click', async () => {
+      try {
+        const res = await fetch(path);
+        await navigator.clipboard.writeText(await res.text());
+        label.textContent = copied;
+        clearTimeout(reset);
+        reset = setTimeout(() => {
+          label.textContent = original;
+        }, 1500);
+      } catch {
+        /* clipboard unavailable — the "View as Markdown" link still works */
+      }
+    });
+  }
+</script>

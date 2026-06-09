@@ -22,18 +22,34 @@ const { filename, language } = Astro.props;
 
 <div
   class="code-block my-6 overflow-hidden rounded-(--radius-md) border border-(--color-border) bg-(--color-surface-2)"
+  data-filename={filename ?? 'snippet'}
 >
   <div
+    data-cb-header
     class="flex items-center gap-2.5 border-b border-(--color-border) px-3.5 py-2 text-[11px] text-(--color-fg-muted)"
   >
     <span class="mono flex-1">{filename ?? 'snippet'}</span>
     {language && <span class="mono text-(--color-fg-subtle)">{language}</span>}
     <button
       type="button"
-      class="mono cursor-pointer appearance-none rounded-(--radius-sm) border-0 bg-transparent px-1.5 py-0.5 text-[11px] text-(--color-fg-muted) transition-colors duration-100 hover:bg-(--color-surface) hover:text-(--color-fg)"
+      class="mono inline-flex cursor-pointer appearance-none items-center gap-1.5 rounded-(--radius-sm) border-0 bg-transparent px-1.5 py-0.5 text-[11px] text-(--color-fg-muted) transition-colors duration-100 hover:bg-(--color-surface) hover:text-(--color-fg)"
       data-copy-source
     >
-      copy
+      <svg
+        class="size-3"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        data-copy-icon
+      >
+        <rect x="9" y="9" width="13" height="13" rx="2"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+      </svg>
+      <span data-copy-label>copy</span>
     </button>
   </div>
   <pre
@@ -47,13 +63,16 @@ const { filename, language } = Astro.props;
       const pre = block?.querySelector('pre');
       if (!pre || !navigator.clipboard) return;
       const text = pre.textContent ?? '';
+      const label = btn.querySelector('[data-copy-label]');
       try {
         await navigator.clipboard.writeText(text);
-        const original = btn.textContent;
-        btn.textContent = 'copied';
-        setTimeout(() => {
-          btn.textContent = original;
-        }, 1200);
+        if (label) {
+          const original = label.textContent;
+          label.textContent = 'copied';
+          setTimeout(() => {
+            label.textContent = original;
+          }, 1200);
+        }
       } catch {
         // Permissions denied — silently fail.
       }
