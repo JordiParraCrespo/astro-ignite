@@ -36,7 +36,9 @@ const cellClass =
           <Text variant="eyebrow" tone="muted">
             {t('blog.previousPost')}
           </Text>
-          <Text variant="h4">{prev!.data.title}</Text>
+          <Text variant="h4" as="p">
+            {prev!.data.title}
+          </Text>
         </a>
       ) : (
         <span />
@@ -46,7 +48,9 @@ const cellClass =
           <Text variant="eyebrow" tone="muted">
             {t('blog.nextPost')}
           </Text>
-          <Text variant="h4">{next!.data.title}</Text>
+          <Text variant="h4" as="p">
+            {next!.data.title}
+          </Text>
         </a>
       ) : (
         <span />

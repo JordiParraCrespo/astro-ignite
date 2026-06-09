@@ -79,7 +79,8 @@
   --color-surface: #ffffff;
   --color-surface-2: var(--color-zinc-100);
   --color-fg: var(--color-zinc-950);
-  --color-fg-muted: var(--color-zinc-500);
+  /* zinc-600: muted text also sits on surface-2 chips (zinc-100), where zinc-500 is ~4.4:1 (AA fail). */
+  --color-fg-muted: var(--color-zinc-600);
   /* zinc-500 on zinc-50 ≈ 4.8:1 (AA pass). Was zinc-400 (~2.4:1, fails AA). */
   --color-fg-subtle: var(--color-zinc-500);
   --color-border: var(--color-zinc-200);
