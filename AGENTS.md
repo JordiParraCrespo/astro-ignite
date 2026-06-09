@@ -52,6 +52,7 @@ The technical foundations that drive the project. The sections below (`Workspace
 
 These are the rules that fall out of the architecture above. Every section below this one elaborates on at least one of them.
 
+- **All components are styled with Tailwind utilities.** No scoped `<style>` blocks in components — express layout, color, type, and states (incl. `before:`/`after:` pseudo-elements and arbitrary values) as utility classes. The only sanctioned exceptions are the tailwind-exception cases (keyframes, view-transition selectors, MDX prose under `<slot/>`, CSS counters), each with a leading `<!-- tailwind-exception: <reason> -->` comment.
 - **One concept per file.** Compound families (card, tabs, accordion, dialog, dropdown-menu) live in `base/<family>/` with one file per part.
 - **Named exports over default.** Default exports require importers to name the symbol; agents pick poorly, and the rename diff hides the original identity.
 - **No side-effecting imports.** `import './polyfill'` is invisible at the call site.

@@ -1,21 +1,39 @@
 ---
 title: Writing content
-description: The MDX components you can drop into any documentation page — steps, cards, tabbed code, frames, and highlighted code blocks.
-lastUpdated: 2026-06-06
+description: The MDX components you can drop into any documentation page — steps, cards, tabbed code, callouts, API fields, trees, changelogs, diagrams, and more.
+lastUpdated: 2026-06-09
 tags: [guide]
 ---
 
+import Banner from '@/components/docs/Banner.astro';
 import Callout from '@/components/docs/Callout.astro';
 import CodeBlock from '@/components/docs/CodeBlock.astro';
 import CodeGroup from '@/components/docs/CodeGroup.astro';
 import CardGroup from '@/components/docs/CardGroup.astro';
+import Columns from '@/components/docs/Columns.astro';
+import Expandable from '@/components/docs/Expandable.astro';
 import Frame from '@/components/docs/Frame.astro';
+import Icon from '@/components/docs/Icon.astro';
+import Mermaid from '@/components/docs/Mermaid.astro';
+import ParamField from '@/components/docs/ParamField.astro';
+import ResponseField from '@/components/docs/ResponseField.astro';
 import Steps from '@/components/docs/Steps.astro';
 import Step from '@/components/docs/Step.astro';
+import Tile from '@/components/docs/Tile.astro';
+import Tiles from '@/components/docs/Tiles.astro';
+import Tree from '@/components/docs/Tree.astro';
+import Update from '@/components/docs/Update.astro';
 import Card from '@/components/ui/card/card.astro';
 import CardHeader from '@/components/ui/card/card-header.astro';
 import CardTitle from '@/components/ui/card/card-title.astro';
 import CardDescription from '@/components/ui/card/card-description.astro';
+import Accordion from '@/components/ui/accordion/accordion.astro';
+import AccordionItem from '@/components/ui/accordion/accordion-item.astro';
+import Tabs from '@/components/ui/tabs/tabs.astro';
+import TabsContent from '@/components/ui/tabs/tabs-content.astro';
+import TabsList from '@/components/ui/tabs/tabs-list.astro';
+import TabsTrigger from '@/components/ui/tabs/tabs-trigger.astro';
+import Tooltip from '@/components/ui/tooltip.astro';
 
 Every component below is wired into the docs renderer in
 `src/components/docs/mdx-components.ts` — import it at the top of any `.mdx`
@@ -99,6 +117,239 @@ intentional. Drop an `Image` atom or a plain `<img>` inside.
 <Frame caption="A framed, captioned figure">
   <img src="/og/og-default.png" alt="Open Graph preview card" width="600" height="315" />
 </Frame>
+
+## Callouts
+
+`<Callout variant="…">` ships six variants: `note`, `info`, `tip`, `check`,
+`warning`, and `danger`.
+
+<Callout variant="note">A neutral aside the reader can skip.</Callout>
+<Callout variant="info">Background context worth knowing before you start.</Callout>
+<Callout variant="tip">A shortcut or best practice.</Callout>
+<Callout variant="check">Confirms a step worked — what success looks like.</Callout>
+<Callout variant="warning">Setup prompts can be skipped with `--yes`.</Callout>
+<Callout variant="danger">Destructive — this cannot be undone.</Callout>
+
+## Tabs
+
+The `Tabs` atom family is registered for MDX, so switchers work without
+imports. Arrow keys move between triggers.
+
+<Tabs defaultValue="npm">
+  <TabsList>
+    <TabsTrigger value="npm">npm</TabsTrigger>
+    <TabsTrigger value="pnpm">pnpm</TabsTrigger>
+    <TabsTrigger value="yarn">yarn</TabsTrigger>
+  </TabsList>
+  <TabsContent value="npm">Run `npm create astro-ignite my-site`.</TabsContent>
+  <TabsContent value="pnpm">Run `pnpm create astro-ignite my-site`.</TabsContent>
+  <TabsContent value="yarn">Run `yarn create astro-ignite my-site`.</TabsContent>
+</Tabs>
+
+## Accordion
+
+`<Accordion>` + `<AccordionItem>` — native `<details name>`, so single-open
+grouping needs no JS state.
+
+<Accordion>
+  <AccordionItem title="Does this template use Starlight?">
+    No — the docs primitives are composed from the astro-ignite base components and owned by
+    this repo.
+  </AccordionItem>
+  <AccordionItem title="Can I add a second locale?">
+    Yes. Add it to `siteConfig.locales` and the parallel routes activate.
+  </AccordionItem>
+</Accordion>
+
+## Tooltip
+
+Wrap any inline element with `<Tooltip content="…">` to add a
+<Tooltip content="Like this one."><span>hover/focus hint</span></Tooltip>.
+
+## Expandable
+
+`<Expandable>` is an inline disclosure for nested object shapes — distinct from
+Accordion. Nest `<ParamField>` rows inside to document properties.
+
+<Expandable title="author" hint="object · 3 properties" open>
+  <ParamField name="name" type="string">
+    Display name rendered in the byline and JSON-LD.
+  </ParamField>
+  <ParamField name="handle" type="string">Used to build the canonical author URL.</ParamField>
+  <ParamField name="avatar" type="ImageMetadata">Local import, optimised at build time.</ParamField>
+</Expandable>
+<Expandable title="metadata" hint="object · 6 properties" />
+<Expandable title="redirects" hint="Record<string, string>" />
+
+## Fields
+
+`<ParamField>` documents request parameters; `<ResponseField>` documents
+response fields. Both take `type`, `required`, `default`, and `deprecated`;
+`ParamField` adds a `location` pill (`body`, `query`, `path`, `header`).
+
+#### Request parameters
+
+<ParamField name="site" type="string" location="body" required>
+  Target site slug. Lowercase, dashes only — matches the directory name.
+</ParamField>
+<ParamField name="locales" type="string[]" location="body" default="['en']">
+  Locale scopes to generate. Each adds a routed subtree and sitemap block.
+</ParamField>
+<ParamField name="email" type="object" location="body">
+  Transactional email config. Expand to see `provider` and `from`.
+</ParamField>
+<ParamField name="legacySlug" type="string" location="body" deprecated>
+  Removed in `>=0.6`. Use the `redirects` map instead.
+</ParamField>
+
+#### Response fields
+
+<ResponseField name="id" type="string">Unique deploy id, format `dep_xxxxxxxx`.</ResponseField>
+<ResponseField name="status" type="'queued' | 'building' | 'ready'">
+  Current lifecycle stage. Poll until `ready`.
+</ResponseField>
+
+## Icon
+
+`<Icon name="…" size={…} />` renders an inline lucide-style stroke icon in
+`currentColor`. Run <Icon name="terminal" size={15} /> `ignite dev` to start,
+then deploy with <Icon name="rocket" size={15} /> one command.
+
+Sizes: <Icon name="zap" size={14} /> <Icon name="zap" size={18} /> <Icon name="zap" size={24} /> <Icon name="zap" size={32} />
+
+```mdx
+Run <Icon name="terminal" size={15} /> `ignite dev` to start.
+```
+
+## Tree
+
+`<Tree items={…}>` renders a file/folder tree. Connectors are box-drawing
+glyphs — copy/paste safe, no images. Icons derive from the structure
+(`folder` when an item has children, `file-code` for code extensions) and can
+be overridden per item.
+
+<Tree
+  items={[
+    {
+      name: 'my-site/',
+      children: [
+        {
+          name: 'src/',
+          children: [
+            {
+              name: 'pages/',
+              children: [{ name: 'index.astro' }, { name: 'blog/[slug].astro' }],
+            },
+            { name: 'content/', children: [{ name: 'config.ts', icon: 'file' }] },
+            { name: 'lib/', icon: 'folder', muted: true, tag: 'empty' },
+          ],
+        },
+        { name: 'astro.config.ts' },
+        { name: 'plan.md', tag: 'generated' },
+        { name: 'package.json' },
+      ],
+    },
+  ]}
+/>
+
+## Update
+
+`<Update>` renders dated changelog entries on a timeline. The rail connecting
+consecutive entries draws itself — no `last` prop. Tags `minor`, `patch`, and
+`breaking`/`major` are color-coded.
+
+<Update date="May 22" version="0.5.0" tag="minor" title="Planning & budgets">
+  Added `ignite plan` for previewing the route graph, and per-route bundle budgets via
+  frontmatter.
+</Update>
+<Update date="May 04" version="0.4.2" tag="patch" title="AVIF by default">
+  Image pipeline now emits AVIF with a WebP fallback. No config change needed.
+</Update>
+<Update date="Apr 18" version="0.4.0" tag="breaking" title="Email is explicit">
+  `config.email.from` is now required. Add the field or remove the email block.
+</Update>
+
+## Mermaid
+
+`<Mermaid code={…}>` renders a diagram from mermaid source, themed by the
+design tokens. The library loads lazily — only when a diagram scrolls into
+view — so pages without diagrams ship zero extra JS.
+
+<Mermaid
+  code={`graph TD
+  A[src/] --> B[parse MDX]
+  B --> C{budget ok?}
+  C -->|yes| D[emit static]
+  C -->|no| E[fail CI]`}
+/>
+
+## Columns
+
+`<Columns cols={2|3|4}>` is the generic grid wrapper — unlike `CardGroup` it
+takes any content. Columns collapse to one per row below the `md` breakpoint.
+
+<Columns cols={3}>
+  <Card>
+    <CardHeader>
+      <CardTitle>Fast by default</CardTitle>
+      <CardDescription>Zero-JS islands, AVIF images, enforced bundle budgets.</CardDescription>
+    </CardHeader>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>i18n built in</CardTitle>
+      <CardDescription>Locale-scoped routes, sitemaps, and hreflang tags.</CardDescription>
+    </CardHeader>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Typed config</CardTitle>
+      <CardDescription>Schema-validated at build — typos fail the build.</CardDescription>
+    </CardHeader>
+  </Card>
+</Columns>
+
+## Banner
+
+`<Banner>` is a site-wide announcement strip. Drop the `solid` variant into a
+layout above the header, or use `subtle` inline. Dismissal persists per `id` in
+localStorage — bump the id to resurface a new announcement.
+
+<div class="overflow-hidden rounded-md border border-border">
+  <Banner id="demo-solid" href="#banner" linkText="Read the post">
+    astro-ignite 0.5 is out — planning, budgets, and AVIF by default.
+  </Banner>
+</div>
+
+<Banner id="demo-subtle" variant="subtle">
+  Scheduled maintenance Sat 02:00–03:00 UTC. Builds may queue.
+</Banner>
+
+## Tiles
+
+`<Tiles>` + `<Tile>` build a compact navigation grid — lighter than cards. Each
+tile lifts on hover, the border darkens, and the arrow nudges right.
+
+<Tiles cols={3}>
+  <Tile icon="rocket" title="Quickstart" href="/quick-start">
+    Five prompts to a deployed, audited site.
+  </Tile>
+  <Tile icon="terminal" title="CLI reference" href="/quick-start">
+    Every flag, command, and exit code.
+  </Tile>
+  <Tile icon="book" title="Guides" href="/authoring">
+    i18n, email, analytics, and SEO walkthroughs.
+  </Tile>
+  <Tile icon="package" title="Config schema" href="/quick-start">
+    The typed shape of astro.config.ts.
+  </Tile>
+  <Tile icon="git-branch" title="Deploy API" href="/quick-start">
+    Trigger and poll builds over REST.
+  </Tile>
+  <Tile icon="shield" title="Security" href="/quick-start">
+    CSP, headers, and consent defaults.
+  </Tile>
+</Tiles>
 
 <Callout variant="note" title="Add your own">
   These components live in `src/components/docs/`. Copy one as a template for a new

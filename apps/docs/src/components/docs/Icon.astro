@@ -1,0 +1,34 @@
+---
+/**
+ * Icon — inline stroke icon by name, sized in px, colored by `currentColor`.
+ *
+ * Usage in MDX:
+ *   Run <Icon name="terminal" /> `ignite dev` to start.
+ */
+
+import { cn } from '@/lib/cn';
+import { icons, type IconName } from '@/components/docs/icons';
+
+interface Props {
+  name: IconName;
+  size?: number;
+  stroke?: number;
+  class?: string;
+}
+
+const { name, size = 16, stroke = 1.6, class: className } = Astro.props;
+---
+
+<svg
+  class={cn('inline-block align-[-0.155em]', className)}
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width={stroke}
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  set:html={icons[name]}
+/>

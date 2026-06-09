@@ -1,0 +1,97 @@
+---
+/**
+ * Mermaid — renders a diagram from mermaid source, client-side. The library
+ * (the template's one heavyweight dep) is dynamic-imported only when a diagram
+ * scrolls near the viewport, so pages without diagrams pay zero JS. Colors and
+ * fonts resolve from the design tokens at render time, and diagrams re-render
+ * when the theme toggles.
+ *
+ * Usage in MDX:
+ *   <Mermaid
+ *     code={`graph TD
+ *   A[src/] --> B[parse MDX]`}
+ *   />
+ */
+
+import { cn } from '@/lib/cn';
+import Icon from '@/components/docs/Icon.astro';
+
+interface Props {
+  code: string;
+  title?: string;
+  class?: string;
+}
+
+const { code, title = 'mermaid', class: className } = Astro.props;
+---
+
+<div
+  class={cn('my-6 overflow-hidden rounded-md border border-border bg-surface', className)}
+  data-mermaid
+>
+  <div class="flex items-center gap-2 border-b border-border bg-surface-2 px-3.5 py-2">
+    <span class="flex text-fg-muted" aria-hidden="true">
+      <Icon name="git-branch" size={13} />
+    </span>
+    <span class="font-mono text-[11px] text-fg-muted">{title}</span>
+  </div>
+  <div class="flex justify-center p-2 [&_svg]:h-auto [&_svg]:max-w-full">
+    <pre class="hidden" data-mermaid-src>{code}</pre>
+    <div data-mermaid-out></div>
+  </div>
+</div>
+
+<script>
+  const diagrams = document.querySelectorAll<HTMLElement>('[data-mermaid]');
+
+  if (diagrams.length > 0) {
+    const token = (name: string) =>
+      getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+
+    let seq = 0;
+    const render = async () => {
+      const { default: mermaid } = await import('mermaid');
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: 'base',
+        themeVariables: {
+          background: token('--color-surface'),
+          primaryColor: token('--color-surface-2'),
+          primaryBorderColor: token('--color-border-strong'),
+          primaryTextColor: token('--color-fg'),
+          secondaryColor: token('--color-surface-2'),
+          tertiaryColor: token('--color-surface'),
+          lineColor: token('--color-fg-muted'),
+          textColor: token('--color-fg'),
+          fontFamily: token('--font-mono'),
+          fontSize: '13px',
+        },
+      });
+      for (const el of diagrams) {
+        const src = el.querySelector('[data-mermaid-src]')?.textContent ?? '';
+        const out = el.querySelector<HTMLElement>('[data-mermaid-out]');
+        if (!src || !out) continue;
+        try {
+          const { svg } = await mermaid.render(`mermaid-${seq++}`, src);
+          out.innerHTML = svg;
+        } catch {
+          out.textContent = src;
+        }
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        observer.disconnect();
+        render();
+        new MutationObserver(render).observe(document.documentElement, {
+          attributes: true,
+          attributeFilter: ['class'],
+        });
+      },
+      { rootMargin: '200px' }
+    );
+    observer.observe(diagrams[0]!);
+  }
+</script>

@@ -1,0 +1,76 @@
+---
+/**
+ * ParamField — one request-parameter row for API reference pages. Renders the
+ * name, type annotation, and required / default / deprecated badges; the slot
+ * is the description. Stack several to document an endpoint; nest inside
+ * `Expandable` for object shapes.
+ *
+ * Usage in MDX:
+ *   <ParamField name="site" type="string" location="body" required>
+ *     Target site slug.
+ *   </ParamField>
+ */
+
+import { cn } from '@/lib/cn';
+
+interface Props {
+  name: string;
+  type?: string;
+  location?: 'body' | 'query' | 'path' | 'header';
+  required?: boolean;
+  default?: string;
+  deprecated?: boolean;
+  class?: string;
+}
+
+const {
+  name,
+  type,
+  location,
+  required = false,
+  default: defaultValue,
+  deprecated = false,
+  class: className,
+} = Astro.props;
+---
+
+<div class={cn('border-t border-border py-3.5', className)}>
+  <div class="mb-[5px] flex flex-wrap items-center gap-2">
+    {
+      location && (
+        <span class="rounded-sm bg-accent-purple/10 px-[7px] py-[3px] font-mono text-[11px] font-semibold tracking-[0.04em] text-accent-purple uppercase">
+          {location}
+        </span>
+      )
+    }
+    <span
+      class={cn(
+        'font-mono text-[13.5px] font-semibold text-fg',
+        deprecated && 'line-through opacity-60'
+      )}>{name}</span
+    >
+    {type && <span class="font-mono text-[11.5px] text-accent-rose">{type}</span>}
+    {
+      required && (
+        <span class="rounded-full border border-danger/30 px-1.5 py-0.5 font-mono text-[10px] tracking-[0.04em] text-danger">
+          required
+        </span>
+      )
+    }
+    {
+      defaultValue != null && (
+        <span class="font-mono text-[11px] text-fg-muted">default: {defaultValue}</span>
+      )
+    }
+    {
+      deprecated && (
+        <span class="rounded-full border border-border-strong px-1.5 py-0.5 font-mono text-[10px] tracking-[0.04em] text-fg-muted">
+          deprecated
+        </span>
+      )
+    }
+  </div>
+  <div class="text-[13px] leading-[1.55] text-fg-muted [&_p]:my-0!">
+    <slot />
+  </div>
+</div>

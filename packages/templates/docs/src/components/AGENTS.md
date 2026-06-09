@@ -8,9 +8,13 @@ UI for the docs site. Organized by intent, not by page.
   here). Singletons flat (`button.astro`, …); compound families in their
   own folder (`card/`, `tabs/`, `accordion/`, `dialog/`,
   `dropdown-menu/`), one file per part.
-- `docs/` — the documentation chrome: `SidebarNav`, `OnThisPage`,
-  `Breadcrumbs`, `PrevNext`, `SearchBox` (the `<dialog>`-based command
-  palette), `Callout`, `CodeBlock`, `ComponentShowcase`.
+- `docs/` — the documentation chrome (`SidebarNav`, `OnThisPage`,
+  `Breadcrumbs`, `PrevNext`, `SearchBox` — the `<dialog>`-based command
+  palette, `ComponentShowcase`) plus the MDX content primitives
+  registered in `mdx-components.ts`: `Callout`, `CodeBlock`, `CodeGroup`,
+  `CardGroup`, `Frame`, `Steps`/`Step`, `Expandable`,
+  `ParamField`/`ResponseField`, `Icon` (+ `icons.ts`), `Tree`, `Update`,
+  `Mermaid`, `Columns`, `Banner`, `Tiles`/`Tile`.
 - `common/` — site chrome (`Header`, `Footer`, `Brand`, `ThemeToggle`,
   `LocaleSwitcher`, `Analytics`).
 - `seo/` — `SEO.astro` + `JsonLd.astro` (the page's `@graph` node).
