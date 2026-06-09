@@ -12,6 +12,7 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 import type { ImageMetadata } from 'astro';
 
 import { siteConfig } from '@/config/site';
+import { localize } from '@/i18n';
 import { absoluteUrl } from '@/lib/jsonld/types';
 
 interface Props {
@@ -56,16 +57,12 @@ const canonicalUrl = canonical
 const siteName = siteConfig.name[locale] ?? siteConfig.name[siteConfig.defaultLocale]!;
 const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
 
-// Image resolution: prop override → siteConfig.defaultOgImage[locale] → string fallback.
-let resolvedImage: string | undefined;
-if (image) {
-  resolvedImage = typeof image === 'string' ? image : image.src;
-} else if (typeof siteConfig.defaultOgImage === 'string') {
-  resolvedImage = siteConfig.defaultOgImage;
-} else {
-  resolvedImage =
-    siteConfig.defaultOgImage[locale] ?? siteConfig.defaultOgImage[siteConfig.defaultLocale];
-}
+// Image resolution: prop override → locale-aware siteConfig.defaultOgImage.
+const resolvedImage = image
+  ? typeof image === 'string'
+    ? image
+    : image.src
+  : localize(siteConfig.defaultOgImage, locale);
 const ogImageUrl = resolvedImage ? absoluteUrl(resolvedImage) : undefined;
 
 // Auto-compute hreflang alternates if not provided.

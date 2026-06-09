@@ -18,10 +18,10 @@ import type { MarkdownHeading } from 'astro';
 import type { Thing } from 'schema-dts';
 
 import { siteConfig } from '@/config/site';
-import { useTranslations } from '@/i18n';
+import { useTranslations, localize } from '@/i18n';
 import { blogPostingSchema, breadcrumbListSchema, personSchema } from '@/lib/jsonld';
 import { readingTimeMinutes } from '@/lib/reading-time';
-import { tagSlug } from '@/lib/blog';
+import { postSlug, tagSlug } from '@/lib/blog';
 
 import BaseLayout from './BaseLayout.astro';
 import Text from '@/components/ui/text.astro';
@@ -43,21 +43,14 @@ const t = useTranslations(locale);
 
 const minutes = readingTimeMinutes(entry.body);
 
-// entry.id format: `<locale>/<slug>` (e.g. "en/welcome").
-const slugSegments = entry.id.split('/');
-const slug = slugSegments.slice(1).join('/');
+const url = `/blog/${postSlug(entry)}`;
 
 const author = await getEntry(entry.data.author);
-const authorBio = author?.data.bio[locale] ?? author?.data.bio[siteConfig.defaultLocale] ?? '';
-
-const url = `/blog/${slug}`;
+const authorBio = (author && localize(author.data.bio, locale)) ?? '';
 
 // Posts no longer ship a hero image; OG falls back to a per-post ogImage when
 // set, otherwise the site-wide default banner.
-const defaultOg =
-  typeof siteConfig.defaultOgImage === 'string'
-    ? siteConfig.defaultOgImage
-    : (siteConfig.defaultOgImage[locale] ?? siteConfig.defaultOgImage[siteConfig.defaultLocale]);
+const defaultOg = localize(siteConfig.defaultOgImage, locale);
 
 const crumbs = [
   { name: t('nav.home'), url: '/' },

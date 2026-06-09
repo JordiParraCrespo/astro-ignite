@@ -7,8 +7,9 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 import type { CollectionEntry } from 'astro:content';
 
 import { siteConfig } from '@/config/site';
-import { useTranslations } from '@/i18n';
+import { useTranslations, localize } from '@/i18n';
 import { breadcrumbListSchema, creativeWorkSchema } from '@/lib/jsonld';
+import { projectSlug } from '@/lib/projects';
 
 import BaseLayout from './BaseLayout.astro';
 import Text from '@/components/ui/text.astro';
@@ -21,16 +22,11 @@ const { entry } = Astro.props;
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const t = useTranslations(locale);
 
-// entry.id format from Astro 6 i18n collection: "<locale>/<slug>" (folder /index stripped).
-const slug = entry.id.split('/').slice(1).join('/');
-const url = `/projects/${slug}`;
+const url = `/projects/${projectSlug(entry)}`;
 
 // Projects no longer ship a hero image; OG falls back to a per-project ogImage
 // when set, otherwise the site-wide default banner.
-const defaultOg =
-  typeof siteConfig.defaultOgImage === 'string'
-    ? siteConfig.defaultOgImage
-    : (siteConfig.defaultOgImage[locale] ?? siteConfig.defaultOgImage[siteConfig.defaultLocale]);
+const defaultOg = localize(siteConfig.defaultOgImage, locale);
 
 const crumbs = [
   { name: t('nav.home'), url: '/' },
