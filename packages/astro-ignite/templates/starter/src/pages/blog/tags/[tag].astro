@@ -1,0 +1,44 @@
+---
+/**
+ * Tag archive at /blog/tags/<tag> — every non-draft post in the current
+ * locale carrying that tag. One page per tag found in the locale's posts.
+ */
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import BlogIndexList from '@/components/blog/BlogIndexList.astro';
+import { useTranslations } from '@/i18n';
+import { siteConfig } from '@/config/site';
+import { breadcrumbListSchema, collectionPageSchema } from '@/lib/jsonld';
+import { getPostsForLocale, collectTags, tagSlug } from '@/lib/blog';
+
+export async function getStaticPaths() {
+  const posts = await getPostsForLocale(siteConfig.defaultLocale);
+  return collectTags(posts).map(({ tag }) => ({ params: { tag: tagSlug(tag) }, props: { tag } }));
+}
+
+interface Props {
+  tag: string;
+}
+
+const { tag } = Astro.props;
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
+
+const posts = (await getPostsForLocale(locale)).filter((p) => p.data.tags.includes(tag));
+const title = t('blog.tagTitle', { tag });
+const description = t('blog.tagDescription', { tag });
+const url = `/blog/tags/${tagSlug(tag)}`;
+
+const schemas = [
+  breadcrumbListSchema([
+    { name: t('nav.home'), url: '/' },
+    { name: t('nav.blog'), url: '/blog' },
+    { name: title, url },
+  ]),
+  collectionPageSchema({ url, title, description, inLanguage: locale }),
+];
+---
+
+<BaseLayout title={title} description={description} schemas={schemas}>
+  <BlogIndexList posts={posts} title={title} description={description} />
+</BaseLayout>

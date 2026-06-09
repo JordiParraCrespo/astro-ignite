@@ -35,10 +35,23 @@
     "label": "Idioma",
     "switch": "Cambiar idioma"
   },
+  "aiActions": {
+    "label": "Usar esta página con IA",
+    "copyPage": "Copiar página",
+    "copyMarkdown": "Copiar como Markdown",
+    "copied": "¡Copiado!",
+    "viewMarkdown": "Ver como Markdown",
+    "openChatgpt": "Abrir en ChatGPT",
+    "openClaude": "Abrir en Claude"
+  },
   "seo": {
     "404": {
       "title": "Página no encontrada",
       "description": "La página que buscas no existe."
+    },
+    "500": {
+      "title": "Algo salió mal",
+      "description": "Ocurrió un error inesperado de nuestro lado."
     },
     "home": {
       "title": "Inicio",
@@ -125,6 +138,11 @@
       "body": "La página que buscas no existe o ha sido movida.",
       "back": "Volver al inicio",
       "search": "Buscar en la documentación"
+    },
+    "500": {
+      "heading": "Algo salió mal",
+      "body": "Ocurrió un error inesperado de nuestro lado. Inténtalo de nuevo en un momento.",
+      "back": "Volver al inicio"
     }
   },
   "sidebar": {

@@ -1,4 +1,5 @@
 ---
+import Text from '@/components/ui/text.astro';
 import { useTranslations } from '@/i18n';
 import { siteConfig } from '@/config/site';
 
@@ -8,23 +9,17 @@ const t = useTranslations(locale);
 
 <article class="mx-auto max-w-[48rem] px-5 pt-12 pb-16">
   <header class="mb-8">
-    <h1
-      class="m-0 mb-3 text-[clamp(2rem,5vw,2.75rem)] leading-[1.1] font-bold tracking-[-0.02em] text-(--color-fg)"
-    >
-      {t('seo.about.title')}
-    </h1>
-    <p class="m-0 text-lg leading-[1.5] text-(--color-fg-muted)">
-      {t('seo.about.description')}
-    </p>
+    <Text variant="h1" class="mb-3">{t('seo.about.title')}</Text>
+    <Text variant="lead">{t('seo.about.description')}</Text>
   </header>
-  <div class="prose">
-    <p>{t('about.body.p1')}</p>
-    <p>{t('about.body.p2')}</p>
-    <h2>{t('about.body.heading')}</h2>
-    <ul>
-      <li>{t('about.body.li1')}</li>
-      <li>{t('about.body.li2')}</li>
-      <li>{t('about.body.li3')}</li>
+  <div class="flex flex-col gap-4">
+    <Text variant="body">{t('about.body.p1')}</Text>
+    <Text variant="body">{t('about.body.p2')}</Text>
+    <Text variant="h2" class="mt-4">{t('about.body.heading')}</Text>
+    <ul class="m-0 flex list-disc flex-col gap-2 pl-5">
+      <Text variant="body" as="li">{t('about.body.li1')}</Text>
+      <Text variant="body" as="li">{t('about.body.li2')}</Text>
+      <Text variant="body" as="li">{t('about.body.li3')}</Text>
     </ul>
   </div>
 </article>

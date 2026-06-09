@@ -7,11 +7,11 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 import type { CollectionEntry } from 'astro:content';
 
 import { siteConfig } from '@/config/site';
-import { useTranslations } from '@/i18n';
+import { useTranslations, localize } from '@/i18n';
 import { breadcrumbListSchema, creativeWorkSchema } from '@/lib/jsonld';
+import { projectSlug } from '@/lib/projects';
 
 import BaseLayout from './BaseLayout.astro';
-import PriorityImage from '@/components/image/PriorityImage.astro';
 import Text from '@/components/ui/text.astro';
 
 interface Props {
@@ -22,9 +22,11 @@ const { entry } = Astro.props;
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const t = useTranslations(locale);
 
-// entry.id format from Astro 6 i18n collection: "<locale>/<slug>" (folder /index stripped).
-const slug = entry.id.split('/').slice(1).join('/');
-const url = `/projects/${slug}`;
+const url = `/projects/${projectSlug(entry)}`;
+
+// Projects no longer ship a hero image; OG falls back to a per-project ogImage
+// when set, otherwise the site-wide default banner.
+const defaultOg = localize(siteConfig.defaultOgImage, locale);
 
 const crumbs = [
   { name: t('nav.home'), url: '/' },
@@ -40,8 +42,7 @@ const schemas = [
     description: entry.data.description,
     datePublished: entry.data.datePublished,
     dateModified: entry.data.dateUpdated,
-    image: entry.data.ogImage?.src ?? entry.data.heroImage.src,
-    imageAlt: entry.data.heroImageAlt,
+    image: entry.data.ogImage?.src ?? defaultOg,
     keywords: entry.data.techStack,
     inLanguage: locale,
     status: entry.data.status,
@@ -60,17 +61,14 @@ const statusLabels = {
 <BaseLayout
   title={entry.data.title}
   description={entry.data.description}
-  image={entry.data.ogImage ?? entry.data.heroImage}
-  imageAlt={entry.data.heroImageAlt}
+  image={entry.data.ogImage}
   type="article"
   noindex={entry.data.draft}
   schemas={schemas}
-  preloadImages={[entry.data.heroImage]}
+  preloadImages={entry.data.ogImage ? [entry.data.ogImage] : []}
 >
   <article class="mx-auto max-w-[64rem] px-5 pt-8 pb-16">
-    <header
-      class="mb-12 [&_img]:block [&_img]:h-auto [&_img]:w-full [&_img]:overflow-hidden [&_img]:rounded-xl [&_picture]:block [&_picture]:h-auto [&_picture]:w-full [&_picture]:overflow-hidden [&_picture]:rounded-xl"
-    >
+    <header class="mb-12">
       <nav class="mb-6 text-sm" aria-label={t('nav.breadcrumbs')}>
         <a
           href={getRelativeLocaleUrl(locale, '/projects')}
@@ -81,12 +79,20 @@ const statusLabels = {
       </nav>
       <Text variant="h1" class="mb-4">{entry.data.title}</Text>
       <Text variant="lead" class="mb-8 max-w-[48rem]">{entry.data.summary}</Text>
-      <PriorityImage
-        src={entry.data.heroImage}
-        alt={entry.data.heroImageAlt}
-        width={1200}
-        height={630}
-      />
+      <div
+        class="relative aspect-[21/9] overflow-hidden rounded-xl border border-(--color-border) bg-[radial-gradient(ellipse_60%_90%_at_30%_50%,var(--color-border),var(--color-bg)_70%)]"
+      >
+        <span
+          class="absolute top-3 left-3 rounded-full border border-(--color-border-strong) bg-(--color-surface) px-2.5 py-1 font-mono text-[0.6875rem] text-(--color-fg-muted)"
+        >
+          {statusLabels[entry.data.status as keyof typeof statusLabels]}
+        </span>
+        <span
+          aria-hidden="true"
+          class="pointer-events-none absolute right-7 bottom-5 font-mono text-7xl font-medium text-(--color-fg) opacity-[0.06] select-none"
+          >&gt;_</span
+        >
+      </div>
     </header>
 
     <div class="grid grid-cols-1 gap-10 min-[900px]:grid-cols-[16rem_1fr]">

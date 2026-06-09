@@ -60,6 +60,10 @@
     "404": {
       "title": "Página no encontrada",
       "description": "La página que buscas no existe."
+    },
+    "500": {
+      "title": "Algo salió mal",
+      "description": "Ocurrió un error inesperado de nuestro lado."
     }
   },
   "blog": {
@@ -77,7 +81,18 @@
     "featured": "Destacada · más reciente",
     "readArticle": "Leer artículo →",
     "previousPost": "Entrada anterior",
-    "nextPost": "Siguiente entrada"
+    "nextPost": "Siguiente entrada",
+    "relatedPosts": "Entradas relacionadas",
+    "tableOfContents": "En esta página",
+    "tagsLabel": "Etiquetas",
+    "tagTitle": "Entradas etiquetadas con {tag}",
+    "tagDescription": "Todas las entradas etiquetadas con {tag}.",
+    "pagination": {
+      "label": "Paginación",
+      "newer": "← Más recientes",
+      "older": "Más antiguas →",
+      "pageInfo": "Página {current} de {total}"
+    }
   },
   "projects": {
     "viewProject": "Ver proyecto",
@@ -132,6 +147,11 @@
     "404": {
       "heading": "Página no encontrada",
       "body": "La página que buscas no existe o ha sido movida.",
+      "back": "Volver al inicio"
+    },
+    "500": {
+      "heading": "Algo salió mal",
+      "body": "Ocurrió un error inesperado de nuestro lado. Inténtalo de nuevo en un momento.",
       "back": "Volver al inicio"
     }
   },
