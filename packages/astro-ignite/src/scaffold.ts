@@ -170,22 +170,21 @@ async function rewriteSiteConfig(targetDir: string, ctx: ScaffoldContext): Promi
 
   // Each pattern rewrites a single field's literal value. Anchored to the
   // structure of the dev defaults — see packages/template/src/config/site.ts.
+  // Values are emitted as single-quoted JS literals (not JSON) so the rewritten
+  // file stays clean under the template's own Prettier `format:check`.
   content = content
-    .replace(/url:\s*'http:\/\/localhost:4321'/, `url: ${JSON.stringify(ctx.siteUrl)}`)
-    .replace(/defaultLocale:\s*'en'/, `defaultLocale: ${JSON.stringify(ctx.defaultLocale)}`)
-    .replace(
-      /locales:\s*\['en'\]/,
-      `locales: [${allLocales.map((l) => JSON.stringify(l)).join(', ')}]`
-    );
+    .replace(/url:\s*'http:\/\/localhost:4321'/, `url: ${jsString(ctx.siteUrl)}`)
+    .replace(/defaultLocale:\s*'en'/, `defaultLocale: ${jsString(ctx.defaultLocale)}`)
+    .replace(/locales:\s*\['en'\]/, `locales: [${allLocales.map((l) => jsString(l)).join(', ')}]`);
 
   // Rewrite the locale-keyed name + organization to use the chosen siteName,
   // for the default locale.
   const namePattern = new RegExp(`(${ctx.defaultLocale}:\\s*)'astro-ignite'`, 'g');
-  content = content.replace(namePattern, `$1${JSON.stringify(ctx.siteName)}`);
+  content = content.replace(namePattern, `$1${jsString(ctx.siteName)}`);
 
   // For non-default locales, replace 'astro-ignite' literals as well.
   // (The template ships en + es; both have `'astro-ignite'` baked in.)
-  content = content.replace(/'astro-ignite'/g, JSON.stringify(ctx.siteName));
+  content = content.replace(/'astro-ignite'/g, jsString(ctx.siteName));
 
   await fs.writeFile(filePath, content, 'utf8');
 }
@@ -226,6 +225,20 @@ async function rewritePackageJson(targetDir: string, ctx: ScaffoldContext): Prom
   }
 
   await fs.writeFile(filePath, JSON.stringify(pkg, null, 2) + '\n', 'utf8');
+}
+
+/**
+ * Render a string as a JS string literal matching Prettier's default with
+ * `singleQuote: true`: prefer single quotes, switch to double only when that
+ * yields fewer escapes. Keeps the values written into `src/config/site.ts`
+ * clean under the scaffolded template's own `format:check`.
+ */
+function jsString(value: string): string {
+  const singles = (value.match(/'/g) ?? []).length;
+  const doubles = (value.match(/"/g) ?? []).length;
+  const quote = singles > doubles ? '"' : "'";
+  const escaped = value.replace(/\\/g, '\\\\').replace(new RegExp(quote, 'g'), `\\${quote}`);
+  return `${quote}${escaped}${quote}`;
 }
 
 async function fileExists(p: string): Promise<boolean> {

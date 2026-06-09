@@ -121,11 +121,13 @@ describe('scaffoldProject', () => {
     await scaffoldProject(ctx);
 
     const siteTs = await fs.readFile(path.join(target, 'src/config/site.ts'), 'utf8');
-    expect(siteTs).toMatch(/url:\s*"https:\/\/acme\.example"/);
-    expect(siteTs).toMatch(/defaultLocale:\s*"es"/);
-    expect(siteTs).toMatch(/locales:\s*\["es",\s*"en",\s*"fr"\]/);
+    // Values are emitted as single-quoted JS literals (Prettier `singleQuote`),
+    // so the rewritten file stays clean under the template's own format:check.
+    expect(siteTs).toMatch(/url:\s*'https:\/\/acme\.example'/);
+    expect(siteTs).toMatch(/defaultLocale:\s*'es'/);
+    expect(siteTs).toMatch(/locales:\s*\['es',\s*'en',\s*'fr'\]/);
     // site name replacement (was 'astro-ignite' literal in template)
-    expect(siteTs).toContain('"Acme Co."');
+    expect(siteTs).toContain("'Acme Co.'");
     expect(siteTs).not.toContain("'astro-ignite'");
   });
 

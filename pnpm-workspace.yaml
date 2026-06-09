@@ -2,5 +2,6 @@ packages:
   - 'packages/astro-ignite'
   - 'packages/create-astro-ignite'
   - 'packages/design-fetch'
+  - 'packages/registry'
   - 'packages/templates/*'
   - 'apps/*'

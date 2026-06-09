@@ -109,8 +109,9 @@ Scaffolded output ships `.claude/skills/` so agents follow best practices.
 ### 5. Template tooling complete
 
 - [x] ESLint ships in both templates (a11y + better-tailwindcss plugins, `lint`/`lint:fix` scripts).
-- [ ] Formatting: ship prettier + `prettier-plugin-astro` config + `format` script in scaffolded output (currently missing).
-- [ ] Verify a fresh scaffold passes `lint` clean with zero warnings.
+- [x] Formatting: ship prettier + `prettier-plugin-astro` config + `format`/`format:check` scripts in scaffolded output. Both templates ship `.prettierrc.json` + `.prettierignore` (the ignore mirrors the monorepo's parser-tripping inline-`<script>` components); `apps/site` / `apps/docs` mirror the config.
+- [x] Verify a fresh scaffold passes `format:check` + `lint` clean with zero warnings (wired into `pnpm scaffold:test --full`; the CLI now emits single-quoted `site.ts` values so the rewrite stays Prettier-clean).
+- [x] Closed the registry verification blind spot: `packages/registry` is now a workspace package with `lint`/`typecheck` scripts, and the `better-tailwindcss` canonical-class-order rules run on the atom source for real.
 - **Door open** for one more tool if needed; test suite is explicitly 0.3.0, not now.
 
 ### 6. Stable release pipeline (LAUNCH REQUISITE)

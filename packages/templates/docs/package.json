@@ -12,7 +12,9 @@
     "check": "astro check",
     "typecheck": "astro check",
     "lint": "eslint src",
-    "lint:fix": "eslint src --fix"
+    "lint:fix": "eslint src --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,astro,md,mdx,json,yaml,yml}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,astro,md,mdx,json,yaml,yml}\""
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.6",
@@ -36,6 +38,8 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "globals": "^17.6.0",
     "pagefind": "^1.3.0",
+    "prettier": "^3.4.2",
+    "prettier-plugin-astro": "^0.14.1",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.59.4",
     "vite": "^7.3.3"

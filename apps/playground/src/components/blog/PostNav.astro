@@ -1,0 +1,56 @@
+---
+/**
+ * Previous/next (older/newer) post navigation for the foot of an article.
+ * Empty cells keep the present link anchored to its side of the grid.
+ */
+
+import type { CollectionEntry } from 'astro:content';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
+import Text from '@/components/ui/text.astro';
+import { useTranslations } from '@/i18n';
+import { siteConfig } from '@/config/site';
+import { postSlug } from '@/lib/blog';
+
+interface Props {
+  prev?: CollectionEntry<'blog'>;
+  next?: CollectionEntry<'blog'>;
+}
+
+const { prev, next } = Astro.props;
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
+
+const prevHref = prev ? getRelativeLocaleUrl(locale, `/blog/${postSlug(prev)}`) : undefined;
+const nextHref = next ? getRelativeLocaleUrl(locale, `/blog/${postSlug(next)}`) : undefined;
+
+const cellClass =
+  'group flex flex-col gap-1 rounded-xl border border-(--color-border) p-4 text-inherit no-underline transition-colors duration-150 ease-(--ease-out-soft) hover:border-(--color-primary)';
+---
+
+{
+  (prev || next) && (
+    <nav class="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2" aria-label={t('nav.adjacentPosts')}>
+      {prevHref ? (
+        <a href={prevHref} rel="prev" class={cellClass}>
+          <Text variant="eyebrow" tone="muted">
+            {t('blog.previousPost')}
+          </Text>
+          <Text variant="h4">{prev!.data.title}</Text>
+        </a>
+      ) : (
+        <span />
+      )}
+      {nextHref ? (
+        <a href={nextHref} rel="next" class={`${cellClass} sm:text-right`}>
+          <Text variant="eyebrow" tone="muted">
+            {t('blog.nextPost')}
+          </Text>
+          <Text variant="h4">{next!.data.title}</Text>
+        </a>
+      ) : (
+        <span />
+      )}
+    </nav>
+  )
+}

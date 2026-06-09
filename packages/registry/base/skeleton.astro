@@ -7,7 +7,7 @@ const { class: className, ...rest } = Astro.props;
 ---
 
 <div
-  class={cn('bg-surface-2 rounded-md animate-pulse motion-reduce:animate-none', className)}
+  class={cn('animate-pulse rounded-md bg-surface-2 motion-reduce:animate-none', className)}
   aria-hidden="true"
   {...rest}
 >

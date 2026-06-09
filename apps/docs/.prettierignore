@@ -1,0 +1,33 @@
+# Build output & generated files
+node_modules
+dist
+.astro
+.output
+.vercel
+.netlify
+.wrangler
+pagefind
+
+# Lockfiles
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+bun.lockb
+
+# Project guides — embedded TS/code fragments confuse prettier-plugin-astro
+README.md
+docs/
+
+# Markdown content collections keep their own authored style
+src/content/
+
+# Components/layouts with inline <script> blocks prettier-plugin-astro
+# can't reliably parse (mirrors the monorepo .prettierignore).
+src/components/common/Analytics.astro
+src/components/common/LocaleSwitcher.astro
+src/components/common/ThemeToggle.astro
+src/components/legal/CookieBanner.astro
+src/components/docs/SidebarNav.astro
+src/components/docs/OnThisPage.astro
+src/components/docs/CodeBlock.astro
+src/layouts/BaseLayout.astro
