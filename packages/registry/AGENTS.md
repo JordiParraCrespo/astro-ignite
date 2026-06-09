@@ -14,9 +14,19 @@ ships compositions. The starter template gets atoms copied into
 - **Specs:**
 - `openspec/specs/registry-atoms/spec.md`
 - `openspec/specs/registry-blocks/spec.md`
-- **Manifest:** `registry.json` — shadcn-style. Each item has `name`,
-  `type`, `files[]`, and `registryDependencies[]`. The graph resolves
-  transitively.
+- **Manifest:** `registry.json` — conforms to the [shadcn registry
+  schema](https://ui.shadcn.com/docs/registry). Each item has `name`,
+  `type`, `title`, `description`, `files[]` (each file carries a `type`),
+  and `registryDependencies[]`. The graph resolves transitively;
+  internal deps stay bare here (`"cn"`) and are namespaced at emit time.
+- **Build emission:** `scripts/build-registry.mjs` resolves every item
+  into a shadcn `registry-item` JSON (file source inlined as `content`,
+  internal deps rewritten to `@astro-ignite/<name>`). `apps/site` runs it
+  at `pre(dev|build)` (`--out public/r`) so the payloads are hosted at
+  `https://astroignite.dev/r/<name>.json` and installable via
+  `npx shadcn@latest add @astro-ignite/<name>`. See `README.md`.
+  `build-registry.test.mjs` (run by `pnpm test`) asserts every manifest
+  item has a corresponding schema-shaped payload.
 - **Helpers:** `lib/cn.ts` (class merge), `lib/toast.ts` (window event
   bus consumed by `<Toaster />`).
 

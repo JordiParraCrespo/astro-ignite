@@ -2,8 +2,15 @@
   "name": "@astro-ignite/registry",
   "version": "0.1.0",
   "private": true,
-  "description": "Source registry for astro-ignite base components and blocks. Consumed by create-astro-ignite at scaffold/add time.",
+  "description": "Source registry for astro-ignite base components. Pre-installed in the templates and shadcn-consumable via the @astro-ignite namespace.",
   "type": "module",
+  "scripts": {
+    "build:registry": "node ./scripts/build-registry.mjs",
+    "test": "vitest run",
+    "lint": "eslint base lib",
+    "lint:fix": "eslint base lib --fix",
+    "typecheck": "tsc --noEmit"
+  },
   "files": [
     "base",
     "blocks",
@@ -12,11 +19,6 @@
   ],
   "exports": {
     "./registry.json": "./registry.json"
-  },
-  "scripts": {
-    "lint": "eslint base lib",
-    "lint:fix": "eslint base lib --fix",
-    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
@@ -27,6 +29,7 @@
     "globals": "^17.6.0",
     "tailwindcss": "^4.3.0",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.59.4"
+    "typescript-eslint": "^8.59.4",
+    "vitest": "^4.1.7"
   }
 }
