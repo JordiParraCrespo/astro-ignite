@@ -1,0 +1,32 @@
+---
+import { cn } from '@/lib/cn';
+import type { HTMLAttributes } from 'astro/types';
+
+export type Props = HTMLAttributes<'input'> & {
+  name: string;
+  value: string;
+  class?: string;
+};
+const { name, value, class: className, ...rest } = Astro.props;
+---
+
+<label
+  class="flex items-center gap-2 text-sm leading-none text-fg cursor-pointer select-none has-[:disabled]:opacity-50 has-[:disabled]:cursor-not-allowed"
+>
+  <span class="relative inline-grid size-4 shrink-0 place-items-center">
+    <input
+      type="radio"
+      name={name}
+      value={value}
+      class={cn(
+        'peer col-start-1 row-start-1 appearance-none size-4 m-0 rounded-full bg-transparent border border-border cursor-pointer transition-[border-color,box-shadow] duration-150 checked:border-primary focus-visible:outline-none focus-visible:border-ring focus-visible:[box-shadow:0_0_0_1px_var(--color-ring)] disabled:cursor-not-allowed aria-invalid:border-danger',
+        className
+      )}
+      {...rest}
+    />
+    <span
+      class="col-start-1 row-start-1 size-2 rounded-full bg-primary pointer-events-none opacity-0 transition-opacity duration-150 peer-checked:opacity-100"
+    ></span>
+  </span>
+  <slot />
+</label>

@@ -116,6 +116,12 @@
   "contact": {
     "name": "Nombre",
     "email": "Correo electrónico",
+    "subject": "Asunto",
+    "subjects": {
+      "general": "Consulta general",
+      "support": "Soporte",
+      "feedback": "Comentarios"
+    },
     "message": "Mensaje",
     "send": "Enviar mensaje",
     "sending": "Enviando…",
