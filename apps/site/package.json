@@ -4,7 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "registry:build": "node ../../packages/registry/scripts/build-registry.mjs --out public/r",
+    "predev": "pnpm run registry:build",
     "dev": "astro dev",
+    "prebuild": "pnpm run registry:build",
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",

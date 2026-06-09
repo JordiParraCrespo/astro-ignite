@@ -1,61 +1,106 @@
 {
-  "$schema": "https://astroignite.dev/schema/registry.json",
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "astro-ignite",
   "homepage": "https://astroignite.dev",
   "items": [
     {
       "name": "cn",
       "type": "registry:lib",
-      "files": [{ "path": "lib/cn.ts", "target": "src/lib/cn.ts" }]
+      "title": "cn",
+      "description": "Tailwind-aware className merge helper used by every atom.",
+      "files": [{ "path": "lib/cn.ts", "type": "registry:lib", "target": "src/lib/cn.ts" }]
     },
     {
       "name": "button",
       "type": "registry:ui",
+      "title": "Button",
+      "description": "Polymorphic button/anchor with variants and sizes.",
       "registryDependencies": ["cn"],
-      "files": [{ "path": "base/button.astro", "target": "src/components/ui/button.astro" }]
+      "files": [
+        {
+          "path": "base/button.astro",
+          "type": "registry:ui",
+          "target": "src/components/ui/button.astro"
+        }
+      ]
     },
     {
       "name": "link",
       "type": "registry:ui",
+      "title": "Link",
+      "description": "Styled anchor with underline affordances.",
       "registryDependencies": ["cn"],
-      "files": [{ "path": "base/link.astro", "target": "src/components/ui/link.astro" }]
+      "files": [
+        {
+          "path": "base/link.astro",
+          "type": "registry:ui",
+          "target": "src/components/ui/link.astro"
+        }
+      ]
     },
     {
       "name": "text",
       "type": "registry:ui",
+      "title": "Text",
+      "description": "Typographic primitive with heading, body, lead and small variants.",
       "registryDependencies": ["cn"],
-      "files": [{ "path": "base/text.astro", "target": "src/components/ui/text.astro" }]
+      "files": [
+        {
+          "path": "base/text.astro",
+          "type": "registry:ui",
+          "target": "src/components/ui/text.astro"
+        }
+      ]
     },
     {
       "name": "badge",
       "type": "registry:ui",
+      "title": "Badge",
+      "description": "Compact status or label pill.",
       "registryDependencies": ["cn"],
-      "files": [{ "path": "base/badge.astro", "target": "src/components/ui/badge.astro" }]
+      "files": [
+        {
+          "path": "base/badge.astro",
+          "type": "registry:ui",
+          "target": "src/components/ui/badge.astro"
+        }
+      ]
     },
     {
       "name": "card",
       "type": "registry:ui",
+      "title": "Card",
+      "description": "Composable card: header, title, description, content and footer.",
       "registryDependencies": ["cn"],
       "files": [
-        { "path": "base/card/card.astro", "target": "src/components/ui/card/card.astro" },
+        {
+          "path": "base/card/card.astro",
+          "type": "registry:ui",
+          "target": "src/components/ui/card/card.astro"
+        },
         {
           "path": "base/card/card-header.astro",
+          "type": "registry:ui",
           "target": "src/components/ui/card/card-header.astro"
         },
         {
           "path": "base/card/card-title.astro",
+          "type": "registry:ui",
           "target": "src/components/ui/card/card-title.astro"
         },
         {
           "path": "base/card/card-description.astro",
+          "type": "registry:ui",
           "target": "src/components/ui/card/card-description.astro"
         },
         {
           "path": "base/card/card-content.astro",
+          "type": "registry:ui",
           "target": "src/components/ui/card/card-content.astro"
         },
         {
           "path": "base/card/card-footer.astro",
+          "type": "registry:ui",
           "target": "src/components/ui/card/card-footer.astro"
         }
       ]
@@ -63,38 +108,74 @@
     {
       "name": "input",
       "type": "registry:ui",
+      "title": "Input",
+      "description": "Token-styled text input.",
       "registryDependencies": ["cn"],
-      "files": [{ "path": "base/input.astro", "target": "src/components/ui/input.astro" }]
+      "files": [
+        {
+          "path": "base/input.astro",
+          "type": "registry:ui",
+          "target": "src/components/ui/input.astro"
+        }
+      ]
     },
     {
       "name": "textarea",
       "type": "registry:ui",
+      "title": "Textarea",
+      "description": "Token-styled multiline text input.",
       "registryDependencies": ["cn"],
-      "files": [{ "path": "base/textarea.astro", "target": "src/components/ui/textarea.astro" }]
+      "files": [
+        {
+          "path": "base/textarea.astro",
+          "type": "registry:ui",
+          "target": "src/components/ui/textarea.astro"
+        }
+      ]
     },
     {
       "name": "select",
       "type": "registry:ui",
+      "title": "Select",
+      "description": "Native select with a token-driven chevron.",
       "registryDependencies": ["cn"],
-      "files": [{ "path": "base/select.astro", "target": "src/components/ui/select.astro" }]
+      "files": [
+        {
+          "path": "base/select.astro",
+          "type": "registry:ui",
+          "target": "src/components/ui/select.astro"
+        }
+      ]
     },
     {
       "name": "checkbox",
       "type": "registry:ui",
+      "title": "Checkbox",
+      "description": "Accessible checkbox with a CSS-only checkmark.",
       "registryDependencies": ["cn"],
-      "files": [{ "path": "base/checkbox.astro", "target": "src/components/ui/checkbox.astro" }]
+      "files": [
+        {
+          "path": "base/checkbox.astro",
+          "type": "registry:ui",
+          "target": "src/components/ui/checkbox.astro"
+        }
+      ]
     },
     {
       "name": "radio-group",
       "type": "registry:ui",
+      "title": "Radio Group",
+      "description": "Fieldset-grouped radio buttons with label-wrapped items.",
       "registryDependencies": ["cn"],
       "files": [
         {
           "path": "base/radio-group/radio-group.astro",
+          "type": "registry:ui",
           "target": "src/components/ui/radio-group/radio-group.astro"
         },
         {
           "path": "base/radio-group/radio-group-item.astro",
+          "type": "registry:ui",
           "target": "src/components/ui/radio-group/radio-group-item.astro"
         }
       ]
@@ -102,58 +183,122 @@
     {
       "name": "switch",
       "type": "registry:ui",
+      "title": "Switch",
+      "description": "Accessible on/off toggle (role=switch), CSS-only.",
       "registryDependencies": ["cn"],
-      "files": [{ "path": "base/switch.astro", "target": "src/components/ui/switch.astro" }]
+      "files": [
+        {
+          "path": "base/switch.astro",
+          "type": "registry:ui",
+          "target": "src/components/ui/switch.astro"
+        }
+      ]
     },
     {
       "name": "label",
       "type": "registry:ui",
+      "title": "Label",
+      "description": "Form label tied to a control.",
       "registryDependencies": ["cn"],
-      "files": [{ "path": "base/label.astro", "target": "src/components/ui/label.astro" }]
+      "files": [
+        {
+          "path": "base/label.astro",
+          "type": "registry:ui",
+          "target": "src/components/ui/label.astro"
+        }
+      ]
     },
     {
       "name": "separator",
       "type": "registry:ui",
+      "title": "Separator",
+      "description": "Horizontal or vertical divider.",
       "registryDependencies": ["cn"],
-      "files": [{ "path": "base/separator.astro", "target": "src/components/ui/separator.astro" }]
+      "files": [
+        {
+          "path": "base/separator.astro",
+          "type": "registry:ui",
+          "target": "src/components/ui/separator.astro"
+        }
+      ]
     },
     {
       "name": "alert",
       "type": "registry:ui",
+      "title": "Alert",
+      "description": "Inline callout for status messages.",
       "registryDependencies": ["cn"],
-      "files": [{ "path": "base/alert.astro", "target": "src/components/ui/alert.astro" }]
+      "files": [
+        {
+          "path": "base/alert.astro",
+          "type": "registry:ui",
+          "target": "src/components/ui/alert.astro"
+        }
+      ]
     },
     {
       "name": "avatar",
       "type": "registry:ui",
+      "title": "Avatar",
+      "description": "User image with text fallback.",
       "registryDependencies": ["cn"],
-      "files": [{ "path": "base/avatar.astro", "target": "src/components/ui/avatar.astro" }]
+      "files": [
+        {
+          "path": "base/avatar.astro",
+          "type": "registry:ui",
+          "target": "src/components/ui/avatar.astro"
+        }
+      ]
     },
     {
       "name": "skeleton",
       "type": "registry:ui",
+      "title": "Skeleton",
+      "description": "Loading placeholder shimmer.",
       "registryDependencies": ["cn"],
-      "files": [{ "path": "base/skeleton.astro", "target": "src/components/ui/skeleton.astro" }]
+      "files": [
+        {
+          "path": "base/skeleton.astro",
+          "type": "registry:ui",
+          "target": "src/components/ui/skeleton.astro"
+        }
+      ]
     },
     {
       "name": "kbd",
       "type": "registry:ui",
+      "title": "Kbd",
+      "description": "Keyboard key hint.",
       "registryDependencies": ["cn"],
-      "files": [{ "path": "base/kbd.astro", "target": "src/components/ui/kbd.astro" }]
+      "files": [
+        { "path": "base/kbd.astro", "type": "registry:ui", "target": "src/components/ui/kbd.astro" }
+      ]
     },
     {
       "name": "tabs",
       "type": "registry:ui",
+      "title": "Tabs",
+      "description": "Tabbed panels via a vanilla custom element.",
       "registryDependencies": ["cn"],
       "files": [
-        { "path": "base/tabs/tabs.astro", "target": "src/components/ui/tabs/tabs.astro" },
-        { "path": "base/tabs/tabs-list.astro", "target": "src/components/ui/tabs/tabs-list.astro" },
+        {
+          "path": "base/tabs/tabs.astro",
+          "type": "registry:ui",
+          "target": "src/components/ui/tabs/tabs.astro"
+        },
+        {
+          "path": "base/tabs/tabs-list.astro",
+          "type": "registry:ui",
+          "target": "src/components/ui/tabs/tabs-list.astro"
+        },
         {
           "path": "base/tabs/tabs-trigger.astro",
+          "type": "registry:ui",
           "target": "src/components/ui/tabs/tabs-trigger.astro"
         },
         {
           "path": "base/tabs/tabs-content.astro",
+          "type": "registry:ui",
           "target": "src/components/ui/tabs/tabs-content.astro"
         }
       ]
@@ -161,14 +306,18 @@
     {
       "name": "accordion",
       "type": "registry:ui",
+      "title": "Accordion",
+      "description": "Collapsible sections built on the native <details> element.",
       "registryDependencies": ["cn"],
       "files": [
         {
           "path": "base/accordion/accordion.astro",
+          "type": "registry:ui",
           "target": "src/components/ui/accordion/accordion.astro"
         },
         {
           "path": "base/accordion/accordion-item.astro",
+          "type": "registry:ui",
           "target": "src/components/ui/accordion/accordion-item.astro"
         }
       ]
@@ -176,15 +325,23 @@
     {
       "name": "dialog",
       "type": "registry:ui",
+      "title": "Dialog",
+      "description": "Modal built on the native <dialog> element.",
       "registryDependencies": ["cn"],
       "files": [
-        { "path": "base/dialog/dialog.astro", "target": "src/components/ui/dialog/dialog.astro" },
+        {
+          "path": "base/dialog/dialog.astro",
+          "type": "registry:ui",
+          "target": "src/components/ui/dialog/dialog.astro"
+        },
         {
           "path": "base/dialog/dialog-title.astro",
+          "type": "registry:ui",
           "target": "src/components/ui/dialog/dialog-title.astro"
         },
         {
           "path": "base/dialog/dialog-description.astro",
+          "type": "registry:ui",
           "target": "src/components/ui/dialog/dialog-description.astro"
         }
       ]
@@ -192,14 +349,18 @@
     {
       "name": "dropdown-menu",
       "type": "registry:ui",
+      "title": "Dropdown Menu",
+      "description": "Menu built on the native popover API.",
       "registryDependencies": ["cn"],
       "files": [
         {
           "path": "base/dropdown-menu/dropdown-menu.astro",
+          "type": "registry:ui",
           "target": "src/components/ui/dropdown-menu/dropdown-menu.astro"
         },
         {
           "path": "base/dropdown-menu/dropdown-menu-item.astro",
+          "type": "registry:ui",
           "target": "src/components/ui/dropdown-menu/dropdown-menu-item.astro"
         }
       ]
@@ -207,16 +368,30 @@
     {
       "name": "tooltip",
       "type": "registry:ui",
+      "title": "Tooltip",
+      "description": "CSS-only hover and focus tooltip.",
       "registryDependencies": ["cn"],
-      "files": [{ "path": "base/tooltip.astro", "target": "src/components/ui/tooltip.astro" }]
+      "files": [
+        {
+          "path": "base/tooltip.astro",
+          "type": "registry:ui",
+          "target": "src/components/ui/tooltip.astro"
+        }
+      ]
     },
     {
       "name": "toast",
       "type": "registry:ui",
+      "title": "Toast",
+      "description": "Toaster custom element plus a toast() window-event helper.",
       "registryDependencies": ["cn"],
       "files": [
-        { "path": "base/toaster.astro", "target": "src/components/ui/toaster.astro" },
-        { "path": "lib/toast.ts", "target": "src/lib/toast.ts" }
+        {
+          "path": "base/toaster.astro",
+          "type": "registry:ui",
+          "target": "src/components/ui/toaster.astro"
+        },
+        { "path": "lib/toast.ts", "type": "registry:lib", "target": "src/lib/toast.ts" }
       ]
     }
   ]

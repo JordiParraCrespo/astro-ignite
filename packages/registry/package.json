@@ -2,8 +2,12 @@
   "name": "@astro-ignite/registry",
   "version": "0.1.0",
   "private": true,
-  "description": "Source registry for astro-ignite base components and blocks. Consumed by create-astro-ignite at scaffold/add time.",
+  "description": "Source registry for astro-ignite base components. Pre-installed in the templates and shadcn-consumable via the @astro-ignite namespace.",
   "type": "module",
+  "scripts": {
+    "build:registry": "node ./scripts/build-registry.mjs",
+    "test": "vitest run"
+  },
   "files": [
     "base",
     "blocks",
@@ -12,5 +16,8 @@
   ],
   "exports": {
     "./registry.json": "./registry.json"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.7"
   }
 }

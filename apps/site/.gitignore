@@ -4,6 +4,9 @@ dist/
 .vercel/
 .netlify/
 
+# generated shadcn registry payloads (emitted by `registry:build` at pre(dev|build))
+public/r/
+
 # astro
 .astro/
 

@@ -4,6 +4,9 @@ dist
 .astro
 .output
 .cache
+
+# Generated shadcn registry payloads (emitted by apps/site `registry:build`)
+apps/site/public/r/
 pnpm-lock.yaml
 package-lock.json
 yarn.lock
