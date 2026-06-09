@@ -248,8 +248,22 @@
     margin: 2rem 0 0.75rem;
     color: var(--color-fg);
   }
+  & :where(h4) {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.5;
+    margin: 1.75rem 0 0.5rem;
+    color: var(--color-fg);
+  }
   & :where(p) {
     margin: 0 0 1.25rem;
+  }
+  & :where(strong, b) {
+    font-weight: 600;
+    color: var(--color-fg);
+  }
+  & :where(em, i) {
+    font-style: italic;
   }
   & :where(a) {
     color: var(--color-primary);
@@ -274,6 +288,9 @@
     color: var(--color-fg-muted);
     font-style: italic;
   }
+  & :where(blockquote p) {
+    margin: 0;
+  }
   & :where(code) {
     background: var(--color-surface-2);
     padding: 0.125rem 0.375rem;
@@ -294,6 +311,13 @@
     padding: 0;
     border-radius: 0;
     font-size: inherit;
+  }
+  & :where(img) {
+    width: 100%;
+    height: auto;
+    margin: 1.5rem 0;
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-border);
   }
   & :where(hr) {
     border: 0;
