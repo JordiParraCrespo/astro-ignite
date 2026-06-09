@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 
-import Image from '@/components/image/Image.astro';
+import Text from '@/components/ui/text.astro';
 import { useTranslations } from '@/i18n';
 import { siteConfig } from '@/config/site';
 
@@ -18,58 +18,82 @@ const { projectCards } = Astro.props;
 
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const t = useTranslations(locale);
+
+const statusLabels = {
+  shipped: t('projects.status.shipped'),
+  'in-progress': t('projects.status.in-progress'),
+  archived: t('projects.status.archived'),
+} as const;
+
+// Token-resolved gradient covers, matching the blog cards — one per project,
+// chosen deterministically from its id so the same project always renders the
+// same variant.
+const COVER_VARIANTS = [
+  'bg-[radial-gradient(ellipse_80%_100%_at_30%_40%,var(--color-cover-accent),var(--color-bg))]',
+  'bg-[radial-gradient(circle_at_72%_28%,var(--color-cover-accent),var(--color-bg)_70%)]',
+  'bg-[linear-gradient(135deg,var(--color-cover-accent),var(--color-bg)_72%)]',
+  'bg-[conic-gradient(from_210deg_at_35%_40%,var(--color-cover-accent),var(--color-bg),var(--color-cover-accent))]',
+];
 ---
 
-<section class="mx-auto max-w-[80rem] px-5 pt-12 pb-16">
+<section class="relative isolate mx-auto max-w-[64rem] px-5 pt-12 pb-16">
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[26rem] bg-[radial-gradient(ellipse_60%_100%_at_50%_0%,var(--color-cover-accent),transparent_70%)]"
+  >
+  </div>
   <header class="mb-10 text-center">
-    <h1 class="m-0 mb-3 text-[clamp(2rem,5vw,2.75rem)] leading-[1.1] font-bold tracking-[-0.02em]">
-      {t('seo.projects.title')}
-    </h1>
-    <p class="m-0 mx-auto max-w-[40rem] text-lg text-(--color-fg-muted)">
-      {t('seo.projects.description')}
-    </p>
+    <Text variant="h1" class="mb-3">{t('seo.projects.title')}</Text>
+    <Text variant="lead" class="mx-auto max-w-[40rem]">{t('seo.projects.description')}</Text>
   </header>
 
   {
     projectCards.length === 0 ? (
-      <p class="py-12 text-center text-(--color-fg-muted)">{t('projects.noProjects')}</p>
+      <Text variant="lead" class="py-12 text-center">
+        {t('projects.noProjects')}
+      </Text>
     ) : (
       <ul class="m-0 grid list-none grid-cols-1 gap-6 p-0 md:grid-cols-2">
-        {projectCards.map(({ project, href }: ProjectCard) => (
-          <li>
-            <a
-              href={href}
-              class="block overflow-hidden rounded-xl border border-(--color-border) text-inherit no-underline transition-colors duration-150 ease-(--ease-out-soft) hover:border-(--color-primary) [&_img]:block [&_img]:aspect-[16/9] [&_img]:h-auto [&_img]:w-full [&_img]:object-cover [&_picture]:block [&_picture]:aspect-[16/9] [&_picture]:h-auto [&_picture]:w-full [&_picture]:object-cover"
-            >
-              <div>
-                <Image
-                  src={project.data.heroImage}
-                  alt={project.data.heroImageAlt}
-                  width={800}
-                  height={420}
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                />
-              </div>
-              <div class="p-5">
-                <h2 class="m-0 mb-2 text-xl leading-[1.3] font-semibold tracking-[-0.01em]">
-                  {project.data.title}
-                </h2>
-                <p class="m-0 mb-4 text-[0.9375rem] leading-[1.5] text-(--color-fg-muted)">
-                  {project.data.summary}
-                </p>
-                {project.data.techStack.length > 0 && (
-                  <ul class="m-0 flex list-none flex-wrap gap-1.5 p-0">
-                    {project.data.techStack.slice(0, 4).map((tech: string) => (
-                      <li class="rounded bg-(--color-surface-2) px-2 py-0.5 text-xs text-(--color-fg-muted)">
-                        {tech}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            </a>
-          </li>
-        ))}
+        {projectCards.map(({ project, href }: ProjectCard) => {
+          const variant =
+            [...project.id].reduce((sum, ch) => sum + ch.charCodeAt(0), 0) % COVER_VARIANTS.length;
+          return (
+            <li>
+              <a
+                href={href}
+                class="block overflow-hidden rounded-xl border border-(--color-border) text-inherit no-underline transition-colors duration-150 ease-(--ease-out-soft) hover:border-(--color-primary)"
+              >
+                <div
+                  class:list={[
+                    'relative aspect-[16/9] border-b border-(--color-border)',
+                    COVER_VARIANTS[variant],
+                  ]}
+                >
+                  <span class="absolute top-2.5 left-2.5 rounded-full border border-(--color-border-strong) bg-(--color-surface) px-2 py-0.5 font-mono text-[0.625rem] text-(--color-fg-muted)">
+                    {statusLabels[project.data.status as keyof typeof statusLabels]}
+                  </span>
+                </div>
+                <div class="p-5">
+                  <Text variant="h3" as="h2" class="mb-2">
+                    {project.data.title}
+                  </Text>
+                  <Text variant="body" tone="muted" class="mb-4">
+                    {project.data.summary}
+                  </Text>
+                  {project.data.techStack.length > 0 && (
+                    <ul class="m-0 flex list-none flex-wrap gap-1.5 p-0">
+                      {project.data.techStack.slice(0, 4).map((tech: string) => (
+                        <li class="rounded bg-(--color-surface-2) px-2 py-0.5 text-xs text-(--color-fg-muted)">
+                          {tech}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </a>
+            </li>
+          );
+        })}
       </ul>
     )
   }

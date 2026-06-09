@@ -7,7 +7,7 @@ const { class: className, ...rest } = Astro.props;
 ---
 
 <div
-  class={cn('bg-surface border border-border rounded-lg text-fg overflow-hidden', className)}
+  class={cn('overflow-hidden rounded-lg border border-border bg-surface text-fg', className)}
   {...rest}
 >
   <slot />

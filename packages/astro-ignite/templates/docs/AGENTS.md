@@ -13,7 +13,7 @@ The site ships with: docs content collection, full-text search, sidebar + TOC, l
 ## Stack snapshot
 
 - **Astro 6** — static output (no adapter; this template has no server-side Actions)
-- **Tailwind v4** — layered with scoped `<style>` blocks above the fold
+- **Tailwind v4** — single styling layer; component colors resolve through `--color-*` tokens via arbitrary-value utilities (`bg-[var(--color-fg)]`). `inlineStylesheets: 'always'` inlines the full stylesheet on first paint.
 - **Geist Sans + Geist Mono** — self-hosted via `astro:fonts`, zero CLS
 - **schema-dts** typed JSON-LD composed via `@graph`
 - **No client framework** — interactive primitives are Astro + vanilla JS / native HTML
@@ -23,7 +23,7 @@ The site ships with: docs content collection, full-text search, sidebar + TOC, l
 1. **i18n with parallel routes.** Default locale at `/`, non-default at `/[lang]/`. Docs entries live at `src/content/docs/{locale}/{slug}.mdx`. The route files `src/pages/[...slug].astro` and `src/pages/[lang]/[...slug].astro` filter by id prefix to emit the correct set. Default `siteConfig.locales` ships as `['en']` — parallel routes stay dormant until a second locale is added.
 2. **Internal links go through `getRelativeLocaleUrl(lang, path)`** — never hardcode `/getting-started`.
 3. **LocaleSwitcher in chrome** — hide nav items that have no localized entry.
-4. **Layered CSS.** Above-the-fold components use scoped `<style>` blocks. Below-the-fold uses Tailwind v4. Beasties extracts critical CSS at build time.
+4. **Tailwind-first styling, token-resolved.** Component colors / spacing / typography ship as Tailwind v4 utilities that resolve `--color-*` tokens (`bg-[var(--color-bg)]`, `text-[var(--color-fg-muted)]`). Scoped `<style>` blocks are reserved for what Tailwind cannot express — keyframe animations, view-transition selectors, runtime-dynamic CSS computed from component props, MDX prose targeting `<slot/>` content — and each such block carries a leading `<!-- tailwind-exception: <reason> -->` comment naming what Tailwind cannot express. `inlineStylesheets: 'always'` puts the full stylesheet in the HTML on first paint, so there is no separate critical-CSS extraction step.
 5. **Design tokens only.** Components reference `--color-bg`, `--color-fg`, `--color-primary`, `--color-border`, etc. — never raw zinc scale. Tri-state dark mode flips token values via a `.light` class.
 6. **JSON-LD composes via `@graph`.** Each page contributes its node.
 7. **No new runtime deps without justification.** The perf pitch is built on a small owned codebase.

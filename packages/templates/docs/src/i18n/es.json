@@ -35,6 +35,15 @@
     "label": "Idioma",
     "switch": "Cambiar idioma"
   },
+  "aiActions": {
+    "label": "Usar esta página con IA",
+    "copyPage": "Copiar página",
+    "copyMarkdown": "Copiar como Markdown",
+    "copied": "¡Copiado!",
+    "viewMarkdown": "Ver como Markdown",
+    "openChatgpt": "Abrir en ChatGPT",
+    "openClaude": "Abrir en Claude"
+  },
   "seo": {
     "404": {
       "title": "Página no encontrada",

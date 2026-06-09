@@ -35,10 +35,23 @@
     "label": "Language",
     "switch": "Switch language"
   },
+  "aiActions": {
+    "label": "Use this page with AI",
+    "copyPage": "Copy page",
+    "copyMarkdown": "Copy as Markdown",
+    "copied": "Copied!",
+    "viewMarkdown": "View as Markdown",
+    "openChatgpt": "Open in ChatGPT",
+    "openClaude": "Open in Claude"
+  },
   "seo": {
     "404": {
       "title": "Page not found",
       "description": "The page you were looking for doesn't exist."
+    },
+    "500": {
+      "title": "Something went wrong",
+      "description": "An unexpected error occurred on our end."
     },
     "home": {
       "title": "Home",
@@ -125,6 +138,11 @@
       "body": "The page you were looking for doesn't exist or has been moved.",
       "back": "Back to home",
       "search": "Search the docs"
+    },
+    "500": {
+      "heading": "Something went wrong",
+      "body": "An unexpected error occurred on our end. Please try again in a moment.",
+      "back": "Back to home"
     }
   },
   "sidebar": {

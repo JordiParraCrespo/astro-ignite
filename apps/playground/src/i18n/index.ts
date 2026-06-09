@@ -89,6 +89,21 @@ export function useTranslations(locale: Locale | undefined) {
 }
 
 /**
+ * Resolve a localized value to a single string for `locale`, falling back to
+ * the default locale. Accepts a plain string (already locale-agnostic — e.g. a
+ * string `defaultOgImage`) or a `Record<locale, string>` map, which is the
+ * shape `siteConfig` fields, OG images, and content `bio` use. Returns
+ * `undefined` only when neither `locale` nor the default has an entry.
+ */
+export function localize(
+  value: string | Record<string, string | undefined> | undefined,
+  locale: Locale
+): string | undefined {
+  if (value == null || typeof value === 'string') return value ?? undefined;
+  return value[locale] ?? value[siteConfig.defaultLocale];
+}
+
+/**
  * Best-effort path translation between locales.
  *
  * Astro's getRelativeLocaleUrl handles the locale prefix; this helper handles

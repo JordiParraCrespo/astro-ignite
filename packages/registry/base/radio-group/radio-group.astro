@@ -6,6 +6,6 @@ export type Props = HTMLAttributes<'fieldset'> & { class?: string };
 const { class: className, ...rest } = Astro.props;
 ---
 
-<fieldset class={cn('flex flex-col gap-2 m-0 p-0 min-w-0 border-0', className)} {...rest}>
+<fieldset class={cn('m-0 flex min-w-0 flex-col gap-2 border-0 p-0', className)} {...rest}>
   <slot />
 </fieldset>

@@ -22,8 +22,6 @@ const blog = defineCollection({
       datePublished: z.coerce.date(),
       dateModified: z.coerce.date().optional(),
       author: reference('authors'),
-      heroImage: image(),
-      heroImageAlt: z.string().min(1),
       ogImage: image().optional(),
       tags: z.array(z.string()).default([]),
       draft: z.boolean().default(false),
@@ -42,8 +40,6 @@ const projects = defineCollection({
       summary: z.string().min(1).max(280),
       datePublished: z.coerce.date(),
       dateUpdated: z.coerce.date().optional(),
-      heroImage: image(),
-      heroImageAlt: z.string().min(1),
       ogImage: image().optional(),
       techStack: z.array(z.string()).default([]),
       links: z

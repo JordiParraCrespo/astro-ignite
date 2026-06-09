@@ -1,49 +1,29 @@
 ---
-import { getCollection } from 'astro:content';
-import type { CollectionEntry } from 'astro:content';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import BlogIndexList from '@/components/blog/BlogIndexList.astro';
-import type { PostCard } from '@/components/blog/BlogIndexList.astro';
 import { useTranslations } from '@/i18n';
 import { siteConfig } from '@/config/site';
 import { breadcrumbListSchema, collectionPageSchema } from '@/lib/jsonld';
+import { getPostsForLocale, nonDefaultLocales, POSTS_PER_PAGE, type PageMeta } from '@/lib/blog';
 
 export async function getStaticPaths() {
-  return siteConfig.locales
-    .filter((l) => l !== siteConfig.defaultLocale)
-    .map((lang) => ({ params: { lang } }));
+  return nonDefaultLocales().map((lang) => ({ params: { lang } }));
 }
 
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const t = useTranslations(locale);
 
-const posts = (
-  await getCollection(
-    'blog',
-    (entry: CollectionEntry<'blog'>) => entry.id.startsWith(`${locale}/`) && !entry.data.draft
-  )
-).sort(
-  (a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) =>
-    +b.data.datePublished - +a.data.datePublished
-);
+const allPosts = await getPostsForLocale(locale);
+const totalPages = Math.max(1, Math.ceil(allPosts.length / POSTS_PER_PAGE));
+const posts = allPosts.slice(0, POSTS_PER_PAGE);
 
-const dateFmt = new Intl.DateTimeFormat(locale, {
-  year: 'numeric',
-  month: 'short',
-  day: 'numeric',
-});
-
-const postCards: PostCard[] = posts.map((post: CollectionEntry<'blog'>) => {
-  const slug = post.id.split('/').slice(1).join('/');
-  return {
-    post,
-    href: getRelativeLocaleUrl(locale, `/blog/${slug}`),
-    dateText: dateFmt.format(post.data.datePublished),
-    dateIso: post.data.datePublished.toISOString(),
-  };
-});
+const page: PageMeta = {
+  current: 1,
+  total: totalPages,
+  nextUrl: totalPages > 1 ? getRelativeLocaleUrl(locale, '/blog/page/2') : undefined,
+};
 
 const schemas = [
   breadcrumbListSchema([
@@ -60,5 +40,5 @@ const schemas = [
 ---
 
 <BaseLayout title={t('seo.blog.title')} description={t('seo.blog.description')} schemas={schemas}>
-  <BlogIndexList postCards={postCards} />
+  <BlogIndexList posts={posts} page={page} />
 </BaseLayout>

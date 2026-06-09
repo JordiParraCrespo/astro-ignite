@@ -6,4 +6,4 @@ export type Props = HTMLAttributes<'div'> & { class?: string };
 const { class: className, ...rest } = Astro.props;
 ---
 
-<div class={cn('pt-6 px-6 flex flex-col gap-1.5', className)} {...rest}><slot /></div>
+<div class={cn('flex flex-col gap-1.5 px-6 pt-6', className)} {...rest}><slot /></div>

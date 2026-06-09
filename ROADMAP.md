@@ -90,10 +90,10 @@ Two gaps that make the "shadcn-style CLI" claim aspirational rather than true.
 
 Today the docs site only answers "what is this?" — launch needs "how do I?".
 
-- [ ] Six guides (closed list): theming/tokens (the showpiece), adding content, adding a locale, deploying (incl. contact form on static hosts), contact-form email setup, using components.
-- [ ] Component reference: one page per registry item (23 UI items + cn — incl. the four new form atoms from Checkpoint 2b), each with live demo (`ComponentShowcase`), code example, props table, and "ships pre-installed; copy from the registry to use elsewhere". **No `add` command at launch** — wording must never imply one. Distill from the template `docs/` deep-dives where possible.
-- [ ] Accuracy pass on the 7 existing pages.
-- [ ] **AI-native docs surface** (the visible proof the docs are agent-first — all static, no backend): a per-page raw-Markdown route (`[...slug].md`), a `/llms-full.txt` full-content file alongside the existing `/llms.txt` index, and a contextual "**Copy as Markdown / View raw / Open in ChatGPT / Open in Claude**" menu in the doc header (deep-links carry the page URL as context). This is the launch-claim slice of the "build docs with AI agents" pitch; agentic Ask-AI search + MCP-from-docs stay on the ladder.
+- [x] Six guides (closed list): theming/tokens (the showpiece), adding content, adding a locale, deploying (incl. contact form on static hosts), contact-form email setup, using components.
+- [ ] Component reference: one page per registry item (23 UI items + cn — incl. the four new form atoms from Checkpoint 2b), each with live demo (`ComponentShowcase`), code example, props table, and "ships pre-installed; copy from the registry to use elsewhere". **No `add` command at launch** — wording must never imply one. Distill from the template `docs/` deep-dives where possible. _Deferred: waits for the 2b form atoms so it documents the final registry, not a stale one._
+- [x] Accuracy pass on the 7 existing pages.
+- [x] **AI-native docs surface** (the visible proof the docs are agent-first — all static, no backend): a per-page raw-Markdown route (`[...slug].md`), a `/llms-full.txt` full-content file alongside the existing `/llms.txt` index, and a contextual "**Copy as Markdown / View raw / Open in ChatGPT / Open in Claude**" menu in the doc header (deep-links carry the page URL as context). This is the launch-claim slice of the "build docs with AI agents" pitch; agentic Ask-AI search + MCP-from-docs stay on the ladder.
 - [ ] English first; Spanish translated once content freezes (ES at launch, written last).
 - **Done when:** the list above is checked. New page ideas go post-launch.
 
@@ -109,8 +109,9 @@ Scaffolded output ships `.claude/skills/` so agents follow best practices.
 ### 5. Template tooling complete
 
 - [x] ESLint ships in both templates (a11y + better-tailwindcss plugins, `lint`/`lint:fix` scripts).
-- [ ] Formatting: ship prettier + `prettier-plugin-astro` config + `format` script in scaffolded output (currently missing).
-- [ ] Verify a fresh scaffold passes `lint` clean with zero warnings.
+- [x] Formatting: ship prettier + `prettier-plugin-astro` config + `format`/`format:check` scripts in scaffolded output. Both templates ship `.prettierrc.json` + `.prettierignore` (the ignore mirrors the monorepo's parser-tripping inline-`<script>` components); `apps/site` / `apps/docs` mirror the config.
+- [x] Verify a fresh scaffold passes `format:check` + `lint` clean with zero warnings (wired into `pnpm scaffold:test --full`; the CLI now emits single-quoted `site.ts` values so the rewrite stays Prettier-clean).
+- [x] Closed the registry verification blind spot: `packages/registry` is now a workspace package with `lint`/`typecheck` scripts, and the `better-tailwindcss` canonical-class-order rules run on the atom source for real.
 - **Door open** for one more tool if needed; test suite is explicitly 0.3.0, not now.
 
 ### 6. Stable release pipeline (LAUNCH REQUISITE)

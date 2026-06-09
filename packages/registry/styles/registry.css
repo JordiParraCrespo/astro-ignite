@@ -1,0 +1,72 @@
+/* =============================================================================
+ * Tailwind v4 entry point for linting the registry atoms.
+ *
+ * This file is NOT shipped to consumers — the atoms are copied into a
+ * template's `src/components/ui/`, where the real `src/styles/global.css`
+ * supplies these tokens. It exists only so the `better-tailwindcss` ESLint
+ * rules can resolve the Tailwind context (the same `@theme` tokens the
+ * templates declare) and compute the canonical class order for `base/*`.
+ *
+ * Keep the `@theme` block in sync with the templates' `global.css` so the
+ * class order enforced here matches the order their copies must satisfy.
+ * ============================================================================= */
+
+@import 'tailwindcss';
+
+@theme {
+  /* Zinc scale — single source of truth, theme-invariant. */
+  --color-zinc-50: #fafafa;
+  --color-zinc-100: #f4f4f5;
+  --color-zinc-200: #e4e4e7;
+  --color-zinc-300: #d4d4d8;
+  --color-zinc-400: #a1a1aa;
+  --color-zinc-500: #71717a;
+  --color-zinc-600: #52525b;
+  --color-zinc-700: #3f3f46;
+  --color-zinc-800: #27272a;
+  --color-zinc-900: #18181b;
+  --color-zinc-950: #0a0a0a;
+
+  /* Functional tokens — DARK is the default in this design. */
+  --color-bg: var(--color-zinc-950);
+  --color-surface: var(--color-zinc-950);
+  --color-surface-2: var(--color-zinc-900);
+  --color-cover-accent: var(--color-zinc-900);
+  --color-fg: var(--color-zinc-50);
+  --color-fg-muted: var(--color-zinc-400);
+  --color-fg-subtle: var(--color-zinc-400);
+  --color-border: var(--color-zinc-800);
+  --color-border-strong: var(--color-zinc-700);
+  --color-primary: var(--color-zinc-50);
+  --color-primary-fg: var(--color-zinc-900);
+  --color-ring: var(--color-zinc-300);
+
+  /* Status (functional only — form validation, alerts) */
+  --color-success: oklch(70% 0.15 145);
+  --color-warning: oklch(78% 0.16 75);
+  --color-danger: oklch(70% 0.2 28);
+  --color-danger-fg: var(--color-zinc-50);
+  --color-success-fg: var(--color-zinc-950);
+  --color-warning-fg: var(--color-zinc-950);
+
+  /* Typography */
+  --font-display: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Radius — restrained shadcn defaults */
+  --radius-sm: 4px;
+  --radius: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+
+  /* Shadows — barely-there (dark default) */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.4);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.5), 0 1px 2px -1px rgb(0 0 0 / 0.4);
+
+  /* Containers */
+  --container-prose: 65ch;
+  --container-narrow: 42rem;
+
+  /* Motion */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}

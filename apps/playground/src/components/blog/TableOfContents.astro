@@ -1,0 +1,50 @@
+---
+/**
+ * In-page table of contents built from an article's headings. Astro injects
+ * matching `id`s onto Markdown/MDX headings, so each slug is a live anchor.
+ * Renders nothing unless there are at least two headings in range.
+ */
+
+import type { MarkdownHeading } from 'astro';
+
+import Text from '@/components/ui/text.astro';
+import { useTranslations } from '@/i18n';
+import { siteConfig } from '@/config/site';
+
+interface Props {
+  headings: MarkdownHeading[];
+  minDepth?: number;
+  maxDepth?: number;
+}
+
+const { headings, minDepth = 2, maxDepth = 3 } = Astro.props;
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
+
+const items = headings.filter((h) => h.depth >= minDepth && h.depth <= maxDepth);
+---
+
+{
+  items.length > 1 && (
+    <nav
+      class="mb-10 rounded-xl border border-(--color-border) bg-(--color-surface-2) p-5"
+      aria-label={t('blog.tableOfContents')}
+    >
+      <Text variant="eyebrow" tone="muted" class="mb-3">
+        {t('blog.tableOfContents')}
+      </Text>
+      <ul class="m-0 flex list-none flex-col gap-2 p-0">
+        {items.map((h) => (
+          <li class={h.depth > minDepth ? 'pl-4' : ''}>
+            <a
+              href={`#${h.slug}`}
+              class="text-sm text-(--color-fg-muted) no-underline hover:text-(--color-fg) hover:underline"
+            >
+              {h.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}
