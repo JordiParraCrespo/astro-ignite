@@ -24,6 +24,17 @@ Identify the triggering PR (number, head branch) and the linked issue number
 edit code, never merge, never submit a GitHub review (the human approves by
 merging).
 
+**Skip duplicate reviews.** Direct and implement PRs are reviewed by the routine
+that creates them — their opening body already carries a verdict. If the trigger
+action is `opened` and the PR body contains `APPROVED` or `CHANGES_REQUESTED`,
+stop and report "reviewed at creation — skipping"; review those PRs only on
+`synchronize`. Spec PRs open unreviewed, so always review their `opened` event.
+
+**Report skipped tiers explicitly.** If Chrome is unavailable in this
+environment, `pnpm perf:budget` records a skip — say
+`perf: skipped (no Chrome; Lighthouse CI is the authoritative gate)` in the
+comment rather than omitting the tier.
+
 ## `claude/spec/issue-<N>` — spec readiness check (no code yet)
 
 1. Find the change folder `openspec/changes/issue-<N>-*/` and read

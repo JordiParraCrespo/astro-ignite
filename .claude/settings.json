@@ -20,7 +20,7 @@
           {
             "type": "command",
             "command": "node ./.claude/hooks/post-edit-typecheck.mjs",
-            "timeout": 45000
+            "timeout": 45
           }
         ]
       }

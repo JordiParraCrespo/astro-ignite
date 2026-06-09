@@ -15,10 +15,14 @@ permissions:
 
 jobs:
   fire:
-    # Only when the issue carries a flow label.
+    # Fire only when a `flow:` label is what just happened — gate `labeled`
+    # events on the label that was added, not on the issue's label set, so the
+    # harness's own `aig:*` label writes don't re-fire the dispatch.
     if: >-
-      contains(github.event.issue.labels.*.name, 'flow:direct') ||
-      contains(github.event.issue.labels.*.name, 'flow:spec')
+      (github.event.action == 'labeled' && startsWith(github.event.label.name, 'flow:')) ||
+      (github.event.action == 'opened' &&
+        (contains(github.event.issue.labels.*.name, 'flow:direct') ||
+         contains(github.event.issue.labels.*.name, 'flow:spec')))
     runs-on: ubuntu-latest
     steps:
       - name: Fire the dispatch routine

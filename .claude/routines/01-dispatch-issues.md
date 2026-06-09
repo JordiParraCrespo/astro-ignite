@@ -10,12 +10,12 @@ what turns an issue into work.
 
 ## Labels (create these once on the repo)
 
-| Label         | Who sets it  | Meaning                                                    |
-| ------------- | ------------ | ---------------------------------------------------------- |
-| `flow:direct` | you          | Build the change straight from the issue, then review.     |
-| `flow:spec`   | you          | Spec-driven: draft spec → you review/edit → code → review. |
-| `aig:active`  | this routine | Currently being worked — prevents a second run picking it. |
-| `aig:blocked` | any agent    | Needs your input; quote the question on the issue.         |
+| Label         | Who sets it  | Meaning                                                                                                                     |
+| ------------- | ------------ | --------------------------------------------------------------------------------------------------------------------------- |
+| `flow:direct` | you          | Build the change straight from the issue, then review.                                                                      |
+| `flow:spec`   | you          | Spec-driven: draft spec → you review/edit → code → review.                                                                  |
+| `aig:active`  | this routine | Currently being worked — prevents a second run picking it. You remove it to allow a retry (e.g. after `CHANGES_REQUESTED`). |
+| `aig:blocked` | any agent    | Needs your input; quote the question on the issue. You remove it after answering to re-dispatch.                            |
 
 ## Conventions
 
@@ -32,7 +32,12 @@ the agent specs in `.claude/agents/` first. The SessionStart hook already ran
 1. **Pick the target issue.**
    - If the trigger text names an issue (e.g. `issue #N` or `#N`), use that one.
    - Otherwise list **open** issues that have a `flow:direct` or `flow:spec`
-     label and do **not** have `aig:active`, oldest first, and take the first.
+     label and have **neither** `aig:active` nor `aig:blocked`, oldest first, and
+     take the first.
+   - Either way, **skip** an issue carrying `aig:blocked` (waiting on the human)
+     or `aig:active` — even when the trigger names it. One exception: an
+     `aig:active` issue with **no open `claude/*/issue-<N>` PR** is a stale lock
+     from a run that died; remove `aig:active` and take it.
    - If there is none, stop and report "no labelled issues to dispatch".
 2. Read the issue title + body — that is the task. Add the **`aig:active`** label
    immediately so a concurrent run skips it.
@@ -40,14 +45,17 @@ the agent specs in `.claude/agents/` first. The SessionStart hook already ran
 
 ### `flow:direct` → direct build
 
-1. Create branch `claude/direct/issue-<N>`.
+1. Create branch `claude/direct/issue-<N>` — or, if it already exists (a
+   re-dispatch), check it out and continue on it; see **Re-dispatch** below.
 2. Launch the **`implementer`** subagent (Task tool): _"Build the change
    described in GitHub issue #<N> (title + body below). There is no openspec
    design for this direct task, so commit with `scripts/committer "<msg>"
 <paths>` (NO `--design`) — still never `git add .`. Write tests for the
    behaviour. Keep the change scoped to exactly what the issue asks; if it's
-   under-specified, write `aig:blocked` reasoning instead of guessing."_ Paste
-   the issue body.
+   under-specified, report `blocked` with the question instead of guessing."_
+   Paste the issue body.
+   - If it reports `blocked`, comment the question on issue #<N>, remove
+     `aig:active`, add `aig:blocked`, and stop — no PR.
 3. When it returns, launch the **`reviewer`** subagent for a general review (no
    spec, so no `S<n>`/`I<n>` traceability): run `pnpm typecheck && pnpm test`,
    and additionally `pnpm audit:invariants` + `pnpm perf:budget` **if** the diff
@@ -63,14 +71,17 @@ the agent specs in `.claude/agents/` first. The SessionStart hook already ran
 
 ### `flow:spec` → spec-driven
 
-1. Create branch `claude/spec/issue-<N>`. `NAME = issue-<N>-<kebab-title>`.
+1. Create branch `claude/spec/issue-<N>` — or, if it already exists (a
+   re-dispatch), check it out and continue on it; see **Re-dispatch** below.
+   `NAME = issue-<N>-<kebab-title>`.
 2. Launch the **`spec_author`** subagent: _"Treat GitHub issue #<N> (below) as
    the feature to spec — the issue body is the acceptance source, so skip the
    `feature_list.json` precondition. Write
    `openspec/changes/<NAME>/{proposal,design,tasks,specs/<capability>/spec.md}`
    and stop. Do not create APPROVED or runs/."_ Paste the issue body.
-3. If it returns `blocked`, commit the `BLOCKED.md`, add `aig:blocked` to the
-   issue with the question, push, open a `Spec (blocked): #<N>` PR, and stop.
+3. If it returns `blocked`, commit the `BLOCKED.md`, comment the question on the
+   issue, remove `aig:active`, add `aig:blocked`, push, open a
+   `Spec (blocked): #<N>` PR, and stop.
 4. Otherwise commit the change folder, push, and open a PR:
    - **Title:** `Spec: #<N> <title>`
    - **Body:** a one-paragraph proposal summary, the issue's acceptance as a
@@ -80,6 +91,17 @@ the agent specs in `.claude/agents/` first. The SessionStart hook already ran
      approval gate, not the ship).
 5. Stop. Report the PR URL.
 
+### Re-dispatch (retry / steer)
+
+An issue becomes dispatchable again when the human removes `aig:active` (after a
+`CHANGES_REQUESTED` review) or `aig:blocked` (after answering the question). If
+the flow's branch already exists, do **not** start over: check it out, collect
+the work list from the open PR's review comment plus any new issue comments, and
+pass that to the same subagent as the things to address. Push to the existing
+branch — the review routine re-runs on `synchronize`. If the new verdict is
+`APPROVED` and the PR is a draft, mark it ready for review and drop the
+`[changes requested]` title prefix.
+
 Process **one** issue per run (the schedule fires regularly). Hard rules: never
 create `APPROVED` here; never edit `openspec/feature_list.json`; always respect
-`aig:active`.
+`aig:active` and `aig:blocked`.

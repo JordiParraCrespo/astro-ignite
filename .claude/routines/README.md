@@ -73,8 +73,17 @@ Branch / PR conventions the routines rely on:
 4. **`flow:spec`:** read the `Spec: #N` PR, **edit `tasks.md` / the spec in the
    PR** to steer it, then **Merge** to approve → an `Implement: #N` PR appears
    with a three-tier review → **Merge** to ship.
-5. Stuck items get `aig:blocked` with a question on the issue — answer it and
-   re-dispatch.
+5. Stuck items get `aig:blocked` with a question on the issue (and `aig:active`
+   removed) — answer in an issue comment, **remove `aig:blocked`**, and the next
+   dispatch tick re-picks it (or tap **Run now**).
+6. **Failed review?** A `CHANGES_REQUESTED` verdict opens the PR as a draft and
+   stops. To retry: comment your guidance on the issue, **remove `aig:active`**,
+   and re-dispatch — the routine continues on the existing branch, addresses the
+   review blockers, and pushes (which re-triggers the review). Removing a label
+   is the universal "go again" signal.
+
+If a dispatch run dies mid-flight, the lock self-heals: an `aig:active` issue
+with no open `claude/*/issue-<N>` PR is treated as stale and re-taken.
 
 Steer any run live by opening its session in the Claude mobile app.
 
@@ -90,9 +99,10 @@ schedule tick. It is a safe no-op until you wire two repo secrets:
    `CLAUDE_ROUTINE_URL` (the endpoint) and `CLAUDE_ROUTINE_TOKEN` (the token).
 
 The workflow only POSTs the issue **number** (the routine fetches the body
-itself), so no untrusted issue text is interpolated into the request. Both the
-Action and the scheduled routine respect `aig:active`, so they won't double-pick
-an issue.
+itself), so no untrusted issue text is interpolated into the request. It fires
+only when a `flow:` label is the one being added — the harness's own `aig:*`
+label writes don't re-fire it — and both the Action and the scheduled routine
+respect `aig:active`/`aig:blocked`, so an issue can't be double-picked.
 
 ## Why these constraints
 
