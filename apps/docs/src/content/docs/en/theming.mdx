@@ -80,8 +80,11 @@ The third state is "force dark on a light page" — a `.dark` class wins over
 
 `ThemeToggle.astro` flips the `.light` class and persists the choice to
 `localStorage`; an anti-flash inline script in `BaseLayout` applies the stored
-preference before first paint, so there's no flicker. `siteConfig.defaultTheme`
-sets the first-visit default (`dark` for the starter, `light` for docs).
+preference before first paint, so there's no flicker. The first-visit default
+differs by template: the **docs** template exposes it as
+`siteConfig.defaultTheme` (`light` | `dark` | `system`, shipping `light`),
+while the **starter** has no config knob — its anti-flash script falls back to
+the system preference when nothing is stored.
 
 ## Walkthrough: a real reskin
 
@@ -156,5 +159,5 @@ touching a single component.
 - Keep the `.light` block in lock-step with `@theme`: every functional token
   you add needs a light value.
 
-This is also the surface the `customize-theme` skill drives — point an agent at
-"make the site violet" and it edits these same tokens.
+This is also the surface a planned `customize-theme` skill will drive — point
+an agent at "make the site violet" and it edits these same tokens.

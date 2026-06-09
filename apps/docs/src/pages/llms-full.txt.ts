@@ -40,7 +40,7 @@ export const GET: APIRoute = async ({ site }) => {
     '',
     'The full text of every documentation page, concatenated for LLMs and AI ' +
       `agents. Link index: ${origin}/llms.txt. Per-page Markdown: append .md to ` +
-      'any page URL.',
+      'any page URL (home pages map to index.md: / → /index.md).',
     '',
   ].join('\n');
 

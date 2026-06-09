@@ -41,40 +41,63 @@ node ./dist/server/entry.mjs`}</CodeBlock>
 Put it behind a reverse proxy (Caddy, nginx) or in a container. Set the email
 env vars (see [Contact form & email](/contact-form)) in the runtime environment.
 
-## Cloudflare Pages / Netlify / Vercel
+## Netlify / Vercel
 
 To deploy the starter (with its server action) to one of these, swap the
 adapter. The change is two lines plus the dependency:
 
 <CodeBlock filename="astro.config.mjs">{`import { defineConfig } from 'astro/config';
-import cloudflare from '@astrojs/cloudflare'; // or @astrojs/netlify, @astrojs/vercel
+import netlify from '@astrojs/netlify'; // or @astrojs/vercel
 
 export default defineConfig({
   output: 'static',
-  adapter: cloudflare(),
+  adapter: netlify(),
   // …the rest is unchanged
 });`}</CodeBlock>
 
-<CodeBlock filename="terminal" language="bash">{`pnpm add @astrojs/cloudflare   # or @astrojs/netlify / @astrojs/vercel`}</CodeBlock>
+<CodeBlock filename="terminal" language="bash">{`pnpm add @astrojs/netlify   # or @astrojs/vercel`}</CodeBlock>
 
-Each host's adapter turns the action endpoint into a serverless / edge function
-at build time. The static pages still deploy to the CDN; the function handles
-the form POST.
+The adapter turns the action endpoint into a serverless / edge function at
+build time. The static pages still deploy to the CDN; the function handles the
+form POST. The same applies to **Cloudflare Workers** with
+`@astrojs/cloudflare` — but not to Cloudflare Pages; see below.
 
 <Callout variant="warn" title="One adapter at a time">
   Keep exactly one adapter in `astro.config.mjs`. Removing it entirely breaks the
   contact form (the action has nowhere to run); see the fallback below.
 </Callout>
 
+## Cloudflare Pages
+
+Don't reach for `@astrojs/cloudflare` here — the current adapter emits a
+Worker build that Pages can't run. The pattern that works (and the one
+astro-ignite's own marketing site ships with) is a **fully static build plus a
+hand-written Pages Function**:
+
+1. Keep `output: 'static'` and **no adapter**. `pnpm build` emits plain
+   `dist/`; Pages serves it from the CDN.
+2. Write the form handler as a Pages Function at `functions/api/contact.ts` —
+   an `onRequestPost` that validates the fields, checks the honeypot, and
+   talks to your email provider's HTTP API, reading secrets from the
+   function's `env` binding (set them as encrypted variables on the Pages
+   project).
+3. Repoint the contact `<form>` at `/api/contact` and drop the Astro Action.
+   Cloudflare deploys the `functions/` directory alongside `dist/`
+   automatically.
+
+For a complete, copyable handler, see
+[`apps/site/functions/api/contact.ts`](https://github.com/JordiParraCrespo/astro-ignite/blob/main/apps/site/functions/api/contact.ts)
+in the astro-ignite repo — that file is exactly this pattern in production.
+
 ## The contact form on a purely static host
 
 If you want a static-only deploy (no functions at all), the server action can't
 run. Two clean options:
 
-1. **Use the host's function layer directly.** On Cloudflare Pages, the adapter
-   above compiles the action into a **Pages Function** — no extra work. Netlify
-   and Vercel do the same with their adapters. This is the recommended path: keep
-   the form server-side, owned by your code.
+1. **Use the host's function layer directly.** On Netlify and Vercel the
+   adapter compiles the action into a serverless function — no extra work. On
+   Cloudflare Pages, write the small Pages Function by hand (see above). Either
+   way the form stays server-side, owned by your code.
 2. **Hand the form off.** Repoint the `<form>` at a third-party form endpoint
    (Formspree, Web3Forms, your own webhook) and drop the action. You lose the
    typed Zod validation and the honeypot, but the deploy is pure static.

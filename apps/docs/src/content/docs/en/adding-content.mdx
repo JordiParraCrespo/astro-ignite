@@ -37,11 +37,17 @@ The `blog` collection loads `*/*.mdx` — i.e. `<locale>/<slug>.mdx`.
     datePublished: 2026-06-09
     author: jordi
     tags: [astro, dx]
-    heroImage: ./_assets/hero-shipping.png
+    ogImage: ./_assets/og-shipping.png
     ---
 
-    Your MDX body here. Drop in any component from `src/components/mdx/`.
+    Your MDX body here. Plain Markdown is styled by the layout's prose
+    utility; import any component (e.g. from src/components/ui/) to go
+    beyond it.
     ```
+
+    Note: `ogImage` is the post's **social preview** image — post cards and
+    detail pages render a token-resolved gradient cover, not a hero image.
+    Omit it and OG falls back to the site-wide default banner.
 
   </Step>
   <Step title="See it">
