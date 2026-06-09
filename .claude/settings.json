@@ -8,7 +8,7 @@
           {
             "type": "command",
             "command": "\"$CLAUDE_PROJECT_DIR\"/scripts/cloud/bootstrap.sh",
-            "timeout": 300000
+            "timeout": 300
           }
         ]
       }
