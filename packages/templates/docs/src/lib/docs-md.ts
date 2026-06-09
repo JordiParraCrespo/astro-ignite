@@ -39,11 +39,37 @@ export function mdSlugParam(id: string): string {
   return mdHref(id).replace(/^\//, '').replace(/\.md$/, '');
 }
 
-/** Strip MDX `import`/`export` lines so the body reads as plain Markdown. */
+const IMPORT_LINE = /^\s*import\s+[^\n]*?from\s+['"][^'"]+['"];?\s*$/;
+const EXPORT_LINE = /^\s*export\s+(?:const|let|var|default|function)/;
+
+/**
+ * Strip MDX `import`/`export` lines so the body reads as plain Markdown.
+ * Code examples pass through untouched: the scan tracks ``` / ~~~ fenced
+ * blocks and multi-line {`…`} template literals (the CodeBlock pattern) and
+ * only strips lines outside both.
+ */
 function stripMdxNoise(body: string): string {
-  return body
-    .replace(/^\s*import\s+[^\n]*?from\s+['"][^'"]+['"];?\s*$/gm, '')
-    .replace(/^\s*export\s+(?:const|let|var|default|function)[^\n]*$/gm, '')
+  let fence: string | null = null;
+  let inTemplate = false;
+  const lines = body.split('\n').filter((line) => {
+    const marker = /^\s*(`{3,}|~{3,})/.exec(line)?.[1] ?? null;
+    if (fence) {
+      if (marker?.startsWith(fence)) fence = null;
+      return true;
+    }
+    if (inTemplate) {
+      if (line.includes('`}')) inTemplate = false;
+      return true;
+    }
+    if (marker) {
+      fence = marker;
+      return true;
+    }
+    if (line.lastIndexOf('{`') > line.lastIndexOf('`}')) inTemplate = true;
+    return !IMPORT_LINE.test(line) && !EXPORT_LINE.test(line);
+  });
+  return lines
+    .join('\n')
     .replace(/\n{3,}/g, '\n\n')
     .trim();
 }
