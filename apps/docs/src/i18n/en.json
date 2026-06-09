@@ -321,7 +321,7 @@
         "tab2": "Install",
         "tab3": "Usage",
         "tab1Body": "Tabs let you swap related content in place without navigation.",
-        "tab2Body": "Run npx astro-ignite add tabs to copy the component into your project.",
+        "tab2Body": "Tabs ship pre-installed in both templates — copy the source from the registry to use it anywhere else.",
         "tab3Body": "Wrap triggers and content with matching value props inside a Tabs root."
       },
       "accordion": {
@@ -329,7 +329,7 @@
         "q1Title": "What is astro-ignite?",
         "q1Body": "A production-grade Astro scaffold with i18n, legal, analytics and a registry of primitives built in.",
         "q2Title": "How do I install a component?",
-        "q2Body": "Run npx astro-ignite add <name>. The file is copied into src/components/ui — yours to edit.",
+        "q2Body": "Components ship pre-installed in both templates at src/components/ui — yours to edit. To use one elsewhere, copy it from the registry.",
         "q3Title": "Does it ship JavaScript?",
         "q3Body": "Only the small custom elements that need interactivity (tabs, dialog, dropdown, toast). Everything else is zero-JS."
       },

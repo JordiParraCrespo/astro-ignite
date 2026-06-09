@@ -321,7 +321,7 @@
         "tab2": "Instalación",
         "tab3": "Uso",
         "tab1Body": "Las pestañas te permiten intercambiar contenido relacionado en su lugar sin navegación.",
-        "tab2Body": "Ejecuta npx astro-ignite add tabs para copiar el componente a tu proyecto.",
+        "tab2Body": "Las pestañas vienen preinstaladas en ambas plantillas — copia el código fuente desde el registro para usarlas en cualquier otro sitio.",
         "tab3Body": "Envuelve los triggers y el contenido con props value coincidentes dentro de un Tabs root."
       },
       "accordion": {
@@ -329,7 +329,7 @@
         "q1Title": "¿Qué es astro-ignite?",
         "q1Body": "Un scaffold de Astro listo para producción con i18n, legal, analítica y un registro de primitivos integrado.",
         "q2Title": "¿Cómo instalo un componente?",
-        "q2Body": "Ejecuta npx astro-ignite add <nombre>. El archivo se copia a src/components/ui — tuyo para editar.",
+        "q2Body": "Los componentes vienen preinstalados en ambas plantillas en src/components/ui — tuyos para editar. Para usar uno en otro proyecto, cópialo desde el registro.",
         "q3Title": "¿Envía JavaScript?",
         "q3Body": "Solo los pequeños elementos personalizados que necesitan interactividad (tabs, dialog, dropdown, toast). Todo lo demás es cero-JS."
       },
