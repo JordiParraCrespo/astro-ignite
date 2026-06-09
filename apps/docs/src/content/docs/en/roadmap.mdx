@@ -1,7 +1,7 @@
 ---
 title: Roadmap
-description: How astro-ignite evolves from 0.1 to 1.0 and beyond.
-lastUpdated: 2026-05-10
+description: How astro-ignite evolves toward the 0.2.0 launch and beyond.
+lastUpdated: 2026-06-09
 tags: [philosophy]
 ---
 
@@ -9,31 +9,23 @@ import Callout from '@/components/docs/Callout.astro';
 
 The full roadmap lives in [`ROADMAP.md`](https://github.com/JordiParraCrespo/astro-ignite/blob/main/ROADMAP.md) at the repo root. The short version:
 
-## Now (0.1.x)
+## Launch (0.2.0)
 
-The scaffold works end-to-end. CLI ships with `starter` + `docs` templates. SEO, JSON-LD, image pipeline, fonts, theme, contact form, legal templates, sitemap, RSS — all wired.
+The first public release. Two production-grade templates — `starter` and `docs` — that are well designed, AI-ready, documented end-to-end, and shipped through a stable release pipeline.
 
-## Next (0.2 – 0.6)
+- **Two templates**, both Claude-designed, with i18n, SEO, JSON-LD, legal, fonts, theme, and Lighthouse 100s.
+- **AI-ready**: scaffolded `.claude/skills/` so agents follow the locked practices when they edit your site.
+- **Documented**: customization guides plus a live reference for every base component.
+- **shadcn-consumable**: the registry conforms to the shadcn schema, so any atom installs into any project via `npx shadcn@latest add @astro-ignite/<name>`.
+- **AI-native docs**: per-page Markdown (`<path>.md`), a `/llms-full.txt` corpus, and a "use this page with AI" menu — the static slice of the agent-first docs story.
 
-- **0.2** — UI primitives: Button, Link, Card, Badge, Alert, Container, Section, Prose, Breadcrumbs, Avatar
-- **0.3** — Real Lighthouse numbers + WCAG 2.2 AA audit
-- **0.4** — Reading time, related posts, MDX components, Pagefind search
-- **0.5** — Adapter swap recipes (Vercel, Netlify, Cloudflare) + static-only mode
-- **0.6** — i18n depth (per-locale parallels for static pages, translation tooling, locale OG)
+## The version ladder
 
-## 1.0
-
-API stable. Template structure stable. Breaking changes only at major versions, with migration guides.
-
-## 1.1+
-
-`astro-ignite add <component>` registry-driven CLI. Pull-on-demand components: Tabs, Accordion, MegaMenu, DropdownMenu, Modal, Toast, Pagination, Search, OG generation. Plus `astro-ignite init` for existing projects.
-
-## 2.x
-
-Registry-first distribution. Templates become thin; most components arrive via `add`. Community registries.
+- **0.3.0** — more templates (a `blog` split); a native `astro-ignite add <component>` command + a registry MCP server; a registry _blocks_ tier (PricingCard first); the agentic docs layer (an MCP server generated from the docs, in-page Ask-AI search).
+- **0.4.0** — deploy-target selection at scaffold time (Cloudflare Pages / Netlify / Vercel / Node) and deeper customization prompts.
+- **Later** — View Transitions, more blocks, an examples gallery.
 
 <Callout variant="note">
-  This page is a summary. The canonical roadmap with rationale and risks
-  lives in the GitHub repo.
+  This page is a summary. The canonical roadmap with rationale and risks lives
+  in the GitHub repo, and it wins when the two disagree.
 </Callout>

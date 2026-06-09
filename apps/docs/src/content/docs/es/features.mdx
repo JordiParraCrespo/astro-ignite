@@ -42,9 +42,9 @@ Plantillas de política de privacidad, política de cookies y términos de servi
 
 ## Registro de componentes
 
-Un registro estilo shadcn de primitivos puros de Astro. Copia y pega con `npx astro-ignite add <nombre>` — los componentes aterrizan en `src/components/ui/` y son tuyos.
+Un registro estilo shadcn de primitivos puros de Astro. Vienen **preinstalados** en `src/components/ui/` en ambas plantillas — son tuyos, cada línea. Para reutilizar uno en otro proyecto, cópialo desde el código fuente del registro.
 
-- 18 primitivos: button, card, dialog, dropdown-menu, tabs, accordion, toast, …
+- 19 primitivos: button, link, text, badge, card, input, textarea, label, separator, alert, avatar, skeleton, kbd, tabs, accordion, dialog, dropdown-menu, tooltip, toast
 - Cero runtime de React/Vue/Svelte — el comportamiento es custom elements + las APIs nativas de popover/dialog
 - Explora cada primitivo en vivo en [Componentes](/es/components)
 
@@ -61,7 +61,7 @@ Un sistema de diseño basado en Zinc en variables CSS, oscuro por defecto, con u
 Lighthouse 100 en móvil, verificado por CI. Salida puramente Astro, optimización de imágenes, precarga de fuentes y cero JS en cliente en la mayoría de páginas.
 
 - `Image` desde `astro:assets` para `srcset` responsive + AVIF/WebP
-- CSS crítico inline por página; el no crítico se aplaza
+- `inlineStylesheets: 'always'` incrusta la hoja de estilos completa en el HTML en el primer paint — sin ida y vuelta de CSS que bloquee el render
 - Mira [Benchmarks](/es/benchmarks) para los números y cómo reproducirlos
 
 ## Content collections

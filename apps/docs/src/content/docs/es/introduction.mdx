@@ -37,7 +37,7 @@ Obtienes:
 ## Stack técnico
 
 - **Astro 6** con i18n nativo, content collections y Astro Actions (adaptador `@astrojs/node@^10`)
-- **Tailwind v4** debajo del fold + `<style>` con scope por encima del fold; **Beasties** extrae el CSS crítico en build
+- **Tailwind v4** con utilidades que resuelven los design tokens `--color-*`; `<style>` con scope solo donde Tailwind no llega (keyframes, selectores de view-transition); `inlineStylesheets: 'always'` incrusta la hoja de estilos completa en el HTML en el primer paint — sin paso aparte de CSS crítico
 - **Variables CSS como design tokens**; modo oscuro tri-estado mediante un cambio de clase
 - **Astro + JS vanilla en todos los componentes** — sin React/Vue/Svelte/Radix en ninguna parte. Primitivas HTML nativas primero (`<details>`, `<dialog>`, popover API); custom elements solo cuando lo nativo no alcanza
 - **`schema-dts`** para JSON-LD tipado compuesto vía `@graph`
