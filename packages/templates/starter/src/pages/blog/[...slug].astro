@@ -3,6 +3,7 @@ import { render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 
 import ArticleLayout from '@/layouts/ArticleLayout.astro';
+import { mdxComponents } from '@/components/mdx/mdx-components';
 import { siteConfig } from '@/config/site';
 import { getPostsForLocale, adjacentPosts, relatedPosts, postSlug } from '@/lib/blog';
 
@@ -26,5 +27,5 @@ const { Content, headings } = await render(entry);
 ---
 
 <ArticleLayout entry={entry} prev={prev} next={next} related={related} headings={headings}>
-  <Content />
+  <Content components={mdxComponents} />
 </ArticleLayout>

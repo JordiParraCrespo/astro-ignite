@@ -1,0 +1,35 @@
+---
+/**
+ * Figure — a centered, bordered, optionally captioned wrapper for media.
+ * Makes screenshots and diagrams look intentional. Pair with the `Image`
+ * atom or a plain <img>.
+ *
+ * The frame owns the image's border/spacing, so the slotted <img> resets the
+ * `.prose img` rules it would otherwise inherit (via `[&_img]` variants).
+ *
+ * Usage in MDX:
+ *   <Figure caption="The scaffold prompt flow">
+ *     <Image src={shot} alt="CLI prompts" />
+ *   </Figure>
+ */
+
+interface Props {
+  caption?: string;
+  class?: string;
+}
+
+const { caption, class: className } = Astro.props;
+---
+
+<figure class:list={['my-6 flex flex-col items-center gap-2.5', className]}>
+  <div
+    class="flex w-full justify-center rounded-(--radius-lg) border border-(--color-border) bg-(--color-surface-2) p-4 [&_img]:m-0 [&_img]:block [&_img]:h-auto [&_img]:max-w-full [&_img]:rounded-(--radius) [&_img]:border-0"
+  >
+    <slot />
+  </div>
+  {
+    caption && (
+      <figcaption class="text-center text-[13px] text-(--color-fg-muted)">{caption}</figcaption>
+    )
+  }
+</figure>

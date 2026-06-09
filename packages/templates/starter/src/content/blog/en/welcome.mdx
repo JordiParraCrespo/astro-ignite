@@ -9,6 +9,12 @@ featured: true
 
 You just bootstrapped a complete Astro site. This post is a quick tour of what's in front of you so you know what to keep, what to edit, and what to delete.
 
+Start the dev server and open it in your browser:
+
+<CodeBlock filename="terminal" language="bash">
+  {`npm run dev`}
+</CodeBlock>
+
 ## What you have
 
 - A working **blog** at `/blog` with two example posts (this one is one of them) authored as MDX in `src/content/blog/{locale}/`.
@@ -26,6 +32,11 @@ You just bootstrapped a complete Astro site. This post is a quick tour of what's
 3. **Fill in `src/config/site.ts`** — every locale-keyed object, your social URLs, your organization name.
 4. **Customize the legal templates** in `src/content/legal/{locale}/` and review them with a lawyer.
 5. **Delete this post** when you don't need the tour anymore.
+
+<Callout variant="tip" title="Editing content">
+  Posts and projects are MDX. Drop components like this callout straight into
+  the body — they're available without an import.
+</Callout>
 
 ## What to read
 

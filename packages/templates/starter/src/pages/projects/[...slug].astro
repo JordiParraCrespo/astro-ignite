@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 
 import ProjectLayout from '@/layouts/ProjectLayout.astro';
+import { mdxComponents } from '@/components/mdx/mdx-components';
 import { siteConfig } from '@/config/site';
 
 export async function getStaticPaths() {
@@ -30,5 +31,5 @@ const { Content } = await render(entry);
 ---
 
 <ProjectLayout entry={entry}>
-  <Content />
+  <Content components={mdxComponents} />
 </ProjectLayout>

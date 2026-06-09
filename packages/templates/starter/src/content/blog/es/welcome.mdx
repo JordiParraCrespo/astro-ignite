@@ -9,6 +9,12 @@ featured: true
 
 Acabas de crear un sitio Astro completo. Esta entrada es un recorrido rápido por todo lo que tienes delante: qué conservar, qué editar y qué eliminar.
 
+Arranca el servidor de desarrollo y ábrelo en tu navegador:
+
+<CodeBlock filename="terminal" language="bash">
+  {`npm run dev`}
+</CodeBlock>
+
 ## Lo que tienes
 
 - Un **blog** funcional en `/blog` con dos entradas de ejemplo (esta es una) escritas en MDX dentro de `src/content/blog/{locale}/`.
@@ -26,6 +32,11 @@ Acabas de crear un sitio Astro completo. Esta entrada es un recorrido rápido po
 3. **Completa `src/config/site.ts`** — cada objeto por idioma, tus URL sociales, el nombre de tu organización.
 4. **Personaliza las plantillas legales** en `src/content/legal/{locale}/` y revísalas con un abogado.
 5. **Elimina esta entrada** cuando ya no necesites el recorrido.
+
+<Callout variant="tip" title="Editar contenido">
+  Las entradas y los proyectos son MDX. Coloca componentes como este aviso
+  directamente en el cuerpo — están disponibles sin necesidad de importarlos.
+</Callout>
 
 ## Qué leer
 

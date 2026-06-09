@@ -1,0 +1,131 @@
+---
+/**
+ * Callout / admonition block — used inside MDX content.
+ *
+ * Variants: note, tip, warning, danger. Each is a tinted box with a leading
+ * icon, a title, and body copy. The tip/warning/danger tints derive from the
+ * status tokens via color-mix() so the block adapts to light and dark themes.
+ *
+ * Usage in MDX:
+ *   <Callout variant="warning" title="Heads up">
+ *     Setup prompts can be skipped with `--yes`.
+ *   </Callout>
+ */
+
+type Variant = 'note' | 'tip' | 'warning' | 'danger';
+
+interface Props {
+  variant?: Variant;
+  title?: string;
+}
+
+const { variant = 'note', title } = Astro.props;
+
+const defaultTitles: Record<Variant, string> = {
+  note: 'Note',
+  tip: 'Tip',
+  warning: 'Heads up',
+  danger: 'Warning',
+};
+
+const box: Record<Variant, string> = {
+  note: 'border-(--color-border) bg-(--color-surface-2)',
+  tip: 'border-[color-mix(in_oklch,var(--color-success)_28%,transparent)] bg-[color-mix(in_oklch,var(--color-success)_8%,transparent)]',
+  warning:
+    'border-[color-mix(in_oklch,var(--color-warning)_30%,transparent)] bg-[color-mix(in_oklch,var(--color-warning)_8%,transparent)]',
+  danger:
+    'border-[color-mix(in_oklch,var(--color-danger)_30%,transparent)] bg-[color-mix(in_oklch,var(--color-danger)_7%,transparent)]',
+};
+
+const icon: Record<Variant, string> = {
+  note: 'text-(--color-fg)',
+  tip: 'text-(--color-success)',
+  warning: 'text-(--color-warning)',
+  danger: 'text-(--color-danger)',
+};
+
+const heading = title ?? defaultTitles[variant];
+---
+
+<aside
+  class:list={[
+    'my-6 flex gap-3 rounded-(--radius-md) border px-3.5 py-3 [&_a]:text-(--color-fg)',
+    box[variant],
+  ]}
+  role={variant === 'danger' || variant === 'warning' ? 'alert' : undefined}
+>
+  <span class:list={['mt-px flex shrink-0 [&_svg]:size-4', icon[variant]]} aria-hidden="true">
+    {
+      variant === 'note' && (
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="16" x2="12" y2="12" />
+          <line x1="12" y1="8" x2="12.01" y2="8" />
+        </svg>
+      )
+    }
+    {
+      variant === 'tip' && (
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M12 2v4" />
+          <path d="m4.93 4.93 2.83 2.83" />
+          <path d="m16.24 7.76 2.83-2.83" />
+          <circle cx="12" cy="14" r="6" />
+          <path d="M9 20h6" />
+        </svg>
+      )
+    }
+    {
+      variant === 'warning' && (
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="m10.29 3.86-8.06 14a2 2 0 0 0 1.71 3h16.12a2 2 0 0 0 1.71-3l-8.06-14a2 2 0 0 0-3.42 0z" />
+          <line x1="12" y1="9" x2="12" y2="13" />
+          <line x1="12" y1="17" x2="12.01" y2="17" />
+        </svg>
+      )
+    }
+    {
+      variant === 'danger' && (
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <line x1="15" y1="9" x2="9" y2="15" />
+          <line x1="9" y1="9" x2="15" y2="15" />
+        </svg>
+      )
+    }
+  </span>
+  <div class="min-w-0">
+    <div class="text-[13px] font-medium tracking-[-0.005em] text-(--color-fg)">{heading}</div>
+    <div class="mt-0.5 text-[13px] leading-[1.55] text-(--color-fg-muted) [&_p]:m-0 [&_p+p]:mt-2">
+      <slot />
+    </div>
+  </div>
+</aside>
