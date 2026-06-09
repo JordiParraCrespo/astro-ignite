@@ -63,51 +63,88 @@ const linkActive = 'bg-[var(--color-surface-2)] font-medium text-[var(--color-fg
 ---
 
 <aside
-  class="sidebar sticky top-0 flex h-screen flex-col gap-5 overflow-x-hidden overflow-y-auto border-r border-(--color-border) bg-(--color-bg) px-4 pt-7 pb-8"
+  class="sidebar flex flex-col gap-5 border-b border-(--color-border) bg-(--color-bg) px-4 py-4 md:sticky md:top-0 md:h-screen md:overflow-x-hidden md:overflow-y-auto md:border-r md:border-b-0 md:pt-7 md:pb-8"
   aria-label={t('nav.documentation')}
 >
-  <header class="px-1">
+  <header class="flex items-center justify-between gap-2 px-1">
     <Brand href={getRelativeLocaleUrl(locale, '/')} variant="lockup" size={0.42} />
+    <button
+      type="button"
+      data-docs-nav-toggle
+      aria-controls="docs-nav-panel"
+      aria-expanded="false"
+      aria-label={t('nav.openMenu')}
+      class="inline-flex cursor-pointer appearance-none items-center justify-center rounded-(--radius-sm) border-0 bg-transparent p-2 text-(--color-fg) transition-colors hover:bg-(--color-surface-2) md:hidden"
+    >
+      <span class="flex w-5 flex-col gap-[4px]" aria-hidden="true">
+        <span class="block h-[2px] rounded-[1px] bg-current"></span>
+        <span class="block h-[2px] rounded-[1px] bg-current"></span>
+        <span class="block h-[2px] rounded-[1px] bg-current"></span>
+      </span>
+    </button>
   </header>
 
-  <SearchBox />
+  <div id="docs-nav-panel" data-docs-nav-panel class="hidden flex-col gap-5 md:flex [&.open]:flex">
+    <SearchBox />
 
-  <nav class="flex flex-col gap-[22px]" aria-label={t('nav.sidebar')}>
-    {
-      sidebar.map((group) => {
-        const visibleItems = group.items.filter(
-          (item) => isExternal(item.slug) || hasLocalizedEntry(item.slug)
-        );
-        if (visibleItems.length === 0) return null;
-        return (
-          <div class="flex flex-col gap-1">
-            <Text variant="eyebrow" as="h2" class="mono m-0 mb-[2px] px-2 py-1">
-              {group.group}
-            </Text>
-            <ul class="m-0 flex list-none flex-col gap-px p-0">
-              {visibleItems.map((item) => (
-                <li>
-                  <a
-                    href={hrefFor(item.slug)}
-                    class:list={[linkBase, isActive(item.slug) && linkActive]}
-                    aria-current={isActive(item.slug) ? 'page' : undefined}
-                    rel={isExternal(item.slug) ? 'noopener noreferrer' : undefined}
-                    target={isExternal(item.slug) ? '_blank' : undefined}
-                  >
-                    <span>{item.label ?? titleForSlug(item.slug)}</span>
-                    {item.badge && (
-                      <span class="mono ml-auto rounded-(--radius-sm) border border-(--color-border) px-[5px] py-px text-[10px] text-(--color-fg-subtle)">
-                        {item.badge}
-                      </span>
-                    )}
-                    {isExternal(item.slug) && <span aria-hidden="true">↗</span>}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        );
-      })
-    }
-  </nav>
+    <nav class="flex flex-col gap-[22px]" aria-label={t('nav.sidebar')}>
+      {
+        sidebar.map((group) => {
+          const visibleItems = group.items.filter(
+            (item) => isExternal(item.slug) || hasLocalizedEntry(item.slug)
+          );
+          if (visibleItems.length === 0) return null;
+          return (
+            <div class="flex flex-col gap-1">
+              <Text variant="eyebrow" as="h2" class="mono m-0 mb-[2px] px-2 py-1">
+                {group.group}
+              </Text>
+              <ul class="m-0 flex list-none flex-col gap-px p-0">
+                {visibleItems.map((item) => (
+                  <li>
+                    <a
+                      href={hrefFor(item.slug)}
+                      class:list={[linkBase, isActive(item.slug) && linkActive]}
+                      aria-current={isActive(item.slug) ? 'page' : undefined}
+                      rel={isExternal(item.slug) ? 'noopener noreferrer' : undefined}
+                      target={isExternal(item.slug) ? '_blank' : undefined}
+                    >
+                      <span>{item.label ?? titleForSlug(item.slug)}</span>
+                      {item.badge && (
+                        <span class="mono ml-auto rounded-(--radius-sm) border border-(--color-border) px-[5px] py-px text-[10px] text-(--color-fg-subtle)">
+                          {item.badge}
+                        </span>
+                      )}
+                      {isExternal(item.slug) && <span aria-hidden="true">↗</span>}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })
+      }
+    </nav>
+  </div>
 </aside>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-docs-nav-toggle]');
+  const panel = document.getElementById('docs-nav-panel');
+  if (toggle && panel) {
+    const setOpen = (open: boolean) => {
+      panel.classList.toggle('open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+    };
+    toggle.addEventListener('click', () => setOpen(!panel.classList.contains('open')));
+    // Navigating closes the drawer; collapse on in-page anchor clicks too.
+    panel.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') setOpen(false);
+    });
+    // Reset state when the viewport grows past the mobile breakpoint.
+    window.matchMedia('(min-width: 768px)').addEventListener('change', (e) => {
+      if (e.matches) setOpen(false);
+    });
+  }
+</script>

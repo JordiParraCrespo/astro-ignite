@@ -1,0 +1,169 @@
+---
+/**
+ * CodeGroup — combines several <CodeBlock> children into one tabbed panel.
+ * Each child's `filename` becomes a tab label (the npm/pnpm/yarn pattern, or
+ * curl/python/node for an API). The custom element synthesizes the tab strip
+ * and a single copy button, then shows one block at a time.
+ *
+ * Usage in MDX:
+ *   <CodeGroup>
+ *     <CodeBlock filename="npm">{`npm i astro-ignite`}</CodeBlock>
+ *     <CodeBlock filename="pnpm">{`pnpm add astro-ignite`}</CodeBlock>
+ *   </CodeGroup>
+ */
+
+import { cn } from '@/lib/cn';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<ai-code-group
+  class={cn(
+    'code-group my-6 block overflow-hidden rounded-(--radius-md) border border-(--color-border) bg-(--color-surface-2)',
+    className
+  )}
+>
+  <slot />
+</ai-code-group>
+
+<!-- tailwind-exception: structural overrides reach into slotted CodeBlock children via :global(), and the synthesized tab strip is built in script — neither is expressible as utilities on this element -->
+<style>
+  .code-group :global(.code-block) {
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+  .code-group :global(.code-block [data-cb-header]) {
+    display: none;
+  }
+  .code-group__tabs {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    padding: 0 8px;
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-surface-2);
+  }
+  .code-group__tab {
+    appearance: none;
+    cursor: pointer;
+    border: 0;
+    border-bottom: 1.5px solid transparent;
+    margin-bottom: -1px;
+    background: transparent;
+    padding: 9px 12px;
+    font-family: var(--font-mono, monospace);
+    font-size: 11px;
+    color: var(--color-fg-muted);
+    transition: color 0.1s;
+  }
+  .code-group__tab:hover {
+    color: var(--color-fg);
+  }
+  .code-group__tab[data-active='true'] {
+    color: var(--color-fg);
+    border-bottom-color: var(--color-fg);
+    font-weight: 500;
+  }
+  .code-group__copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+    appearance: none;
+    cursor: pointer;
+    border: 0;
+    background: transparent;
+    padding: 0 10px;
+    font-family: var(--font-mono, monospace);
+    font-size: 11px;
+    color: var(--color-fg-muted);
+    transition: color 0.1s;
+  }
+  .code-group__copy:hover {
+    color: var(--color-fg);
+  }
+  .code-group__copy svg {
+    width: 12px;
+    height: 12px;
+  }
+</style>
+
+<script>
+  if (!customElements.get('ai-code-group')) {
+    class AiCodeGroup extends HTMLElement {
+      connectedCallback() {
+        const blocks = Array.from(this.querySelectorAll<HTMLElement>(':scope > .code-block'));
+        if (blocks.length === 0) return;
+
+        const tabs = document.createElement('div');
+        tabs.className = 'code-group__tabs';
+        tabs.setAttribute('role', 'tablist');
+
+        const buttons: HTMLButtonElement[] = [];
+
+        const activate = (idx: number) => {
+          blocks.forEach((b, i) => {
+            b.hidden = i !== idx;
+          });
+          buttons.forEach((b, i) => {
+            const on = i === idx;
+            b.dataset.active = on ? 'true' : 'false';
+            b.setAttribute('aria-selected', on ? 'true' : 'false');
+            b.tabIndex = on ? 0 : -1;
+          });
+        };
+
+        blocks.forEach((block, i) => {
+          const name = block.dataset.filename || `tab ${i + 1}`;
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'code-group__tab';
+          btn.setAttribute('role', 'tab');
+          btn.textContent = name;
+          btn.addEventListener('click', () => activate(i));
+          btn.addEventListener('keydown', (e) => {
+            if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+            e.preventDefault();
+            const next = (i + (e.key === 'ArrowRight' ? 1 : -1) + blocks.length) % blocks.length;
+            buttons[next]!.focus();
+            activate(next);
+          });
+          buttons.push(btn);
+          tabs.appendChild(btn);
+        });
+
+        const copy = document.createElement('button');
+        copy.type = 'button';
+        copy.className = 'code-group__copy';
+        copy.innerHTML =
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span data-copy-label>copy</span>';
+        const copyLabel = copy.querySelector('[data-copy-label]')!;
+        copy.addEventListener('click', async () => {
+          const active = blocks.find((b) => !b.hidden);
+          const pre = active?.querySelector('pre');
+          if (!pre || !navigator.clipboard) return;
+          try {
+            await navigator.clipboard.writeText(pre.textContent ?? '');
+            copyLabel.textContent = 'copied';
+            setTimeout(() => {
+              copyLabel.textContent = 'copy';
+            }, 1200);
+          } catch {
+            // Permissions denied — silently fail.
+          }
+        });
+        tabs.appendChild(copy);
+
+        this.prepend(tabs);
+        activate(0);
+      }
+    }
+    customElements.define('ai-code-group', AiCodeGroup);
+  }
+</script>

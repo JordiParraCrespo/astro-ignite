@@ -67,9 +67,9 @@ export interface SiteConfig {
 export const siteConfig: SiteConfig = {
   // CLI replaces these values at scaffold time. The defaults below are real and
   // working so the template is dev-able as-is via `pnpm dev`.
-  url: "https://example.com",
-  defaultLocale: "en",
-  locales: ["en"],
+  url: 'https://example.com',
+  defaultLocale: 'en',
+  locales: ['en'],
 
   hreflang: {
     en: 'en-US',
@@ -81,8 +81,8 @@ export const siteConfig: SiteConfig = {
   },
 
   name: {
-    en: "Playground",
-    es: "Playground",
+    en: 'Playground',
+    es: 'Playground',
   },
 
   description: {
@@ -91,8 +91,8 @@ export const siteConfig: SiteConfig = {
   },
 
   organization: {
-    en: { name: "Playground" },
-    es: { name: "Playground" },
+    en: { name: 'Playground' },
+    es: { name: 'Playground' },
   },
 
   social: {
