@@ -29,13 +29,22 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Build CLI
-        run: pnpm --filter create-astro-ignite build
+        run: pnpm --filter astro-ignite build
 
+      # Refresh the bundled template cache so the scaffold reflects this
+      # branch's templates — resolveTemplateRoot prefers the committed cache,
+      # which can lag packages/templates/.
+      - name: Refresh template cache
+        run: node packages/astro-ignite/scripts/copy-templates.mjs
+
+      # Call the local CLI directly — the `create-astro-ignite` shim runs
+      # `npx astro-ignite@latest`, which would scaffold from the published
+      # version instead of this branch's templates.
       - name: Scaffold playground
         run: |
           rm -rf apps/playground
           mkdir -p apps/playground
-          node packages/create-astro-ignite/dist/index.js apps/playground --yes --no-git
+          node packages/astro-ignite/dist/index.js bootstrap apps/playground --yes --no-git
 
       - name: Build playground
         run: pnpm --filter playground build
