@@ -8,7 +8,13 @@
       "type": "registry:lib",
       "title": "cn",
       "description": "Tailwind-aware className merge helper used by every atom.",
-      "files": [{ "path": "lib/cn.ts", "type": "registry:lib", "target": "src/lib/cn.ts" }]
+      "files": [
+        {
+          "path": "lib/cn.ts",
+          "type": "registry:lib",
+          "target": "src/lib/cn.ts"
+        }
+      ]
     },
     {
       "name": "button",
@@ -195,39 +201,6 @@
       ]
     },
     {
-      "name": "select",
-      "type": "registry:ui",
-      "registryDependencies": ["cn"],
-      "files": [{ "path": "base/select.astro", "target": "src/components/ui/select.astro" }]
-    },
-    {
-      "name": "checkbox",
-      "type": "registry:ui",
-      "registryDependencies": ["cn"],
-      "files": [{ "path": "base/checkbox.astro", "target": "src/components/ui/checkbox.astro" }]
-    },
-    {
-      "name": "radio-group",
-      "type": "registry:ui",
-      "registryDependencies": ["cn"],
-      "files": [
-        {
-          "path": "base/radio-group/radio-group.astro",
-          "target": "src/components/ui/radio-group/radio-group.astro"
-        },
-        {
-          "path": "base/radio-group/radio-group-item.astro",
-          "target": "src/components/ui/radio-group/radio-group-item.astro"
-        }
-      ]
-    },
-    {
-      "name": "switch",
-      "type": "registry:ui",
-      "registryDependencies": ["cn"],
-      "files": [{ "path": "base/switch.astro", "target": "src/components/ui/switch.astro" }]
-    },
-    {
       "name": "label",
       "type": "registry:ui",
       "title": "Label",
@@ -304,7 +277,11 @@
       "description": "Keyboard key hint.",
       "registryDependencies": ["cn"],
       "files": [
-        { "path": "base/kbd.astro", "type": "registry:ui", "target": "src/components/ui/kbd.astro" }
+        {
+          "path": "base/kbd.astro",
+          "type": "registry:ui",
+          "target": "src/components/ui/kbd.astro"
+        }
       ]
     },
     {
@@ -424,7 +401,11 @@
           "type": "registry:ui",
           "target": "src/components/ui/toaster.astro"
         },
-        { "path": "lib/toast.ts", "type": "registry:lib", "target": "src/lib/toast.ts" }
+        {
+          "path": "lib/toast.ts",
+          "type": "registry:lib",
+          "target": "src/lib/toast.ts"
+        }
       ]
     }
   ]
