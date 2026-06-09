@@ -7,17 +7,23 @@
  * inside the <pre> if you pass the highlighted output as the slot.
  *
  * Usage:
- *   <CodeBlock filename="terminal" language="bash">
- *     {`$ npm create astro-ignite@latest`}
+ *   <CodeBlock filename="terminal" language="bash" prompt>
+ *     {`npm create astro-ignite@latest`}
  *   </CodeBlock>
+ *
+ * `prompt` renders a muted `$ ` shell prefix as a pseudo-element, so it is
+ * never part of the copied text.
  */
+
+import { cn } from '@/lib/cn';
 
 interface Props {
   filename?: string;
   language?: string;
+  prompt?: boolean;
 }
 
-const { filename, language } = Astro.props;
+const { filename, language, prompt = false } = Astro.props;
 ---
 
 <div
@@ -53,7 +59,7 @@ const { filename, language } = Astro.props;
     </button>
   </div>
   <pre
-    class="mono m-0 overflow-x-auto px-4 py-3.5 text-[13px] leading-[1.65] text-(--color-fg)"><code class="bg-transparent p-0 font-mono"><slot /></code></pre>
+    class="mono m-0 overflow-x-auto px-4 py-3.5 text-[13px] leading-[1.65] text-(--color-fg)"><code class={cn('bg-transparent p-0 font-mono', prompt && "before:mr-[1ch] before:text-(--color-fg-subtle) before:content-['$'] before:select-none")}><slot /></code></pre>
 </div>
 
 <script>
