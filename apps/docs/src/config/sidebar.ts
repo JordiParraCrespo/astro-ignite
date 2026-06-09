@@ -48,6 +48,18 @@ export const sidebar: SidebarGroup[] = [
     ],
   },
   {
+    group: 'Guides',
+    groupKey: 'sidebar.guides',
+    items: [
+      { slug: 'theming' },
+      { slug: 'adding-content' },
+      { slug: 'adding-a-locale' },
+      { slug: 'deploying' },
+      { slug: 'contact-form' },
+      { slug: 'using-components' },
+    ],
+  },
+  {
     group: 'Reference',
     groupKey: 'sidebar.reference',
     items: [{ slug: 'benchmarks' }],

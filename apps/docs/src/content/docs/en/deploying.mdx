@@ -1,0 +1,95 @@
+---
+title: Deploying
+description: Ship to Node, Cloudflare Pages, Netlify, or Vercel — and how the contact form's server action works on otherwise-static hosts.
+lastUpdated: 2026-06-09
+tags: [guide]
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
+
+Where you deploy depends on one question: **does the site need server compute?**
+
+- The **docs** template is fully static (`output: 'static'`, no adapter, no
+  server code). `astro build` emits `dist/` — drop it on any static host.
+- The **starter** ships a contact form built on **Astro Actions**, which run
+  server-side. It pins the `@astrojs/node` adapter so that endpoint has somewhere
+  to run. To deploy elsewhere, you swap the adapter to match the host.
+
+<Callout variant="note" title="Static pages either way">
+  Even with an adapter, `output: 'static'` means every page is pre-rendered HTML.
+  Only the action endpoint is server-rendered — so you keep the perf profile and
+  just need a place to run that one function.
+</Callout>
+
+## Static hosts (docs, or starter without the form)
+
+If there's no server code, the build is portable:
+
+<CodeBlock filename="terminal" language="bash">{`pnpm build   # → dist/`}</CodeBlock>
+
+Point Cloudflare Pages, Netlify, GitHub Pages, or any CDN at `dist/`. Build
+command `pnpm build`, output directory `dist`. Done.
+
+## Node
+
+The starter's default. Build, then run the standalone server entry:
+
+<CodeBlock filename="terminal" language="bash">{`pnpm build
+node ./dist/server/entry.mjs`}</CodeBlock>
+
+Put it behind a reverse proxy (Caddy, nginx) or in a container. Set the email
+env vars (see [Contact form & email](/contact-form)) in the runtime environment.
+
+## Cloudflare Pages / Netlify / Vercel
+
+To deploy the starter (with its server action) to one of these, swap the
+adapter. The change is two lines plus the dependency:
+
+<CodeBlock filename="astro.config.mjs">{`import { defineConfig } from 'astro/config';
+import cloudflare from '@astrojs/cloudflare'; // or @astrojs/netlify, @astrojs/vercel
+
+export default defineConfig({
+  output: 'static',
+  adapter: cloudflare(),
+  // …the rest is unchanged
+});`}</CodeBlock>
+
+<CodeBlock filename="terminal" language="bash">{`pnpm add @astrojs/cloudflare   # or @astrojs/netlify / @astrojs/vercel`}</CodeBlock>
+
+Each host's adapter turns the action endpoint into a serverless / edge function
+at build time. The static pages still deploy to the CDN; the function handles
+the form POST.
+
+<Callout variant="warn" title="One adapter at a time">
+  Keep exactly one adapter in `astro.config.mjs`. Removing it entirely breaks the
+  contact form (the action has nowhere to run); see the fallback below.
+</Callout>
+
+## The contact form on a purely static host
+
+If you want a static-only deploy (no functions at all), the server action can't
+run. Two clean options:
+
+1. **Use the host's function layer directly.** On Cloudflare Pages, the adapter
+   above compiles the action into a **Pages Function** — no extra work. Netlify
+   and Vercel do the same with their adapters. This is the recommended path: keep
+   the form server-side, owned by your code.
+2. **Hand the form off.** Repoint the `<form>` at a third-party form endpoint
+   (Formspree, Web3Forms, your own webhook) and drop the action. You lose the
+   typed Zod validation and the honeypot, but the deploy is pure static.
+
+<Callout variant="tip" title="Why the form is server-side at all">
+  The action validates input with Zod, screens a honeypot field, and talks to
+  your email provider with a secret key — none of which can live safely in the
+  browser. The function pattern keeps the key on the server while the rest of the
+  site stays static.
+</Callout>
+
+## Before you ship
+
+- Set `siteConfig.url` to your production origin — it drives canonical URLs,
+  the sitemap, OG tags, and `robots.txt`.
+- Set the email + analytics env vars in the host's dashboard, not in the repo.
+- Re-run `pnpm build` locally first; it surfaces schema and type errors the
+  host would otherwise fail on.
