@@ -51,7 +51,7 @@ const wrapperGap = variant === 'lockup' ? 'gap-[var(--ig-gap)]' : 'gap-0';
 <Tag
   class:list={[wrapperBase, wrapperGap, 'ig-brand', className]}
   href={href}
-  aria-label={href ? label : undefined}
+  aria-label={href && variant === 'mark' ? label : undefined}
   style={`
     --ig-mono-size: ${monoSize}px;
     --ig-sans-size: ${sansSize}px;

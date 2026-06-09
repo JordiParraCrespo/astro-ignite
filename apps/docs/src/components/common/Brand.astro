@@ -47,7 +47,7 @@ const caretMargin = 4 * size;
 <Tag
   class:list={['ig-brand', `ig-brand-${variant}`, className]}
   href={href}
-  aria-label={href ? label : undefined}
+  aria-label={href && variant === 'mark' ? label : undefined}
   style={`
     --ig-mono-size: ${monoSize}px;
     --ig-sans-size: ${sansSize}px;
