@@ -67,8 +67,7 @@
 
   /* Shadows — barely-there (dark default) */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.4);
-  --shadow:
-    0 1px 3px 0 rgb(0 0 0 / 0.5), 0 1px 2px -1px rgb(0 0 0 / 0.4);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.5), 0 1px 2px -1px rgb(0 0 0 / 0.4);
 
   /* Containers */
   --container-prose: 65ch;
@@ -105,8 +104,7 @@
   --color-success-fg: var(--color-zinc-50);
   --color-warning-fg: var(--color-zinc-50);
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow:
-    0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.06);
 }
 
 /*
@@ -125,10 +123,7 @@
     background: var(--color-bg);
     color: var(--color-fg);
     font-family: var(--font-display);
-    font-feature-settings:
-      'cv11',
-      'ss03',
-      'ss01';
+    font-feature-settings: 'cv11', 'ss03', 'ss01';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -176,9 +171,7 @@
   code,
   pre {
     font-family: var(--font-mono);
-    font-feature-settings:
-      'zero',
-      'ss01';
+    font-feature-settings: 'zero', 'ss01';
   }
 
   /* Skip link — visually hidden until focused, jumps to <main id="main"> */
@@ -219,9 +212,7 @@
 /* Mono helper — apply Geist Mono with the right OpenType features */
 .mono {
   font-family: var(--font-mono);
-  font-feature-settings:
-    'zero',
-    'ss01';
+  font-feature-settings: 'zero', 'ss01';
 }
 
 /* Caret blink — used by the brand mark and terminal blocks */
