@@ -1,0 +1,134 @@
+---
+title: Añadir contenido
+description: Escribe una entrada de blog, un caso de estudio o una página de docs — carpetas por idioma, esquemas de frontmatter y la regla de rutas paralelas.
+lastUpdated: 2026-06-09
+tags: [guía]
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import Steps from '@/components/docs/Steps.astro';
+import Step from '@/components/docs/Step.astro';
+
+El contenido vive en **colecciones de contenido tipadas** bajo `src/content/`.
+Cada colección tiene un esquema Zod en `src/content.config.ts`, así que un campo
+ausente o malformado es un error de compilación, no una página rota. Dos reglas
+se cumplen en todas partes:
+
+- **Carpetas por idioma.** Cada colección anida por idioma:
+  `src/content/<colección>/<idioma>/<slug>`. El idioma por defecto es `en`.
+- **Añade archivos, no rutas.** Las rutas catch-all enumeran la colección y
+  emiten una página por entrada. Nunca registras una ruta a mano.
+
+## Entrada de blog
+
+La colección `blog` carga `*/*.mdx` — es decir, `<idioma>/<slug>.mdx`.
+
+<Steps>
+  <Step title="Crea el archivo">
+    `src/content/blog/en/my-first-post.mdx`
+  </Step>
+  <Step title="Rellena el frontmatter">
+    El esquema requiere `title` (≤70), `description` (70–160), `datePublished` y
+    una referencia `author`; el resto son opcionales:
+
+    ```mdx
+    ---
+    title: Shipping faster with astro-ignite
+    description: How an opinionated, fully-owned starter cut our time-to-first-deploy from an afternoon to a coffee break.
+    datePublished: 2026-06-09
+    author: jordi
+    tags: [astro, dx]
+    ogImage: ./_assets/og-shipping.png
+    ---
+
+    Your MDX body here. Plain Markdown is styled by the layout's prose
+    utility; import any component (e.g. from src/components/ui/) to go
+    beyond it.
+    ```
+
+    Nota: `ogImage` es la imagen de **vista previa social** de la entrada — las
+    tarjetas de entrada y las páginas de detalle renderizan una portada en
+    gradiente resuelta por tokens, no una imagen hero. Omítela y OG recurre al
+    banner por defecto de todo el sitio.
+
+  </Step>
+  <Step title="Míralo">
+    `pnpm dev` → la entrada está en vivo en `/blog/my-first-post`, listada en
+    `/blog`, y plegada en la paginación, las etiquetas y las entradas
+    relacionadas automáticamente.
+  </Step>
+</Steps>
+
+<Callout variant="note" title="author es una referencia">
+  `author` apunta a una entrada de la colección `authors`
+  (`src/content/authors/<nombre>.json`). Usa un autor que exista, o añade uno.
+</Callout>
+
+## Caso de estudio de proyecto
+
+La colección `projects` carga `*/*/index.mdx` — cada proyecto es una **carpeta**
+(`<idioma>/<slug>/index.mdx`) para que pueda llevar sus propios recursos. Añade
+`summary`, `techStack`, `links` (live / repo / demo / caseStudy) y un `status`
+(`shipped` | `in-progress` | `archived`):
+
+```mdx
+---
+title: Acme redesign
+description: A ground-up rebuild of Acme's marketing site on Astro, shipping Lighthouse 100s and a 60% faster LCP.
+summary: Full redesign and rebuild, from Figma to production in six weeks.
+datePublished: 2026-05-01
+techStack: [Astro, TypeScript, Tailwind]
+links:
+  live: https://acme.example.com
+status: shipped
+---
+```
+
+Vive en `/projects/acme-redesign`.
+
+## Página de docs
+
+En la plantilla **docs**, la colección `docs` carga `<idioma>/<slug>.mdx`. El
+frontmatter es `title` + `description` (40–160), con `tags`, `lastUpdated` y
+`draft` opcionales:
+
+```mdx
+---
+title: Configuration
+description: Every setting in site.ts and what it controls, with sensible defaults for a first deploy.
+tags: [reference]
+---
+
+## Section
+
+Sidebar, breadcrumbs, on-this-page, and prev/next all derive from the
+collection — add this file and it slots into the nav.
+```
+
+Reorganiza el orden / agrupación de la barra lateral en `src/config/sidebar.ts`.
+
+## La regla de rutas paralelas
+
+Aquí es donde el contenido y las páginas personalizadas difieren:
+
+- **El contenido de colección** (blog, projects, docs) lo sirven las rutas
+  catch-all (`[...slug].astro` para el idioma por defecto, `[lang]/[...slug].astro`
+  para el resto). Ya manejan cada idioma — así que una entrada localizada es solo
+  un segundo archivo bajo la carpeta del idioma de destino. Nada más que conectar.
+- **Las páginas `.astro` escritas a mano** (p. ej. `src/pages/about.astro`) deben
+  entregar una **paralela** en `src/pages/[lang]/about.astro` cuyo
+  `getStaticPaths` emita una entrada por idioma no predeterminado. Una página en
+  `/foo` sin un `/[lang]/foo` es una brecha de i18n que la auditoría de
+  invariantes señalará.
+
+<Callout variant="tip" title="Hasta que añadas un segundo idioma">
+  Con el `siteConfig.locales: ['en']` por defecto, las rutas `[lang]/` permanecen
+  inactivas — no emiten nada. Se activan en el momento en que añades un idioma
+  (mira [Añadir un idioma](/es/adding-a-locale)).
+</Callout>
+
+## Borradores
+
+Cada esquema de contenido entrega un `draft: boolean` (por defecto `false`).
+Establece `draft: true` para mantener una entrada fuera de los listados, el
+sitemap y el conjunto publicado de la compilación mientras trabajas en ella.

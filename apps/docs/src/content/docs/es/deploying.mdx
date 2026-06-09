@@ -1,0 +1,128 @@
+---
+title: Despliegue
+description: Publica en Node, Cloudflare Pages, Netlify o Vercel — y cómo funciona la acción de servidor del formulario de contacto en hosts por lo demás estáticos.
+lastUpdated: 2026-06-09
+tags: [guía]
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
+
+Dónde despliegas depende de una pregunta: **¿el sitio necesita cómputo en el
+servidor?**
+
+- La plantilla **docs** es totalmente estática (`output: 'static'`, sin
+  adaptador, sin código de servidor). `astro build` emite `dist/` — déjalo en
+  cualquier host estático.
+- La **starter** entrega un formulario de contacto construido sobre **Astro
+  Actions**, que se ejecutan en el servidor. Fija el adaptador `@astrojs/node`
+  para que ese endpoint tenga dónde correr. Para desplegar en otro sitio,
+  cambias el adaptador para que coincida con el host.
+
+<Callout variant="note" title="Páginas estáticas en cualquier caso">
+  Incluso con un adaptador, `output: 'static'` significa que cada página es HTML
+  pre-renderizado. Solo el endpoint de la acción se renderiza en el servidor — así
+  que mantienes el perfil de rendimiento y solo necesitas un lugar para ejecutar
+  esa única función.
+</Callout>
+
+## Hosts estáticos (docs, o starter sin el formulario)
+
+Si no hay código de servidor, la compilación es portable:
+
+<CodeBlock filename="terminal" language="bash">{`pnpm build   # → dist/`}</CodeBlock>
+
+Apunta Cloudflare Pages, Netlify, GitHub Pages o cualquier CDN a `dist/`. Comando
+de compilación `pnpm build`, directorio de salida `dist`. Listo.
+
+## Node
+
+El predeterminado de la starter. Compila y luego ejecuta la entrada del servidor
+autónomo:
+
+<CodeBlock filename="terminal" language="bash">{`pnpm build
+node ./dist/server/entry.mjs`}</CodeBlock>
+
+Ponlo detrás de un proxy inverso (Caddy, nginx) o en un contenedor. Establece las
+variables de entorno de correo (mira [Formulario de contacto y correo](/es/contact-form))
+en el entorno de ejecución.
+
+## Netlify / Vercel
+
+Para desplegar la starter (con su acción de servidor) en uno de estos, cambia el
+adaptador. El cambio son dos líneas más la dependencia:
+
+<CodeBlock filename="astro.config.mjs">{`import { defineConfig } from 'astro/config';
+import netlify from '@astrojs/netlify'; // or @astrojs/vercel
+
+export default defineConfig({
+  output: 'static',
+  adapter: netlify(),
+  // …the rest is unchanged
+});`}</CodeBlock>
+
+<CodeBlock filename="terminal" language="bash">{`pnpm add @astrojs/netlify   # or @astrojs/vercel`}</CodeBlock>
+
+El adaptador convierte el endpoint de la acción en una función serverless / edge
+en tiempo de compilación. Las páginas estáticas siguen desplegándose en el CDN;
+la función maneja el POST del formulario. Lo mismo aplica a **Cloudflare Workers**
+con `@astrojs/cloudflare` — pero no a Cloudflare Pages; mira abajo.
+
+<Callout variant="warn" title="Un adaptador a la vez">
+  Mantén exactamente un adaptador en `astro.config.mjs`. Quitarlo por completo
+  rompe el formulario de contacto (la acción no tiene dónde correr); mira la
+  alternativa de abajo.
+</Callout>
+
+## Cloudflare Pages
+
+No eches mano de `@astrojs/cloudflare` aquí — el adaptador actual emite una
+compilación de Worker que Pages no puede ejecutar. El patrón que funciona (y el
+que entrega el propio sitio de marketing de astro-ignite) es una **compilación
+totalmente estática más una Pages Function escrita a mano**:
+
+1. Mantén `output: 'static'` y **sin adaptador**. `pnpm build` emite un `dist/`
+   plano; Pages lo sirve desde el CDN.
+2. Escribe el manejador del formulario como una Pages Function en
+   `functions/api/contact.ts` — un `onRequestPost` que valida los campos,
+   comprueba el honeypot y habla con la API HTTP de tu proveedor de correo,
+   leyendo los secretos del binding `env` de la función (establécelos como
+   variables cifradas en el proyecto de Pages).
+3. Reapunta el `<form>` de contacto a `/api/contact` y elimina la Astro Action.
+   Cloudflare despliega el directorio `functions/` junto a `dist/`
+   automáticamente.
+
+Para un manejador completo y copiable, mira
+[`apps/site/functions/api/contact.ts`](https://github.com/JordiParraCrespo/astro-ignite/blob/main/apps/site/functions/api/contact.ts)
+en el repo de astro-ignite — ese archivo es exactamente este patrón en
+producción.
+
+## El formulario de contacto en un host puramente estático
+
+Si quieres un despliegue solo estático (sin funciones en absoluto), la acción de
+servidor no puede ejecutarse. Dos opciones limpias:
+
+1. **Usa la capa de funciones del host directamente.** En Netlify y Vercel el
+   adaptador compila la acción en una función serverless — sin trabajo extra. En
+   Cloudflare Pages, escribe la pequeña Pages Function a mano (mira arriba). En
+   cualquier caso el formulario se queda en el servidor, propiedad de tu código.
+2. **Delega el formulario.** Reapunta el `<form>` a un endpoint de formularios de
+   terceros (Formspree, Web3Forms, tu propio webhook) y elimina la acción.
+   Pierdes la validación tipada de Zod y el honeypot, pero el despliegue es puro
+   estático.
+
+<Callout variant="tip" title="Por qué el formulario está en el servidor">
+  La acción valida la entrada con Zod, filtra un campo honeypot y habla con tu
+  proveedor de correo con una clave secreta — nada de lo cual puede vivir de forma
+  segura en el navegador. El patrón de función mantiene la clave en el servidor
+  mientras el resto del sitio se queda estático.
+</Callout>
+
+## Antes de publicar
+
+- Establece `siteConfig.url` a tu origen de producción — impulsa las URLs
+  canónicas, el sitemap, las etiquetas OG y `robots.txt`.
+- Establece las variables de entorno de correo + analítica en el panel del host,
+  no en el repo.
+- Vuelve a ejecutar `pnpm build` localmente primero; saca a la luz errores de
+  esquema y de tipo que el host de otro modo fallaría.
