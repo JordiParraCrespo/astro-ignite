@@ -14,6 +14,8 @@ Small, owned helpers. Named exports, no side-effecting imports.
   `getProjectsForLocale(locale, order)` (locale-filtered, sorted by
   `datePublished`; `order` is `'asc' | 'desc'`, default `'desc'`) and
   `projectSlug(project)` to strip the locale prefix off an entry id.
+- `reading-time.ts` — `readingTimeMinutes(body)` estimates reading time
+  at 200 wpm; used for the "{n} min read" badge on blog cards.
 - `image/blur.ts` — blur-placeholder data for non-LCP images (heroes use
   `PriorityImage`, which deliberately has no blur).
 - `jsonld/` — typed `schema-dts` node builders, one per type

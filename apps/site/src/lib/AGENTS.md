@@ -5,18 +5,18 @@ Small, owned helpers. Named exports, no side-effecting imports.
 ## Files
 
 - `cn.ts` — class-merge helper used by every component.
-- `toast.ts` — `toast(...)` dispatches a `window` event consumed by
-  `<Toaster />` (`components/ui/toaster.astro`).
+- `blog.ts` — locale-filtered fetch + sort for the `blog` collection,
+  plus site-specific utilities: `GLYPH_MAP` (tag → display glyph),
+  `glyphFor`, `initialsFor`, adjacency, and pagination meta. Routes
+  don't query the collection directly.
+- `clipboard.ts` — `copyToClipboard(text)` thin wrapper around the
+  Clipboard API; returns `false` when unavailable.
 - `image/blur.ts` — blur-placeholder data for non-LCP images (heroes use
   `PriorityImage`, which deliberately has no blur).
 - `jsonld/` — typed `schema-dts` node builders, one per type
   (`organization`, `person`, `website`, `webPage`, `blogPosting`,
   `creativeWork`, `breadcrumbList`) + `types.ts` and an `index.ts`
   barrel. Layouts assemble these into the page `@graph`.
-- `email/` — provider abstraction for the contact form: `index.ts`
-  (the seam) + `resend.ts` + `smtp.ts`. **The CLI strips these deps when
-  a template doesn't ship `email/index.ts`** — keep that file as the
-  detection point.
 
 ## Rules
 
