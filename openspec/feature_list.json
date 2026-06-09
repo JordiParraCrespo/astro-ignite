@@ -46,9 +46,9 @@
       "name": "docs-site-component-reference",
       "title": "Docs site: component reference for every registry item",
       "capabilities": ["registry-atoms"],
-      "description": "ROADMAP.md Checkpoint 3. One reference page per registry item (19 UI items + cn lib), each with a live demo via the docs template's ComponentShowcase, a code example, a props table, and 'ships pre-installed in both templates — copy from the registry to use elsewhere'. No add-command wording.",
+      "description": "ROADMAP.md Checkpoint 3. One reference page per registry item (23 UI items + cn lib — incl. the four form atoms select/checkbox/radio-group/switch from Checkpoint 2b), each with a live demo via the docs template's ComponentShowcase, a code example, a props table, and 'ships pre-installed in both templates — copy from the registry to use elsewhere'. No add-command wording.",
       "acceptance": [
-        "One page per registry.json item under apps/docs (19 registry:ui + cn), each rendering a live ComponentShowcase demo, an import/usage code example, and a props table",
+        "One page per registry.json item under apps/docs (23 registry:ui + cn), each rendering a live ComponentShowcase demo, an import/usage code example, and a props table",
         "Compound families (card, tabs, accordion, dialog, dropdown-menu) document all their parts on the family page",
         "No page implies an `astro-ignite add` command exists",
         "English first, Spanish after content freeze",

@@ -2,6 +2,10 @@
 import { actions, isInputError } from 'astro:actions';
 
 import Button from '@/components/ui/button.astro';
+import Input from '@/components/ui/input.astro';
+import Textarea from '@/components/ui/textarea.astro';
+import Select from '@/components/ui/select.astro';
+import Label from '@/components/ui/label.astro';
 import Text from '@/components/ui/text.astro';
 import { useTranslations } from '@/i18n';
 import { siteConfig } from '@/config/site';
@@ -13,6 +17,8 @@ const t = useTranslations(locale);
 // Method-override for the form means submissions land here as POST.
 const result = Astro.getActionResult(actions.contact);
 const inputError = result?.error && isInputError(result.error) ? result.error : null;
+
+const subjects = ['general', 'support', 'feedback'] as const;
 ---
 
 <section class="mx-auto max-w-[36rem] px-5 pt-12 pb-16">
@@ -43,15 +49,10 @@ const inputError = result?.error && isInputError(result.error) ? result.error : 
     )
   }
 
-  <form
-    method="POST"
-    action={actions.contact}
-    class="flex flex-col gap-5 [&_input]:rounded-lg [&_input]:border [&_input]:border-(--color-border) [&_input]:bg-(--color-bg) [&_input]:px-3 [&_input]:py-2.5 [&_input]:font-[inherit] [&_input]:text-base [&_input]:text-(--color-fg) [&_input]:transition-colors [&_input]:duration-150 [&_input]:ease-(--ease-out-soft) focus-visible:[&_input]:border-(--color-primary) focus-visible:[&_input]:shadow-[0_0_0_3px_color-mix(in_oklch,var(--color-primary)_25%,transparent)] focus-visible:[&_input]:outline-none [&_textarea]:rounded-lg [&_textarea]:border [&_textarea]:border-(--color-border) [&_textarea]:bg-(--color-bg) [&_textarea]:px-3 [&_textarea]:py-2.5 [&_textarea]:font-[inherit] [&_textarea]:text-base [&_textarea]:text-(--color-fg) [&_textarea]:transition-colors [&_textarea]:duration-150 [&_textarea]:ease-(--ease-out-soft) focus-visible:[&_textarea]:border-(--color-primary) focus-visible:[&_textarea]:shadow-[0_0_0_3px_color-mix(in_oklch,var(--color-primary)_25%,transparent)] focus-visible:[&_textarea]:outline-none"
-    novalidate
-  >
+  <form method="POST" action={actions.contact} class="flex flex-col gap-5" novalidate>
     <div class="flex flex-col gap-1.5">
-      <label for="name" class="text-sm font-medium text-(--color-fg)">{t('contact.name')}</label>
-      <input
+      <Label for="name">{t('contact.name')}</Label>
+      <Input
         id="name"
         name="name"
         type="text"
@@ -70,8 +71,8 @@ const inputError = result?.error && isInputError(result.error) ? result.error : 
     </div>
 
     <div class="flex flex-col gap-1.5">
-      <label for="email" class="text-sm font-medium text-(--color-fg)">{t('contact.email')}</label>
-      <input
+      <Label for="email">{t('contact.email')}</Label>
+      <Input
         id="email"
         name="email"
         type="email"
@@ -90,16 +91,22 @@ const inputError = result?.error && isInputError(result.error) ? result.error : 
     </div>
 
     <div class="flex flex-col gap-1.5">
-      <label for="message" class="text-sm font-medium text-(--color-fg)"
-        >{t('contact.message')}</label
-      >
-      <textarea
+      <Label for="subject">{t('contact.subject')}</Label>
+      <Select id="subject" name="subject">
+        {subjects.map((value) => <option value={value}>{t(`contact.subjects.${value}`)}</option>)}
+      </Select>
+    </div>
+
+    <div class="flex flex-col gap-1.5">
+      <Label for="message">{t('contact.message')}</Label>
+      <Textarea
         id="message"
         name="message"
-        rows="6"
+        rows={6}
         required
         aria-invalid={inputError?.fields.message ? 'true' : undefined}
-        aria-describedby={inputError?.fields.message ? 'message-error' : undefined}></textarea>
+        aria-describedby={inputError?.fields.message ? 'message-error' : undefined}
+      />
       {
         inputError?.fields.message && (
           <Text variant="small" id="message-error" class="text-(--color-danger)">

@@ -82,7 +82,7 @@ The deployed templates ARE the launch demo; every shipped feature must be visibl
 
 Two gaps that make the "shadcn-style CLI" claim aspirational rather than true.
 
-- [ ] **Form atoms** (the credibility gap — "shadcn-style" with no form controls is a tell): add `select`, `checkbox`, `radio-group`, `switch` to `packages/registry` and both templates' `src/components/ui/`. Native HTML, no framework, tokens-only, a11y-clean. Refactor the starter contact form to consume them.
+- [x] **Form atoms** (the credibility gap — "shadcn-style" with no form controls is a tell): add `select`, `checkbox`, `radio-group`, `switch` to `packages/registry` and both templates' `src/components/ui/`. Native HTML, no framework, tokens-only, a11y-clean. Refactor the starter contact form to consume them.
 - [ ] **shadcn-schema-conformant, publicly consumable registry** (the headline shadcn-2025 move — see [CLI 3.0 / namespaces](https://ui.shadcn.com/docs/registry/namespace)): make `registry.json` conform to the shadcn 3.0 registry schema and emit per-item JSON (`/r/<name>.json`) at build, hosted on the site, so `npx shadcn@latest add @astro-ignite/<name>` copies an atom into _any_ project (shadcn's registry copies arbitrary files — it doesn't care the atoms are `.astro`). Namespace: `@astro-ignite`. This is the cheap on-ramp to the AI-native story too: shadcn's MCP server can already read a schema-conformant registry (the registry MCP server itself is 0.3.0).
 - **Done when:** a stranger can `npx shadcn add @astro-ignite/button` into a blank project and get a working file; the starter contact form is built from the shipped form atoms.
 
