@@ -37,7 +37,7 @@ Or simpler:
 
 ```bash
 pnpm build
-npx serve dist/client &
+npx serve dist &
 # open Chrome DevTools → Lighthouse → Mobile, run audit on the served URL
 ```
 
