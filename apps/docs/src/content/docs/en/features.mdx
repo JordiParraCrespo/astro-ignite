@@ -22,9 +22,9 @@ Native i18n with one code path for monolingual and multilingual sites. Pick loca
 
 Typed Schema.org JSON-LD built from `schema-dts`, OG images, sitemap with locale alternates, and Plausible analytics that respect cookie consent.
 
-- `src/lib/jsonld.ts` builds `WebPage`, `BreadcrumbList`, `Article` etc.
+- `src/lib/jsonld/` builds `WebPage`, `BreadcrumbList`, `Article` etc.
 - `Analytics.astro` lazy-loads Plausible only after consent
-- Per-page OG images generated at build time from `src/lib/og/`
+- Default OG image at `public/og/og-default.png`; override per-locale or per-page via frontmatter
 
 ## Legal templates & cookie consent
 
@@ -54,7 +54,7 @@ A Zinc-based design system in CSS variables, dark by default, with a no-flash th
 
 - `src/styles/global.css` defines the design tokens
 - `ThemeToggle.astro` flips `--color-*` variables; the anti-flash script runs before paint
-- Self-hosted Geist Sans + Mono via `astro:assets` (zero CLS on swap)
+- Self-hosted Geist Sans + Mono via `astro:fonts` (zero CLS on swap)
 
 ## Performance
 
