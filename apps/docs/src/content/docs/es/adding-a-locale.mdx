@@ -1,0 +1,94 @@
+---
+title: Añadir un idioma
+description: Activa un segundo idioma — el array locales, el contenido y las cadenas de UI paralelas que espera, y qué hace el LocaleSwitcher con las brechas.
+lastUpdated: 2026-06-09
+tags: [guía]
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import Steps from '@/components/docs/Steps.astro';
+import Step from '@/components/docs/Step.astro';
+
+La i18n está conectada desde el principio. El `siteConfig.locales: ['en']` por
+defecto mantiene las rutas paralelas inactivas; añadir un idioma es una edición
+de configuración más los archivos traducidos que lo respaldan.
+
+<Steps>
+  <Step title="Añade el idioma a siteConfig">
+    En `src/config/site.ts`, añade el código a `locales` y dale los metadatos por
+    idioma que la configuración ya indexa por lengua:
+
+    ```ts {3}
+    export const siteConfig = {
+      defaultLocale: 'en',
+      locales: ['en', 'es'],
+      name: { en: 'Acme', es: 'Acme' },
+      description: { en: '…', es: '…' },
+      // hreflang already maps common codes: es → es-ES, etc.
+    };
+    ```
+
+    `astro.config.mjs` lee `i18n.locales` directamente de aquí — no hay nada que
+    cambiar ahí. El idioma por defecto se queda en `/`; el nuevo se enruta bajo
+    `/<lang>/`.
+
+  </Step>
+
+  <Step title="Añade el diccionario de cadenas de UI">
+    Copia `src/i18n/en.json` a `src/i18n/<idioma>.json` y traduce los valores.
+    Mantén **exactamente las mismas claves** — `en.json` define la forma del
+    diccionario, así que una clave ausente es un error de tipo y una extra se
+    ignora.
+
+    ```bash
+    cp src/i18n/en.json src/i18n/es.json
+    # then translate the values in es.json
+    ```
+
+  </Step>
+
+  <Step title="Traduce el contenido">
+    Por cada entrada de colección que deba existir en el nuevo idioma, añade una
+    hermana bajo la carpeta de ese idioma, manteniendo el **mismo slug**:
+
+    ```text
+    src/content/blog/en/launch.mdx
+    src/content/blog/es/launch.mdx   ← same slug, translated body + frontmatter
+    ```
+
+    Las rutas catch-all las recogen automáticamente — `/blog/launch` y
+    `/es/blog/launch` renderizan ambas.
+
+  </Step>
+
+  <Step title="Replica cualquier página escrita a mano">
+    Las páginas `.astro` personalizadas necesitan una paralela `[lang]/` (mira
+    [Añadir contenido](/es/adding-content)). Las páginas que se entregan ya tienen
+    la suya, así que empiezan a funcionar en el nuevo idioma en cuanto está en
+    `locales`.
+  </Step>
+</Steps>
+
+## Qué hace el LocaleSwitcher con las brechas
+
+No tienes que traducir todo de una vez. El `LocaleSwitcher` aparece en el chrome
+en el momento en que hay más de un idioma, y la navegación se degrada con
+elegancia:
+
+- **Un elemento de la barra lateral / navegación cuyo slug no tiene entrada en el
+  idioma actual se oculta** — así un lector en español nunca ve un enlace que
+  daría un 404. Un grupo vacío desaparece por completo.
+- Los enlaces internos se resuelven a través de `getRelativeLocaleUrl(lang, path)`,
+  así que siempre apuntan al prefijo de idioma correcto.
+
+<Callout variant="note" title="hreflang es automático">
+  El sitemap emite alternativas `hreflang` por cada idioma que configures, y cada
+  página localizada enlaza a sus hermanas — los buscadores ven las relaciones sin
+  trabajo extra.
+</Callout>
+
+<Callout variant="tip" title="El contenido sin traducir queda invisible, no roto">
+  Entrega un idioma solo con las páginas que has traducido. Añade el resto con el
+  tiempo; cada archivo nuevo simplemente aparece. No hay un estado 404
+  a-medio-localizar que gestionar.
+</Callout>

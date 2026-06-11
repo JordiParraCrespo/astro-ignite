@@ -1,0 +1,119 @@
+---
+title: Usar componentes
+description: Cómo funcionan los átomos preinstalados — props y variantes, el helper de clases cn, las familias compuestas y cómo reutilizarlos en otro proyecto.
+lastUpdated: 2026-06-09
+tags: [guía]
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
+
+Ambas plantillas entregan el conjunto completo de componentes base
+**preinstalado** en `src/components/ui/` — copiado del registro de astro-ignite,
+propiedad de tu repo. No hay paso de instalación ni dependencia en tiempo de
+ejecución; los importas como cualquier archivo local y los editas libremente.
+
+```astro
+---
+import Button from '@/components/ui/button.astro';
+---
+
+<Button variant="outline" size="sm" href="/contact">Get in touch</Button>
+```
+
+Explora cada átomo renderizado en vivo, con props y código fuente, en
+[Componentes](/es/components).
+
+## Props y variantes
+
+Los átomos son componentes de Astro tipados. Siguen una forma consistente:
+
+- **Props de variante + tamaño** donde tiene sentido. `Button` toma
+  `variant` (`default` · `secondary` · `outline` · `ghost` · `destructive` ·
+  `link`) y `size` (`sm` · `md` · `lg` · `icon`).
+- **Polimorfismo `as`-por-`href`.** Pasa `href` y el componente renderiza un
+  `<a>`; omítelo y obtienes un `<button>`. Los atributos nativos correctos están
+  tipados para cada caso.
+- **Un paso a través de `class`.** Cualquier cosa que pases se fusiona sobre las
+  clases base (mira `cn` abajo), así que puedes extender sin bifurcar.
+- **Difusión `...rest`.** Los atributos restantes (`type`, `aria-*`, `data-*`, …)
+  aterrizan en el elemento subyacente.
+
+<Callout variant="note" title="Tokens, no color codificado">
+  Las variantes están escritas en utilidades de Tailwind que resuelven tokens
+  (`bg-primary`, `text-fg`, `border-border`). Por eso una edición de
+  [tema](/es/theming) reestiliza cada átomo de una vez — y por eso tus
+  sobreescrituras también deberían usar tokens.
+</Callout>
+
+## El helper `cn`
+
+Cada átomo fusiona clases con `cn` desde `src/lib/cn.ts`. Aplana cadenas, arrays
+y objetos condicionales en una sola cadena de clases:
+
+<CodeBlock filename="example.astro">{`import { cn } from '@/lib/cn';
+
+cn('px-3', 'py-2', isActive && 'bg-surface-2', { 'opacity-50': disabled });
+// → "px-3 py-2 bg-surface-2"  (falsy values dropped)`}</CodeBlock>
+
+<Callout variant="note" title="Une, no resuelve conflictos">
+  `cn` es un pequeño unificador condicional — **no** resuelve clases de Tailwind
+  en conflicto como lo haría `tailwind-merge`. Si pasas `p-2` _y_ `p-4`, ambos
+  acaban en la cadena; deja que la última utilidad o `!important` gane, o elimina
+  la que no quieras.
+</Callout>
+
+## Familias compuestas
+
+Cinco familias se entregan como múltiples partes — un archivo por parte — para
+que compongas la estructura tú mismo. Importa las partes que necesites:
+
+<CodeBlock filename="card-example.astro">{`---
+import Card from '@/components/ui/card/card.astro';
+import CardHeader from '@/components/ui/card/card-header.astro';
+import CardTitle from '@/components/ui/card/card-title.astro';
+import CardDescription from '@/components/ui/card/card-description.astro';
+import CardContent from '@/components/ui/card/card-content.astro';
+---
+
+<Card>
+  <CardHeader>
+    <CardTitle>Plan</CardTitle>
+    <CardDescription>Everything you need to launch.</CardDescription>
+  </CardHeader>
+  <CardContent>…</CardContent>
+</Card>`}</CodeBlock>
+
+Las familias y sus partes:
+
+| Familia | Partes |
+| --- | --- |
+| `card` | card, card-header, card-title, card-description, card-content, card-footer |
+| `tabs` | tabs, tabs-list, tabs-trigger, tabs-content |
+| `accordion` | accordion, accordion-item |
+| `dialog` | dialog, dialog-title, dialog-description |
+| `dropdown-menu` | dropdown-menu, dropdown-menu-item |
+
+Las interactivas usan primitivos nativos — `<dialog>` para el diálogo, la API de
+popover para dropdown-menu, `<details name>` para el acordeón y el elemento
+personalizado `<ai-tabs>` para las pestañas. Sin React, sin Radix, sin runtime de
+framework.
+
+## Toasts
+
+Los toasts son imperativos. Renderiza `<Toaster />` una vez (los layouts ya lo
+hacen), luego dispara uno desde cualquier sitio con el helper:
+
+<CodeBlock filename="example.ts">{`import { toast } from '@/lib/toast';
+
+toast('Saved', { description: 'Your changes are live.' });`}</CodeBlock>
+
+Despacha un evento de `window` que el `<Toaster />` escucha.
+
+## Reutilizar un componente en otro sitio
+
+Estos átomos no se publican como una biblioteca importable — tú eres dueño de las
+copias en tu proyecto. Para usar uno en un proyecto **diferente**, copia el
+archivo (y su dependencia `cn`) desde la fuente del registro en
+[`packages/registry/base/`](https://github.com/JordiParraCrespo/astro-ignite/tree/main/packages/registry/base).
+Las familias compuestas traen su carpeta entera.

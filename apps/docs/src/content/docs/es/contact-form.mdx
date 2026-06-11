@@ -1,0 +1,100 @@
+---
+title: Formulario de contacto y correo
+description: Cómo funciona el flujo de contacto con Astro Actions, y las variables de entorno de Resend o SMTP que lo hacen entregar correo en producción.
+lastUpdated: 2026-06-09
+tags: [guía]
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
+
+La starter entrega un formulario de contacto funcional — validado, filtrado
+contra spam y conectado a un proveedor de correo. En desarrollo registra en la
+consola; en producción envía correo real una vez que estableces unas pocas
+variables de entorno. Nada está simulado.
+
+## El flujo
+
+El formulario es una **Astro Action**, definida en `src/actions/index.ts`:
+
+<CodeBlock filename="src/actions/index.ts">{`export const server = {
+  contact: defineAction({
+    accept: 'form',
+    input: z.object({
+      name: z.string().min(1).max(100),
+      email: z.email().max(254),
+      message: z.string().min(10).max(5000),
+      _website: z.string().max(0).optional(), // honeypot
+    }),
+    handler: async (input) => {
+      if (input._website) return { ok: true }; // bot — silently drop
+      await sendContactEmail(input);
+      return { ok: true };
+    },
+  }),
+};`}</CodeBlock>
+
+Qué ocurre al enviar:
+
+1. La página publica directamente a la acción: `<form method="post" action={actions.contact}>`. Astro maneja la mejora progresiva.
+2. **Zod valida** nombre / correo / mensaje; una entrada inválida devuelve un error tipado que la página renderiza en línea.
+3. El campo **honeypot** `_website` (oculto para humanos, irresistible para bots) cortocircuita con un éxito silencioso.
+4. La entrada válida se pasa a `sendContactEmail` — la costura del proveedor en `src/lib/email/`.
+5. La página lee el resultado con `Astro.getActionResult(actions.contact)` y muestra éxito o error.
+
+<Callout variant="warn" title="Las acciones necesitan un servidor">
+  La acción se ejecuta en el servidor, así que la starter fija el adaptador
+  `@astrojs/node`. En Cloudflare / Netlify / Vercel, cambia el adaptador para que
+  se despliegue como una función — mira [Despliegue](/es/deploying).
+</Callout>
+
+## La costura de correo
+
+`src/lib/email/index.ts` reexporta el `sendContactEmail` de un proveedor. La CLI
+escribe el import correcto según el proveedor que elijas en el momento de
+generar el proyecto:
+
+- **Resend** (por defecto) → `./resend.ts`
+- **SMTP** → `./smtp.ts`
+- **Ninguno** → un registrador de consola que imprime los envíos con una
+  advertencia de "configura tu proveedor"
+
+Cambia de proveedor en cualquier momento editando ese único import. Como la
+acción solo conoce la costura, nada aguas abajo cambia.
+
+## Variables de entorno
+
+Copia `.env.example` a `.env` y rellena lo que tu proveedor necesite. **El
+desarrollo local funciona sin ninguna de estas establecidas** — los envíos se
+registran en la consola.
+
+### Resend
+
+<CodeBlock filename=".env">{`RESEND_API_KEY=re_xxxxxxxx     # from resend.com
+CONTACT_TO_EMAIL=you@example.com`}</CodeBlock>
+
+### SMTP
+
+<CodeBlock filename=".env">{`SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_USER=postmaster@example.com
+SMTP_PASS=••••••••
+SMTP_FROM="Acme <hello@example.com>"
+CONTACT_TO_EMAIL=you@example.com`}</CodeBlock>
+
+`CONTACT_TO_EMAIL` es donde se entregan los envíos, sin importar el proveedor.
+
+<Callout variant="note" title="Establécelas donde corre el servidor">
+  Las variables de entorno van en el panel de tu host (o en el entorno de
+  ejecución para un despliegue en Node), nunca confirmadas en el repo. En hosts
+  estáticos van en la función que ejecuta la acción.
+</Callout>
+
+## Personalización
+
+- **Añadir un campo** → extiende el esquema `input` de Zod y añade el `<input>`
+  correspondiente a `src/pages/contact.astro`. El tipo fluye automáticamente.
+- **La protección anti-spam más fuerte** se deja fuera a propósito — el honeypot
+  cubre lo básico; añade Turnstile o hCaptcha si necesitas más.
+- **Cambiar el cuerpo del correo** → edita `src/lib/email/resend.ts` (o
+  `smtp.ts`).

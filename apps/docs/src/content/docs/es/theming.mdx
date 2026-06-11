@@ -1,0 +1,170 @@
+---
+title: Temas y tokens
+description: Reviste todo el sitio editando variables CSS en global.css — los tokens de diseño, el modo oscuro de tres estados y cómo los componentes los resuelven.
+lastUpdated: 2026-06-09
+tags: [guía]
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import Steps from '@/components/docs/Steps.astro';
+import Step from '@/components/docs/Step.astro';
+
+Cada color, radio, sombra y fuente de un sitio astro-ignite se resuelve a través
+de un pequeño conjunto de **variables CSS** declaradas en `src/styles/global.css`.
+Los componentes nunca codifican un color de forma fija — leen tokens como
+`--color-bg` y `--color-primary`. Así, un cambio de aspecto completo son unas
+pocas ediciones en un solo archivo, no un barrido por todo el árbol.
+
+## La capa de tokens
+
+Los tokens viven en un bloque `@theme` de Tailwind v4 al principio de
+`global.css`. Hay dos niveles:
+
+- **La escala zinc** (`--color-zinc-50` … `--color-zinc-950`) — valores de
+  paleta en crudo, invariantes al tema. La única fuente de verdad para cada
+  neutro.
+- **Tokens funcionales** — nombres semánticos que _apuntan a_ la escala. Los
+  componentes solo referencian estos:
+
+| Token | Rol |
+| --- | --- |
+| `--color-bg` | Fondo de la página |
+| `--color-surface`, `--color-surface-2` | Paneles elevados, recuadros |
+| `--color-fg` | Texto del cuerpo |
+| `--color-fg-muted`, `--color-fg-subtle` | Texto secundario / terciario |
+| `--color-border`, `--color-border-strong` | Líneas finas, divisores más marcados |
+| `--color-primary`, `--color-primary-fg` | Relleno interactivo + su texto |
+| `--color-ring` | Anillo de foco |
+| `--color-success` / `--color-warning` / `--color-danger` | Solo estados funcionales |
+
+Más allá del color, el mismo bloque define `--font-display` / `--font-mono`,
+`--radius`(`-sm`/`-md`/`-lg`), `--shadow`(`-sm`), los anchos de contenedor y la
+curva de movimiento `--ease-out-soft`.
+
+<Callout variant="note" title="Sin acento por defecto">
+  El diseño que se entrega no tiene color de acento — el color interactivo es
+  simplemente el neutro invertido (casi blanco sobre casi negro). Introducir un
+  acento de marca es el rediseño más común; el recorrido de abajo hace
+  exactamente eso.
+</Callout>
+
+## Cómo leen los tokens los componentes
+
+Los componentes expresan el color mediante utilidades de Tailwind v4 que
+resuelven un token — ya sea el atajo mapeado al tema (`bg-primary`, `text-fg`,
+`border-border`) o la forma arbitraria (`bg-[var(--color-bg)]`). Por ejemplo, la
+variante por defecto del átomo `button` es `bg-primary text-primary-fg`. Cambia
+`--color-primary` una vez y todos los botones, enlaces y estados de foco se
+mueven con él.
+
+No hay una hoja de estilos aparte que mantener sincronizada:
+`inlineStylesheets: 'always'` envía la hoja de estilos completa en el HTML en el
+primer renderizado, así que editar un token es todo el cambio.
+
+## Modo oscuro de tres estados
+
+El diseño es **oscuro primero**. Sin ninguna clase en `<html>`, se aplican los
+valores de `@theme`. Una clase `.light` voltea los tokens funcionales a sus
+valores claros:
+
+```css
+.light {
+  --color-bg: var(--color-zinc-50);
+  --color-fg: var(--color-zinc-950);
+  --color-primary: var(--color-zinc-900);
+  /* …el resto de los tokens funcionales, reapuntados a la escala */
+}
+```
+
+El tercer estado es "forzar oscuro en una página clara" — una clase `.dark` gana
+sobre `.light`, conectada mediante una sola declaración:
+
+```css
+@variant dark (&:where(:not(.light), :not(.light) *));
+```
+
+`ThemeToggle.astro` voltea la clase `.light` y persiste la elección en
+`localStorage`; un script en línea anti-parpadeo en `BaseLayout` aplica la
+preferencia guardada antes del primer renderizado, así que no hay parpadeo. El
+valor por defecto en la primera visita difiere por plantilla: la plantilla
+**docs** lo expone como `siteConfig.defaultTheme` (`light` | `dark` | `system`,
+entregando `light`), mientras que la **starter** no tiene perilla de
+configuración — su script anti-parpadeo recurre a la preferencia del sistema
+cuando no hay nada guardado.
+
+## Recorrido: un rediseño real
+
+Dale al sitio un acento de marca violeta y esquinas algo más redondeadas — sin
+tocar ni un solo componente.
+
+<Steps>
+  <Step title="Añade tu color de marca a la escala">
+    Declara los nuevos valores de paleta junto a la escala zinc en el bloque
+    `@theme`, para que ambos temas puedan apuntar a ellos:
+
+    ```css
+    @theme {
+      /* …escala zinc existente… */
+      --color-brand: oklch(62% 0.21 280);
+      --color-brand-fg: var(--color-zinc-50);
+    }
+    ```
+
+  </Step>
+
+  <Step title="Reapunta los tokens funcionales">
+    Haz que `--color-primary` sea tu color de marca (modo oscuro), y el anillo de
+    foco un tinte de él:
+
+    ```css {3,4}
+    @theme {
+      /* tokens funcionales */
+      --color-primary: var(--color-brand);
+      --color-primary-fg: var(--color-brand-fg);
+      --color-ring: var(--color-brand);
+    }
+    ```
+
+    Haz lo mismo dentro de `.light` para que el acento se mantenga en modo claro.
+
+  </Step>
+
+  <Step title="Redondea las esquinas">
+    Toda la interfaz escala a partir de cuatro tokens de radio. Súbelos de una
+    vez:
+
+    ```css {2}
+    @theme {
+      --radius: 10px;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+    }
+    ```
+
+  </Step>
+
+  <Step title="Ejecútalo">
+    `pnpm dev` y navega un poco. Botones, enlaces, anillos de foco, insignias y
+    tarjetas llevan todos el nuevo acento y radio — porque estuvieron leyendo
+    tokens todo el tiempo. Sin editar componentes, sin buscar y reemplazar.
+  </Step>
+</Steps>
+
+<Callout variant="tip" title="Cambia la tipografía">
+  Las fuentes también son tokens. Reapunta `--font-display` / `--font-mono` y
+  actualiza la canalización de fuentes auto-hospedadas (`astro:fonts`) — mira el
+  análisis a fondo de FONTS en la carpeta `docs/` de la plantilla.
+</Callout>
+
+## Reglas que lo mantienen limpio
+
+- **Solo tokens en los componentes** — nunca `bg-zinc-900` ni un hex en crudo.
+  La escala zinc existe únicamente como la fuente de los valores de los tokens.
+- **Añade un token antes que un color puntual.** Si dos componentes necesitan el
+  mismo color nuevo, es un token.
+- Mantén el bloque `.light` al paso con `@theme`: cada token funcional que
+  añadas necesita un valor claro.
+
+Esta es también la superficie que una futura skill `customize-theme` manejará —
+apunta un agente a "haz el sitio violeta" y editará estos mismos tokens.
