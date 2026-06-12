@@ -1,7 +1,7 @@
 ---
 title: Features
 description: Everything astro-ignite ships with — what each feature does and how it works.
-lastUpdated: 2026-05-11
+lastUpdated: 2026-06-12
 tags: [getting-started, features]
 ---
 
@@ -24,7 +24,7 @@ Typed Schema.org JSON-LD built from `schema-dts`, OG images, sitemap with locale
 
 - `src/lib/jsonld.ts` builds `WebPage`, `BreadcrumbList`, `Article` etc.
 - `Analytics.astro` lazy-loads Plausible only after consent
-- Per-page OG images generated at build time from `src/lib/og/`
+- Default OG image at `public/og/og-default.png`; per-locale variants and dynamic generation covered in `docs/OG.md`
 
 ## Legal templates & cookie consent
 
@@ -44,7 +44,7 @@ Privacy policy, cookie policy, and terms of service templates as content-collect
 
 A shadcn-style registry of pure-Astro primitives. They ship **pre-installed** in `src/components/ui/` in both templates — you own every line. To reuse one in another project, copy it from the registry source.
 
-- 19 primitives: button, link, text, badge, card, input, textarea, label, separator, alert, avatar, skeleton, kbd, tabs, accordion, dialog, dropdown-menu, tooltip, toast
+- 24 primitives: button, link, text, badge, card, input, textarea, label, separator, alert, avatar, skeleton, kbd, tabs, accordion, dialog, dropdown-menu, tooltip, toast, checkbox, switch, select, copy-button, radio-group
 - Zero React/Vue/Svelte runtime — behaviour is custom elements + the native popover/dialog APIs
 - Browse every primitive live under [Components](/components)
 
@@ -72,9 +72,9 @@ Typed content for blog posts, case-study projects, legal documents, and docs the
 - One folder per locale (e.g. `src/content/blog/en/`, `src/content/blog/es/`)
 - Cross-locale links resolved by collection id
 
-## Forms & email
+## Forms & email _(starter only)_
 
-A working contact form built on Astro Actions, Zod validation, and your choice of Resend or SMTP at scaffold time.
+A working contact form built on Astro Actions, Zod validation, and your choice of Resend or SMTP at scaffold time. The `docs` template ships no contact form and no email deps.
 
 - `src/actions/index.ts` for the server action
 - `src/lib/email/` for the provider adapter
