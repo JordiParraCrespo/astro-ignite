@@ -1,7 +1,7 @@
 # i18n
 
 Locale dictionaries + translation helpers. Pairs with the parallel-route
-invariant in `src/pages/AGENTS.md`.
+invariant in the root `AGENTS.md`.
 
 ## Files
 
