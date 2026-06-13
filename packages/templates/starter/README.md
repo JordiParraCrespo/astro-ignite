@@ -14,7 +14,7 @@ Open the URL printed in your terminal. The site has a working blog, projects sho
 ## What ships
 
 - **Astro 6** with native i18n, content collections, and Astro Actions
-- **Tailwind v4** with a layered CSS strategy (above-the-fold scoped, below-the-fold Tailwind)
+- **Tailwind v4** with `inlineStylesheets: 'always'` — full stylesheet inlined in the HTML, no render-blocking CSS request
 - **Geist Sans + Geist Mono** via `astro:fonts` (self-hosted, zero CLS)
 - **Typed Schema.org JSON-LD** built from `schema-dts`
 - **Image components** with AVIF + WebP, responsive `srcset`, blur placeholder
@@ -124,8 +124,8 @@ Then update `adapter:` in `astro.config.mjs`. Static-only deployments (no contac
 
 The scaffold is tuned for Lighthouse 100s on mobile. Key principles encoded in the code:
 
-- Above-the-fold components (Hero, Nav, BaseLayout) use scoped `<style>` blocks — no Tailwind render-blocking
-- Display font (Geist) preloaded; mono font deferred
+- `inlineStylesheets: 'always'` puts the full stylesheet in the HTML on first paint — no render-blocking CSS file
+- Geist fonts are self-hosted and preloaded; zero external font fetches
 - Hero images preloaded via `<link rel="preload">`
 - AVIF + WebP with JPEG fallback, multiple `srcset` widths
 - Anti-flash inline theme script
