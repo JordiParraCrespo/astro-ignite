@@ -1,7 +1,7 @@
 ---
 title: Características
 description: Todo lo que astro-ignite incluye — qué hace cada característica y dónde vive.
-lastUpdated: 2026-05-11
+lastUpdated: 2026-06-12
 tags: [empezando, caracteristicas]
 ---
 
@@ -24,7 +24,7 @@ JSON-LD tipado de Schema.org construido con `schema-dts`, imágenes OG, sitemap 
 
 - `src/lib/jsonld.ts` construye `WebPage`, `BreadcrumbList`, `Article`, etc.
 - `Analytics.astro` carga Plausible de forma diferida solo tras el consentimiento
-- Imágenes OG por página generadas en build desde `src/lib/og/`
+- Imagen OG por defecto en `public/og/og-default.png`; variantes por locale y generación dinámica explicadas en `docs/OG.md`
 
 ## Plantillas legales y consentimiento de cookies
 
@@ -44,7 +44,7 @@ Plantillas de política de privacidad, política de cookies y términos de servi
 
 Un registro estilo shadcn de primitivos puros de Astro. Vienen **preinstalados** en `src/components/ui/` en ambas plantillas — son tuyos, cada línea. Para reutilizar uno en otro proyecto, cópialo desde el código fuente del registro.
 
-- 19 primitivos: button, link, text, badge, card, input, textarea, label, separator, alert, avatar, skeleton, kbd, tabs, accordion, dialog, dropdown-menu, tooltip, toast
+- 24 primitivos: button, link, text, badge, card, input, textarea, label, separator, alert, avatar, skeleton, kbd, tabs, accordion, dialog, dropdown-menu, tooltip, toast, checkbox, switch, select, copy-button, radio-group
 - Cero runtime de React/Vue/Svelte — el comportamiento es custom elements + las APIs nativas de popover/dialog
 - Explora cada primitivo en vivo en [Componentes](/es/components)
 
@@ -72,9 +72,9 @@ Contenido tipado para entradas de blog, proyectos de caso de estudio, documentos
 - Una carpeta por locale (p. ej. `src/content/blog/en/`, `src/content/blog/es/`)
 - Los enlaces entre locales se resuelven por id de colección
 
-## Formularios y email
+## Formularios y email _(solo en starter)_
 
-Un formulario de contacto funcional construido sobre Astro Actions, validación Zod, y tu elección de Resend o SMTP al hacer scaffold.
+Un formulario de contacto funcional construido sobre Astro Actions, validación Zod, y tu elección de Resend o SMTP al hacer scaffold. La plantilla `docs` no incluye formulario de contacto ni dependencias de email.
 
 - `src/actions/index.ts` para la acción del servidor
 - `src/lib/email/` para el adaptador del proveedor
