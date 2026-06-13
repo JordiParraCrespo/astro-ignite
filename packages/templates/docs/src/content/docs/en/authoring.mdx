@@ -1,7 +1,7 @@
 ---
 title: Writing content
-description: The MDX components you can drop into any documentation page — steps, cards, tabbed code, frames, and highlighted code blocks.
-lastUpdated: 2026-06-06
+description: The MDX components you can drop into any documentation page — callouts, steps, cards, tabbed code, frames, and highlighted code blocks.
+lastUpdated: 2026-06-13
 tags: [guide]
 ---
 
@@ -21,6 +21,37 @@ Every component below is wired into the docs renderer in
 `src/components/docs/mdx-components.ts` — import it at the top of any `.mdx`
 file and use it inline. They are plain Astro + vanilla JS, token-resolved, and
 yours to edit.
+
+## Callouts
+
+`<Callout>` highlights important content with a tinted border block. Four
+variants cover the common intents — informational, positive, cautionary, and
+destructive.
+
+<Callout variant="note" title="Note (default)">
+  An informational aside or context the reader should know.
+</Callout>
+
+<Callout variant="tip" title="Tip">
+  A suggestion that makes something faster or easier.
+</Callout>
+
+<Callout variant="warning" title="Heads up">
+  Something the reader should check before proceeding.
+</Callout>
+
+<Callout variant="danger" title="Warning">
+  An action that could cause data loss or breakage.
+</Callout>
+
+```mdx
+<Callout variant="tip" title="Custom title">
+  Body copy goes in the default slot — any MDX is fine.
+</Callout>
+```
+
+`variant` accepts `note` · `tip` · `warning` · `danger` (default: `note`).
+`title` is optional — each variant has a built-in default.
 
 ## Steps
 
