@@ -14,7 +14,7 @@ Non-trivial work in this repo goes through a spec-driven, file-mediated subagent
 - For each pending feature, the `spec_author` subagent (`.claude/agents/spec_author.md`) writes `openspec/changes/<name>/{proposal,design,tasks,specs/<capability>/spec.md}` and stops. **A human approves before code starts** by creating `openspec/changes/<name>/APPROVED`.
 - Then `implementer` writes code + tests in a fresh `openspec/changes/<name>/runs/<ISO-timestamp>/` and commits exclusively via `scripts/committer --design openspec/changes/<name>/design.md` (which rejects out-of-scope paths).
 - Then `reviewer` runs the three-tier verification: `pnpm test`, `pnpm audit:invariants`, `pnpm perf:budget`. Emits `APPROVED` / `CHANGES_REQUESTED` into `runs/<ts>/review.md`.
-- Locked practices below are encoded as machine-checked invariants in `openspec/specs/<capability>/spec.md`. Boundary `AGENTS.md` files at `packages/*/`, `apps/*/`, and `scripts/audit/` (each symlinked to `CLAUDE.md`) point at the relevant spec.
+- Locked practices below are encoded as machine-checked invariants in `openspec/specs/<capability>/spec.md`. Boundary `AGENTS.md` files at `packages/*/`, `apps/*/`, and `scripts/*/` (each paired with a `CLAUDE.md` symlink pointing to it) point at the relevant spec.
 - Run `pnpm doctor` to verify the harness itself is healthy. Run `pnpm audit:invariants --change <name>` to enforce the invariants for an active change.
 
 Set `OPENSPEC_TELEMETRY=0` (already in `.env.example`) when the OpenSpec CLI install path is wired.

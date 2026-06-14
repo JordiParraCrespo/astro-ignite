@@ -14,6 +14,8 @@ verifies and supports the monorepo itself.
   Chrome-for-Testing installer used by the perf gate + banner pipeline.
 - `lib/` — shared helpers imported by the scripts above (no side
   effects, named exports).
+- `cloud/` — cloud and CI entry-point scripts (`bootstrap.sh`, the
+  `SessionStart` hook). Nothing here ships to scaffolded projects.
 - `scaffold-test.mjs` — full e2e: wipes `apps/playground/`, runs the CLI
   `--yes`, installs, builds, Lighthouse. Backs `pnpm scaffold:test`.
 - `generate-placeholder-assets.*` — placeholder image generation.
