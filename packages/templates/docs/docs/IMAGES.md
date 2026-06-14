@@ -62,7 +62,7 @@ Components can't reach into `<head>`, so pages with a hero pass it explicitly:
 </BaseLayout>
 ```
 
-`BaseLayout` renders `<link rel="preload" as="image">` tags for each — the browser starts the request during HTML parse, before component code runs. `ArticleLayout` and `ProjectLayout` do this automatically from the entry's `heroImage`.
+`BaseLayout` renders `<link rel="preload" as="image">` tags for each — the browser starts the request during HTML parse, before component code runs.
 
 ## What's automatic
 
