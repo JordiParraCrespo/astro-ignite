@@ -99,13 +99,16 @@ pnpm format       # prettier --write
 ## End-to-end tests
 
 The workspace ships a Playwright e2e suite at `tests/e2e/`. The
-`starter` Playwright project boots this template via `astro dev` and
-runs every spec under `tests/e2e/common/` plus `tests/e2e/starter/`.
+`playground` Playwright project is the smoke target for this directory.
+It is gated on `PLAYWRIGHT_PLAYGROUND_READY=1` (set by CI after
+`pnpm scaffold:test` runs) — off by default locally so contributors who
+haven't scaffolded a fresh playground are not blocked.
+
 See [`tests/e2e/AGENTS.md`](../../../tests/e2e/AGENTS.md). Scoped run
-from the workspace root:
+from the workspace root (requires the env var):
 
 ```bash
-pnpm test:e2e --project=starter
+PLAYWRIGHT_PLAYGROUND_READY=1 pnpm test:e2e --project=playground
 ```
 
 ## Style of work
