@@ -18,7 +18,7 @@ export const TEMPLATE_KINDS: TemplateKind[] = ['starter', 'docs'];
 
 export const TEMPLATE_LABELS: Record<TemplateKind, string> = {
   starter: 'Starter — marketing site with blog, projects, contact, legal',
-  docs: 'Docs — Starlight-style 3-column documentation site',
+  docs: 'Docs — 3-column documentation site (sidebar, TOC, full-text search)',
 };
 
 export interface ScaffoldContext {
