@@ -72,6 +72,7 @@ packages/
    starter/ # marketing/blog/projects Astro template
    docs/    # docs-site template (no Starlight; built from primitives)
  registry/ # shadcn-style component source: registry.json + base/ + lib/
+ design-fetch/ # build-time CLI that pulls the claude-design bundle (banner pipeline only)
 apps/
  site/ # marketing landing for astro-ignite itself (built via the CLI)
  docs/ # the project's docs site (built via the CLI from docs template)
