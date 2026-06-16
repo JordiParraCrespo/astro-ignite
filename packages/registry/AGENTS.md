@@ -19,7 +19,7 @@ ships compositions. The starter template gets atoms copied into
   `type`, `title`, `description`, `files[]` (each file carries a `type`),
   and `registryDependencies[]`. The graph resolves transitively;
   internal deps stay bare here (`"cn"`) and are namespaced at emit time.
-- **Build emission:** `scripts/build-registry.mjs` resolves every item
+- **Build emission:** `packages/registry/scripts/build-registry.mjs` resolves every item
   into a shadcn `registry-item` JSON (file source inlined as `content`,
   internal deps rewritten to `@astro-ignite/<name>`). `apps/site` runs it
   at `pre(dev|build)` (`--out public/r`) so the payloads are hosted at
