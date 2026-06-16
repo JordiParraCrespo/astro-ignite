@@ -29,9 +29,18 @@ Open the URL printed in your terminal. The site has a working blog, projects sho
 ```
 src/
 ├── actions/              # Astro Actions (server-side form handlers)
-├── components/           # UI components
+├── components/
+│   ├── about/            # About page sections
+│   ├── blog/             # Post cards, pagination, TOC, related posts
+│   ├── common/           # Site chrome (Header, Footer, LocaleSwitcher, ThemeToggle, Hero)
+│   ├── contact/          # Contact form section
+│   ├── error/            # Server error page hero
 │   ├── image/            # Image + PriorityImage wrappers
-│   └── seo/              # SEO + JsonLd
+│   ├── legal/            # Cookie banner
+│   ├── not-found/        # 404 page hero
+│   ├── projects/         # Projects index list
+│   ├── seo/              # SEO + JsonLd
+│   └── ui/               # shadcn-style atoms (Button, Badge, Card, Tabs, Dialog…)
 ├── config/site.ts        # Site-wide configuration — edit this first
 ├── content/              # Content collections
 │   ├── blog/{locale}/    # Blog posts (MDX)
