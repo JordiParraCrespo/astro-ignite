@@ -50,7 +50,7 @@ A `<section>` or `<div>` with `data-pagefind-ignore="all"` is skipped entirely. 
 Pagefind reads frontmatter exposed via `data-pagefind-meta`:
 
 ```astro
-<html lang={lang} data-pagefind-meta={`language:${lang}`}>
+<html lang={lang} data-pagefind-meta={`language:${lang}`}></html>
 ```
 
 The docs template doesn't do this by default. If you need per-language result weighting, add the attribute to `src/layouts/BaseLayout.astro`.

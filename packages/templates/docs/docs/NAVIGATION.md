@@ -11,7 +11,7 @@ The sidebar is defined in `src/config/sidebar.ts`. Edit this file to reshape sec
 ```ts
 export const sidebar: SidebarGroup[] = [
   {
-    group: 'Start here',          // section heading (visible text)
+    group: 'Start here', // section heading (visible text)
     groupKey: 'sidebar.startHere', // optional i18n key — wins over `group` when set
     items: [
       { slug: 'introduction' },
@@ -24,20 +24,20 @@ export const sidebar: SidebarGroup[] = [
 
 ### Slug types
 
-| Value | Resolves to |
-|---|---|
-| `'introduction'` | Doc entry at `src/content/docs/{locale}/introduction.mdx` |
-| `'/components/button'` | Absolute Astro page route `/components/button` |
-| `'https://github.com/…'` | External link (opens in new tab, gets ↗ icon) |
+| Value                    | Resolves to                                               |
+| ------------------------ | --------------------------------------------------------- |
+| `'introduction'`         | Doc entry at `src/content/docs/{locale}/introduction.mdx` |
+| `'/components/button'`   | Absolute Astro page route `/components/button`            |
+| `'https://github.com/…'` | External link (opens in new tab, gets ↗ icon)             |
 
 ### Item fields
 
-| Field | Type | Description |
-|---|---|---|
-| `slug` | `string` | Required. Doc slug, absolute path, or external URL. |
-| `label` | `string` | Override the link text. Defaults to the doc's frontmatter `title`. |
-| `labelKey` | `TranslationKey` | i18n key for the label — wins over `label` if both are set. |
-| `badge` | `string` | Inline tag shown after the label (e.g. `'new'`, `'beta'`). |
+| Field      | Type             | Description                                                        |
+| ---------- | ---------------- | ------------------------------------------------------------------ |
+| `slug`     | `string`         | Required. Doc slug, absolute path, or external URL.                |
+| `label`    | `string`         | Override the link text. Defaults to the doc's frontmatter `title`. |
+| `labelKey` | `TranslationKey` | i18n key for the label — wins over `label` if both are set.        |
+| `badge`    | `string`         | Inline tag shown after the label (e.g. `'new'`, `'beta'`).         |
 
 ### Collapsed groups
 

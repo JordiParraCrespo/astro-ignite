@@ -71,7 +71,7 @@ The form succeeds from the user's perspective, so you can iterate on the UI with
    ```
 2. In `src/lib/email/index.ts`, change the import:
    ```ts
-   import { sendContactEmail as send } from './smtp';  // was ./resend
+   import { sendContactEmail as send } from './smtp'; // was ./resend
    ```
 3. Update `.env` with `SMTP_*` vars.
 
