@@ -82,6 +82,7 @@ In dev, missing env vars fall back to console-logging — `pnpm dev` produces a 
 
 | Topic                                            | Read                               |
 | ------------------------------------------------ | ---------------------------------- |
+| Contact form (providers, env vars, removing)     | [`CONTACT-FORM.md`](./docs/CONTACT-FORM.md) |
 | Custom fonts (swap, add, system-only)            | [`FONTS.md`](./docs/FONTS.md)           |
 | Analytics swap (Plausible ↔ Umami ↔ Fathom ↔ GA) | [`ANALYTICS.md`](./docs/ANALYTICS.md)   |
 | OG images (per-locale, dynamic generation)       | [`OG.md`](./docs/OG.md)                 |
