@@ -17,6 +17,9 @@ this folder holds the entries.
 - **New collection or field → edit `src/content.config.ts`** (Zod
   schema). `heroImage` is validated as a real asset via Astro's
   `image()` helper, so dimensions are known at build (zero CLS).
+  _(Diverges from the starter template, which has no `heroImage` field
+  and uses a CSS gradient cover — see apps/site/AGENTS.md § Known
+  divergences.)_
 - Keep the `{locale}/` folder layout for every localized collection;
   a post that exists in `en/` should gain a sibling under each
   additional locale you ship.

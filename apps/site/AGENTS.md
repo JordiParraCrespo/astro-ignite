@@ -36,6 +36,27 @@ The marketing landing for astro-ignite itself. **Manual mirror of the
   audit is template-scoped; you can break i18n parallels here only if
   the same break exists in starter (and then you've got a starter bug).
 
+## Known divergences from starter template
+
+These features exist in `packages/templates/starter/` but intentionally
+differ here:
+
+- **Hero images.** Blog posts and project entries use a `heroImage` Astro
+  asset field rendered via `components/image/PriorityImage.astro` (eager,
+  `fetchpriority="high"`). The starter template uses a CSS gradient cover
+  with no image asset; its `ogImage` field is optional and only for
+  OG/social previews. This marketing site ships real article images, so
+  the hero-asset pattern from the claude-design banner pipeline is used
+  instead.
+- **`localize()` absent.** The starter's `src/i18n/index.ts` exports
+  `localize(value, locale)` for resolving localized siteConfig fields and
+  content `bio` values. That function is not present here — apps/site does
+  not use localized siteConfig values.
+
+When syncing a bug-fix from this mirror back to the starter template,
+check these divergences first: the fix may need adapting rather than
+direct copy-paste.
+
 ## End-to-end tests
 
 The `site` Playwright project at the workspace root boots this app via
