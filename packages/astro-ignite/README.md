@@ -74,7 +74,7 @@ npx astro-ignite@beta bootstrap my-site
 
 ## Requirements
 
-- Node.js `>=20.11.0`
+- Node.js `>=22.12.0` (required by `@astrojs/node@^10` in the starter template)
 - One of: npm, pnpm, yarn, bun
 
 ## Source & docs

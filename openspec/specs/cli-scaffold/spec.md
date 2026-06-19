@@ -51,15 +51,14 @@ exercises this).
 
 ### Requirement: Adapter pin
 
-Templates that use Astro Actions SHALL pin `@astrojs/node@^10`. The
-combination of Astro v6 with `@astrojs/node@^10` is not supported until
-the rest of the stack migrates.
+Templates that use Astro Actions SHALL pin `@astrojs/node@^10`. This is
+the adapter major that pairs with Astro 6 and requires Node ≥22.12.
 
 #### Scenario: Auditing starter's package.json
 
 - **GIVEN** starter ships with Actions
 - **WHEN** the audit runs
-- **THEN** `@astrojs/node` is present and pinned to `^9`.
+- **THEN** `@astrojs/node` is present and pinned to `^10`.
 
 ### Requirement: Package manager detection
 
