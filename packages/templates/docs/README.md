@@ -140,6 +140,9 @@ See [`BENCHMARKS.md`](./docs/BENCHMARKS.md) for measurement methodology.
 | Image component conventions                       | [`IMAGES.md`](./docs/IMAGES.md)          |
 | Legal templates (review with counsel!)            | [`LEGAL.md`](./docs/LEGAL.md)            |
 | Performance benchmarks + reproducing them         | [`BENCHMARKS.md`](./docs/BENCHMARKS.md)  |
+| Sidebar navigation — groups, ordering, badges     | [`SIDEBAR.md`](./docs/SIDEBAR.md)        |
+| Full-text search (Pagefind) — index, exclusions   | [`SEARCH.md`](./docs/SEARCH.md)          |
+| Internationalisation — routing, locales, i18n     | [`I18N.md`](./docs/I18N.md)              |
 
 ## License
 
