@@ -80,14 +80,17 @@ In dev, missing env vars fall back to console-logging — `pnpm dev` produces a 
 
 ## Deeper docs
 
-| Topic                                            | Read                               |
-| ------------------------------------------------ | ---------------------------------- |
-| Custom fonts (swap, add, system-only)            | [`FONTS.md`](./docs/FONTS.md)           |
-| Analytics swap (Plausible ↔ Umami ↔ Fathom ↔ GA) | [`ANALYTICS.md`](./docs/ANALYTICS.md)   |
-| OG images (per-locale, dynamic generation)       | [`OG.md`](./docs/OG.md)                 |
-| Image component conventions                      | [`IMAGES.md`](./docs/IMAGES.md)         |
-| Legal templates (review with counsel!)           | [`LEGAL.md`](./docs/LEGAL.md)           |
-| Performance benchmarks + reproducing them        | [`BENCHMARKS.md`](./docs/BENCHMARKS.md) |
+| Topic                                             | Read                                         |
+| ------------------------------------------------- | -------------------------------------------- |
+| Custom fonts (swap, add, system-only)             | [`FONTS.md`](./docs/FONTS.md)                |
+| Analytics swap (Plausible ↔ Umami ↔ Fathom ↔ GA) | [`ANALYTICS.md`](./docs/ANALYTICS.md)        |
+| OG images (per-locale, dynamic generation)        | [`OG.md`](./docs/OG.md)                      |
+| Image component conventions                       | [`IMAGES.md`](./docs/IMAGES.md)              |
+| Legal templates (review with counsel!)            | [`LEGAL.md`](./docs/LEGAL.md)                |
+| Performance benchmarks + reproducing them         | [`BENCHMARKS.md`](./docs/BENCHMARKS.md)      |
+| Design tokens, dark mode, reskinning              | [`THEMING.md`](./docs/THEMING.md)            |
+| Contact form, email providers, env vars           | [`CONTACT_FORM.md`](./docs/CONTACT_FORM.md)  |
+| Deployment options (Node, Netlify, Cloudflare)    | [`DEPLOYING.md`](./docs/DEPLOYING.md)        |
 
 ## Adding a new locale
 

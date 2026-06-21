@@ -140,6 +140,8 @@ See [`BENCHMARKS.md`](./docs/BENCHMARKS.md) for measurement methodology.
 | Image component conventions                       | [`IMAGES.md`](./docs/IMAGES.md)          |
 | Legal templates (review with counsel!)            | [`LEGAL.md`](./docs/LEGAL.md)            |
 | Performance benchmarks + reproducing them         | [`BENCHMARKS.md`](./docs/BENCHMARKS.md)  |
+| Design tokens, dark mode, reskinning              | [`THEMING.md`](./docs/THEMING.md)        |
+| Deployment options (static hosts, GitHub Pages)   | [`DEPLOYING.md`](./docs/DEPLOYING.md)    |
 
 ## License
 
