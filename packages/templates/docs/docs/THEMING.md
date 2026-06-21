@@ -9,16 +9,16 @@ Tokens live in a Tailwind v4 `@theme` block at the top of `global.css`. There ar
 - **The zinc scale** (`--color-zinc-50` … `--color-zinc-950`) — raw palette values, theme-invariant. Single source of truth for every neutral.
 - **Functional tokens** — semantic names that point at the scale. Components only ever reference these:
 
-| Token | Role |
-| --- | --- |
-| `--color-bg` | Page background |
-| `--color-surface`, `--color-surface-2` | Raised panels, insets |
-| `--color-fg` | Body text |
-| `--color-fg-muted`, `--color-fg-subtle` | Secondary / tertiary text |
-| `--color-border`, `--color-border-strong` | Hairlines, stronger dividers |
-| `--color-primary`, `--color-primary-fg` | Interactive fill + its text |
-| `--color-ring` | Focus ring |
-| `--color-success` / `--color-warning` / `--color-danger` | Functional status only |
+| Token                                                    | Role                         |
+| -------------------------------------------------------- | ---------------------------- |
+| `--color-bg`                                             | Page background              |
+| `--color-surface`, `--color-surface-2`                   | Raised panels, insets        |
+| `--color-fg`                                             | Body text                    |
+| `--color-fg-muted`, `--color-fg-subtle`                  | Secondary / tertiary text    |
+| `--color-border`, `--color-border-strong`                | Hairlines, stronger dividers |
+| `--color-primary`, `--color-primary-fg`                  | Interactive fill + its text  |
+| `--color-ring`                                           | Focus ring                   |
+| `--color-success` / `--color-warning` / `--color-danger` | Functional status only       |
 
 Beyond color, the same block defines `--font-display` / `--font-mono`, `--radius` (`-sm` / `-md` / `-lg`), `--shadow` (`-sm`), container widths, and the `--ease-out-soft` motion curve.
 
