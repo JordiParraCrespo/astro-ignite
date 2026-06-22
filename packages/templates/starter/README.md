@@ -78,16 +78,52 @@ Optional:
 
 In dev, missing env vars fall back to console-logging — `pnpm dev` produces a working flow without any account signup.
 
-## Deeper docs
+## Adding content
 
-| Topic                                            | Read                               |
-| ------------------------------------------------ | ---------------------------------- |
-| Custom fonts (swap, add, system-only)            | [`FONTS.md`](./docs/FONTS.md)           |
-| Analytics swap (Plausible ↔ Umami ↔ Fathom ↔ GA) | [`ANALYTICS.md`](./docs/ANALYTICS.md)   |
-| OG images (per-locale, dynamic generation)       | [`OG.md`](./docs/OG.md)                 |
-| Image component conventions                      | [`IMAGES.md`](./docs/IMAGES.md)         |
-| Legal templates (review with counsel!)           | [`LEGAL.md`](./docs/LEGAL.md)           |
-| Performance benchmarks + reproducing them        | [`BENCHMARKS.md`](./docs/BENCHMARKS.md) |
+### Blog posts
+
+Drop an MDX file at `src/content/blog/{locale}/{slug}.mdx`:
+
+```yaml
+---
+title: My first post
+description: A short summary shown in the blog index.
+pubDate: 2025-01-01
+heroImage: ./_assets/hero-my-post.png   # optional; generate with scripts/banners/
+author: jordi                             # matches a key in src/content/authors/
+tags: [astro, tailwind]
+---
+```
+
+The blog index at `/blog` and the RSS feed pick it up automatically.
+
+### Projects
+
+Drop a folder at `src/content/projects/{locale}/{slug}/` and add an `index.mdx`:
+
+```yaml
+---
+title: My project
+description: One-line summary shown in the projects grid.
+pubDate: 2025-01-01
+heroImage: ./hero.png   # relative to the folder
+tags: [design, oss]
+---
+```
+
+### Authors
+
+Add a JSON file at `src/content/authors/{handle}.json`:
+
+```json
+{
+  "name": "Your Name",
+  "avatar": "/avatars/your-avatar.jpg",
+  "bio": "Short bio shown below each post."
+}
+```
+
+Reference the handle in blog post frontmatter via `author: your-handle`.
 
 ## Adding a new locale
 
@@ -132,6 +168,17 @@ The scaffold is tuned for Lighthouse 100s on mobile. Key principles encoded in t
 - No client-side framework runtime
 
 See [`BENCHMARKS.md`](./docs/BENCHMARKS.md) for measurement methodology.
+
+## Deeper docs
+
+| Topic                                             | Read                                     |
+| ------------------------------------------------- | ---------------------------------------- |
+| Custom fonts (swap, add, system-only)             | [`FONTS.md`](./docs/FONTS.md)            |
+| Analytics swap (Plausible ↔ Umami ↔ Fathom ↔ GA) | [`ANALYTICS.md`](./docs/ANALYTICS.md)    |
+| OG images (per-locale, dynamic generation)        | [`OG.md`](./docs/OG.md)                  |
+| Image component conventions                       | [`IMAGES.md`](./docs/IMAGES.md)          |
+| Legal templates (review with counsel!)            | [`LEGAL.md`](./docs/LEGAL.md)            |
+| Performance benchmarks + reproducing them         | [`BENCHMARKS.md`](./docs/BENCHMARKS.md)  |
 
 ## License
 
