@@ -132,14 +132,15 @@ See [`BENCHMARKS.md`](./docs/BENCHMARKS.md) for measurement methodology.
 
 ## Deeper docs
 
-| Topic                                             | Read                                     |
-| ------------------------------------------------- | ---------------------------------------- |
-| Custom fonts (swap, add, system-only)             | [`FONTS.md`](./docs/FONTS.md)            |
-| Analytics swap (Plausible ↔ Umami ↔ Fathom ↔ GA) | [`ANALYTICS.md`](./docs/ANALYTICS.md)    |
-| OG images (per-locale, dynamic generation)        | [`OG.md`](./docs/OG.md)                  |
-| Image component conventions                       | [`IMAGES.md`](./docs/IMAGES.md)          |
-| Legal templates (review with counsel!)            | [`LEGAL.md`](./docs/LEGAL.md)            |
-| Performance benchmarks + reproducing them         | [`BENCHMARKS.md`](./docs/BENCHMARKS.md)  |
+| Topic                                             | Read                                             |
+| ------------------------------------------------- | ------------------------------------------------ |
+| MDX components (Callout, Steps, CodeBlock, Frame) | [`COMPONENTS.md`](./docs/COMPONENTS.md)          |
+| Custom fonts (swap, add, system-only)             | [`FONTS.md`](./docs/FONTS.md)                    |
+| Analytics swap (Plausible ↔ Umami ↔ Fathom ↔ GA) | [`ANALYTICS.md`](./docs/ANALYTICS.md)            |
+| OG images (per-locale, dynamic generation)        | [`OG.md`](./docs/OG.md)                          |
+| Image component conventions                       | [`IMAGES.md`](./docs/IMAGES.md)                  |
+| Legal templates (review with counsel!)            | [`LEGAL.md`](./docs/LEGAL.md)                    |
+| Performance benchmarks + reproducing them         | [`BENCHMARKS.md`](./docs/BENCHMARKS.md)          |
 
 ## License
 
