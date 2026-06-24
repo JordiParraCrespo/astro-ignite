@@ -28,7 +28,7 @@ The CLI scaffolds the chosen template, installs deps with your preferred package
 
 ## Tech stack
 
-- **Astro 6** with native i18n, content collections, and Astro Actions (`@astrojs/node@^10` adapter)
+- **Astro 7** with native i18n, content collections, and Astro Actions (`@astrojs/node@^11` adapter)
 - **Tailwind v4** below the fold + scoped `<style>` above; **Beasties** extracts critical CSS at build time
 - **CSS variables for design tokens**; tri-state dark mode via class flip
 - **Astro + vanilla JS for every component** — no React/Vue/Svelte/Radix anywhere. Native HTML primitives first (`<details>`, `<dialog>`, popover API); custom elements when native won't do
@@ -49,7 +49,7 @@ See [`AGENTS.md`](./AGENTS.md) for the full set of rules that fall out of these 
 ## What you get
 
 - **Lighthouse 100s** on mobile and desktop, CI-enforced (the build fails before a regression ships)
-- **Astro 6** with native i18n, content collections, and Astro Actions
+- **Astro 7** with native i18n, content collections, and Astro Actions
 - **Tailwind v4** with a layered CSS strategy — scoped styles above the fold, utilities below, critical CSS extracted at build time
 - **Typed Schema.org JSON-LD** via `schema-dts`, composed per-page into one `@graph`
 - **Image components** with AVIF + WebP, responsive `srcset`, and LQIP placeholders

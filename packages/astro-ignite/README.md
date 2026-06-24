@@ -26,7 +26,7 @@ npx astro-ignite --help                              # list commands
 ## What you get (bootstrap)
 
 - **Lighthouse 100s** on mobile and desktop, CI-enforced
-- **Astro 6** with native i18n, content collections, and Astro Actions
+- **Astro 7** with native i18n, content collections, and Astro Actions
 - **Tailwind v4** with a layered CSS strategy — scoped above-the-fold, utilities below, critical CSS extracted at build time
 - **Typed Schema.org JSON-LD** via `schema-dts`, composed per-page into one `@graph`
 - **Image components** with AVIF + WebP, responsive `srcset`, and LQIP placeholders

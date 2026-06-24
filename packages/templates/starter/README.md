@@ -13,7 +13,7 @@ Open the URL printed in your terminal. The site has a working blog, projects sho
 
 ## What ships
 
-- **Astro 6** with native i18n, content collections, and Astro Actions
+- **Astro 7** with native i18n, content collections, and Astro Actions
 - **Tailwind v4** with `inlineStylesheets: 'always'` — full stylesheet inlined in the HTML, no render-blocking CSS request
 - **Geist Sans + Geist Mono** via `astro:fonts` (self-hosted, zero CLS)
 - **Typed Schema.org JSON-LD** built from `schema-dts`

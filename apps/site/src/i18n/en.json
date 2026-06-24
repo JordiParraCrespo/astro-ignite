@@ -156,7 +156,7 @@
       },
       "f03": {
         "title": "Native i18n",
-        "body": "Astro 6 i18n routing with one code path for monolingual and multilingual sites. Hreflang auto-computed."
+        "body": "Astro 7 i18n routing with one code path for monolingual and multilingual sites. Hreflang auto-computed."
       },
       "f04": {
         "title": "Working contact form",
@@ -214,7 +214,7 @@
         "body": "Mobile and desktop. CI budgets fail the build before regressions ship."
       },
       "f02": {
-        "title": "Astro 6 + i18n",
+        "title": "Astro 7 + i18n",
         "body": "Native i18n, content collections, and Astro Actions. Strict Zod schemas."
       },
       "f03": {

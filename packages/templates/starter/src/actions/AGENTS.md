@@ -9,8 +9,8 @@ map — the contact form is the shipped example.
   email provider seam at `src/lib/email/`. The client calls it via
   `astro:actions` (`actions.<name>`).
 - **Actions require a server adapter.** This template pins
-  `@astrojs/node@^10` in `astro.config.mjs` (the adapter major for
-  Astro 6). Swap the adapter for another deploy target, but keep one.
+  `@astrojs/node@^11` in `astro.config.mjs` (the adapter major for
+  Astro 7). Swap the adapter for another deploy target, but keep one.
 - The email deps (`resend` / `nodemailer`) are template-specific: the
   CLI strips them when `src/lib/email/index.ts` is absent, so a template
   without Actions ships none of this.
