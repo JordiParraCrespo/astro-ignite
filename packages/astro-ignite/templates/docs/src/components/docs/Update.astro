@@ -1,0 +1,62 @@
+---
+/**
+ * Update — one dated changelog entry on a timeline. Date + version sit in a
+ * right-aligned rail; the dot and the rail line connecting consecutive
+ * entries are pseudo-elements, shown only when another Update follows
+ * (the `.doc-update:has(+ .doc-update)` variants), so entries compose without
+ * a `last` prop.
+ *
+ * Usage in MDX:
+ *   <Update date="May 22" version="0.5.0" tag="minor" title="Planning & budgets">
+ *     Added `ignite plan` for previewing the route graph.
+ *   </Update>
+ */
+
+import { cn } from '@/lib/cn';
+
+interface Props {
+  date: string;
+  title: string;
+  version?: string;
+  tag?: string;
+  class?: string;
+}
+
+const { date, title, version, tag, class: className } = Astro.props;
+
+const tagStyles: Record<string, string> = {
+  minor: 'border-info text-info',
+  patch: 'border-success text-success',
+  major: 'border-danger text-danger',
+  breaking: 'border-danger text-danger',
+};
+---
+
+<div class={cn('doc-update grid grid-cols-[92px_1fr] gap-5', className)}>
+  <div class="pt-px text-right">
+    <div class="font-mono text-[11px] text-fg-muted">{date}</div>
+    {version && <div class="mt-[3px] font-mono text-xs font-medium text-fg">{version}</div>}
+  </div>
+  <div
+    class="relative pb-0 pl-6 before:absolute before:top-1 before:left-0 before:z-1 before:size-[11px] before:rounded-full before:border-2 before:border-fg before:bg-surface after:absolute after:top-3.5 after:-bottom-1 after:left-[5px] after:hidden after:w-px after:bg-border [.doc-update:has(+.doc-update)_&]:pb-7 [.doc-update:has(+.doc-update)_&]:after:block"
+  >
+    <div class="mb-1.5 flex items-center gap-2">
+      <h3 class="my-0! text-base font-medium tracking-[-0.02em] text-fg">{title}</h3>
+      {
+        tag && (
+          <span
+            class={cn(
+              'rounded-full border px-[7px] py-0.5 font-mono text-[10px] tracking-[0.06em] uppercase',
+              tagStyles[tag] ?? 'border-border-strong text-fg-muted'
+            )}
+          >
+            {tag}
+          </span>
+        )
+      }
+    </div>
+    <div class="text-[13px] leading-[1.6] text-fg-muted [&_p]:my-0!">
+      <slot />
+    </div>
+  </div>
+</div>

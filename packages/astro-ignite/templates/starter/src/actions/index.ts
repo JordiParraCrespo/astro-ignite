@@ -21,6 +21,7 @@ export const server = {
     input: z.object({
       name: z.string().min(1).max(100),
       email: z.email().max(254),
+      subject: z.enum(['general', 'support', 'feedback']).default('general'),
       message: z.string().min(10).max(5000),
       _website: z.string().max(0).optional(),
     }),
@@ -33,6 +34,7 @@ export const server = {
       await sendContactEmail({
         name: input.name,
         email: input.email,
+        subject: input.subject,
         message: input.message,
       });
 

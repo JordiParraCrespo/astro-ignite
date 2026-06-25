@@ -15,6 +15,7 @@ import { sendContactEmail as send } from './resend';
 export interface ContactEmailInput {
   name: string;
   email: string;
+  subject: string;
   message: string;
 }
 

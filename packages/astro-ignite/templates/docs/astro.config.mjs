@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
+import { satteri } from '@astrojs/markdown-satteri';
 import tailwindcss from '@tailwindcss/vite';
 import {
   transformerMetaHighlight,
@@ -16,6 +17,10 @@ export default defineConfig({
   site: siteConfig.url,
   trailingSlash: 'ignore',
   markdown: {
+    // Sätteri — Astro's Rust-powered Markdown/MDX engine, the default in Astro 7.
+    // Pinned explicitly so the engine stays owned. Sätteri still reads the
+    // top-level shikiConfig below, so the build-time Shiki transformers apply.
+    processor: satteri(),
     // Build-time Shiki transformers — zero client cost. Enables, on fenced
     // code blocks: line highlighting via `{1,3-5}` meta or `// [!code highlight]`,
     // and diff markers via `// [!code ++]` / `// [!code --]`. Styled in global.css.

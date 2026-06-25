@@ -17,10 +17,9 @@ The hard floor (95) blocks PRs in the upstream repo. The soft target (100) print
 
 ## Routes audited
 
-- `/` — homepage hero
-- `/blog` — collection page
-- `/blog/<post>` — article page (representative — first post)
-- `/projects/<project>` — case study page
+- `/` — docs landing page
+- `/introduction` — a docs content page (representative — first page)
+- `/legal/privacy` — legal page
 
 These cover the major layout types. If you add new layouts, add them to your local Lighthouse config.
 
@@ -37,7 +36,7 @@ Or simpler:
 
 ```bash
 pnpm build
-npx serve dist/client &
+npx serve dist &
 # open Chrome DevTools → Lighthouse → Mobile, run audit on the served URL
 ```
 

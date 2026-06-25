@@ -54,7 +54,7 @@ Defaults:
 
 ## Hero preload via BaseLayout
 
-Components can't reach into `<head>`, so pages with a hero pass it explicitly:
+Components can't reach into `<head>`, so pages with a priority image pass it explicitly:
 
 ```astro
 <BaseLayout title="…" description="…" preloadImages={[heroImage]}>
@@ -62,7 +62,7 @@ Components can't reach into `<head>`, so pages with a hero pass it explicitly:
 </BaseLayout>
 ```
 
-`BaseLayout` renders `<link rel="preload" as="image">` tags for each — the browser starts the request during HTML parse, before component code runs. `ArticleLayout` and `ProjectLayout` do this automatically from the entry's `heroImage`.
+`BaseLayout` renders `<link rel="preload" as="image">` tags for each — the browser starts the request during HTML parse, before component code runs. `DocsLayout` and `LegalLayout` don't currently have hero images, so `preloadImages` is only relevant if you add a custom page outside of those layouts.
 
 ## What's automatic
 

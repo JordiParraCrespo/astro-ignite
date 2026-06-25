@@ -47,10 +47,11 @@ Each blog post and project entry has an optional `ogImage` field in frontmatter:
 ---
 title: My post
 description: …
-heroImage: ./hero.svg
-ogImage: ./og.png # 1200×630, optional — overrides defaults for this post
+ogImage: ./og.png # 1200×630, optional — overrides the site-wide default for this post
 ---
 ```
+
+> **Note:** There is no `heroImage` field — post cards and detail pages render a token-resolved CSS gradient cover, not a hero image. `ogImage` is the only image field in the schema; it controls the social-share preview only.
 
 For projects (folder-per-slug structure), colocate `og.png` next to `index.mdx`. For blog (flat file structure), put it in `_assets/` and reference relatively.
 

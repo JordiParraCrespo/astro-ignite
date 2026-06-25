@@ -3,12 +3,14 @@
  * CodeGroup — combines several <CodeBlock> children into one tabbed panel.
  * Each child's `filename` becomes a tab label (the npm/pnpm/yarn pattern, or
  * curl/python/node for an API). The custom element synthesizes the tab strip
- * and a single copy button, then shows one block at a time.
+ * and a single copy button, then shows one block at a time. The active tab
+ * persists via localStorage and syncs every group on the page, so picking
+ * `pnpm` once holds across snippets and visits.
  *
  * Usage in MDX:
  *   <CodeGroup>
- *     <CodeBlock filename="npm">{`npm i astro-ignite`}</CodeBlock>
- *     <CodeBlock filename="pnpm">{`pnpm add astro-ignite`}</CodeBlock>
+ *     <CodeBlock filename="npm" prompt>{`npm i astro-ignite`}</CodeBlock>
+ *     <CodeBlock filename="pnpm" prompt>{`pnpm add astro-ignite`}</CodeBlock>
  *   </CodeGroup>
  */
 
@@ -23,86 +25,26 @@ const { class: className } = Astro.props;
 
 <ai-code-group
   class={cn(
-    'code-group my-6 block overflow-hidden rounded-(--radius-md) border border-(--color-border) bg-(--color-surface-2)',
+    'code-group my-6 block overflow-hidden rounded-(--radius-md) border border-(--color-border) bg-(--color-surface) [&_.code-block]:m-0 [&_.code-block]:rounded-none [&_.code-block]:border-0 [&_.code-block]:bg-transparent [&_.code-block>pre]:m-0! [&_.code-block>pre]:rounded-none! [&_.code-block>pre]:border-0! [&_.code-block>pre]:bg-transparent! [&_.code-block>pre]:px-5! [&_.code-block>pre]:py-[18px]! [&_.code-block>pre]:leading-normal! [&_[data-cb-header]]:hidden',
     className
   )}
 >
   <slot />
 </ai-code-group>
 
-<!-- tailwind-exception: structural overrides reach into slotted CodeBlock children via :global(), and the synthesized tab strip is built in script — neither is expressible as utilities on this element -->
-<style>
-  .code-group :global(.code-block) {
-    margin: 0;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-  }
-  .code-group :global(.code-block [data-cb-header]) {
-    display: none;
-  }
-  .code-group__tabs {
-    display: flex;
-    align-items: stretch;
-    gap: 0;
-    padding: 0 8px;
-    border-bottom: 1px solid var(--color-border);
-    background: var(--color-surface-2);
-  }
-  .code-group__tab {
-    appearance: none;
-    cursor: pointer;
-    border: 0;
-    border-bottom: 1.5px solid transparent;
-    margin-bottom: -1px;
-    background: transparent;
-    padding: 9px 12px;
-    font-family: var(--font-mono, monospace);
-    font-size: 11px;
-    color: var(--color-fg-muted);
-    transition: color 0.1s;
-  }
-  .code-group__tab:hover {
-    color: var(--color-fg);
-  }
-  .code-group__tab[data-active='true'] {
-    color: var(--color-fg);
-    border-bottom-color: var(--color-fg);
-    font-weight: 500;
-  }
-  .code-group__copy {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-left: auto;
-    appearance: none;
-    cursor: pointer;
-    border: 0;
-    background: transparent;
-    padding: 0 10px;
-    font-family: var(--font-mono, monospace);
-    font-size: 11px;
-    color: var(--color-fg-muted);
-    transition: color 0.1s;
-  }
-  .code-group__copy:hover {
-    color: var(--color-fg);
-  }
-  .code-group__copy svg {
-    width: 12px;
-    height: 12px;
-  }
-</style>
-
 <script>
+  const STORAGE_KEY = 'code-group-tab';
+
   if (!customElements.get('ai-code-group')) {
     class AiCodeGroup extends HTMLElement {
+      activateByName: ((name: string) => void) | undefined;
+
       connectedCallback() {
         const blocks = Array.from(this.querySelectorAll<HTMLElement>(':scope > .code-block'));
         if (blocks.length === 0) return;
 
         const tabs = document.createElement('div');
-        tabs.className = 'code-group__tabs';
+        tabs.className = 'flex border-b border-border bg-surface-2';
         tabs.setAttribute('role', 'tablist');
 
         const buttons: HTMLButtonElement[] = [];
@@ -119,20 +61,33 @@ const { class: className } = Astro.props;
           });
         };
 
-        blocks.forEach((block, i) => {
-          const name = block.dataset.filename || `tab ${i + 1}`;
+        const names = blocks.map((b, i) => b.dataset.filename || `tab ${i + 1}`);
+
+        const select = (idx: number) => {
+          activate(idx);
+          localStorage.setItem(STORAGE_KEY, names[idx]!);
+          window.dispatchEvent(new CustomEvent('code-group:change', { detail: names[idx] }));
+        };
+
+        this.activateByName = (name: string) => {
+          const idx = names.indexOf(name);
+          if (idx >= 0) activate(idx);
+        };
+
+        names.forEach((name, i) => {
           const btn = document.createElement('button');
           btn.type = 'button';
-          btn.className = 'code-group__tab';
+          btn.className =
+            '-mb-px cursor-pointer appearance-none border-0 border-b-[1.5px] border-solid border-transparent bg-transparent px-[18px] py-2.5 font-mono text-xs text-fg-muted transition-colors duration-100 hover:text-fg data-[active=true]:border-fg data-[active=true]:font-medium data-[active=true]:text-fg';
           btn.setAttribute('role', 'tab');
           btn.textContent = name;
-          btn.addEventListener('click', () => activate(i));
+          btn.addEventListener('click', () => select(i));
           btn.addEventListener('keydown', (e) => {
             if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
             e.preventDefault();
             const next = (i + (e.key === 'ArrowRight' ? 1 : -1) + blocks.length) % blocks.length;
             buttons[next]!.focus();
-            activate(next);
+            select(next);
           });
           buttons.push(btn);
           tabs.appendChild(btn);
@@ -140,9 +95,10 @@ const { class: className } = Astro.props;
 
         const copy = document.createElement('button');
         copy.type = 'button';
-        copy.className = 'code-group__copy';
+        copy.className =
+          'ml-auto inline-flex cursor-pointer appearance-none items-center gap-1.5 border-0 bg-transparent px-3.5 font-mono text-[11px] text-fg-muted transition-colors duration-100 hover:text-fg';
         copy.innerHTML =
-          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span data-copy-label>copy</span>';
+          '<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span data-copy-label>Copy</span>';
         const copyLabel = copy.querySelector('[data-copy-label]')!;
         copy.addEventListener('click', async () => {
           const active = blocks.find((b) => !b.hidden);
@@ -150,9 +106,9 @@ const { class: className } = Astro.props;
           if (!pre || !navigator.clipboard) return;
           try {
             await navigator.clipboard.writeText(pre.textContent ?? '');
-            copyLabel.textContent = 'copied';
+            copyLabel.textContent = 'Copied';
             setTimeout(() => {
-              copyLabel.textContent = 'copy';
+              copyLabel.textContent = 'Copy';
             }, 1200);
           } catch {
             // Permissions denied — silently fail.
@@ -161,7 +117,14 @@ const { class: className } = Astro.props;
         tabs.appendChild(copy);
 
         this.prepend(tabs);
-        activate(0);
+
+        const stored = localStorage.getItem(STORAGE_KEY);
+        const storedIdx = stored ? names.indexOf(stored) : -1;
+        activate(storedIdx >= 0 ? storedIdx : 0);
+
+        window.addEventListener('code-group:change', (e) => {
+          this.activateByName?.((e as CustomEvent<string>).detail);
+        });
       }
     }
     customElements.define('ai-code-group', AiCodeGroup);

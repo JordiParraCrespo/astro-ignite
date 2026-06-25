@@ -16,6 +16,7 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,astro,md,mdx,json,yaml,yml}\""
   },
   "dependencies": {
+    "@astrojs/markdown-satteri": "^0.3.2",
     "@astrojs/mdx": "^7.0.0",
     "@astrojs/node": "^11.0.0",
     "@astrojs/rss": "^4.0.18",

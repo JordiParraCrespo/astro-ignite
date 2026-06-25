@@ -49,6 +49,12 @@
   --color-success-fg: var(--color-zinc-950);
   --color-warning-fg: var(--color-zinc-950);
 
+  /* API-doc accents (info callouts, version tags, field type/location labels).
+     Functional like the status colors above — not decoration. */
+  --color-info: oklch(71% 0.14 262);
+  --color-accent-purple: oklch(71% 0.16 294);
+  --color-accent-rose: oklch(71% 0.17 13);
+
   /* Typography */
   --font-display: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
@@ -61,8 +67,7 @@
 
   /* Shadows — barely-there (dark default) */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.4);
-  --shadow:
-    0 1px 3px 0 rgb(0 0 0 / 0.5), 0 1px 2px -1px rgb(0 0 0 / 0.4);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.5), 0 1px 2px -1px rgb(0 0 0 / 0.4);
 
   /* Containers */
   --container-prose: 65ch;
@@ -79,7 +84,8 @@
   --color-surface: #ffffff;
   --color-surface-2: var(--color-zinc-100);
   --color-fg: var(--color-zinc-950);
-  --color-fg-muted: var(--color-zinc-500);
+  /* zinc-600: muted text also sits on surface-2 chips (zinc-100), where zinc-500 is ~4.4:1 (AA fail). */
+  --color-fg-muted: var(--color-zinc-600);
   /* zinc-500 on zinc-50 ≈ 4.8:1 (AA pass). Was zinc-400 (~2.4:1, fails AA). */
   --color-fg-subtle: var(--color-zinc-500);
   --color-border: var(--color-zinc-200);
@@ -87,9 +93,18 @@
   --color-primary: var(--color-zinc-900);
   --color-primary-fg: var(--color-zinc-50);
   --color-ring: var(--color-zinc-900);
+  /* Deeper accent hues on light surfaces — the dark-tuned 70%-lightness values
+     wash out on white (AA fail for text-sized glyphs). */
+  --color-info: oklch(48.8% 0.243 264);
+  --color-accent-purple: oklch(54.1% 0.281 293);
+  --color-accent-rose: oklch(45.5% 0.188 14);
+  --color-success: oklch(52.7% 0.154 150);
+  --color-warning: oklch(55.5% 0.163 49);
+  --color-danger: oklch(50.5% 0.213 28);
+  --color-success-fg: var(--color-zinc-50);
+  --color-warning-fg: var(--color-zinc-50);
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow:
-    0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.06);
 }
 
 /*
@@ -108,10 +123,7 @@
     background: var(--color-bg);
     color: var(--color-fg);
     font-family: var(--font-display);
-    font-feature-settings:
-      'cv11',
-      'ss03',
-      'ss01';
+    font-feature-settings: 'cv11', 'ss03', 'ss01';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -159,9 +171,7 @@
   code,
   pre {
     font-family: var(--font-mono);
-    font-feature-settings:
-      'zero',
-      'ss01';
+    font-feature-settings: 'zero', 'ss01';
   }
 
   /* Skip link — visually hidden until focused, jumps to <main id="main"> */
@@ -202,9 +212,7 @@
 /* Mono helper — apply Geist Mono with the right OpenType features */
 .mono {
   font-family: var(--font-mono);
-  font-feature-settings:
-    'zero',
-    'ss01';
+  font-feature-settings: 'zero', 'ss01';
 }
 
 /* Caret blink — used by the brand mark and terminal blocks */

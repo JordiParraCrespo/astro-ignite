@@ -39,24 +39,27 @@ defaultOgImage: {
 
 Drop the corresponding files into `public/og/`. The `<SEO>` component picks the right one based on `Astro.currentLocale`.
 
-## Per-content OG images
+## Per-page OG images
 
-Each blog post and project entry has an optional `ogImage` field in frontmatter:
+The docs template schema has no per-entry `ogImage` field. Individual pages override the OG image by passing the `image` prop directly to `<BaseLayout>`:
 
-```mdx
+```astro
 ---
-title: My post
-description: …
-heroImage: ./hero.svg
-ogImage: ./og.png # 1200×630, optional — overrides defaults for this post
+// src/pages/some-special-page.astro
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import myOg from './my-og.png'; // colocate in src/pages/
 ---
+
+<BaseLayout title="…" description="…" image={myOg}>
+  …
+</BaseLayout>
 ```
 
-For projects (folder-per-slug structure), colocate `og.png` next to `index.mdx`. For blog (flat file structure), put it in `_assets/` and reference relatively.
+`DocsLayout` delegates to `BaseLayout` but doesn't accept an `image` prop — if you need per-doc OG images, add an `ogImage` field to the `docs` schema in `src/content.config.ts` and pass it through `DocsLayout`.
 
 ## Add dynamic OG generation (Satori recipe)
 
-If you want auto-generated OG images per post, add Satori. ~30 lines of code, no extra runtime cost (build-time generation).
+If you want auto-generated OG images per doc page, add Satori. ~30 lines of code, no extra runtime cost (build-time generation).
 
 ### 1. Install deps
 
@@ -119,11 +122,11 @@ import { generateOgPng } from '@/lib/og/generate';
 import { siteConfig } from '@/config/site';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
-  return posts.map((entry) => {
+  const entries = await getCollection('docs');
+  return entries.map((entry) => {
     const slug = entry.id.split('/').slice(1).join('/');
     return {
-      params: { slug: `blog/${entry.id.split('/')[0]}/${slug}` },
+      params: { slug: `docs/${entry.id.split('/')[0]}/${slug}` },
       props: {
         title: entry.data.title,
         subtitle: entry.data.description,
@@ -144,9 +147,9 @@ export const GET = async ({ props }: { props: { title: string; subtitle: string 
 
 ### 5. Wire up
 
-In each blog post's frontmatter, set `ogImage` to the matching virtual URL — or auto-set it via a helper in your collection schema's transform step.
+Add an `ogImage` field to the `docs` schema and pass a virtual URL from the page's data, or wire it up in DocsLayout.
 
-Build cost: ~20-50ms per OG image. 100 posts × 2 locales = ~10s extra build time. Cached after first build.
+Build cost: ~20-50ms per OG image. 100 pages × 2 locales = ~10s extra build time. Cached after first build.
 
 ## OG image dimensions
 
