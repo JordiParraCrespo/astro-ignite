@@ -2,7 +2,7 @@
 /**
  * Callout / admonition block — used inside MDX content.
  *
- * Variants: note, tip, warning, danger. Each is a full-border tinted box with
+ * Variants: note, info, tip, check, warning, danger. Each is a full-border tinted box with
  * a leading icon, a title, and body copy. Status colors resolve through the
  * design tokens (success / warning / danger); the tint + border are derived
  * from them via color-mix so the block adapts to light and dark themes.
@@ -13,7 +13,7 @@
  *   </Callout>
  */
 
-type Variant = 'note' | 'tip' | 'warning' | 'danger';
+type Variant = 'note' | 'info' | 'tip' | 'check' | 'warning' | 'danger';
 
 interface Props {
   variant?: Variant;
@@ -24,7 +24,9 @@ const { variant = 'note', title } = Astro.props;
 
 const defaultTitles: Record<Variant, string> = {
   note: 'Note',
+  info: 'Info',
   tip: 'Tip',
+  check: 'Check',
   warning: 'Heads up',
   danger: 'Warning',
 };
@@ -50,6 +52,37 @@ const heading = title ?? defaultTitles[variant];
           <circle cx="12" cy="12" r="10" />
           <line x1="12" y1="16" x2="12" y2="12" />
           <line x1="12" y1="8" x2="12.01" y2="8" />
+        </svg>
+      )
+    }
+    {
+      variant === 'info' && (
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 16v-4" />
+          <path d="M12 8h.01" />
+        </svg>
+      )
+    }
+    {
+      variant === 'check' && (
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <path d="m9 12 2 2 4-4" />
         </svg>
       )
     }
@@ -148,6 +181,22 @@ const heading = title ?? defaultTitles[variant];
   }
   .callout-body :global(p:last-child) {
     margin-bottom: 0;
+  }
+
+  .callout-info {
+    border-color: color-mix(in oklch, var(--color-info) 30%, transparent);
+    background: color-mix(in oklch, var(--color-info) 8%, transparent);
+  }
+  .callout-info .callout-icon {
+    color: var(--color-info);
+  }
+
+  .callout-check {
+    border-color: color-mix(in oklch, var(--color-success) 28%, transparent);
+    background: color-mix(in oklch, var(--color-success) 8%, transparent);
+  }
+  .callout-check .callout-icon {
+    color: var(--color-success);
   }
 
   .callout-tip {

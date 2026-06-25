@@ -13,7 +13,7 @@ import Step from '@/components/docs/Step.astro';
 
 ## Requisitos
 
-- Node 20.11+ o 22 LTS
+- Node 22.12 LTS o posterior (requerido por `@astrojs/node@^10` en la plantilla starter)
 - Un gestor de paquetes — pnpm (recomendado), npm, yarn o bun
 
 <Steps>
@@ -21,10 +21,10 @@ import Step from '@/components/docs/Step.astro';
     Ejecuta el comando de creación con el gestor de paquetes que prefieras:
 
     <CodeGroup>
-      <CodeBlock filename="npm">{`npm create astro-ignite@latest mi-sitio`}</CodeBlock>
-      <CodeBlock filename="pnpm">{`pnpm create astro-ignite mi-sitio`}</CodeBlock>
-      <CodeBlock filename="yarn">{`yarn create astro-ignite mi-sitio`}</CodeBlock>
-      <CodeBlock filename="bun">{`bun create astro-ignite mi-sitio`}</CodeBlock>
+      <CodeBlock filename="npm" prompt>{`npm create astro-ignite@latest mi-sitio`}</CodeBlock>
+      <CodeBlock filename="pnpm" prompt>{`pnpm create astro-ignite mi-sitio`}</CodeBlock>
+      <CodeBlock filename="yarn" prompt>{`yarn create astro-ignite mi-sitio`}</CodeBlock>
+      <CodeBlock filename="bun" prompt>{`bun create astro-ignite mi-sitio`}</CodeBlock>
     </CodeGroup>
 
     Se te harán seis preguntas. Acepta los valores por defecto o cámbialos; el flujo dura unos quince segundos.

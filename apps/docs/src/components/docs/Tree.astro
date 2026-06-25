@@ -1,0 +1,102 @@
+---
+/**
+ * Tree — file/folder tree rendering. Connectors are box-drawing glyphs, so the
+ * output is copy/paste safe — no images. Icons are derived (folder when an
+ * item has children, file-code for code extensions) and overridable per item.
+ *
+ * Usage in MDX:
+ *   <Tree
+ *     items={[
+ *       {
+ *         name: 'my-site/',
+ *         children: [{ name: 'src/', children: [{ name: 'index.astro' }] }],
+ *       },
+ *     ]}
+ *   />
+ */
+
+import { cn } from '@/lib/cn';
+import Icon from '@/components/docs/Icon.astro';
+import type { IconName } from '@/components/docs/icons';
+
+export interface TreeItem {
+  name: string;
+  icon?: IconName;
+  tag?: string;
+  muted?: boolean;
+  children?: TreeItem[];
+}
+
+interface Props {
+  items: TreeItem[];
+  class?: string;
+}
+
+const { items, class: className } = Astro.props;
+
+interface Row {
+  depth: number;
+  icon: IconName;
+  name: string;
+  tag?: string;
+  muted: boolean;
+  branch: boolean;
+  last: boolean;
+}
+
+const CODE_EXTENSIONS = /\.(astro|m?[jt]sx?|css|html|json|ya?ml|toml)$/;
+
+const deriveIcon = (item: TreeItem, depth: number): IconName => {
+  if (item.icon) return item.icon;
+  if (item.children) return depth === 0 ? 'folder-open' : 'folder';
+  return CODE_EXTENSIONS.test(item.name) ? 'file-code' : 'file';
+};
+
+const rows: Row[] = [];
+const walk = (nodes: TreeItem[], depth: number) => {
+  nodes.forEach((item, i) => {
+    rows.push({
+      depth,
+      icon: deriveIcon(item, depth),
+      name: item.name,
+      tag: item.tag,
+      muted: item.muted ?? false,
+      branch: Boolean(item.children),
+      last: i === nodes.length - 1,
+    });
+    if (item.children) walk(item.children, depth + 1);
+  });
+};
+walk(items, 0);
+---
+
+<div class={cn('my-6 rounded-md border border-border bg-surface px-4 py-3.5', className)}>
+  {
+    rows.map((row) => (
+      <div class="flex h-[26px] items-center text-[13px]">
+        <span class="font-mono whitespace-pre text-border-strong" aria-hidden="true">
+          {'   '.repeat(Math.max(0, row.depth - 1)) +
+            (row.depth > 0 ? (row.last ? '└─ ' : '├─ ') : '')}
+        </span>
+        <span
+          class={cn(
+            'mr-[7px] flex',
+            row.icon === 'folder' || row.icon === 'folder-open' ? 'text-fg' : 'text-fg-muted'
+          )}
+        >
+          <Icon name={row.icon} size={15} stroke={1.5} />
+        </span>
+        <span
+          class={cn(
+            'font-mono',
+            row.muted ? 'text-fg-subtle' : 'text-fg',
+            row.branch && 'font-medium'
+          )}
+        >
+          {row.name}
+        </span>
+        {row.tag && <span class="ml-2 font-mono text-[10px] text-fg-subtle">{row.tag}</span>}
+      </div>
+    ))
+  }
+</div>

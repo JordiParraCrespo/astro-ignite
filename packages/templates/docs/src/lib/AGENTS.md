@@ -7,6 +7,12 @@ Small, owned helpers. Named exports, no side-effecting imports.
 - `cn.ts` — class-merge helper used by every component.
 - `toast.ts` — `toast(...)` dispatches a `window` event consumed by
   `<Toaster />` (`components/ui/toaster.astro`).
+- `docs-md.ts` — AI-native helpers: `docToMarkdown` renders a docs
+  collection entry as clean Markdown (strips MDX `import`/`export`
+  lines, preserves fenced code blocks); `pageHref`/`mdHref`/`mdSlugParam`
+  map an entry id to its HTML path and `.md` path, mirroring the route
+  structure (`[...slug].astro` + `[lang]/[...slug].astro`). Used by the
+  `.md` routes and the `/llms-full.txt` bundle.
 - `image/blur.ts` — blur-placeholder data for non-LCP images (heroes use
   `components/image/PriorityImage.astro`, which has no blur).
 - `jsonld/` — typed `schema-dts` node builders + an `index.ts` barrel;

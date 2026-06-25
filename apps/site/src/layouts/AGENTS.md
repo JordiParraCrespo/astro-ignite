@@ -14,7 +14,9 @@ contract — content pages and route files compose them.
 - `ArticleLayout.astro` / `ProjectLayout.astro` — blog post / project
   detail shells. They render the hero through
   `components/image/PriorityImage.astro` (eager, `fetchpriority="high"`,
-  no blur placeholder) and preload it via `BaseLayout`.
+  no blur placeholder) and preload it via `BaseLayout`. _(Diverges from
+  the starter template, which uses a CSS gradient cover instead of an
+  image asset — see apps/site/AGENTS.md § Known divergences.)_
 - `LegalLayout.astro` — privacy/terms/cookies prose shell.
 
 ## Rules

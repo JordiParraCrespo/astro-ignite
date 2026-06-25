@@ -29,6 +29,11 @@ packages/templates/*/docs/ANALYTICS.md
 packages/templates/*/docs/FONTS.md
 packages/templates/*/docs/IMAGES.md
 packages/templates/*/docs/LEGAL.md
+packages/templates/*/docs/JSONLD.md
+packages/templates/*/docs/ACTIONS.md
+packages/templates/*/docs/I18N.md
+packages/templates/*/docs/SIDEBAR.md
+packages/templates/*/docs/SEARCH.md
 packages/templates/*/README.md
 
 # Same guides bundled inside the astro-ignite CLI package (copied at prepack).
@@ -38,6 +43,11 @@ packages/astro-ignite/templates/*/docs/ANALYTICS.md
 packages/astro-ignite/templates/*/docs/FONTS.md
 packages/astro-ignite/templates/*/docs/IMAGES.md
 packages/astro-ignite/templates/*/docs/LEGAL.md
+packages/astro-ignite/templates/*/docs/JSONLD.md
+packages/astro-ignite/templates/*/docs/ACTIONS.md
+packages/astro-ignite/templates/*/docs/I18N.md
+packages/astro-ignite/templates/*/docs/SIDEBAR.md
+packages/astro-ignite/templates/*/docs/SEARCH.md
 packages/astro-ignite/templates/*/README.md
 
 # Same guides scaffolded into apps/* (landing was scaffolded from starter)
@@ -47,6 +57,11 @@ apps/*/docs/ANALYTICS.md
 apps/*/docs/FONTS.md
 apps/*/docs/IMAGES.md
 apps/*/docs/LEGAL.md
+apps/*/docs/JSONLD.md
+apps/*/docs/ACTIONS.md
+apps/*/docs/I18N.md
+apps/*/docs/SIDEBAR.md
+apps/*/docs/SEARCH.md
 apps/*/README.md
 
 # Markdown content collections (their own markdown style)

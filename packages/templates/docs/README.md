@@ -16,7 +16,7 @@ Open the URL printed in your terminal. The site has working docs navigation, ful
 ## What ships
 
 - **Astro 7** with native i18n, content collections, and static output
-- **Tailwind v4** with a layered CSS strategy
+- **Tailwind v4** with `inlineStylesheets: 'always'` — full stylesheet inlined in the HTML on first paint, no render-blocking CSS request
 - **Geist Sans + Geist Mono** via `astro:fonts` (self-hosted, zero CLS)
 - **Typed Schema.org JSON-LD** built from `schema-dts`
 - **Full-text search** via Pagefind (post-build index, no server needed)
@@ -134,12 +134,18 @@ See [`BENCHMARKS.md`](./docs/BENCHMARKS.md) for measurement methodology.
 
 | Topic                                             | Read                                     |
 | ------------------------------------------------- | ---------------------------------------- |
+| Search (Pagefind, indexing, i18n, removing)       | [`SEARCH.md`](./docs/SEARCH.md)          |
+| Sidebar, TOC, prev/next, breadcrumbs              | [`NAVIGATION.md`](./docs/NAVIGATION.md)  |
 | Custom fonts (swap, add, system-only)             | [`FONTS.md`](./docs/FONTS.md)            |
 | Analytics swap (Plausible ↔ Umami ↔ Fathom ↔ GA) | [`ANALYTICS.md`](./docs/ANALYTICS.md)    |
 | OG images (per-locale, dynamic generation)        | [`OG.md`](./docs/OG.md)                  |
 | Image component conventions                       | [`IMAGES.md`](./docs/IMAGES.md)          |
 | Legal templates (review with counsel!)            | [`LEGAL.md`](./docs/LEGAL.md)            |
 | Performance benchmarks + reproducing them         | [`BENCHMARKS.md`](./docs/BENCHMARKS.md)  |
+| Sidebar navigation — groups, ordering, badges     | [`SIDEBAR.md`](./docs/SIDEBAR.md)        |
+| Internationalisation — routing, locales, i18n     | [`I18N.md`](./docs/I18N.md)              |
+| Design tokens, dark mode, reskinning              | [`THEMING.md`](./docs/THEMING.md)        |
+| Deployment options (static hosts, GitHub Pages)   | [`DEPLOYING.md`](./docs/DEPLOYING.md)    |
 
 ## License
 
