@@ -98,6 +98,9 @@ In dev, missing env vars fall back to console-logging — `pnpm dev` produces a 
 | Image component conventions                      | [`IMAGES.md`](./docs/IMAGES.md)         |
 | Legal templates (review with counsel!)           | [`LEGAL.md`](./docs/LEGAL.md)           |
 | Performance benchmarks + reproducing them        | [`BENCHMARKS.md`](./docs/BENCHMARKS.md) |
+| JSON-LD / Schema.org authoring                   | [`JSONLD.md`](./docs/JSONLD.md)         |
+| Astro Actions — extending the contact form       | [`ACTIONS.md`](./docs/ACTIONS.md)       |
+| Internationalisation — routing, locales, i18n    | [`I18N.md`](./docs/I18N.md)             |
 
 ## Adding a new locale
 
