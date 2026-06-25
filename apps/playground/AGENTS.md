@@ -12,13 +12,13 @@ Orientation for AI agents working in this codebase. The human-facing tour is in 
 
 ## What this project is
 
-An Astro 6 site scaffolded from [astro-ignite](https://github.com/JordiParraCrespo/astro-ignite). It is **not** a framework — every file is owned by this repo and editable. There is no runtime dependency on the scaffolder.
+An Astro 7 site scaffolded from [astro-ignite](https://github.com/JordiParraCrespo/astro-ignite). It is **not** a framework — every file is owned by this repo and editable. There is no runtime dependency on the scaffolder.
 
 The site ships with: blog + projects content collections, contact form via Astro Actions, tri-state dark mode, cookie consent + Plausible, sitemap, RSS, robots, JSON-LD, i18n with parallel routes.
 
 ## Stack snapshot
 
-- **Astro 6** — static-first, server output via `@astrojs/node@^10` (required for Actions)
+- **Astro 7** — static-first, server output via `@astrojs/node@^11` (required for Actions)
 - **Tailwind v4** — single styling layer; component colors resolve through `--color-*` tokens via arbitrary-value utilities (`bg-[var(--color-fg)]`). `inlineStylesheets: 'always'` inlines the full stylesheet on first paint.
 - **Geist Sans + Geist Mono** — self-hosted via `astro:fonts`, zero CLS
 - **schema-dts** typed JSON-LD composed via `@graph`
@@ -32,7 +32,7 @@ The site ships with: blog + projects content collections, contact form via Astro
 4. **Tailwind-first styling, token-resolved.** Component colors / spacing / typography ship as Tailwind v4 utilities that resolve `--color-*` tokens (`bg-[var(--color-bg)]`, `text-[var(--color-fg-muted)]`). Scoped `<style>` blocks are reserved for what Tailwind cannot express — keyframe animations, view-transition selectors, runtime-dynamic CSS computed from component props, MDX prose targeting `<slot/>` content — and each such block carries a leading `<!-- tailwind-exception: <reason> -->` comment naming what Tailwind cannot express. `inlineStylesheets: 'always'` puts the full stylesheet in the HTML on first paint, so there is no separate critical-CSS extraction step.
 5. **Design tokens only.** Components reference `--color-bg`, `--color-fg`, `--color-primary`, `--color-border`, etc. — never raw zinc scale. The zinc scale at the bottom of `global.css` is the source of token values; tri-state dark mode (`.light` class) flips them.
 6. **JSON-LD composes via `@graph`.** Each page contributes its node — don't emit standalone `<script type="application/ld+json">` blocks.
-7. **Astro Actions need an adapter.** The template pins `@astrojs/node@^10`. Swap adapters in `astro.config.mjs` for other targets — see README.
+7. **Astro Actions need an adapter.** The template pins `@astrojs/node@^11`. Swap adapters in `astro.config.mjs` for other targets — see README.
 8. **Cookie banner + Plausible are consent-gated.** Cookie policy link is required. Plausible only fires after consent.
 9. **No new runtime deps without justification.** The perf pitch is built on a small owned codebase.
 

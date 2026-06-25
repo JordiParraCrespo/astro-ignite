@@ -37,7 +37,7 @@ The technical foundations that drive the project. The sections below (`Workspace
 
 ### Tech stack
 
-- **Astro 6.** Native i18n, content collections, Astro Actions. Adapter pin: `@astrojs/node@^10` (the adapter major that pairs with Astro 6; needs Node ≥22.12).
+- **Astro 7.** Native i18n, content collections, Astro Actions. Adapter pin: `@astrojs/node@^11` (the adapter major that pairs with Astro 7; needs Node ≥22.12).
 - **Tailwind v4** utilities resolve component colors through the `--color-*` design tokens declared in `src/styles/global.css`. Scoped `<style>` blocks are reserved for cases Tailwind cannot express (keyframe animations, view-transition selectors, runtime-dynamic CSS computed from component props, MDX prose targeting `<slot/>` content); each such block carries a leading `<!-- tailwind-exception: <reason> -->` comment. `inlineStylesheets: 'always'` puts the full stylesheet in the HTML on first paint — no separate critical-CSS step.
 - **Design tokens (CSS variables).** Components reference `--color-bg`, `--color-fg`, `--color-primary`, `--color-border`. The zinc scale exists at the bottom of `global.css` purely as token values. Tri-state dark mode flips tokens via a `.light` class.
 - **Astro + vanilla JS for all components.** No React, no Vue, no Svelte, no Radix, no headless-UI library — in atoms _or_ blocks. Interactive primitives use native HTML (`<details name>` for accordion, `<dialog>` for dialog, popover API for dropdown, CSS-only for tooltip). Custom elements (`ai-tabs`, `ai-toaster`) only when native HTML won't do it.
@@ -144,7 +144,7 @@ Highlights:
 4. **Tailwind-first styling, token-resolved.** Components express colors / spacing / typography through Tailwind v4 utility classes that resolve `--color-*` tokens (e.g. `bg-[var(--color-bg)]`). Scoped `<style>` blocks are reserved for what Tailwind cannot express (keyframes, view-transition selectors, runtime-dynamic CSS computed from component props, MDX prose under `<slot/>`); each carries a leading `<!-- tailwind-exception: <reason> -->` comment. `inlineStylesheets: 'always'` puts the full stylesheet in the HTML on first paint.
 5. **Design tokens only** — components reference `--color-bg`, `--color-fg`, `--color-primary`, `--color-border`, etc., not raw zinc scale. The zinc scale exists at the bottom of `global.css` purely as the source of token values. Tri-state dark mode (`.light` class flips tokens).
 6. **schema-dts typed JSON-LD** composed via `@graph` (per-page contributes its node).
-7. **Astro Actions need an adapter** — templates that use Actions (starter) pin `@astrojs/node@^10` (the adapter major that pairs with Astro 6; needs Node ≥22.12).
+7. **Astro Actions need an adapter** — templates that use Actions (starter) pin `@astrojs/node@^11` (the adapter major that pairs with Astro 7; needs Node ≥22.12).
 8. **Cookie banner + Plausible analytics are consent-gated.** Cookie policy link is required.
 9. **No new runtime deps in templates without justification** — the perf pitch depends on a small owned codebase.
 

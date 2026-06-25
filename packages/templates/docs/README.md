@@ -15,7 +15,7 @@ Open the URL printed in your terminal. The site has working docs navigation, ful
 
 ## What ships
 
-- **Astro 6** with native i18n, content collections, and static output
+- **Astro 7** with native i18n, content collections, and static output
 - **Tailwind v4** with `inlineStylesheets: 'always'` — full stylesheet inlined in the HTML on first paint, no render-blocking CSS request
 - **Geist Sans + Geist Mono** via `astro:fonts` (self-hosted, zero CLS)
 - **Typed Schema.org JSON-LD** built from `schema-dts`

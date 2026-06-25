@@ -14,7 +14,7 @@ export default defineConfig({
   output: 'static',
   adapter: node({ mode: 'standalone' }),
   image: {
-    // Astro 6 disables SVG processing by default. This template ships
+    // Astro 7 disables SVG processing by default. This template ships
     // lightweight SVG placeholder heroes/avatars that flow through `<Picture>`;
     // allow them to be rasterized into avif/webp. Replace the placeholders with
     // raster heroes (see docs/IMAGES.md) and you can drop this.

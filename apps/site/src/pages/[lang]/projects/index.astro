@@ -34,7 +34,7 @@ type ProjectCard = {
 };
 
 const projectCards: ProjectCard[] = projects.map((project: CollectionEntry<'projects'>) => {
-  // entry.id format from Astro 6 i18n collection: "<locale>/<slug>" (folder /index stripped).
+  // entry.id format from Astro 7 i18n collection: "<locale>/<slug>" (folder /index stripped).
   const slug = project.id.split('/').slice(1).join('/');
   return {
     project,

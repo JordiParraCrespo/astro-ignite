@@ -177,7 +177,7 @@
       },
       "f03": {
         "title": "i18n nativo",
-        "body": "Routing i18n de Astro 6 con un único camino de código para sitios mono y multilingües. Hreflang autocalculado."
+        "body": "Routing i18n de Astro 7 con un único camino de código para sitios mono y multilingües. Hreflang autocalculado."
       },
       "f04": {
         "title": "Formulario de contacto funcional",
