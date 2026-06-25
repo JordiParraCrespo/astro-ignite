@@ -50,11 +50,10 @@ The `[lang]` directory is the canonical name — never use `[locale]` or `[langu
    ```yaml
    ---
    title: Getting started
-   description: Install astro-ignite and run the CLI.
-   order: 1 # sidebar ordering within a section
+   description: Install astro-ignite and run the CLI in under two minutes. (40–160 characters.)
    ---
    ```
-2. To group pages in the sidebar, use folder structure: `src/content/docs/{locale}/guide/install.mdx` → appears under "Guide".
+2. Add the slug to the appropriate group in `src/config/sidebar.ts` to control where it appears in the nav and under which section heading. Sidebar order and grouping are entirely driven by that file — not by frontmatter or folder structure.
 3. To translate, copy the file into the target locale folder and translate the body + frontmatter.
 
 The route file enumerates entries via `getCollection('docs', ...)` and filters by id prefix — no manual route registration needed.

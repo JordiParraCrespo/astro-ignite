@@ -96,11 +96,11 @@ Drop an MDX file at `src/content/blog/{locale}/{slug}.mdx`:
 ```yaml
 ---
 title: My first post
-description: A short summary shown in the blog index.
-pubDate: 2025-01-01
-heroImage: ./_assets/hero-my-post.png   # optional; generate with scripts/banners/
+description: A 70–160 character summary shown in the blog index and used as the OG description.
+datePublished: 2026-01-01
 author: jordi                             # matches a key in src/content/authors/
 tags: [astro, tailwind]
+ogImage: ./_assets/og-my-post.png        # optional social preview; generate with scripts/banners/generate.mjs
 ---
 ```
 
@@ -113,10 +113,14 @@ Drop a folder at `src/content/projects/{locale}/{slug}/` and add an `index.mdx`:
 ```yaml
 ---
 title: My project
-description: One-line summary shown in the projects grid.
-pubDate: 2025-01-01
-heroImage: ./hero.png   # relative to the folder
-tags: [design, oss]
+description: A 70–160 character summary shown on the index card and in search results.
+summary: A short one-sentence pitch shown on the projects index card — up to 280 characters.
+datePublished: 2026-01-01
+techStack: [Astro, TypeScript, Tailwind]
+links:
+  live: https://example.com
+  repo: https://github.com/example/my-project
+status: shipped
 ---
 ```
 
@@ -127,8 +131,11 @@ Add a JSON file at `src/content/authors/{handle}.json`:
 ```json
 {
   "name": "Your Name",
-  "avatar": "/avatars/your-avatar.jpg",
-  "bio": "Short bio shown below each post."
+  "bio": {
+    "en": "Short bio shown below each post.",
+    "es": "Bio corta mostrada bajo cada artículo."
+  },
+  "image": "./_assets/your-handle.jpg"
 }
 ```
 

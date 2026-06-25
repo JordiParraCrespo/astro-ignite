@@ -83,11 +83,10 @@ In dev, missing env vars are silently skipped — `pnpm dev` works without any a
    ```yaml
    ---
    title: Getting started
-   description: Install and run the CLI.
-   order: 1
+   description: Install and run the CLI in under two minutes. (40–160 characters.)
    ---
    ```
-2. To group pages in the sidebar, use sub-folders: `src/content/docs/en/guide/install.mdx` → appears under the "Guide" section heading.
+2. Add the slug to the appropriate group in `src/config/sidebar.ts` to control where it appears in the nav and what section heading it belongs to.
 3. To translate a page, copy it into the target locale folder and translate the body and frontmatter.
 
 The route file enumerates entries via `getCollection('docs', ...)` — no manual route registration needed.
