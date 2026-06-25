@@ -143,8 +143,9 @@ See [`BENCHMARKS.md`](./docs/BENCHMARKS.md) for measurement methodology.
 | Legal templates (review with counsel!)            | [`LEGAL.md`](./docs/LEGAL.md)            |
 | Performance benchmarks + reproducing them         | [`BENCHMARKS.md`](./docs/BENCHMARKS.md)  |
 | Sidebar navigation — groups, ordering, badges     | [`SIDEBAR.md`](./docs/SIDEBAR.md)        |
-| Full-text search (Pagefind) — index, exclusions   | [`SEARCH.md`](./docs/SEARCH.md)          |
 | Internationalisation — routing, locales, i18n     | [`I18N.md`](./docs/I18N.md)              |
+| Design tokens, dark mode, reskinning              | [`THEMING.md`](./docs/THEMING.md)        |
+| Deployment options (static hosts, GitHub Pages)   | [`DEPLOYING.md`](./docs/DEPLOYING.md)    |
 
 ## License
 

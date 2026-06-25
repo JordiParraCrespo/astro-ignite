@@ -101,6 +101,8 @@ In dev, missing env vars fall back to console-logging — `pnpm dev` produces a 
 | JSON-LD / Schema.org authoring                   | [`JSONLD.md`](./docs/JSONLD.md)         |
 | Astro Actions — extending the contact form       | [`ACTIONS.md`](./docs/ACTIONS.md)       |
 | Internationalisation — routing, locales, i18n    | [`I18N.md`](./docs/I18N.md)             |
+| Design tokens, dark mode, reskinning             | [`THEMING.md`](./docs/THEMING.md)       |
+| Deployment options (Node, Netlify, Cloudflare)   | [`DEPLOYING.md`](./docs/DEPLOYING.md)   |
 
 ## Adding a new locale
 
