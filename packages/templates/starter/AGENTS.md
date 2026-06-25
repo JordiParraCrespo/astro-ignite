@@ -11,6 +11,7 @@ The site ships with: blog + projects content collections, contact form via Astro
 ## Stack snapshot
 
 - **Astro 7** — static-first, server output via `@astrojs/node@^11` (required for Actions)
+- **Sätteri** — Astro 7's default Rust Markdown/MDX engine, pinned explicitly in `astro.config.mjs` (`markdown.processor: satteri()`). GFM + SmartyPants + heading slugs are native. RSS still renders bodies with `markdown-it` (standalone, not the page pipeline).
 - **Tailwind v4** — single styling layer; component colors resolve through `--color-*` tokens via arbitrary-value utilities (`bg-[var(--color-fg)]`). `inlineStylesheets: 'always'` inlines the full stylesheet on first paint.
 - **Geist Sans + Geist Mono** — self-hosted via `astro:fonts`, zero CLS
 - **schema-dts** typed JSON-LD composed via `@graph`

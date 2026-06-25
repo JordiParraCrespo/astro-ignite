@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
+import { satteri } from '@astrojs/markdown-satteri';
 import node from '@astrojs/node';
 import tailwindcss from '@tailwindcss/vite';
 
@@ -11,6 +12,12 @@ import { siteConfig } from './src/config/site.ts';
 export default defineConfig({
   site: siteConfig.url,
   trailingSlash: 'ignore',
+  markdown: {
+    // Sätteri — Astro's Rust-powered Markdown/MDX engine, the default in Astro 7.
+    // Pinned explicitly so the engine stays owned, not implicit, and so this is
+    // the single seam for Sätteri features / mdast + hast plugins.
+    processor: satteri(),
+  },
   output: 'static',
   adapter: node({ mode: 'standalone' }),
   image: {
