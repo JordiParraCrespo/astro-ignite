@@ -1,0 +1,94 @@
+---
+/**
+ * Banner — site-wide announcement strip. `solid` is the high-contrast variant
+ * meant to pin above the header (drop it into a layout); `subtle` is an inline
+ * notice. Dismissal persists per `id` in localStorage, so bump the id when the
+ * announcement changes to resurface it.
+ *
+ * Usage in MDX (or a layout):
+ *   <Banner id="v0-5" href="/blog/v0-5" linkText="Read the post">
+ *     astro-ignite 0.5 is out — planning, budgets, and AVIF by default.
+ *   </Banner>
+ */
+
+import { cn } from '@/lib/cn';
+import Icon from '@/components/docs/Icon.astro';
+import type { IconName } from '@/components/docs/icons';
+
+interface Props {
+  id: string;
+  variant?: 'solid' | 'subtle';
+  icon?: IconName;
+  href?: string;
+  linkText?: string;
+  dismissible?: boolean;
+  class?: string;
+}
+
+const {
+  id,
+  variant = 'solid',
+  icon = variant === 'solid' ? 'sparkles' : 'bell',
+  href,
+  linkText,
+  dismissible = true,
+  class: className,
+} = Astro.props;
+---
+
+<div
+  role="status"
+  data-banner={id}
+  class={cn(
+    'flex items-center gap-2.5',
+    variant === 'solid' && 'bg-primary px-4 py-[11px] text-primary-fg',
+    variant === 'subtle' && 'rounded-md border border-border bg-surface-2 px-3.5 py-2.5 text-fg',
+    className
+  )}
+>
+  <span class={cn('flex', variant === 'solid' ? 'opacity-90' : 'text-fg-muted')} aria-hidden="true">
+    <Icon name={icon} size={variant === 'solid' ? 16 : 15} />
+  </span>
+  <span class={cn('font-medium', variant === 'solid' ? 'text-[13.5px]' : 'text-[13px]')}>
+    <slot />
+  </span>
+  {
+    href && linkText && (
+      <a
+        href={href}
+        class="inline-flex shrink-0 items-center gap-[3px] text-[13px] whitespace-nowrap text-inherit! underline underline-offset-3"
+      >
+        {linkText}
+        <Icon name="arrow-up-right" size={13} />
+      </a>
+    )
+  }
+  {
+    dismissible && (
+      <button
+        type="button"
+        data-banner-dismiss
+        aria-label="Dismiss announcement"
+        class={cn(
+          'ml-auto flex cursor-pointer border-none bg-transparent p-0 text-inherit',
+          variant === 'solid' ? 'opacity-70 hover:opacity-100' : 'text-fg-subtle hover:text-fg'
+        )}
+      >
+        <Icon name="x" size={15} />
+      </button>
+    )
+  }
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-banner]').forEach((banner) => {
+    const key = `banner-dismissed:${banner.dataset.banner}`;
+    if (localStorage.getItem(key)) banner.hidden = true;
+    banner
+      .querySelector<HTMLButtonElement>('[data-banner-dismiss]')
+      ?.addEventListener('click', () => {
+        localStorage.setItem(key, '1');
+        banner.hidden = true;
+      });
+  });
+</script>

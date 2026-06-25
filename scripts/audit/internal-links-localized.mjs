@@ -26,9 +26,63 @@ for (const root of targets) {
 // Allow: external (http(s)://), anchors (#), mailto:, tel:, and `getRelativeLocaleUrl(`.
 const hrefPattern = /\bhref\s*=\s*(?:["']\/[^"']*["']|\{[`'"]\/[^`'"]*[`'"]\})/g;
 
+// Blank out comment regions (`/* */`, `//`, `<!-- -->`) before scanning so that
+// JSDoc usage examples and other documentation don't read as rendered links —
+// comments never reach the HTML output. Newlines are preserved so reported line
+// numbers stay aligned with the original source.
+function blankComments(content) {
+  let out = '';
+  let state = 'code'; // 'code' | 'block' | 'html' | 'line'
+  for (let i = 0; i < content.length; i++) {
+    const c = content[i];
+    if (state === 'code') {
+      if (content.startsWith('/*', i)) {
+        state = 'block';
+        out += '  ';
+        i += 1;
+      } else if (content.startsWith('<!--', i)) {
+        state = 'html';
+        out += '    ';
+        i += 3;
+      } else if (content.startsWith('//', i)) {
+        state = 'line';
+        out += '  ';
+        i += 1;
+      } else {
+        out += c;
+      }
+    } else if (state === 'block') {
+      if (content.startsWith('*/', i)) {
+        state = 'code';
+        out += '  ';
+        i += 1;
+      } else {
+        out += c === '\n' ? '\n' : ' ';
+      }
+    } else if (state === 'html') {
+      if (content.startsWith('-->', i)) {
+        state = 'code';
+        out += '   ';
+        i += 2;
+      } else {
+        out += c === '\n' ? '\n' : ' ';
+      }
+    } else {
+      // line comment — runs to end of line
+      if (c === '\n') {
+        state = 'code';
+        out += '\n';
+      } else {
+        out += ' ';
+      }
+    }
+  }
+  return out;
+}
+
 for (const file of files) {
   const content = await readFile(file, 'utf8');
-  const lines = content.split('\n');
+  const lines = blankComments(content).split('\n');
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     if (/getRelativeLocaleUrl\s*\(/.test(line)) continue;
@@ -50,5 +104,8 @@ emitResult({
   audit: 'internal-links-localized',
   pass: hits.length === 0,
   hits,
-  notes: hits.length === 0 ? `scanned ${files.length} file(s)` : `${hits.length} hardcoded internal link(s)`,
+  notes:
+    hits.length === 0
+      ? `scanned ${files.length} file(s)`
+      : `${hits.length} hardcoded internal link(s)`,
 });

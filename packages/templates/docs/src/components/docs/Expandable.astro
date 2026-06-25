@@ -1,0 +1,47 @@
+---
+/**
+ * Expandable — inline disclosure for nested object shapes. Distinct from the
+ * Accordion atom: mono title, optional hint, bordered card. Nest `ParamField`
+ * or `ResponseField` rows inside to document nested properties.
+ *
+ * Usage in MDX:
+ *   <Expandable title="author" hint="object · 3 properties">
+ *     <ParamField name="name" type="string">…</ParamField>
+ *   </Expandable>
+ */
+
+import { cn } from '@/lib/cn';
+import Icon from '@/components/docs/Icon.astro';
+
+interface Props {
+  title: string;
+  hint?: string;
+  open?: boolean;
+  class?: string;
+}
+
+const { title, hint, open = false, class: className } = Astro.props;
+---
+
+<details
+  class={cn('group my-3 overflow-hidden rounded-md border border-border bg-surface', className)}
+  open={open}
+>
+  <summary
+    class="flex cursor-pointer list-none items-center gap-2.5 px-3.5 py-[11px] select-none group-open:border-b group-open:border-border group-open:bg-surface-2 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring [&::-webkit-details-marker]:hidden"
+  >
+    <span
+      class="flex text-fg-muted transition-transform duration-150 group-open:rotate-90"
+      aria-hidden="true"
+    >
+      <Icon name="chevron-right" size={15} />
+    </span>
+    <span class="font-mono text-[13px] font-medium text-fg">{title}</span>
+    {hint && <span class="ml-auto font-mono text-[11px] text-fg-subtle">{hint}</span>}
+  </summary>
+  <div
+    class="pt-1 pr-4 pb-3 pl-[38px] text-[13px] leading-relaxed text-fg-muted [&>*:first-child]:border-t-0"
+  >
+    <slot />
+  </div>
+</details>

@@ -1,0 +1,33 @@
+---
+/**
+ * Columns — generic N-column layout wrapper for arbitrary MDX content
+ * (CardGroup only does columns for cards). Collapses to one column below
+ * the md breakpoint.
+ *
+ * Usage in MDX:
+ *   <Columns cols={3}>
+ *     <div>…</div>
+ *     <div>…</div>
+ *     <div>…</div>
+ *   </Columns>
+ */
+
+import { cn } from '@/lib/cn';
+
+interface Props {
+  cols?: 2 | 3 | 4;
+  class?: string;
+}
+
+const { cols = 2, class: className } = Astro.props;
+---
+
+<div
+  class={cn(
+    'my-6 grid grid-cols-1 gap-3.5 md:grid-cols-[repeat(var(--columns-cols),minmax(0,1fr))]',
+    className
+  )}
+  style={`--columns-cols:${cols}`}
+>
+  <slot />
+</div>

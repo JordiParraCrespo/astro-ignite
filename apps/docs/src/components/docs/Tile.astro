@@ -1,0 +1,51 @@
+---
+/**
+ * Tile — one navigation tile inside `<Tiles>`: icon chip, title, short body
+ * (the slot), and an arrow that nudges right as the tile lifts on hover.
+ *
+ * Usage in MDX:
+ *   <Tile icon="rocket" title="Quickstart" href="/quick-start">
+ *     Five prompts to a deployed, audited site.
+ *   </Tile>
+ */
+
+import { cn } from '@/lib/cn';
+import Icon from '@/components/docs/Icon.astro';
+import type { IconName } from '@/components/docs/icons';
+
+interface Props {
+  title: string;
+  href: string;
+  icon?: IconName;
+  class?: string;
+}
+
+const { title, href, icon = 'book', class: className } = Astro.props;
+---
+
+<a
+  href={href}
+  class={cn(
+    'group flex flex-col gap-2.5 rounded-lg border border-border bg-surface px-5 py-[18px] no-underline! transition-[border-color,box-shadow,transform] duration-150 hover:-translate-y-px hover:border-border-strong hover:shadow-(--shadow)',
+    className
+  )}
+>
+  <span class="flex items-center justify-between">
+    <span
+      class="flex size-9 items-center justify-center rounded-(--radius) border border-border bg-surface-2 text-fg"
+      aria-hidden="true"
+    >
+      <Icon name={icon} size={18} />
+    </span>
+    <span
+      class="flex text-fg-subtle transition-[color,transform] duration-150 group-hover:translate-x-0.5 group-hover:text-fg"
+      aria-hidden="true"
+    >
+      <Icon name="arrow-right" size={16} />
+    </span>
+  </span>
+  <span class="text-[15px] font-medium tracking-[-0.01em] text-fg">{title}</span>
+  <span class="text-[12.5px] leading-[1.55] text-fg-muted [&_p]:my-0!">
+    <slot />
+  </span>
+</a>

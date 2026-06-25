@@ -1,0 +1,31 @@
+---
+/**
+ * Tiles — compact link grid for navigation, lighter than CardGroup + Card.
+ * Fill with `<Tile>` children; collapses to one column below the md
+ * breakpoint.
+ *
+ * Usage in MDX:
+ *   <Tiles cols={3}>
+ *     <Tile icon="rocket" title="Quickstart" href="/quick-start">…</Tile>
+ *   </Tiles>
+ */
+
+import { cn } from '@/lib/cn';
+
+interface Props {
+  cols?: 2 | 3 | 4;
+  class?: string;
+}
+
+const { cols = 3, class: className } = Astro.props;
+---
+
+<div
+  class={cn(
+    'my-6 grid grid-cols-1 gap-3.5 md:grid-cols-[repeat(var(--tiles-cols),minmax(0,1fr))]',
+    className
+  )}
+  style={`--tiles-cols:${cols}`}
+>
+  <slot />
+</div>
