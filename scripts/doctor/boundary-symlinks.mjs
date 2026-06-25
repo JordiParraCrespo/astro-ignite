@@ -14,6 +14,7 @@ const boundaryDirs = [
   'apps/site',
   'apps/docs',
   'scripts/audit',
+  'scripts/cloud',
 ];
 
 export async function check() {
