@@ -12,7 +12,9 @@ invariant in the root `AGENTS.md`.
 - `index.ts` — `useTranslations(locale)` returns a typed `t(key)`;
   `getLocalizedPath(path, locale)`; plus the `Locale`, `Dictionary`, and
   `TranslationKey` types (`TranslationKey` is a typed dotted path into
-  the dictionary).
+  the dictionary). Note: `localize()` is **absent** here — apps/site
+  doesn't use localized siteConfig values; it lives in the starter
+  template's `src/i18n/index.ts`.
 
 ## Rules
 
