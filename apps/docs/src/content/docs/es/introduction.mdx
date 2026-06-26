@@ -31,12 +31,12 @@ Obtienes:
 ## Arquitectura
 
 - **CLI estilo shadcn, no un framework.** `create-astro-ignite` es un scaffolder de un solo uso. Una vez instalado, desaparece de tu `node_modules` — sin imports, sin plugin, sin auto-update, sin telemetría.
-- **Tres responsabilidades, tres paquetes.** El CLI vive en `packages/create-astro-ignite/`. Los proyectos Astro reales viven en `packages/templates/<kind>/` (`starter`, `docs`, …). Un registro de componentes estilo shadcn vive en `packages/registry/`. El CLI ensambla una plantilla; los átomos del registro vienen pre-instalados.
+- **Tres responsabilidades, cuatro paquetes.** La responsabilidad del CLI está dividida: `packages/create-astro-ignite/` es un shim ligero de npm-create; `packages/astro-ignite/` es el núcleo real del CLI (prompts, scaffold, tipos). Los proyectos Astro reales viven en `packages/templates/<kind>/` (`starter`, `docs`, …). Un registro de componentes estilo shadcn vive en `packages/registry/`. El CLI ensambla una plantilla; los átomos del registro vienen pre-instalados.
 - **Las apps son salidas canónicas del scaffolding.** `apps/site` y `apps/docs` son espejos generados desde las plantillas, no fuentes.
 
 ## Stack técnico
 
-- **Astro 6** con i18n nativo, content collections y Astro Actions (adaptador `@astrojs/node@^10`)
+- **Astro 7** con i18n nativo, content collections y Astro Actions (adaptador `@astrojs/node@^11`)
 - **Tailwind v4** con utilidades que resuelven los design tokens `--color-*`; `<style>` con scope solo donde Tailwind no llega (keyframes, selectores de view-transition); `inlineStylesheets: 'always'` incrusta la hoja de estilos completa en el HTML en el primer paint — sin paso aparte de CSS crítico
 - **Variables CSS como design tokens**; modo oscuro tri-estado mediante un cambio de clase
 - **Astro + JS vanilla en todos los componentes** — sin React/Vue/Svelte/Radix en ninguna parte. Primitivas HTML nativas primero (`<details>`, `<dialog>`, popover API); custom elements solo cuando lo nativo no alcanza

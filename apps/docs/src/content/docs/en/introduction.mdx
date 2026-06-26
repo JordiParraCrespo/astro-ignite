@@ -31,12 +31,12 @@ You get:
 ## Architecture
 
 - **Shadcn-style CLI, not a framework.** `create-astro-ignite` is a one-shot scaffolder. Once installed it's gone from your `node_modules` — no imports, no plugin, no auto-update, no telemetry.
-- **Three concerns, three packages.** The CLI lives in `packages/create-astro-ignite/`. The real Astro projects live in `packages/templates/<kind>/` (`starter`, `docs`, …). A shadcn-style component registry lives in `packages/registry/`. The CLI assembles a template; the registry's atoms ship pre-installed.
+- **Three concerns, four packages.** The CLI concern is split: `packages/create-astro-ignite/` is a thin npm-create shim; `packages/astro-ignite/` is the real CLI core (prompts, scaffold, types). The real Astro projects live in `packages/templates/<kind>/` (`starter`, `docs`, …). A shadcn-style component registry lives in `packages/registry/`. The CLI assembles a template; the registry's atoms ship pre-installed.
 - **Apps are canonical scaffolded outputs.** `apps/site` and `apps/docs` are mirrors generated from the templates, not sources.
 
 ## Tech stack
 
-- **Astro 6** with native i18n, content collections, and Astro Actions (`@astrojs/node@^10` adapter)
+- **Astro 7** with native i18n, content collections, and Astro Actions (`@astrojs/node@^11` adapter)
 - **Tailwind v4** utilities resolving the `--color-*` design tokens; scoped `<style>` only where Tailwind can't reach (keyframes, view-transition selectors); `inlineStylesheets: 'always'` puts the full stylesheet in the HTML on first paint — no separate critical-CSS step
 - **CSS variables for design tokens**; tri-state dark mode via class flip
 - **Astro + vanilla JS for every component** — no React/Vue/Svelte/Radix anywhere. Native HTML primitives first (`<details>`, `<dialog>`, popover API); custom elements when native won't do
