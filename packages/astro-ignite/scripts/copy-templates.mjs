@@ -10,7 +10,7 @@
  * Invoked by `pnpm pack` / `npm publish` via the package's `prepack` script.
  */
 
-import { cp, rm, mkdir, readdir, stat, rename } from 'node:fs/promises';
+import { cp, rm, mkdir, readdir, stat, rename, readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
 
@@ -59,6 +59,21 @@ for (const ent of templates) {
     }
   } catch {
     // no _gitignore in this template — fine
+  }
+
+  // Prepend a DO-NOT-HAND-EDIT banner to the root AGENTS.md so agents
+  // navigating the generated copy know to edit packages/templates/ instead.
+  const agentsMdPath = join(to, 'AGENTS.md');
+  try {
+    const original = await readFile(agentsMdPath, 'utf-8');
+    const banner =
+      `> **DO NOT HAND-EDIT THIS DIRECTORY.**\n` +
+      `>\n` +
+      `> \`packages/astro-ignite/templates/${ent.name}/\` is a generated copy created by the \`copy-templates\` prepack step. Edit \`packages/templates/${ent.name}/\` instead; the prepack will propagate changes here.\n` +
+      `\n`;
+    await writeFile(agentsMdPath, banner + original, 'utf-8');
+  } catch {
+    // no root AGENTS.md in this template — fine
   }
 
   console.log(`  ✓ copied template/${ent.name}`);

@@ -6,6 +6,8 @@
 
 Orientation for AI agents working in this codebase. Subject-specific deep dives are under [`docs/`](./docs/).
 
+`CLAUDE.md` in this repo is a symlink to this file.
+
 ## What this project is
 
 A documentation site scaffolded from [astro-ignite](https://github.com/JordiParraCrespo/astro-ignite). It is **not** built on Starlight — the docs primitives (TOC, sidebar, search, prev/next) are composed from the astro-ignite base components, owned by this repo and editable.
