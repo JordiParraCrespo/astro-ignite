@@ -23,7 +23,7 @@ Open the URL printed in your terminal. The site has working docs navigation, ful
 - **3-column docs layout** — sidebar nav, MDX content, on-this-page TOC
 - **Prev / Next navigation** with ordering via frontmatter `order`
 - **Breadcrumbs** derived from folder structure
-- **MDX component kit** — Callout, Steps, Step, CodeBlock, CodeGroup, Frame, CardGroup, AiActions
+- **MDX component kit** — Callout, Steps/Step, CodeBlock, CodeGroup, Frame, CardGroup, Columns, Expandable, ParamField, ResponseField, Icon, Tree, Update, Mermaid, Banner, Tiles/Tile, AiActions, plus Accordion, Tabs, Tooltip and Card atoms
 - **Tri-state dark mode** (light / dark / system; defaults to light)
 - **Cookie banner + legal templates** (privacy, terms, cookies)
 - **Plausible analytics** (env-gated, consent-gated)
@@ -132,20 +132,22 @@ See [`BENCHMARKS.md`](./docs/BENCHMARKS.md) for measurement methodology.
 
 ## Deeper docs
 
-| Topic                                             | Read                                     |
-| ------------------------------------------------- | ---------------------------------------- |
-| Search (Pagefind, indexing, i18n, removing)       | [`SEARCH.md`](./docs/SEARCH.md)          |
-| Sidebar, TOC, prev/next, breadcrumbs              | [`NAVIGATION.md`](./docs/NAVIGATION.md)  |
-| Custom fonts (swap, add, system-only)             | [`FONTS.md`](./docs/FONTS.md)            |
-| Analytics swap (Plausible ↔ Umami ↔ Fathom ↔ GA) | [`ANALYTICS.md`](./docs/ANALYTICS.md)    |
-| OG images (per-locale, dynamic generation)        | [`OG.md`](./docs/OG.md)                  |
-| Image component conventions                       | [`IMAGES.md`](./docs/IMAGES.md)          |
-| Legal templates (review with counsel!)            | [`LEGAL.md`](./docs/LEGAL.md)            |
-| Performance benchmarks + reproducing them         | [`BENCHMARKS.md`](./docs/BENCHMARKS.md)  |
-| Sidebar navigation — groups, ordering, badges     | [`SIDEBAR.md`](./docs/SIDEBAR.md)        |
-| Internationalisation — routing, locales, i18n     | [`I18N.md`](./docs/I18N.md)              |
-| Design tokens, dark mode, reskinning              | [`THEMING.md`](./docs/THEMING.md)        |
-| Deployment options (static hosts, GitHub Pages)   | [`DEPLOYING.md`](./docs/DEPLOYING.md)    |
+| Topic                                             | Read                                       |
+| ------------------------------------------------- | ------------------------------------------ |
+| MDX components — props, examples, adding your own | [`COMPONENTS.md`](./docs/COMPONENTS.md)    |
+| JSON-LD / Schema.org — builders, extending        | [`JSONLD.md`](./docs/JSONLD.md)            |
+| Search (Pagefind, indexing, i18n, removing)       | [`SEARCH.md`](./docs/SEARCH.md)            |
+| Sidebar, TOC, prev/next, breadcrumbs              | [`NAVIGATION.md`](./docs/NAVIGATION.md)    |
+| Custom fonts (swap, add, system-only)             | [`FONTS.md`](./docs/FONTS.md)              |
+| Analytics swap (Plausible ↔ Umami ↔ Fathom ↔ GA) | [`ANALYTICS.md`](./docs/ANALYTICS.md)      |
+| OG images (per-locale, dynamic generation)        | [`OG.md`](./docs/OG.md)                    |
+| Image component conventions                       | [`IMAGES.md`](./docs/IMAGES.md)            |
+| Legal templates (review with counsel!)            | [`LEGAL.md`](./docs/LEGAL.md)              |
+| Performance benchmarks + reproducing them         | [`BENCHMARKS.md`](./docs/BENCHMARKS.md)    |
+| Sidebar navigation — groups, ordering, badges     | [`SIDEBAR.md`](./docs/SIDEBAR.md)          |
+| Internationalisation — routing, locales, i18n     | [`I18N.md`](./docs/I18N.md)                |
+| Design tokens, dark mode, reskinning              | [`THEMING.md`](./docs/THEMING.md)          |
+| Deployment options (static hosts, GitHub Pages)   | [`DEPLOYING.md`](./docs/DEPLOYING.md)      |
 
 ## License
 
