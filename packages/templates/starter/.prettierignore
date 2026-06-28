@@ -20,11 +20,12 @@ docs/
 # Markdown content collections keep their own authored style
 src/content/
 
-# Components/layouts with inline <script> blocks prettier-plugin-astro
-# can't reliably parse (mirrors the monorepo .prettierignore).
+# Components prettier-plugin-astro can't reliably parse across all supported
+# versions — either inline <script> blocks or complex TypeScript in the frontmatter.
 src/components/common/Analytics.astro
 src/components/common/Header.astro
 src/components/common/LocaleSwitcher.astro
 src/components/common/ThemeToggle.astro
 src/components/legal/CookieBanner.astro
+src/components/ui/text.astro
 src/layouts/BaseLayout.astro
