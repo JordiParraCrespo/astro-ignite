@@ -42,16 +42,24 @@ yours to edit.
 
 ## Callouts
 
-`<Callout>` highlights important content with a tinted border block. Four
-variants cover the common intents — informational, positive, cautionary, and
-destructive.
+`<Callout>` highlights important content with a tinted border block. Six
+variants cover the common intents — neutral, informational, positive, confirmatory,
+cautionary, and destructive.
 
 <Callout variant="note" title="Note (default)">
   An informational aside or context the reader should know.
 </Callout>
 
+<Callout variant="info" title="Info">
+  Background context worth knowing before you start.
+</Callout>
+
 <Callout variant="tip" title="Tip">
   A suggestion that makes something faster or easier.
+</Callout>
+
+<Callout variant="check" title="Check">
+  Confirms a step worked — what success looks like.
 </Callout>
 
 <Callout variant="warning" title="Heads up">
@@ -68,7 +76,7 @@ destructive.
 </Callout>
 ```
 
-`variant` accepts `note` · `tip` · `warning` · `danger` (default: `note`).
+`variant` accepts `note` · `info` · `tip` · `check` · `warning` · `danger` (default: `note`).
 `title` is optional — each variant has a built-in default.
 
 ## Steps
@@ -148,18 +156,6 @@ intentional. Drop an `Image` atom or a plain `<img>` inside.
 <Frame caption="A framed, captioned figure">
   <img src="/og/og-default.png" alt="Open Graph preview card" width="600" height="315" />
 </Frame>
-
-## Callouts
-
-`<Callout variant="…">` ships six variants: `note`, `info`, `tip`, `check`,
-`warning`, and `danger`.
-
-<Callout variant="note">A neutral aside the reader can skip.</Callout>
-<Callout variant="info">Background context worth knowing before you start.</Callout>
-<Callout variant="tip">A shortcut or best practice.</Callout>
-<Callout variant="check">Confirms a step worked — what success looks like.</Callout>
-<Callout variant="warning">Setup prompts can be skipped with `--yes`.</Callout>
-<Callout variant="danger">Destructive — this cannot be undone.</Callout>
 
 ## Tabs
 
