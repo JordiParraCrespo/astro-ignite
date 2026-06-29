@@ -51,7 +51,7 @@ handler: async (input) => {
 
 ## Adding a new action
 
-Actions require a server adapter (`@astrojs/node@^10` is pinned). Each action is an entry in the `server` map:
+Actions require a server adapter (`@astrojs/node@^11` is pinned). Each action is an entry in the `server` map:
 
 ```ts
 // src/actions/index.ts
