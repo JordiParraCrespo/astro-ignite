@@ -1,5 +1,9 @@
 # AGENTS.md
 
+> **DO NOT HAND-EDIT THIS DIRECTORY.**
+>
+> `packages/astro-ignite/templates/starter/` is a generated copy created by the `copy-templates` prepack step. Edit `packages/templates/starter/` instead; the prepack will propagate changes here.
+
 Orientation for AI agents working in this codebase. The human-facing tour is in [`README.md`](./README.md); subject-specific deep dives are under [`docs/`](./docs/).
 
 ## What this project is
@@ -66,16 +70,18 @@ Atoms live in `src/components/ui/` (shadcn-style — copied from the astro-ignit
 - Class-merge helper at `src/lib/cn.ts`; toast helper at `src/lib/toast.ts` dispatches a window event consumed by `<Toaster />`
 - Card-style families (`card`, `tabs`, `accordion`, `dialog`, `dropdown-menu`) are grouped by family directory
 
-## Banner & hero images
+## Banner & OG images
 
-Banners and blog hero images are **generated from HTML sources**, not hand-rolled SVG. The starter ships a small set of PNGs in `src/content/blog/_assets/`; reference them from MDX frontmatter `heroImage` (the Zod schema validates dimensions via Astro's `image()` helper).
+Blog and project detail pages render a **token-resolved CSS gradient cover** — there is no `heroImage` field in the content schema. To give a post a social/OG preview, set the optional `ogImage` in MDX frontmatter; otherwise OG falls back to the site-wide default banner via `SEO.astro`.
+
+OG images must be **generated from HTML sources**, not hand-rolled SVG — see [`docs/IMAGES.md`](./docs/IMAGES.md).
 
 Do not:
 
 - Inline hand-drawn SVG banners in MDX
 - Generate banners via satori / @vercel/og / resvg — type rendering drifts from the design tokens
 
-If you need a new banner, copy an existing HTML source and re-render with your renderer of choice (Puppeteer / Playwright + Chrome are the typical path).
+If you need a new OG image, copy an existing HTML source and re-render with your renderer of choice (Puppeteer / Playwright + Chrome are the typical path).
 
 ## Common commands
 
