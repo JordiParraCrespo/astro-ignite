@@ -79,8 +79,9 @@ pnpm exec playwright show-report tests/e2e/playwright-report
   Astro Actions endpoint and returns a synthetic success payload, so
   the dev server never invokes `sendContactEmail`. It also blocks
   `api.resend.com` at the browser layer as belt-and-braces.
-- **Fonts / CDNs**: every template self-hosts via `astro:fonts`. No
-  spec depends on an external host being reachable.
+- **Fonts / CDNs**: every template ships the system font stack only —
+  no remote font fetches. No spec depends on an external host being
+  reachable.
 
 No spec depends on real outbound network. Run the suite offline; it
 must still pass.
