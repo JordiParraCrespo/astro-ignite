@@ -212,7 +212,7 @@ by `prettier --write`. Two fix options:
 ## Changes requested
 
 1. **Audit baseline (BLOCKER, verdict rule 2/5).** `pnpm
-   audit:invariants` is red because `tokens-only.mjs` flags two
+audit:invariants` is red because `tokens-only.mjs` flags two
    pre-existing `themeColor: '#…'` hex literals in
    `packages/templates/starter/src/config/site.ts:107` and
    `packages/templates/docs/src/config/site.ts:68` (both from initial

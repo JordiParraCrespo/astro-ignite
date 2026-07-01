@@ -120,8 +120,8 @@ packages/templates/docs/src/lib/toast.ts` (exit 0). Run
 - [x] **T9.** Re-verify the apps/docs parity claim against the new
       docs-template state. From the repo root run
       `    for f in packages/templates/docs/src/components/ui/*.astro; do
-  name=$(basename "$f")
-  diff -q "$f" "apps/docs/src/components/ui/$name"
+name=$(basename "$f")
+diff -q "$f" "apps/docs/src/components/ui/$name"
 done
 diff -q packages/templates/docs/src/lib/toast.ts apps/docs/src/lib/toast.ts`
       Expected outcome: every comparison reports "identical" (exit 0
@@ -162,8 +162,8 @@ diff -q packages/templates/docs/src/lib/toast.ts apps/docs/src/lib/toast.ts`
 
 - [x] **T11.** From the repo root, run the S1 verifier:
       `    for f in packages/templates/starter/src/components/ui/*.astro; do
-  name=$(basename "$f")
-  diff -q "$f" "packages/templates/docs/src/components/ui/$name"
+name=$(basename "$f")
+diff -q "$f" "packages/templates/docs/src/components/ui/$name"
 done`
       and confirm every comparison reports "identical" (zero "differ"
       lines). Same loop against
