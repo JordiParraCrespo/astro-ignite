@@ -17,7 +17,7 @@ Open the URL printed in your terminal. The site has working docs navigation, ful
 
 - **Astro 7** with native i18n, content collections, and static output
 - **Tailwind v4** with `inlineStylesheets: 'always'` — full stylesheet inlined in the HTML on first paint, no render-blocking CSS request
-- **Geist Sans + Geist Mono** via `astro:fonts` (self-hosted, zero CLS)
+- **System font stack** — zero font requests, zero CLS (see [`FONTS.md`](./docs/FONTS.md) to add a custom font)
 - **Typed Schema.org JSON-LD** built from `schema-dts`
 - **Full-text search** via Pagefind (post-build index, no server needed)
 - **3-column docs layout** — sidebar nav, MDX content, on-this-page TOC
@@ -123,7 +123,7 @@ pnpm astro add vercel   # or netlify, cloudflare, node
 The scaffold is tuned for Lighthouse 100s on mobile. Key principles:
 
 - `inlineStylesheets: 'always'` puts the full stylesheet in the HTML on first paint — no render-blocking CSS file
-- Geist fonts are self-hosted and preloaded; zero external font fetches
+- System font stack only; zero external font fetches
 - No client-side framework runtime
 - Anti-flash inline theme script (prevents light flash on dark preference)
 - AVIF + WebP with JPEG fallback, multiple `srcset` widths
