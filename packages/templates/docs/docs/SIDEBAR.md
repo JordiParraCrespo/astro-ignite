@@ -59,7 +59,7 @@ Doc slugs in `sidebar.ts` should NOT include the locale prefix — the renderer 
 
 ## Ordering within a group
 
-Items render in array order. There is no automatic sorting. The `order` frontmatter field has no effect on sidebar position — it is only used for prev/next navigation. To reorder sidebar items, reorder the array.
+Items render in array order. There is no automatic sorting and no `order` frontmatter field at all — the docs collection schema in `src/content.config.ts` doesn't define one. To reorder sidebar items, reorder the array.
 
 ## Prev / Next links
 
@@ -109,7 +109,7 @@ Badges render as small pill tags next to the link. The text is arbitrary — any
 
 ## Breadcrumbs
 
-`src/components/docs/Breadcrumbs.astro` derives the breadcrumb trail from the URL path and the doc's frontmatter `title`. No sidebar configuration is required. The top-level entry always points to the home route (`/`).
+`src/components/docs/Breadcrumbs.astro` looks up which group in `sidebar.ts` owns the current page (by matching the page's slug against `items[].slug`) and renders `Home / <group label> / <page title>`. Sidebar configuration is required for the middle crumb — a page not listed in any group renders as just `Home / <page title>`. The top-level entry always points to the home route (`/`).
 
 ## Adding a page outside the docs collection
 

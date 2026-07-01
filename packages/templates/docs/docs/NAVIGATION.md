@@ -80,28 +80,8 @@ The TOC only renders when a page has at least one qualifying heading — pages w
 
 ## Prev / Next links
 
-`src/components/docs/PrevNext.astro` orders pages by the `order` frontmatter field within each section (folder):
-
-```yaml
----
-title: Install
-order: 2
----
-```
-
-Pages without an `order` field sort alphabetically by slug after ordered pages. Pages in different sidebar groups don't link to each other — prev/next navigation stays within a group's items as defined in `sidebar.ts`.
+`src/components/docs/PrevNext.astro` flattens `sidebar.ts` into a single ordered list and walks it to find the entry before and after the current page — there is no `order` frontmatter field (the docs schema in `src/content.config.ts` doesn't have one). Reorder pages by reordering the array in `sidebar.ts`. A page that isn't in `sidebar.ts` has no prev/next links, even though it still renders if visited directly.
 
 ## Breadcrumbs
 
-`src/components/docs/Breadcrumbs.astro` derives the crumb path from the URL segments — no config needed. A page at `/guide/install` produces "Guide / Install". Folder names are title-cased automatically.
-
-To rename a breadcrumb segment without renaming the folder, set a `section` key in the page's frontmatter:
-
-```yaml
----
-title: Install
-section: Getting started
----
-```
-
-If the `section` field is present, it overrides the folder-name-derived segment.
+`src/components/docs/Breadcrumbs.astro` does not read the URL or folder structure. It looks up which `sidebar.ts` group owns the current page's slug and renders `Home / <group label> / <page title>`. A page not listed in any `sidebar.ts` group gets no middle crumb — just `Home / <page title>`.

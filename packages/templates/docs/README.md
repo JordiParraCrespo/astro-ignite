@@ -21,9 +21,9 @@ Open the URL printed in your terminal. The site has working docs navigation, ful
 - **Typed Schema.org JSON-LD** built from `schema-dts`
 - **Full-text search** via Pagefind (post-build index, no server needed)
 - **3-column docs layout** — sidebar nav, MDX content, on-this-page TOC
-- **Prev / Next navigation** with ordering via frontmatter `order`
-- **Breadcrumbs** derived from folder structure
-- **MDX component kit** — Callout, Steps, Step, CodeBlock, CodeGroup, Frame, CardGroup, AiActions
+- **Prev / Next navigation** ordered by `src/config/sidebar.ts`, not frontmatter
+- **Breadcrumbs** derived from the page's owning sidebar group
+- **MDX component kit** — Callout, Steps/Step, CodeBlock, CodeGroup, Frame, CardGroup, Columns, Tile/Tiles, Tree, Update, Expandable, ParamField/ResponseField, Icon, Mermaid, Banner, Accordion/AccordionItem, Tabs family, Tooltip
 - **Tri-state dark mode** (light / dark / system; defaults to light)
 - **Cookie banner + legal templates** (privacy, terms, cookies)
 - **Plausible analytics** (env-gated, consent-gated)
@@ -84,10 +84,9 @@ In dev, missing env vars are silently skipped — `pnpm dev` works without any a
    ---
    title: Getting started
    description: Install and run the CLI.
-   order: 1
    ---
    ```
-2. To group pages in the sidebar, use sub-folders: `src/content/docs/en/guide/install.mdx` → appears under the "Guide" section heading.
+2. Add it to a group in `src/config/sidebar.ts` — that's what drives sidebar placement, ordering, and breadcrumbs; folder structure under `src/content/docs/` has no effect on any of them.
 3. To translate a page, copy it into the target locale folder and translate the body and frontmatter.
 
 The route file enumerates entries via `getCollection('docs', ...)` — no manual route registration needed.
