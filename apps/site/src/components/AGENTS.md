@@ -5,17 +5,34 @@ UI for the site. Organized by intent, not by page.
 ## Layout
 
 - `ui/` — **atoms** (shadcn-style, copied from the astro-ignite registry,
-  owned here). Singletons are flat (`button.astro`, `input.astro`, …);
-  compound families live in their own folder (`card/`, `tabs/`,
-  `accordion/`, `dialog/`, `dropdown-menu/`) — one file per part.
+  owned here). apps/site only mirrors the atoms it actually uses —
+  currently `Button.astro`, `CopyButton.astro`, plus a site-specific
+  `terminal/` compound family (`Terminal.astro` + 8 parts:
+  `TermAnswer`, `TermCaret`, `TermLine`, `TermOption`, `TermPrompt`,
+  `TermSigil`, `TermStrong`, `TermSubtle`). It does **not** carry the
+  full registry — no `card/`, `tabs/`, `accordion/`, `dialog/`,
+  `dropdown-menu/`, or `radio-group/` here.
 - `common/` — site chrome reused across pages (`Header`, `Footer`,
-  `Brand`, `ThemeToggle`, `LocaleSwitcher`, `Analytics`, `Hero`,
-  `FeaturesGrid`).
+  `Brand`, `ThemeToggle`, `LocaleSwitcher`, `Analytics`). No `Hero` or
+  `FeaturesGrid` — the hero/features sections live in `landing/` below.
+- `landing/` — apps/site-only marketing sections composed on the
+  homepage: `HeroSection`, `FeaturesSection`, `FeatureCell`,
+  `TemplatesSection`, `TemplateCard`, `BlogSection`, `CtaSection`,
+  `CommandLine`, `MetaStrip`, `Pill`, `SectionHead`. Not part of the
+  starter template mirror.
+- `blocks/terminal/` — the terminal/hero block's internal composition:
+  `TermHeader`, `TermCommandLine`, `TermCursorLine`, `TermActiveStep`,
+  `TermStep`, `TermPickerRow`. Consumed by `landing/HeroSection.astro`.
+  This is apps/site's headline customization vs. the starter template.
 - `seo/` — `SEO.astro` (meta/OG) and `JsonLd.astro` (renders the page's
   `@graph` node).
 - `legal/` — `CookieBanner.astro` (consent gate for analytics).
-- `<feature>/` — page-specific sections (`about/`, `blog/`, `projects/`,
-  `contact/`, `not-found/`, `image/`). One concept per file.
+- `<feature>/` — page-specific sections (currently only `image/`:
+  `Image.astro`, `PriorityImage.astro`). Unlike the starter template,
+  apps/site has no `about/`, `blog/`, `projects/`, `contact/`,
+  `not-found/`, or `error/` component folders — those pages compose
+  `landing/`/`common/` pieces or top-level `BlogCard.astro`/
+  `LandingPage.astro` directly.
 
 ## Rules (these are enforced)
 

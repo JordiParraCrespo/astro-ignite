@@ -130,7 +130,7 @@ No pre-commit hook. Run `pnpm format` yourself before opening a PR — CI checks
 
 `packages/create-astro-ignite/src/index.ts` — the npm-create shim. A single file that `spawnSync`s `npx --yes astro-ignite@<version> bootstrap <…args>` and forwards the exit code. Keep this package logic-free; anything about prompts or scaffold belongs in `packages/astro-ignite/`.
 
-Key invariant: **`scaffold.ts` strips deps the target template doesn't need.** The docs template doesn't ship email/Resend, so `rewritePackageJson` checks `fileExists(targetDir/src/lib/email/index.ts)` before retaining those deps. Apply the same pattern when adding a new template that omits a feature.
+Key invariant: **`scaffold.ts` only adds deps a template needs — it never strips any from `package.json`.** Base template `package.json`s never list `resend`/`nodemailer`; `rewritePackageJson` checks `fileExists(targetDir/src/lib/email/index.ts)` and adds the matching email-transport dep only when that file survived the copy. The docs template never gets one added because it doesn't ship `src/lib/email/` at all. Apply the same additive, `fileExists`-gated pattern when adding a new template that omits a feature.
 
 ## Template invariants (the locked practices)
 

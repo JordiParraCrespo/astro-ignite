@@ -23,6 +23,8 @@ verifies and supports the monorepo itself.
 - `scaffold-test.mjs` — full e2e: wipes `apps/playground/`, runs the CLI
   `--yes`, installs, builds, Lighthouse. Backs `pnpm scaffold:test`.
 - `generate-placeholder-assets.*` — placeholder image generation.
+- `queue.mjs` — derives harness backlog state from the filesystem
+  against `openspec/feature_list.json`. Backs `pnpm queue`.
 
 ## Rules
 

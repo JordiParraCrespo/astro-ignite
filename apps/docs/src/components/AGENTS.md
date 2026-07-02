@@ -8,13 +8,21 @@ UI for the docs site. Organized by intent, not by page.
   here). Singletons flat (`button.astro`, …); compound families in their
   own folder (`card/`, `tabs/`, `accordion/`, `dialog/`,
   `dropdown-menu/`), one file per part.
-- `docs/` — the documentation chrome: `SidebarNav`, `OnThisPage`,
-  `Breadcrumbs`, `PrevNext`, `SearchBox` (the `<dialog>`-based command
-  palette), `Callout`, `CodeBlock`, `ComponentShowcase`.
-- `common/` — site chrome (`Header`, `Footer`, `Brand`, `ThemeToggle`,
-  `LocaleSwitcher`, `Analytics`).
+- `docs/` — the documentation chrome (`SidebarNav`, `OnThisPage`,
+  `Breadcrumbs`, `PrevNext`, `SearchBox` — the `<dialog>`-based command
+  palette, `ComponentShowcase`) plus the MDX content primitives
+  registered in `mdx-components.ts`: `Callout`, `CodeBlock`, `CodeGroup`,
+  `CardGroup`, `Frame`, `Steps`/`Step`, `Expandable`,
+  `ParamField`/`ResponseField`, `Icon` (+ `icons.ts`), `Tree`, `Update`,
+  `Mermaid`, `Columns`, `Banner`, `Tiles`/`Tile`, `AiActions`.
+- `common/` — site chrome (`Footer`, `Brand`, `ThemeToggle`,
+  `LocaleSwitcher`, `Analytics`). No `Header` — the docs sidebar
+  replaces the top nav.
 - `seo/` — `SEO.astro` + `JsonLd.astro` (the page's `@graph` node).
-- `legal/` — `CookieBanner.astro` (consent gate). `not-found/` — 404 hero.
+- `legal/` — `CookieBanner.astro` (consent gate). `not-found/` — 404
+  hero. `error/` — 500 hero.
+- `blocks/` — `not-found-state.astro` (registry-showcase page content,
+  not part of the docs template mirror).
 
 ## Rules (enforced)
 

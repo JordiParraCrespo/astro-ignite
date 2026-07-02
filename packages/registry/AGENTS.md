@@ -45,7 +45,8 @@ ships compositions. The starter template gets atoms copied into
   forbidden in atom source `.ts` files; `.astro` default exports are the
   component itself and are fine).
 - **Compound families** live in `base/<family>/`: `card/`, `tabs/`,
-  `accordion/`, `dialog/`, `dropdown-menu/`. No flat `card.astro`.
+  `accordion/`, `dialog/`, `dropdown-menu/`, `radio-group/`. No flat
+  `card.astro`.
 - Every atom in `registry.json` depends on `cn` (transitively).
 - Blocks **compose atoms** from `base/*`; never redeclare card / button
   markup inline inside a block.

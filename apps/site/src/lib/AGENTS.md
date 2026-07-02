@@ -5,10 +5,11 @@ Small, owned helpers. Named exports, no side-effecting imports.
 ## Files
 
 - `cn.ts` — class-merge helper used by every component.
-- `blog.ts` — locale-filtered fetch + sort for the `blog` collection,
-  plus site-specific utilities: `GLYPH_MAP` (tag → display glyph),
-  `glyphFor`, `initialsFor`, adjacency, and pagination meta. Routes
-  don't query the collection directly.
+- `blog.ts` — site-specific utilities for the `blog` collection:
+  `GLYPH_MAP` (tag → display glyph), `glyphFor`, `initialsFor`,
+  `readingTime`, the `BlogCardData` type, and `getBlogCards()`. No
+  adjacency (prev/next) or pagination-meta logic — routes that need
+  that query the collection directly.
 - `clipboard.ts` — `copyToClipboard(text)` thin wrapper around the
   Clipboard API; returns `false` when unavailable.
 - `image/blur.ts` — blur-placeholder data for non-LCP images (heroes use
