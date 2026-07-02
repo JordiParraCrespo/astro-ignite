@@ -14,7 +14,11 @@ UI for the docs site. Organized by intent, not by page.
   registered in `mdx-components.ts`: `Callout`, `CodeBlock`, `CodeGroup`,
   `CardGroup`, `Frame`, `Steps`/`Step`, `Expandable`,
   `ParamField`/`ResponseField`, `Icon` (+ `icons.ts`), `Tree`, `Update`,
-  `Mermaid`, `Columns`, `Banner`, `Tiles`/`Tile`, `AiActions`.
+  `Mermaid`, `Columns`, `Banner`, `Tiles`/`Tile`, `Accordion`/
+  `AccordionItem`, the `Tabs` family, `Tooltip`. `AiActions` also lives
+  here but is **not** in `mdx-components.ts` — `DocsLayout.astro`
+  imports and renders it directly in the doc header, so it isn't usable
+  as an MDX tag.
 - `common/` — site chrome (`Footer`, `Brand`, `ThemeToggle`,
   `LocaleSwitcher`, `Analytics`). No `Header` — the docs sidebar
   replaces the top nav.
