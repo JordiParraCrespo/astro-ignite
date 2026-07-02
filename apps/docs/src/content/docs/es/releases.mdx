@@ -32,72 +32,36 @@ La separación en dos paquetes existe porque la convención `create-*` es la ins
   usuarios avanzados pueden usar `npx astro-ignite ...` directamente.
 </Callout>
 
-## Dos canales de publicación
+## Publicaciones
 
-| Canal | Disparador | dist-tag de npm | Forma de versión |
-| --- | --- | --- | --- |
-| **Estable** | Fusionar el PR **Version Packages** abierto automáticamente en `main` | `latest` | semver, p. ej. `0.1.0` |
-| **Beta** | Etiquetar cualquier PR abierto con `🚀 autorelease` | `beta` | `0.0.0-beta.<sha-corto>` |
+| Disparador | dist-tag de npm | Forma de versión |
+| --- | --- | --- |
+| Se dispara manualmente desde Actions → Release → Run workflow | `latest` | semver, p. ej. `0.1.0` |
 
-Ambos flujos comparten un único workflow: `.github/workflows/release.yml`, basado en el de `shadcn-ui/ui`.
+Mantenidas con [Changesets](https://github.com/changesets/changesets), publicadas mediante `.github/workflows/release.yml`.
 
-## Releases estables
-
-Disparadas automáticamente con cada push a `main`. Mantenidas con [Changesets](https://github.com/changesets/changesets).
+## Cómo corre una release
 
 ```text
-escribe cambios  →  pnpm changeset  →  git push  →  PR + merge a main
-                                                         │
-                                                         ▼
-                              el workflow corre en main, la action ve
-                              changesets pendientes y abre (o actualiza)
-                              el PR "Version Packages" en la rama
-                              `changeset-release/main`
-                                                         │
-                                                         │  (cuando estés listo)
-                                                         ▼
-                              fusiona el PR "Version Packages"
-                                                         │
-                                                         ▼
-                              el workflow corre otra vez, no quedan
-                              changesets pendientes → `changeset publish`
-                              publica ambos paquetes en npm como @latest
+escribe cambios  →  pnpm changeset  →  commit + push  →  PR + merge a main
+                                                             │
+                                                             │  (cuando un mantenedor esté listo)
+                                                             ▼
+                                     Actions → Release → Run workflow
+                                                             │
+                                                             ▼
+                          1. aplica los changesets pendientes (sube
+                             versiones, escribe el CHANGELOG, refresca
+                             pnpm-lock.yaml)
+                          2. commitea el cambio de versión localmente
+                          3. construye ambos paquetes
+                          4. `pnpm changeset publish` — publica en npm vía
+                             OIDC trusted publishing (sin NPM_TOKEN)
+                          5. solo tras una publicación exitosa, empuja el
+                             commit del bump y sus tags
 ```
 
-Detalle de implementación: el paso `version` llama a `.github/changeset-version.js` (un envoltorio fino) que ejecuta `changeset version` y luego `pnpm install --lockfile-only` para que el PR "Version Packages" lleve un `pnpm-lock.yaml` actualizado.
-
-## Releases beta
-
-Disparadas cuando un mantenedor añade la etiqueta **`🚀 autorelease`** a un PR abierto contra `main`.
-
-```text
-abre un PR con tus cambios  →  añade la etiqueta "🚀 autorelease"
-                                          │
-                                          ▼
-                              el job prerelease del workflow corre:
-                                1. checkout del HEAD del PR
-                                2. node .github/version-script-beta.js
-                                   → reescribe packages/astro-ignite/package.json
-                                     y packages/create-astro-ignite/package.json
-                                     a la versión `0.0.0-beta.<sha-corto>`
-                                3. construye ambos paquetes
-                                4. npm publish --tag beta --access public
-                                   para cada uno
-                                5. sube el tarball construido como artefacto
-                                   del workflow
-```
-
-El cambio de versión NO se commitea — solo vive en los tarballs publicados. Cada nuevo push al mismo PR puede re-publicarse quitando y volviendo a poner la etiqueta.
-
-Instalar una beta:
-
-<CodeBlock filename="terminal" language="bash">
-{`npm create astro-ignite@beta mi-sitio               # última beta
-npm create astro-ignite@0.0.0-beta.abc123 mi-sitio  # fijar a un PR concreto
-npx astro-ignite@beta bootstrap mi-sitio            # directo, última beta`}
-</CodeBlock>
-
-Las versiones beta nunca pasan a `@latest`. Los usuarios tienen que pedirlas explícitamente.
+Detalle de implementación: el paso 1 llama a `.github/changeset-version.js` (un envoltorio fino) que ejecuta `changeset version` y luego `pnpm install --lockfile-only`. El commit del cambio de versión se crea *antes* de publicar (para que el tag publicado apunte a él) pero se empuja solo *después* de una publicación exitosa — si la publicación falla, no se empuja nada, así que una re-ejecución parte de un estado limpio en vez de uno huérfano ("versión subida pero no publicada"). Una entrada `dry_run` ejecuta los pasos 1–3 y se detiene antes de publicar, commitear o empujar, como comprobación rápida.
 
 ## Escribir un changeset
 
@@ -121,9 +85,8 @@ Los paquetes `astro-ignite` y `create-astro-ignite` están **vinculados** en `.c
 
 | Ruta | Propósito |
 | --- | --- |
-| `.github/workflows/release.yml` | El workflow de dos jobs (estable + beta). |
-| `.github/changeset-version.js` | Estable: `changeset version` + refrescar lockfile. |
-| `.github/version-script-beta.js` | Beta: reescribir las versiones de ambos paquetes a `0.0.0-beta.<sha>`. |
+| `.github/workflows/release.yml` | El job único de release, disparado manualmente (aplica changesets, construye, publica vía OIDC y luego empuja). |
+| `.github/changeset-version.js` | `changeset version` + refrescar lockfile. |
 | `.changeset/config.json` | Config de changesets (access, lista ignore, paquetes vinculados). |
 | `.changeset/*.md` | Descripciones de cambios pendientes, consumidas al publicar. |
 
@@ -131,28 +94,15 @@ Los paquetes `astro-ignite` y `create-astro-ignite` están **vinculados** en `.c
 
 Solo una vez por repositorio. Ya hecho para `astro-ignite`; aquí queda para forks.
 
-- **Environment `Prod`** de GitHub con el secret **`NPM_TOKEN`** — token Granular de npm, con el checkbox **Bypass 2FA** activado, scope **Read and write** sobre **All packages** (los tokens granulares no pueden limitarse a un paquete inexistente; rota a uno más estrecho tras la primera publicación).
-- **Etiqueta de repositorio `🚀 autorelease`** — color verde (`#0E8A16`).
-- **Settings → Actions → General → Workflow permissions** → ✅ Allow GitHub Actions to create and approve pull requests (necesario para que el PR Version Packages se pueda abrir).
+- **Trusted Publisher de npm** configurado en cada paquete (`astro-ignite`, `create-astro-ignite`) vía npmjs.com → Settings → Trusted Publisher → GitHub Actions, con Organization/user `JordiParraCrespo`, Repository `astro-ignite`, Workflow filename `release.yml`, Environment name `Prod`. No hace falta un secret `NPM_TOKEN` de larga duración — el workflow intercambia un token OIDC de GitHub por una credencial de npm de corta duración y añade provenance automáticamente.
+- **Settings → Actions → General → Workflow permissions** → Read and write permissions (para que el commit del bump de versión se pueda empujar).
 
 ## Resolución de problemas
 
 **"GitHub Actions is not permitted to create or approve pull requests"** — activa el toggle en Settings → Actions → General → Workflow permissions del repositorio.
 
-**`npm error code ENEEDAUTH`** — el secret no se resolvió. O al job le falta `environment: Prod`, o `NPM_TOKEN` no está en el environment Prod.
-
-**`npm error code EOTP`** — el token no salta el 2FA. Regenera un Granular Access Token con el checkbox **Bypass two-factor authentication (2FA)** activado.
+**La publicación falla con un error de auth/provenance** — comprueba que hay un Trusted Publisher configurado para el paquete en npmjs.com con la organización, repositorio, nombre de workflow (`release.yml`) y environment (`Prod`) exactos bajo los que corre el workflow; cualquier discrepancia hace fallar el intercambio OIDC.
 
 **`npm error 403 Forbidden`** en la primera publicación — el email de tu cuenta de npm no está verificado. Confírmalo desde el enlace que recibiste al registrarte.
 
-**El PR Version Packages no aparece** tras fusionar changesets — comprueba que `.changeset/` contiene archivos `.md` aparte de `README.md` y `config.json`. La action solo abre el PR cuando hay changesets sin consumir.
-
-**El job de beta no corre tras etiquetar** — la etiqueta es exactamente `🚀 autorelease` (emoji cohete + un espacio + `autorelease`), y el PR apunta a `main`. Los forks no pueden publicar; el `if:` del job comprueba `github.repository_owner`.
-
-## Mejoras futuras
-
-Anotadas, aún no hechas:
-
-- **Trusted publishers OIDC de npm** — sustituir `NPM_TOKEN` por OIDC para no tener secrets de larga duración en el repo. Requiere configurar trusted publishers en la página de npm de cada paquete.
-- **Fijar el shim a su propia versión** — `create-astro-ignite` lanza ahora mismo `astro-ignite@latest`. Cuando existan releases estables, `npm create astro-ignite@beta` correría el CLI *estable*, no la beta. El shim debería lanzar `astro-ignite@<su-propia-versión>`.
-- **Degradar `latest` tras la primera publicación** — npm pone `latest` también en la primera publicación aunque uses `--tag beta`. Añadir un paso del workflow que haga `npm dist-tag rm <pkg> latest` en la primera beta, o aceptarlo y dejar que la primera estable sobrescriba `latest`.
+**No hay nada que publicar** — comprueba que `.changeset/` contiene archivos `.md` aparte de `README.md`. `changeset version`/`changeset publish` no hacen nada si no hay changesets pendientes.

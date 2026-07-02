@@ -9,7 +9,13 @@ in sync with the design system.
 - **Spec:** `openspec/specs/banner-pipeline/spec.md` (the banner pipeline
   is the only consumer of design-fetch today)
 - **CLI entry:** `node packages/design-fetch/dist/index.js <design-url>
---out <dir>`
+--out <dir>` (default `--out` is `./design` if omitted). Alternate form:
+  `--file <path>` extracts an already-downloaded `.tar.gz` instead of
+  fetching. `--force` overwrites a non-empty output directory.
+- **Auth:** the Claude Design API is gated — set `ANTHROPIC_API_KEY` in
+  the environment or pass `--api-key <key>`. Without one of these, the
+  fetch fails with a 401/403/404 hint pointing at `--file` as the
+  fallback.
 - **Output shape:** the extracted bundle contains `tokens.css`,
   `astro-ignite/project/Banners.html` (the authoritative banner
   prototype), and Geist woff2 files.

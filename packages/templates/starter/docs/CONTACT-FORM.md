@@ -10,7 +10,7 @@ The contact form is wired end-to-end: Astro Actions handle validation, an email 
 2. Checks the honeypot field `_website` — bots fill it, humans leave it blank. If filled, the action returns success silently without sending.
 3. Calls `sendContactEmail()` from `src/lib/email/`, which dispatches to whichever provider is configured.
 
-The form at `src/pages/contact.astro` posts directly to the action via `<form action={actions.contact}>`. Astro handles progressive enhancement — the form works with JavaScript disabled.
+The form lives in `src/components/contact/ContactSection.astro` (rendered by `src/pages/contact.astro`) and posts directly to the action via `<form action={actions.contact}>`. Astro handles progressive enhancement — the form works with JavaScript disabled.
 
 ## Environment variables
 
@@ -112,7 +112,7 @@ If you add new fields, also add matching `<input>` elements to the form in `src/
 1. Delete `src/actions/index.ts` and `src/actions/` if empty.
 2. Delete `src/lib/email/`.
 3. Delete `src/pages/contact.astro` and `src/pages/[lang]/contact.astro`.
-4. Remove the nav link to `/contact` from `src/components/common/Header.astro` and any locale-aware mirrors.
+4. Remove the nav link to `/contact` from `src/components/common/Header.astro` (it's a single shared component that builds locale-aware hrefs at render time — no per-locale copy to update).
 5. In `package.json`, remove `resend` (or `nodemailer`/`@types/nodemailer`) from dependencies.
 6. In `astro.config.mjs`, the `@astrojs/node` adapter is still needed if you have other server-rendered routes. If contact was the only Action, you can switch to `output: 'static'` and drop the adapter.
 7. Remove `RESEND_API_KEY`, `RESEND_FROM`, `SMTP_*`, and `CONTACT_TO_EMAIL` from `.env` and `.env.example`.

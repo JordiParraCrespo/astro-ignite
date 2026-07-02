@@ -17,12 +17,17 @@ The marketing landing for astro-ignite itself. **Manual mirror of the
   mirror it back to `packages/templates/starter/` in the same PR, or
   document why it doesn't belong there in `openspec/progress/impl_<name>.md`.
 - All the starter rules apply: tokens, no framework JS, i18n parallels,
-  consent-gated analytics, layered CSS, `@graph` JSON-LD, perf budget.
+  consent-gated analytics, `inlineStylesheets: 'always'` Tailwind-first
+  styling, `@graph` JSON-LD, perf budget.
 - The blog under `src/content/blog/` is real content (release notes,
   posts about the project). Banners for these posts must come from the
   claude-design HTML pipeline; see `openspec/specs/banner-pipeline/spec.md`.
-- The `scripts/banners/` directory in this app is the only place that
-  imports from `packages/design-fetch/` (build-time).
+- `scripts/banners/generate.mjs` renders the HTML sources in this directory
+  to PNGs using Playwright's `chrome-headless-shell` binary directly (no
+  Puppeteer, no `packages/design-fetch/` import). `design-fetch` is a
+  separate, manually-invoked one-off CLI (see `packages/design-fetch/AGENTS.md`)
+  used to pull a fresh claude-design bundle down to a scratch directory when
+  the design system changes — its output isn't wired into this script.
 
 ## Expanding The Boundary
 
@@ -52,6 +57,12 @@ differ here:
   `localize(value, locale)` for resolving localized siteConfig fields and
   content `bio` values. That function is not present here — apps/site does
   not use localized siteConfig values.
+- **No Astro Actions, no adapter.** The starter template pins
+  `@astrojs/node@^11` and handles the contact form with an Astro Action.
+  This site builds with `output: 'static'` and no adapter; the contact
+  form posts to a Cloudflare Pages Function (`functions/api/contact.ts`)
+  instead — the one server-side piece, deployed alongside the static
+  `dist/` output. There is no `src/actions/` directory here.
 
 When syncing a bug-fix from this mirror back to the starter template,
 check these divergences first: the fix may need adapting rather than

@@ -21,8 +21,10 @@ import Button from '@/components/ui/button.astro';
 <Button variant="outline" size="sm" href="/contact">Get in touch</Button>
 ```
 
-Explora cada átomo renderizado en vivo, con props y código fuente, en
-[Componentes](/es/components).
+Explora la mayoría de los átomos renderizados en vivo, con props y código
+fuente, en [Componentes](/es/components) (los átomos de formulario más
+recientes — checkbox, switch, select, radio-group — vienen preinstalados
+pero aún no tienen página de demo en vivo).
 
 ## Props y variantes
 
@@ -101,8 +103,8 @@ framework.
 
 ## Toasts
 
-Los toasts son imperativos. Renderiza `<Toaster />` una vez (los layouts ya lo
-hacen), luego dispara uno desde cualquier sitio con el helper:
+Los toasts son imperativos. Añade `<Toaster />` una vez cerca de la raíz de
+tu layout, luego dispara uno desde cualquier sitio con el helper:
 
 <CodeBlock filename="example.ts">{`import { toast } from '@/lib/toast';
 
