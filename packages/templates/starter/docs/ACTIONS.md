@@ -113,7 +113,7 @@ src/lib/email/
 └── smtp.ts        # Nodemailer SMTP transport
 ```
 
-`index.ts` inspects `import.meta.env.RESEND_API_KEY` at runtime and routes to the appropriate transport. To switch providers, add a new transport file and update the routing condition in `index.ts`. The action handler doesn't change.
+`index.ts` doesn't inspect anything at runtime — it statically imports and re-exports the transport the CLI wired up at scaffold time (based on the email-provider prompt), so there's no per-request branching. To switch providers, edit the `import` in `index.ts` to point at a different transport file (see [`CONTACT-FORM.md`](./CONTACT-FORM.md) for the exact edit). The action handler doesn't change.
 
 The CLI detects the presence of `src/lib/email/index.ts` to decide whether to keep the Resend and Nodemailer deps when scaffolding. Don't rename or remove that file.
 

@@ -50,8 +50,7 @@ The template's homepage cold load (gzipped, mobile 4G simulation):
 | Asset                    | Approximate size  | Notes                             |
 | ------------------------ | ----------------- | --------------------------------- |
 | HTML                     | 8-12 KB           | Inlined critical CSS varies       |
-| Display font (preloaded) | ~25 KB            | Geist Variable, latin + latin-ext |
-| Mono font (deferred)     | 0 KB on cold load | Below the fold                    |
+| Fonts                     | 0 KB              | System font stack — no font requests by default |
 | Critical CSS (inline)    | 2-4 KB            | Beasties output, varies per page  |
 | Tailwind CSS (async)     | 8-15 KB           | After above-the-fold paints       |
 | Hero image (LCP)         | ~25 KB            | AVIF, depends on source           |
@@ -71,12 +70,11 @@ For consistent numbers: run Lighthouse CI in a clean Docker container, 3 runs pe
 
 | Footgun                                                     | Symptom                                   | Fix                                              |
 | ----------------------------------------------------------- | ----------------------------------------- | ------------------------------------------------ |
-| Adding `client:load` to a React island                      | TBT spikes, JS payload grows              | Use `client:idle` or `client:visible` instead    |
+| Wiring up a client-side framework component                 | TBT spikes, JS payload grows              | This template has no client framework — stick with Astro + vanilla JS / native HTML |
 | Forgetting `width`/`height` on hero                         | Layout shift (CLS)                        | Set both — required on `<PriorityImage>`             |
 | Inline `<img>` instead of `<Image>`                         | No AVIF/WebP, no responsive srcset        | Use the wrapper                                  |
-| Loading multiple font weights eagerly                       | LCP delayed                               | Preload only the weight rendering above the fold |
+| Adding a custom font without fallback metrics               | LCP delayed, potential CLS on swap        | See [`FONTS.md`](./FONTS.md) — the default system stack has neither problem |
 | Adding `prefers-color-scheme` `@media` blocks for dark mode | Conflicts with the `.dark` class strategy | Use the `.dark` selector pattern in `global.css` |
-| Setting font-display: optional                              | FOIT for slow connections                 | Stick with `swap`                                |
 
 ## Budget enforcement
 
@@ -110,7 +108,7 @@ Common things that drop Lighthouse mobile from 100 → 95 in production:
 - Heavy embedded third-party (YouTube embeds, Twitter widgets, Stripe pricing tables): 5-15 points off Performance.
 - Large above-the-fold images without `<PriorityImage>` props correctly set: 3-8 points.
 - Forgotten `client:load` on what should be a `client:visible` component: variable, can be huge.
-- Cumulative layout shift from web fonts without metric overrides: 5-10 points (we use `astro:fonts` to prevent this).
+- Cumulative layout shift from web fonts without metric overrides: 5-10 points (the template ships a system font stack by default, which has no swap to shift; see `FONTS.md` if you add a custom font).
 
 ## Bundle size monitoring
 

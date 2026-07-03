@@ -15,7 +15,7 @@ Open the URL printed in your terminal. The site has a working blog, projects sho
 
 - **Astro 7** with native i18n, content collections, and Astro Actions
 - **Tailwind v4** with `inlineStylesheets: 'always'` — full stylesheet inlined in the HTML, no render-blocking CSS request
-- **Geist Sans + Geist Mono** via `astro:fonts` (self-hosted, zero CLS)
+- **System font stack** — zero font requests, zero font-swap CLS (swap in Geist or any font via `astro:fonts`, see `FONTS.md`)
 - **Typed Schema.org JSON-LD** built from `schema-dts`
 - **Image components** with AVIF + WebP, responsive `srcset`, blur placeholder
 - **Tri-state dark mode** (light / dark / system)
@@ -170,7 +170,7 @@ Then update `adapter:` in `astro.config.mjs`. Static-only deployments (no contac
 The scaffold is tuned for Lighthouse 100s on mobile. Key principles encoded in the code:
 
 - `inlineStylesheets: 'always'` puts the full stylesheet in the HTML on first paint — no render-blocking CSS file
-- Geist fonts are self-hosted and preloaded; zero external font fetches
+- System font stack by default — zero external font fetches, zero font-swap CLS
 - Hero images preloaded via `<link rel="preload">`
 - AVIF + WebP with JPEG fallback, multiple `srcset` widths
 - Anti-flash inline theme script
