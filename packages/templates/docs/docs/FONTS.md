@@ -11,42 +11,42 @@ This template ships **no remote or self-hosted font files**. The token chain in 
 --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 ```
 
-That's a harmless vestige, not a working font load. `src/layouts/BaseLayout.astro` has a comment explaining why: an earlier revision wired up Astro's experimental Font integration (`astro:fonts`) to self-host Geist, but the `@theme` block pointed `--font-display`/`--font-mono` at the plain family names (`'Geist'`, `'Geist Mono'`) instead of the hashed family names Astro's integration actually generates — so the browser never matched an `@font-face` rule and silently fell through to the system fallback later in the same stack. The integration itself was removed; only the vestigial name remains.
+That's a harmless vestige, not a working font load. `src/layouts/BaseLayout.astro` has a comment explaining why: an earlier revision wired up Astro's Fonts API (`astro:fonts`) to self-host Geist, but the `@theme` block pointed `--font-display`/`--font-mono` at the plain family names (`'Geist'`, `'Geist Mono'`) instead of the hashed family names the Fonts API actually generates — so the browser never matched an `@font-face` rule and silently fell through to the system fallback later in the same stack. The integration itself was removed; only the vestigial name remains.
 
 **Net effect today:** the site already runs at the fastest possible state — no font requests at all — even though the CSS reads as if Geist were self-hosted.
 
 ## Enabling a real font (Astro's font integration)
 
-If you want a custom typeface instead of the system stack, wire up Astro's experimental Font integration. The recipes below use the real API — this is what the previous integration got wrong, called out inline so you don't repeat it.
+If you want a custom typeface instead of the system stack, wire up Astro's Fonts API (stable as of Astro 6, not experimental — this template pins Astro 7). The recipes below use the real API — this is what the previous integration got wrong, called out inline so you don't repeat it.
 
-### 1. Add the integration in `astro.config.mjs`
+### 1. Configure fonts in `astro.config.mjs`
+
+`fonts` is a top-level `defineConfig()` option, not nested under `experimental`:
 
 ```js
-import { fontProviders } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 
 export default defineConfig({
-  experimental: {
-    fonts: [
-      {
-        provider: fontProviders.bunny(),
-        name: 'Geist', // exact provider-side font name
-        cssVariable: '--font-display',
-        weights: ['400 700'],
-        subsets: ['latin', 'latin-ext'],
-        fallbacks: ['ui-sans-serif', 'system-ui', 'sans-serif'],
-        display: 'swap',
-      },
-      {
-        provider: fontProviders.bunny(),
-        name: 'Geist Mono',
-        cssVariable: '--font-mono',
-        weights: ['400 600'],
-        subsets: ['latin', 'latin-ext'],
-        fallbacks: ['ui-monospace', 'SFMono-Regular', 'monospace'],
-        display: 'swap',
-      },
-    ],
-  },
+  fonts: [
+    {
+      provider: fontProviders.bunny(),
+      name: 'Geist', // exact provider-side font name
+      cssVariable: '--font-display',
+      weights: ['400 700'],
+      subsets: ['latin', 'latin-ext'],
+      fallbacks: ['ui-sans-serif', 'system-ui', 'sans-serif'],
+      display: 'swap',
+    },
+    {
+      provider: fontProviders.bunny(),
+      name: 'Geist Mono',
+      cssVariable: '--font-mono',
+      weights: ['400 600'],
+      subsets: ['latin', 'latin-ext'],
+      fallbacks: ['ui-monospace', 'SFMono-Regular', 'monospace'],
+      display: 'swap',
+    },
+  ],
 });
 ```
 
@@ -165,7 +165,7 @@ html[lang^='ja'] body {
 
 If you add the integration above and later want to remove it (e.g. to get back to the current zero-request default):
 
-1. Delete the `experimental.fonts` block from `astro.config.mjs`.
+1. Delete the `fonts` block from `astro.config.mjs`.
 2. Remove the `<Font />` calls from `BaseLayout.astro`.
 3. In `src/styles/global.css`, drop any provider-generated family name from the token so only the system stack remains:
    ```css
