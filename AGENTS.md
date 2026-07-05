@@ -100,7 +100,7 @@ pnpm build # builds every package under packages/** (not apps/)
 pnpm typecheck # recursive astro check / tsc --noEmit
 pnpm test # recursive vitest
 pnpm format # prettier --write across the monorepo
-pnpm format:check # what the pre-commit hook runs
+pnpm format:check # what CI runs to check formatting (no pre-commit hook — see below)
 
 pnpm scaffold:test # full e2e: wipes apps/playground/, runs CLI --yes, installs, builds, Lighthouse
 pnpm test:e2e # Playwright e2e — see tests/e2e/AGENTS.md

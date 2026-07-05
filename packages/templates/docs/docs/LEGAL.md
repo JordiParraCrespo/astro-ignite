@@ -93,7 +93,7 @@ For each new locale:
 2. The `[...slug]` page renderer auto-handles the routes.
 3. **Translate the placeholders too** (`[YOUR COMPANY NAME]` etc. — different idiom per language).
 
-For non-default locales, also create `src/pages/[lang]/legal/[...slug].astro` mirroring the default-locale renderer (or use a single catch-all if you prefer).
+The `[lang]` renderer at `src/pages/[lang]/legal/[...slug].astro` is already generic — its `getStaticPaths` scans the `legal` collection and emits routes for every locale in `siteConfig.locales`. You don't need to create or edit that file; adding a locale here only means adding the translated MDX content.
 
 ## Liability disclaimer
 

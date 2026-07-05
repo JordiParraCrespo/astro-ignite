@@ -127,7 +127,7 @@ The CLI detects the presence of `src/lib/email/index.ts` to decide whether to ke
 
 ## Static deployments
 
-Actions require a running server. If you want a fully static output (`output: 'static'` in `astro.config.mjs`), remove the adapter and remove the contact form action — replace with a third-party form provider (Formspree, Basin, etc.) or a mailto link.
+Actions require a running server, so a fully static deployment can't keep them. The template already ships `output: 'static'` in `astro.config.mjs` — the adapter is only there to serve the Actions endpoint on request, not to switch the site to SSR. To go fully static, remove the adapter and remove the contact form action — replace with a third-party form provider (Formspree, Basin, etc.) or a mailto link.
 
 ## Error handling on the page
 

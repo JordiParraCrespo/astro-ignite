@@ -64,7 +64,7 @@ Atoms live in `src/components/ui/` (shadcn-style — copied from the astro-ignit
 - All atoms are Astro + vanilla JS — no React, no Radix, no framework runtime
 - Interactive primitives use native HTML: `<details name>` for accordion, `<dialog>` for dialog, popover API for dropdown, CSS for tooltip, custom elements (`ai-tabs`, `ai-toaster`) for tabs/toasts
 - Class-merge helper at `src/lib/cn.ts`; toast helper at `src/lib/toast.ts` dispatches a window event consumed by `<Toaster />`
-- Card-style families (`card`, `tabs`, `accordion`, `dialog`, `dropdown-menu`) are grouped by family directory
+- Card-style families (`card`, `tabs`, `accordion`, `dialog`, `dropdown-menu`, `radio-group`) are grouped by family directory
 
 ## Banner & OG images
 
