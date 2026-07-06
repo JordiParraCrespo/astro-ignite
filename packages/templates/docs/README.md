@@ -134,6 +134,7 @@ See [`BENCHMARKS.md`](./docs/BENCHMARKS.md) for measurement methodology.
 
 | Topic                                             | Read                                     |
 | ------------------------------------------------- | ---------------------------------------- |
+| Component props, variants, compound families      | [`COMPONENTS.md`](./docs/COMPONENTS.md)  |
 | Search (Pagefind, indexing, i18n, removing)       | [`SEARCH.md`](./docs/SEARCH.md)          |
 | Sidebar, TOC, prev/next, breadcrumbs              | [`NAVIGATION.md`](./docs/NAVIGATION.md)  |
 | Custom fonts (swap, add, system-only)             | [`FONTS.md`](./docs/FONTS.md)            |
