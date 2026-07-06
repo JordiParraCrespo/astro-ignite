@@ -128,8 +128,10 @@ import DropdownMenuItem from '@/components/ui/dropdown-menu/dropdown-menu-item.a
   <Button data-dialog-close>Cancel</Button>
 </Dialog>
 
-<!-- dropdown-menu: native popover API, the trigger carries popovertarget -->
-<Button popovertarget="user-menu">Account</Button>
+<!-- dropdown-menu: native popover API. The trigger carries popovertarget, and
+     must declare anchor-name: --anchor to match the menu's [position-anchor:--anchor] —
+     without it the menu still opens, just unanchored from the trigger. -->
+<Button popovertarget="user-menu" style="anchor-name: --anchor">Account</Button>
 <DropdownMenu id="user-menu">
   <DropdownMenuItem href="/settings">Settings</DropdownMenuItem>
   <DropdownMenuItem destructive>Sign out</DropdownMenuItem>
