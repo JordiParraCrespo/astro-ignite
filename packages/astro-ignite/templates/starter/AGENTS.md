@@ -16,7 +16,7 @@ The site ships with: blog + projects content collections, contact form via Astro
 
 - **Astro 7** — static-first, server output via `@astrojs/node@^11` (required for Actions)
 - **Tailwind v4** — single styling layer; component colors resolve through `--color-*` tokens via arbitrary-value utilities (`bg-[var(--color-fg)]`). `inlineStylesheets: 'always'` inlines the full stylesheet on first paint.
-- **Geist Sans + Geist Mono** — self-hosted via `astro:fonts`, zero CLS
+- **System font stack** (`ui-sans-serif` / `ui-monospace`) — zero font fetches, zero CLS. Geist Sans + Mono isn't wired: `global.css` points `--font-display`/`--font-mono` at the plain family names, not the hashed ones Astro's font integration emits, so no `@font-face` matches — see the comment in `BaseLayout.astro` for how to re-enable it.
 - **schema-dts** typed JSON-LD composed via `@graph`
 - **No client framework** — interactive primitives are Astro + vanilla JS / native HTML (`<details>`, `<dialog>`, popover API, custom elements)
 
@@ -40,20 +40,24 @@ src/pages/
 ├── about.astro                       # /about
 ├── contact.astro                     # /contact
 ├── 404.astro                         # /404 (single emit, no locale parallel)
+├── 500.astro                         # /500 (single emit, no locale parallel)
 ├── blog/
 │   ├── index.astro                   # /blog
-│   └── [...slug].astro               # /blog/<slug>
+│   ├── [...slug].astro               # /blog/<slug>
+│   ├── page/[page].astro             # /blog/page/<n> (pagination)
+│   └── tags/[tag].astro              # /blog/tags/<tag>
 ├── projects/
 │   ├── index.astro                   # /projects
 │   └── [...slug].astro               # /projects/<slug>
 ├── legal/[...slug].astro             # /legal/<privacy|terms|cookies>
 ├── rss.xml.ts                        # /rss.xml (default locale)
 ├── robots.txt.ts                     # /robots.txt
+├── llms.txt.ts                       # /llms.txt (AI-discoverability index)
 └── [lang]/                           # mirror of above for non-default locales
     ├── index.astro
     ├── about.astro
     ├── contact.astro
-    ├── blog/{index,[...slug]}.astro
+    ├── blog/{index,[...slug],page/[page],tags/[tag]}.astro
     ├── projects/{index,[...slug]}.astro
     ├── legal/[...slug].astro
     └── rss.xml.ts                    # /<lang>/rss.xml

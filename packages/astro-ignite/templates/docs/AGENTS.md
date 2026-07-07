@@ -18,7 +18,7 @@ The site ships with: docs content collection, full-text search, sidebar + TOC, l
 
 - **Astro 7** — static output (no adapter; this template has no server-side Actions)
 - **Tailwind v4** — single styling layer; component colors resolve through `--color-*` tokens via arbitrary-value utilities (`bg-[var(--color-fg)]`). `inlineStylesheets: 'always'` inlines the full stylesheet on first paint.
-- **Geist Sans + Geist Mono** — self-hosted via `astro:fonts`, zero CLS
+- **System font stack** (`ui-sans-serif` / `ui-monospace`) — zero font fetches, zero CLS. Geist Sans + Mono isn't wired: `global.css` points `--font-display`/`--font-mono` at the plain family names, not the hashed ones Astro's font integration emits, so no `@font-face` matches — see the comment in `BaseLayout.astro` for how to re-enable it.
 - **schema-dts** typed JSON-LD composed via `@graph`
 - **No client framework** — interactive primitives are Astro + vanilla JS / native HTML
 
@@ -38,12 +38,20 @@ The site ships with: docs content collection, full-text search, sidebar + TOC, l
 src/pages/
 ├── index.astro                   # / — docs landing
 ├── [...slug].astro               # /<slug> — default-locale docs
+├── [...slug].md.ts               # /<slug>.md — raw Markdown for the same entry
+├── 404.astro                     # /404 (single emit, no locale parallel)
+├── 500.astro                     # /500 (single emit, no locale parallel)
 ├── legal/[...slug].astro         # /legal/<privacy|terms|cookies>
+├── rss.xml.ts                    # /rss.xml (default locale)
 ├── robots.txt.ts                 # /robots.txt
+├── llms.txt.ts                   # /llms.txt (AI-discoverability index)
+├── llms-full.txt.ts              # /llms-full.txt (full docs corpus)
 └── [lang]/
     ├── index.astro
     ├── [...slug].astro           # /<lang>/<slug>
-    └── legal/[...slug].astro
+    ├── 404.astro                 # /<lang>/404
+    ├── legal/[...slug].astro
+    └── rss.xml.ts                # /<lang>/rss.xml
 ```
 
 The `[lang]` directory is the canonical name — never use `[locale]` or `[language]`. Param accessor: `Astro.params.lang`.
@@ -55,10 +63,9 @@ The `[lang]` directory is the canonical name — never use `[locale]` or `[langu
    ---
    title: Getting started
    description: Install astro-ignite and run the CLI.
-   order: 1 # sidebar ordering within a section
    ---
    ```
-2. To group pages in the sidebar, use folder structure: `src/content/docs/{locale}/guide/install.mdx` → appears under "Guide".
+2. Add it to a group in `src/config/sidebar.ts` — sidebar placement, ordering, and breadcrumbs are all driven by that array, not by frontmatter or folder structure.
 3. To translate, copy the file into the target locale folder and translate the body + frontmatter.
 
 The route file enumerates entries via `getCollection('docs', ...)` and filters by id prefix — no manual route registration needed.
