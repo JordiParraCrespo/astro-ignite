@@ -407,6 +407,25 @@
           "target": "src/lib/toast.ts"
         }
       ]
+    },
+    {
+      "name": "copy-button",
+      "type": "registry:ui",
+      "title": "Copy Button",
+      "description": "Button that copies text to the clipboard, with a transient copied-state label.",
+      "registryDependencies": ["cn"],
+      "files": [
+        {
+          "path": "base/copy-button.astro",
+          "type": "registry:ui",
+          "target": "src/components/ui/copy-button.astro"
+        },
+        {
+          "path": "lib/clipboard.ts",
+          "type": "registry:lib",
+          "target": "src/lib/clipboard.ts"
+        }
+      ]
     }
   ]
 }

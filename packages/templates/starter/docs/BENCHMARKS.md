@@ -1,19 +1,19 @@
 # Benchmarks
 
-The pitch is "Lighthouse 100s on mobile out of the box." This page documents how we measure, how to reproduce, and what's in the budget.
+The pitch is "tuned for Lighthouse 100s on mobile" — in practice, the enforced CI floor is ≥95, mobile only. This page documents how we measure, how to reproduce, and what's in the budget.
 
 ## Targets
 
-CI gates every release of the upstream `astro-ignite` template against these thresholds, mobile config:
+CI gates every release of the upstream `astro-ignite` template against these thresholds, mobile config only (there is no desktop gate):
 
-| Category       | Hard floor | Soft target |
-| -------------- | ---------- | ----------- |
-| Performance    | 95         | 100         |
-| Accessibility  | 95         | 100         |
-| Best Practices | 95         | 100         |
-| SEO            | 95         | 100         |
+| Category       | Enforced floor |
+| -------------- | -------------- |
+| Performance    | 95             |
+| Accessibility  | 95             |
+| Best Practices | 95             |
+| SEO            | 95             |
 
-The hard floor (95) blocks PRs in the upstream repo. The soft target (100) prints warnings but doesn't block — Lighthouse mobile has real measurement variance and one flaky run shouldn't gate a merge.
+95 is the hard floor that blocks PRs in the upstream repo — Lighthouse mobile has real measurement variance and a single flaky run shouldn't gate a merge on a hard 100. The template is tuned to land at 100 in a clean run; treat 95 as the guarantee, not the aim.
 
 ## Routes audited
 

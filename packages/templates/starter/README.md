@@ -96,13 +96,15 @@ Drop an MDX file at `src/content/blog/{locale}/{slug}.mdx`:
 ```yaml
 ---
 title: My first post
-description: A short summary shown in the blog index.
-pubDate: 2025-01-01
-heroImage: ./_assets/hero-my-post.png   # optional; generate with scripts/banners/
-author: jordi                             # matches a key in src/content/authors/
+description: A short summary shown in the blog index (70-160 characters).
+datePublished: 2025-01-01
+ogImage: ./_assets/og-my-post.png   # optional social/OG preview; generate with scripts/banners/
+author: jordi                         # matches a key in src/content/authors/
 tags: [astro, tailwind]
 ---
 ```
+
+There is no `heroImage` field — post cards and detail pages render a token-resolved CSS gradient cover instead. `ogImage` only controls the social preview.
 
 The blog index at `/blog` and the RSS feed pick it up automatically.
 
@@ -113,10 +115,11 @@ Drop a folder at `src/content/projects/{locale}/{slug}/` and add an `index.mdx`:
 ```yaml
 ---
 title: My project
-description: One-line summary shown in the projects grid.
-pubDate: 2025-01-01
-heroImage: ./hero.png   # relative to the folder
-tags: [design, oss]
+description: One-line summary shown in the projects grid (70-160 characters).
+summary: A slightly longer summary shown on the project detail page (up to 280 characters).
+datePublished: 2025-01-01
+ogImage: ./og.png   # optional social/OG preview, relative to the folder
+techStack: [astro, tailwind]
 ---
 ```
 
@@ -127,10 +130,14 @@ Add a JSON file at `src/content/authors/{handle}.json`:
 ```json
 {
   "name": "Your Name",
-  "avatar": "/avatars/your-avatar.jpg",
-  "bio": "Short bio shown below each post."
+  "image": "./_assets/your-avatar.jpg",
+  "bio": {
+    "en": "Short bio shown below each post."
+  }
 }
 ```
+
+`image` is resolved as a real Astro asset (not a public-path string), and `bio` is locale-keyed — add one entry per locale you ship.
 
 Reference the handle in blog post frontmatter via `author: your-handle`.
 
@@ -167,7 +174,7 @@ Then update `adapter:` in `astro.config.mjs`. Static-only deployments (no contac
 
 ## Performance
 
-The scaffold is tuned for Lighthouse 100s on mobile. Key principles encoded in the code:
+The scaffold is tuned to hit Lighthouse 100s on mobile wherever possible; the enforced CI floor is ≥95, mobile only (no desktop gate). Key principles encoded in the code:
 
 - `inlineStylesheets: 'always'` puts the full stylesheet in the HTML on first paint — no render-blocking CSS file
 - Geist fonts are self-hosted and preloaded; zero external font fetches
