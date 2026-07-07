@@ -47,7 +47,7 @@ The technical foundations that drive the project. The sections below (`Workspace
 - **Self-hosted Geist Sans + Mono** via Astro's font pipeline. System stack as the fallback. No external font fetches on first paint.
 - **pnpm@9.15.0 workspaces** (pinned via `packageManager`). **tsup** builds the CLI. **vitest** for tests. **changesets** for the release flow.
 - **Banner pipeline** = claude-design HTML → headless Chrome (Chrome for Testing) → PNG. No satori, no resvg, no hand-rolled SVG. See `## Banner & hero images`.
-- **Lighthouse 100s gate.** Local advisory + CI authoritative. See `## Performance gates`.
+- **Lighthouse ≥95 gate, mobile only** (100s is the aspiration, not the enforced floor). Local advisory + CI authoritative. See `## Performance gates`.
 
 ### Code & file rules
 
