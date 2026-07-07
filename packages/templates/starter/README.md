@@ -96,7 +96,7 @@ Drop an MDX file at `src/content/blog/{locale}/{slug}.mdx`:
 ```yaml
 ---
 title: My first post
-description: A short summary shown in the blog index (70-160 characters).
+description: A short summary shown in the blog index, RSS feed, and page meta description tags.
 datePublished: 2025-01-01
 ogImage: ./_assets/og-my-post.png   # optional social/OG preview; generate with scripts/banners/
 author: jordi                         # matches a key in src/content/authors/
@@ -115,7 +115,7 @@ Drop a folder at `src/content/projects/{locale}/{slug}/` and add an `index.mdx`:
 ```yaml
 ---
 title: My project
-description: One-line summary shown in the projects grid (70-160 characters).
+description: One-line summary shown in the projects grid, projects index page, and page meta tags.
 summary: A slightly longer summary shown on the project detail page (up to 280 characters).
 datePublished: 2025-01-01
 ogImage: ./og.png   # optional social/OG preview, relative to the folder
