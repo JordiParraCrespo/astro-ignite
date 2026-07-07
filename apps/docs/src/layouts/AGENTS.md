@@ -7,8 +7,9 @@ furniture — pages compose them.
 
 - `BaseLayout.astro` — the root shell. Renders `<head>` (via
   `seo/SEO.astro`), assembles the `schema-dts` **`@graph`** from each
-  page's node, and sets `<html lang>`/`dir`. No `preloadImages` prop —
-  the docs template doesn't preload hero images.
+  page's node, and sets `<html lang>` (no `dir` attribute — there's no
+  RTL support yet). No `preloadImages` prop — the docs template doesn't
+  preload hero images.
 - `DocsLayout.astro` — the documentation reading shell: wraps content
   with `SidebarNav`, `OnThisPage` (TOC), `Breadcrumbs`, and `PrevNext`.
   Most doc pages render through this.

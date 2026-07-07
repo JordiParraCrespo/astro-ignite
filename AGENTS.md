@@ -42,7 +42,7 @@ The technical foundations that drive the project. The sections below (`Workspace
 - **Design tokens (CSS variables).** Components reference `--color-bg`, `--color-fg`, `--color-primary`, `--color-border`. The zinc scale exists at the bottom of `global.css` purely as token values. Tri-state dark mode flips tokens via a `.light` class.
 - **Astro + vanilla JS for all components.** No React, no Vue, no Svelte, no Radix, no headless-UI library — in atoms _or_ blocks. Interactive primitives use native HTML (`<details name>` for accordion, `<dialog>` for dialog, popover API for dropdown, CSS-only for tooltip). Custom elements (`ai-tabs`, `ai-toaster`) only when native HTML won't do it.
 - **`schema-dts` typed JSON-LD** composed via `@graph`. Each page contributes its node; the layout assembles the graph.
-- **Astro Actions + Zod** for the contact form, **Resend or SMTP** as the email provider. `scaffold.ts` strips the email/Resend deps from templates that don't need them.
+- **Astro Actions + Zod** for the contact form, **Resend or SMTP** as the email provider. `scaffold.ts` only adds the matching email dep when the target template ships `src/lib/email/index.ts` — base `package.json`s never list `resend`/`nodemailer` to begin with, so there's nothing to strip.
 - **Plausible** for analytics, env-gated and consent-gated. Easy to swap for Umami / Fathom / GA at the `Analytics.astro` boundary.
 - **Self-hosted Geist Sans + Mono** via Astro's font pipeline. System stack as the fallback. No external font fetches on first paint.
 - **pnpm@9.15.0 workspaces** (pinned via `packageManager`). **tsup** builds the CLI. **vitest** for tests. **changesets** for the release flow.
@@ -62,7 +62,7 @@ These are the rules that fall out of the architecture above. Every section below
 - **No new runtime deps in templates without justification.** The perf pitch depends on a small owned codebase.
 - **No abstraction before the third copy.** Three similar files beat a premature helper.
 - **Comments only when the _why_ is non-obvious.** Don't restate the code.
-- **Hard gate: Lighthouse 100s, CI-enforced.** Mobile and desktop both.
+- **Hard gate: Lighthouse ≥95, CI-enforced, mobile only.** Templates are expected to ship at 100s wherever possible — 95 is the enforced floor, not the target.
 
 ## Workspace layout
 
@@ -160,7 +160,7 @@ Highlights:
 
 ## Performance gates
 
-Templates ship at Lighthouse 100s. Two gates protect that target:
+Templates ship at Lighthouse mobile ≥95 — the enforced floor; expected to hit 100s wherever possible. Two gates protect that floor:
 
 - **Local advisory — `pnpm perf:budget`.** Runs `scripts/perf/run.mjs`, which builds the resolved template (default: starter), boots a preview server on a free port, runs `npx lighthouse <url> --preset=mobile --output=json …`, parses the LHR, and compares each score and metric against `scripts/perf/budget.json`. Prints per-page numbers; exits 0 on pass, 1 on bust. Run by the implementer and reviewer before opening a PR.
 - **CI authoritative — `Lighthouse CI (mobile)`** (`.github/workflows/lighthouse.yml`). Runs against `apps/playground/` (the scaffolded canonical output). This is the gating signal — the local gate is advisory.
