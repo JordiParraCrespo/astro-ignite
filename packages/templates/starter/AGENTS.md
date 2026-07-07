@@ -39,7 +39,9 @@ src/pages/
 ├── 500.astro                         # /500 (single emit, no locale parallel)
 ├── blog/
 │   ├── index.astro                   # /blog
-│   └── [...slug].astro               # /blog/<slug>
+│   ├── [...slug].astro               # /blog/<slug>
+│   ├── page/[page].astro             # /blog/page/<n> (pagination)
+│   └── tags/[tag].astro              # /blog/tags/<tag>
 ├── projects/
 │   ├── index.astro                   # /projects
 │   └── [...slug].astro               # /projects/<slug>
@@ -51,7 +53,7 @@ src/pages/
     ├── index.astro
     ├── about.astro
     ├── contact.astro
-    ├── blog/{index,[...slug]}.astro
+    ├── blog/{index,[...slug],page/[page],tags/[tag]}.astro
     ├── projects/{index,[...slug]}.astro
     ├── legal/[...slug].astro
     └── rss.xml.ts                    # /<lang>/rss.xml
