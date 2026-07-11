@@ -38,5 +38,7 @@ in sync with the design system.
   fetch model; if not, introduce a new package rather than overload
   this one.
 - Drift: when Astro re-hashes Geist after a build, the banner pipeline
-  needs the new woff2. `pnpm doctor` (geist-fonts check) detects
-  this and surfaces a copy-pasteable fix.
+  needs the new woff2. There is no automated doctor check for this —
+  recopy the hashed files from `apps/site/dist/_astro/fonts/` into
+  `apps/site/scripts/banners/fonts/` and re-run the generator (see the
+  root `AGENTS.md`'s "Banner & hero images" section).
