@@ -77,7 +77,7 @@ pnpm exec playwright show-report tests/e2e/playwright-report
   asserts on the aborted-count, not on the real Plausible response.
 - **Email**: `shared/email.ts > blockResend(page)` blocks
   `api.resend.com` at the browser layer via `page.route`, so the real
-  Resend API is never reached. It only *observes* (via
+  Resend API is never reached. It only _observes_ (via
   `page.on('request')`, not `page.route`) requests to the Astro
   Actions endpoint to count hits — it doesn't intercept them, because
   `page.route` interception broke Astro's 303-redirect-with-cookie
