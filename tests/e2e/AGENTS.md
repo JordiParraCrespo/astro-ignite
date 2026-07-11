@@ -75,10 +75,16 @@ pnpm exec playwright show-report tests/e2e/playwright-report
   `shared/consent.ts`) which `page.route`'s the configured analytics
   host (default `plausible.io`) and aborts every request. The test
   asserts on the aborted-count, not on the real Plausible response.
-- **Email**: `shared/email.ts > blockResend(page)` intercepts the
-  Astro Actions endpoint and returns a synthetic success payload, so
-  the dev server never invokes `sendContactEmail`. It also blocks
-  `api.resend.com` at the browser layer as belt-and-braces.
+- **Email**: `shared/email.ts > blockResend(page)` blocks
+  `api.resend.com` at the browser layer via `page.route`, so the real
+  Resend API is never reached. It only *observes* (via
+  `page.on('request')`, not `page.route`) requests to the Astro
+  Actions endpoint to count hits — it doesn't intercept them, because
+  `page.route` interception broke Astro's 303-redirect-with-cookie
+  flow for form-style action submissions. The dev server does invoke
+  the real `contact` action handler and `sendContactEmail`; the
+  Resend transport itself no-ops (logs instead of sending) because
+  `RESEND_API_KEY` is unset in the test env.
 - **Fonts / CDNs**: every template ships the system font stack only —
   no remote font fetches. No spec depends on an external host being
   reachable.
