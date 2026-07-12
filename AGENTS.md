@@ -47,7 +47,7 @@ The technical foundations that drive the project. The sections below (`Workspace
 - **Self-hosted Geist Sans + Mono** via Astro's font pipeline. System stack as the fallback. No external font fetches on first paint.
 - **pnpm@9.15.0 workspaces** (pinned via `packageManager`). **tsup** builds the CLI. **vitest** for tests. **changesets** for the release flow.
 - **Banner pipeline** = claude-design HTML → headless Chrome (Chrome for Testing) → PNG. No satori, no resvg, no hand-rolled SVG. See `## Banner & hero images`.
-- **Lighthouse 100s gate.** Local advisory + CI authoritative. See `## Performance gates`.
+- **Lighthouse ≥95 gate (mobile), CI-enforced.** Local advisory + CI authoritative. Templates are tuned to hit 100s wherever possible; 95 is the enforced floor. See `## Performance gates`.
 
 ### Code & file rules
 
@@ -62,7 +62,7 @@ These are the rules that fall out of the architecture above. Every section below
 - **No new runtime deps in templates without justification.** The perf pitch depends on a small owned codebase.
 - **No abstraction before the third copy.** Three similar files beat a premature helper.
 - **Comments only when the _why_ is non-obvious.** Don't restate the code.
-- **Hard gate: Lighthouse 100s, CI-enforced.** Mobile and desktop both.
+- **Hard gate: Lighthouse ≥95, CI-enforced.** Mobile only — there is no separate desktop gate.
 
 ## Workspace layout
 
@@ -160,7 +160,7 @@ Highlights:
 
 ## Performance gates
 
-Templates ship at Lighthouse 100s. Two gates protect that target:
+Templates are tuned for Lighthouse 100s; the enforced floor is ≥95 on mobile (no separate desktop gate). Two gates protect that target:
 
 - **Local advisory — `pnpm perf:budget`.** Runs `scripts/perf/run.mjs`, which builds the resolved template (default: starter), boots a preview server on a free port, runs `npx lighthouse <url> --preset=mobile --output=json …`, parses the LHR, and compares each score and metric against `scripts/perf/budget.json`. Prints per-page numbers; exits 0 on pass, 1 on bust. Run by the implementer and reviewer before opening a PR.
 - **CI authoritative — `Lighthouse CI (mobile)`** (`.github/workflows/lighthouse.yml`). Runs against `apps/playground/` (the scaffolded canonical output). This is the gating signal — the local gate is advisory.

@@ -28,7 +28,8 @@ ships compositions. The starter template gets atoms copied into
   `build-registry.test.mjs` (run by `pnpm test`) asserts every manifest
   item has a corresponding schema-shaped payload.
 - **Helpers:** `lib/cn.ts` (class merge), `lib/toast.ts` (window event
-  bus consumed by `<Toaster />`).
+  bus consumed by `<Toaster />`), `lib/clipboard.ts` (copy-to-clipboard
+  helper backing `copy-button`).
 
 ## Boundary Rules
 
