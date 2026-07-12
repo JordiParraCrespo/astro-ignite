@@ -23,9 +23,12 @@ Small, owned helpers. Named exports, no side-effecting imports.
   `creativeWork`, `breadcrumbList`) + `types.ts` and an `index.ts`
   barrel. Layouts assemble these into the page `@graph`.
 - `email/` — provider abstraction for the contact form: `index.ts`
-  (the seam) + `resend.ts` + `smtp.ts`. **The CLI strips these deps when
-  a template doesn't ship `email/index.ts`** — keep that file as the
-  detection point.
+  (the seam) + `resend.ts` + `smtp.ts` in this template source. A
+  scaffolded project only gets `index.ts` plus whichever transport
+  matches the chosen provider — `scaffold.ts`'s `CONDITIONAL_FILES` gate
+  drops the other one. **The CLI strips the matching deps when a
+  template doesn't ship `email/index.ts` at all** — keep that file as
+  the detection point.
 
 ## Rules
 

@@ -7,12 +7,15 @@ furniture — pages compose them.
 
 - `BaseLayout.astro` — the root shell. Renders `<head>` (via
   `seo/SEO.astro`), assembles the `schema-dts` **`@graph`** from each
-  page's node, sets `<html lang>`/`dir`, and preloads images passed via
-  `preloadImages={[…]}`.
+  page's node, and sets `<html lang>`. There is no `dir` attribute or
+  `preloadImages` prop — this app has no RTL locale and no layout-level
+  image preloading.
 - `DocsLayout.astro` — the documentation reading shell: wraps content
   with `SidebarNav`, `OnThisPage` (TOC), `Breadcrumbs`, and `PrevNext`.
   Most doc pages render through this.
 - `LegalLayout.astro` — privacy/terms/cookies prose shell.
+- `ComponentsLayout.astro` — the shell for the component-showcase pages
+  under `src/pages/components/*` and `src/pages/[lang]/components/*`.
 
 ## Rules
 

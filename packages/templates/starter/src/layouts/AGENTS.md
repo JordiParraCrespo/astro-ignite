@@ -24,7 +24,8 @@ contract — content pages and route files compose them.
   `<script type="application/ld+json">`.
 - `width` + `height` are **required** on hero images so the slot is
   reserved before CSS loads (zero CLS).
-- Set `<html lang>`/`dir` from the active locale; route titles/links go
-  through i18n (`src/i18n`) and `getRelativeLocaleUrl`.
+- Set `<html lang>` from the active locale (no `dir` attribute — this
+  template has no RTL locale); route titles/links go through i18n
+  (`src/i18n`) and `getRelativeLocaleUrl`.
 - Styling stays token-resolved and Tailwind-first (see
   `components/AGENTS.md`).

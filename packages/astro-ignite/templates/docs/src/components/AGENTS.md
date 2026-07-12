@@ -10,9 +10,10 @@ UI for the docs site. Organized by intent, not by page.
   `dropdown-menu/`), one file per part.
 - `docs/` — the documentation chrome: `SidebarNav`, `OnThisPage`,
   `Breadcrumbs`, `PrevNext`, `SearchBox` (the `<dialog>`-based command
-  palette), `Callout`, `CodeBlock`, `ComponentShowcase`.
-- `common/` — site chrome (`Header`, `Footer`, `Brand`, `ThemeToggle`,
-  `LocaleSwitcher`, `Analytics`).
+  palette), `Callout`, `CodeBlock`, `ComponentShowcase`, `AiActions`.
+- `common/` — site chrome (`Footer`, `Brand`, `ThemeToggle`,
+  `LocaleSwitcher`, `Analytics`) — there is no `Header`; the sidebar
+  replaces the top nav.
 - `seo/` — `SEO.astro` + `JsonLd.astro` (the page's `@graph` node).
 - `legal/` — `CookieBanner.astro` (consent gate). `not-found/` — 404 hero.
 
