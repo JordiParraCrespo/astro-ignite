@@ -7,7 +7,11 @@ UI for the site. Organized by intent, not by page.
 - `ui/` — **atoms** (shadcn-style, copied from the astro-ignite registry,
   owned here). Singletons are flat (`button.astro`, `input.astro`, …);
   compound families live in their own folder (`card/`, `tabs/`,
-  `accordion/`, `dialog/`, `dropdown-menu/`) — one file per part.
+  `accordion/`, `dialog/`, `dropdown-menu/`) — one file per part. (The
+  canonical `packages/templates/starter/src/components/ui/` also has a
+  `radio-group/` family and `checkbox.astro`/`select.astro`/
+  `switch.astro`; this generated copy is currently stale and doesn't
+  have them — see `packages/astro-ignite/AGENTS.md` re: `copy-templates`.)
 - `common/` — site chrome reused across pages (`Header`, `Footer`,
   `Brand`, `ThemeToggle`, `LocaleSwitcher`, `Analytics`, `Hero`,
   `FeaturesGrid`).
@@ -15,7 +19,7 @@ UI for the site. Organized by intent, not by page.
   `@graph` node).
 - `legal/` — `CookieBanner.astro` (consent gate for analytics).
 - `<feature>/` — page-specific sections (`about/`, `blog/`, `projects/`,
-  `contact/`, `not-found/`, `image/`). One concept per file.
+  `contact/`, `error/`, `not-found/`, `image/`). One concept per file.
 
 ## Rules (these are enforced)
 

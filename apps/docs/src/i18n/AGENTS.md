@@ -7,8 +7,10 @@ invariant in the root `AGENTS.md`.
 
 - `en.json`, `es.json` — message dictionaries. `en` defines the shape
   (`Dictionary` is `typeof en`); other locales must match its keys.
-  `es.json` ships as an example — locales actually rendered come from
-  `siteConfig.locales` (default `['en']`).
+  Unlike the docs template's `['en']` default, apps/docs ships
+  `siteConfig.locales: ['en', 'es']` with `es` fully authored — every
+  doc and legal page has a real Spanish counterpart, and the
+  `LocaleSwitcher` genuinely serves it.
 - `index.ts` — `useTranslations(locale)` → typed `t(key)`;
   `getLocalizedPath(path, locale)`; plus `Locale`, `Dictionary`, and
   `TranslationKey` (a typed dotted path into the dictionary).

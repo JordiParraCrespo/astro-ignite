@@ -23,9 +23,9 @@ Small, owned helpers. Named exports, no side-effecting imports.
   `creativeWork`, `breadcrumbList`) + `types.ts` and an `index.ts`
   barrel. Layouts assemble these into the page `@graph`.
 - `email/` — provider abstraction for the contact form: `index.ts`
-  (the seam) + `resend.ts` + `smtp.ts`. **The CLI strips these deps when
-  a template doesn't ship `email/index.ts`** — keep that file as the
-  detection point.
+  (the seam) + `resend.ts` + `smtp.ts`. **The CLI only adds the matching
+  transport dep (`resend` or `nodemailer`) when a template ships
+  `email/index.ts`** — keep that file as the detection point.
 
 ## Rules
 

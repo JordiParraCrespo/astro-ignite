@@ -6,9 +6,12 @@ this folder holds the entries.
 
 ## Layout
 
-- `blog/{locale}/{slug}.mdx`, `projects/{locale}/{slug}.mdx` — the
+- `blog/{locale}/{slug}.mdx`, `projects/{locale}/{slug}/index.mdx` — the
   locale-folder layout is mandatory (it's how i18n parallel routes find
-  the right entry). Default locale is `en`.
+  the right entry); projects nest under a per-slug directory (the
+  `projects` collection loader globs `*/*/index.mdx`), blog does not.
+  Default locale is `en`. No content has been authored under
+  `projects/` yet.
 - `legal/{locale}/{privacy,terms,cookies}.mdx`
 - `authors/<id>.json` — author records referenced by blog posts.
 
@@ -24,7 +27,10 @@ this folder holds the entries.
   a post that exists in `en/` should gain a sibling under each
   additional locale you ship.
 - Hero/banner images are **generated from HTML sources**, not
-  hand-drawn SVG — see the template's `docs/IMAGES.md`. Reference them
-  from frontmatter `heroImage`.
+  hand-drawn SVG — see the root `AGENTS.md` § Banner & hero images (or
+  `openspec/specs/banner-pipeline/spec.md`). Reference them from
+  frontmatter `heroImage`. (`docs/IMAGES.md` in this app documents the
+  `<Image>`/`<PriorityImage>` responsive-image components, not the
+  banner-generation pipeline — don't confuse the two.)
 - Body content is MDX; prose styling is handled by the layout, not
   per-file `<style>`.

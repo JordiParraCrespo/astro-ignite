@@ -28,7 +28,9 @@ do **not** auto-update.
   routes, `getRelativeLocaleUrl`, LocaleSwitcher, token-resolved
   Tailwind, `@graph` JSON-LD, consent-gated analytics). See each
   template's own `src/**/AGENTS.md` and the root `AGENTS.md`.
-- A template that omits a feature must let `scaffold.ts:rewritePackageJson`
-  strip the matching deps (see the email/Resend gate pattern).
+- A template that omits a feature must gate the relevant source files out
+  via `scaffold.ts`'s `CONDITIONAL_FILES` map (see the email/Resend gate
+  pattern) — `rewritePackageJson` only adds deps a chosen feature needs,
+  it never strips any, since base `package.json`s don't list them.
 - After changing a template, audit whether `apps/site` / `apps/docs`
   need the same change (they are mirrors) and run `pnpm audit:invariants`.
