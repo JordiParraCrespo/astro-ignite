@@ -1,44 +1,36 @@
 # Fonts
 
-This site ships with **zero remote fonts**. `--font-display` / `--font-mono` in `src/styles/global.css` resolve to the system font stack (`ui-sans-serif`, `ui-monospace`, and their platform equivalents), so there's no font request on cold load and no CLS from a font swap.
+This template ships **no remote or self-hosted font files**. The token chain in `src/styles/global.css` resolves to the system font stack (`ui-sans-serif`, `ui-monospace`, and their platform fallbacks) — zero font HTTP requests, zero font-swap CLS, and it renders instantly on every OS.
 
-Astro's built-in `astro:fonts` integration (a top-level `fonts: []` array in `astro.config.mjs`, no package install required) is not currently wired up — this doc shows how to add it if you want a custom typeface such as Geist.
+## Why there's no Geist, despite the name in the CSS
 
-## CSS variable abstraction
-
-Every component references fonts via CSS custom properties:
-
-```css
-font-family: var(--font-display); /* body / UI */
-font-family: var(--font-mono); /* code */
-```
-
-Defined in `src/styles/global.css`'s `@theme` block, currently pointed at system stacks:
+`src/styles/global.css` still names `'Geist'` / `'Geist Mono'` first in the token chain:
 
 ```css
 --font-display: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 ```
 
-The leading `'Geist'` / `'Geist Mono'` names are placeholders for a font that isn't loaded — no `@font-face` matches them, so every browser falls through to the system stack immediately after. Once you wire up `fonts:` below, Astro emits `@font-face` rules under a **hashed** family name (not the plain `Geist` you write in config) — repoint the token to that hashed name, or Astro's own generated CSS variable, once you've confirmed what it emits for your setup.
+That's a harmless vestige, not a working font load. `src/layouts/BaseLayout.astro` has a comment explaining why: an earlier revision wired up Astro's Fonts API (`astro:fonts`) to self-host Geist, but the `@theme` block pointed `--font-display`/`--font-mono` at the plain family names (`'Geist'`, `'Geist Mono'`) instead of the hashed family names the Fonts API actually generates — so the browser never matched an `@font-face` rule and silently fell through to the system fallback later in the same stack. The integration itself was removed; only the vestigial name remains.
 
-**This means:** adding a font is a `astro.config.mjs` + token edit — no component file changes needed.
+**Net effect today:** the site already runs at the fastest possible state — no font requests at all — even though the CSS reads as if Geist were self-hosted.
 
-## Recipes
+## Enabling a real font (Astro's font integration)
 
-### Add Geist (or any Google/Bunny-hosted font)
+If you want a custom typeface instead of the system stack, wire up Astro's Fonts API (stable as of Astro 6, not experimental — this template pins Astro 7). The recipes below use the real API — this is what the previous integration got wrong, called out inline so you don't repeat it.
 
-In `astro.config.mjs`:
+### 1. Configure fonts in `astro.config.mjs`
+
+`fonts` is a top-level `defineConfig()` option, not nested under `experimental`:
 
 ```js
-import { fontProviders } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 
 export default defineConfig({
-  // ...existing config
   fonts: [
     {
-      provider: fontProviders.bunny(), // GDPR-friendly, matches Google Fonts' catalog
-      name: 'Geist',
+      provider: fontProviders.bunny(),
+      name: 'Geist', // exact provider-side font name
       cssVariable: '--font-display',
       weights: ['400 700'],
       subsets: ['latin', 'latin-ext'],
@@ -49,16 +41,16 @@ export default defineConfig({
       provider: fontProviders.bunny(),
       name: 'Geist Mono',
       cssVariable: '--font-mono',
-      weights: ['400 700'],
-      subsets: ['latin'],
-      fallbacks: ['ui-monospace', 'monospace'],
+      weights: ['400 600'],
+      subsets: ['latin', 'latin-ext'],
+      fallbacks: ['ui-monospace', 'SFMono-Regular', 'monospace'],
       display: 'swap',
     },
   ],
 });
 ```
 
-Then render `<Font>` where the type is used — typically once per variable near the top of `BaseLayout.astro`:
+### 2. Register the `<Font>` tags in `BaseLayout.astro`
 
 ```astro
 ---
@@ -66,10 +58,42 @@ import { Font } from 'astro:assets';
 ---
 
 <Font cssVariable="--font-display" preload />
+<!-- LCP-critical -->
 <Font cssVariable="--font-mono" />
+<!-- below the fold, deferred -->
 ```
 
-`astro:fonts` handles subsetting, `@font-face` generation, and fallback metric overrides automatically — no separate license/hosting step for Bunny or Google-provided fonts.
+### 3. Point the CSS variable at the generated family — the step the old integration skipped
+
+Astro's font integration emits its own hashed `@font-face` `font-family` value and binds it to the `cssVariable` you configured — **do not hand-write the family name in `global.css`**. Once `<Font cssVariable="--font-display" />` is rendered, `var(--font-display)` already resolves to the right generated family; remove the manual `'Geist'` literal from the token so there's nothing to drift out of sync:
+
+```css
+--font-display: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif; /* Astro's <Font> supplies the family at render time */
+--font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+```
+
+That's the fix: the family name comes from the `<Font>` component, not from a literal in the token — hand-writing one (as the old integration did) is exactly what breaks the match.
+
+## Recipes
+
+### Swap to Inter (broader linguistic coverage)
+
+In `astro.config.mjs`, change the display font's `name`:
+
+```js
+fonts: [
+  {
+    provider: fontProviders.bunny(),
+    name: 'Inter', // ← changed
+    cssVariable: '--font-display',
+    weights: ['400 700'],
+    subsets: ['latin', 'latin-ext', 'cyrillic'], // add subsets you need
+    fallbacks: ['system-ui', 'sans-serif'],
+    display: 'swap',
+  },
+  // ...
+];
+```
 
 ### Add a serif for headings
 
@@ -111,11 +135,11 @@ provider: fontProviders.local({
 });
 ```
 
-Bunny is a reasonable default because it's GDPR-friendly, fast, and free. Google works the same way for any font available there.
+Bunny is GDPR-friendly, fast, and free. Google works the same way for any font available there; `local()` is the fully self-hosted option if you already have the font files.
 
 ### Add CJK / Arabic / Hebrew support
 
-These scripts have huge glyph sets — never include them in a default load. Use `unicodeRange` or split fonts:
+These scripts have huge glyph sets — never include them in the default load. Add a dedicated entry and scope it to the locales that need it:
 
 ```js
 {
@@ -137,31 +161,18 @@ html[lang^='ja'] body {
 }
 ```
 
-## Preload strategy
+### Reverting to system-stack-only
 
-Once you add `<Font>` calls in `BaseLayout.astro`, only preload the weight that renders above the fold:
+If you add the integration above and later want to remove it (e.g. to get back to the current zero-request default):
 
-```astro
-<Font cssVariable="--font-display" preload />
-<!-- LCP-critical -->
-<Font cssVariable="--font-mono" />
-<!-- below the fold, deferred -->
-```
-
-Preloading too many fonts competes with the hero image for bandwidth.
+1. Delete the `fonts` block from `astro.config.mjs`.
+2. Remove the `<Font />` calls from `BaseLayout.astro`.
+3. In `src/styles/global.css`, drop any provider-generated family name from the token so only the system stack remains:
+   ```css
+   --font-display: system-ui, -apple-system, 'Segoe UI', sans-serif;
+   --font-mono: ui-monospace, SFMono-Regular, monospace;
+   ```
 
 ## Fallback metric overrides
 
-Once a font is wired up, `astro:fonts` automatically generates `size-adjust`, `ascent-override`, `descent-override`, and `line-gap-override` so the system fallback during the brief load window has near-identical line-box dimensions to the custom font — minimizing (not eliminating) CLS on font swap.
-
-## Reverting to system-only
-
-If you added a font and want to go back to the zero-request default:
-
-1. Remove the `fonts:` array from `astro.config.mjs`.
-2. Remove the `<Font />` calls from `BaseLayout.astro`.
-3. Repoint the tokens in `src/styles/global.css` to system stacks only:
-   ```css
-   --font-display: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-   --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-   ```
+When the integration is active, `astro:fonts` automatically generates `size-adjust`, `ascent-override`, `descent-override`, and `line-gap-override` so the system fallback during the brief load window has line-box dimensions matching the custom font — zero CLS on font swap. This only applies once you've wired up the integration; the current system-stack default has no swap to begin with, so there's nothing to override.

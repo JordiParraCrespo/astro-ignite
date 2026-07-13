@@ -99,7 +99,7 @@ The whole UI scales off four radius tokens. Bump them once:
 
 `pnpm dev` and click around. Buttons, links, focus rings, badges, and cards all carry the new accent and radius — because they were reading tokens the whole time. No component edits, no find-and-replace.
 
-> **Swap the typeface.** Fonts are tokens too. Repoint `--font-display` / `--font-mono` — see [`FONTS.md`](./FONTS.md) for the system-stack default and how to wire in a custom font.
+> **Swap the typeface.** Fonts are tokens too. The default is the system font stack (no self-hosted files) — repoint `--font-display` / `--font-mono`, or wire up Astro's `astro:fonts` integration for a custom typeface — see [`FONTS.md`](./FONTS.md).
 
 ## Rules that keep it clean
 
