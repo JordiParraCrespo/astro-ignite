@@ -11,7 +11,8 @@ lives in the sibling `astro-ignite` package.
 `src/index.ts` is the entire package: it `spawnSync`s
 `npx --yes astro-ignite@<version> bootstrap <…args>` and forwards the
 exit code. The version spec defaults to `latest` and is overridable via
-`ASTRO_IGNITE_VERSION` (the per-PR beta pipeline sets this).
+`ASTRO_IGNITE_VERSION` (useful for pinning to a prerelease dist-tag when
+testing locally — there is no automated pipeline that sets this).
 
 - **Bin:** `create-astro-ignite` → `./dist/index.js`
 - **No dependencies.** It shells out to `npx`; it imports nothing from

@@ -14,7 +14,7 @@ Open the URL printed in your terminal. The site has a working blog, projects sho
 ## What ships
 
 - **Astro 7** with native i18n, content collections, and Astro Actions
-- **Tailwind v4** with a layered CSS strategy (above-the-fold scoped, below-the-fold Tailwind)
+- **Tailwind v4** with `inlineStylesheets: 'always'` — full stylesheet inlined in the HTML, no render-blocking CSS request
 - **Geist Sans + Geist Mono** via `astro:fonts` (self-hosted, zero CLS)
 - **Typed Schema.org JSON-LD** built from `schema-dts`
 - **Image components** with AVIF + WebP, responsive `srcset`, blur placeholder
@@ -29,9 +29,18 @@ Open the URL printed in your terminal. The site has a working blog, projects sho
 ```
 src/
 ├── actions/              # Astro Actions (server-side form handlers)
-├── components/           # UI components
+├── components/
+│   ├── about/            # About page sections
+│   ├── blog/             # Post cards, pagination, TOC, related posts
+│   ├── common/           # Site chrome (Header, Footer, LocaleSwitcher, ThemeToggle, Hero)
+│   ├── contact/          # Contact form section
+│   ├── error/            # Server error page hero
 │   ├── image/            # Image + PriorityImage wrappers
-│   └── seo/              # SEO + JsonLd
+│   ├── legal/            # Cookie banner
+│   ├── not-found/        # 404 page hero
+│   ├── projects/         # Projects index list
+│   ├── seo/              # SEO + JsonLd
+│   └── ui/               # shadcn-style atoms (Button, Badge, Card, Tabs, Dialog…)
 ├── config/site.ts        # Site-wide configuration — edit this first
 ├── content/              # Content collections
 │   ├── blog/{locale}/    # Blog posts (MDX)
@@ -78,16 +87,53 @@ Optional:
 
 In dev, missing env vars fall back to console-logging — `pnpm dev` produces a working flow without any account signup.
 
-## Deeper docs
+## Adding content
 
-| Topic                                            | Read                               |
-| ------------------------------------------------ | ---------------------------------- |
-| Custom fonts (swap, add, system-only)            | [`FONTS.md`](./docs/FONTS.md)           |
-| Analytics swap (Plausible ↔ Umami ↔ Fathom ↔ GA) | [`ANALYTICS.md`](./docs/ANALYTICS.md)   |
-| OG images (per-locale, dynamic generation)       | [`OG.md`](./docs/OG.md)                 |
-| Image component conventions                      | [`IMAGES.md`](./docs/IMAGES.md)         |
-| Legal templates (review with counsel!)           | [`LEGAL.md`](./docs/LEGAL.md)           |
-| Performance benchmarks + reproducing them        | [`BENCHMARKS.md`](./docs/BENCHMARKS.md) |
+### Blog posts
+
+Drop an MDX file at `src/content/blog/{locale}/{slug}.mdx`:
+
+```yaml
+---
+title: My first post
+description: A short summary shown in the blog index and used as the page's meta description — keep it between 70 and 160 characters.
+datePublished: 2025-01-01
+ogImage: ./_assets/hero-my-post.png   # optional; generate with scripts/banners/
+author: jordi                             # matches a key in src/content/authors/
+tags: [astro, tailwind]
+---
+```
+
+The blog index at `/blog` and the RSS feed pick it up automatically.
+
+### Projects
+
+Drop a folder at `src/content/projects/{locale}/{slug}/` and add an `index.mdx`:
+
+```yaml
+---
+title: My project
+description: One-line summary shown in the projects grid and used as the page's meta description — 70 to 160 characters.
+summary: A short pitch for the project shown on the projects index card — up to 280 characters.
+datePublished: 2025-01-01
+ogImage: ./hero.png   # relative to the folder
+techStack: [Astro, TypeScript]
+---
+```
+
+### Authors
+
+Add a JSON file at `src/content/authors/{handle}.json`:
+
+```json
+{
+  "name": "Your Name",
+  "bio": { "en": "Short bio shown below each post." },
+  "image": "./your-avatar.jpg"
+}
+```
+
+Reference the handle in blog post frontmatter via `author: your-handle`.
 
 ## Adding a new locale
 
@@ -124,14 +170,31 @@ Then update `adapter:` in `astro.config.mjs`. Static-only deployments (no contac
 
 The scaffold is tuned for Lighthouse 100s on mobile. Key principles encoded in the code:
 
-- Above-the-fold components (Hero, Nav, BaseLayout) use scoped `<style>` blocks — no Tailwind render-blocking
-- Display font (Geist) preloaded; mono font deferred
+- `inlineStylesheets: 'always'` puts the full stylesheet in the HTML on first paint — no render-blocking CSS file
+- Geist fonts are self-hosted and preloaded; zero external font fetches
 - Hero images preloaded via `<link rel="preload">`
 - AVIF + WebP with JPEG fallback, multiple `srcset` widths
 - Anti-flash inline theme script
 - No client-side framework runtime
 
 See [`BENCHMARKS.md`](./docs/BENCHMARKS.md) for measurement methodology.
+
+## Deeper docs
+
+| Topic                                            | Read                               |
+| ------------------------------------------------ | ---------------------------------- |
+| Contact form (providers, env vars, removing)     | [`CONTACT-FORM.md`](./docs/CONTACT-FORM.md) |
+| Custom fonts (swap, add, system-only)            | [`FONTS.md`](./docs/FONTS.md)           |
+| Analytics swap (Plausible ↔ Umami ↔ Fathom ↔ GA) | [`ANALYTICS.md`](./docs/ANALYTICS.md)   |
+| OG images (per-locale, dynamic generation)       | [`OG.md`](./docs/OG.md)                 |
+| Image component conventions                      | [`IMAGES.md`](./docs/IMAGES.md)         |
+| Legal templates (review with counsel!)           | [`LEGAL.md`](./docs/LEGAL.md)           |
+| Performance benchmarks + reproducing them        | [`BENCHMARKS.md`](./docs/BENCHMARKS.md) |
+| JSON-LD / Schema.org authoring                   | [`JSONLD.md`](./docs/JSONLD.md)         |
+| Astro Actions — extending the contact form       | [`ACTIONS.md`](./docs/ACTIONS.md)       |
+| Internationalisation — routing, locales, i18n    | [`I18N.md`](./docs/I18N.md)             |
+| Design tokens, dark mode, reskinning             | [`THEMING.md`](./docs/THEMING.md)       |
+| Deployment options (Node, Netlify, Cloudflare)   | [`DEPLOYING.md`](./docs/DEPLOYING.md)   |
 
 ## License
 

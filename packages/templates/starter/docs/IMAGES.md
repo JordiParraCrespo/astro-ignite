@@ -38,7 +38,7 @@ For the **single LCP image on the page** (hero section, blog post cover, project
 import PriorityImage from '@/components/image/PriorityImage.astro';
 ---
 
-<PriorityImage src={post.data.heroImage} alt={post.data.heroImageAlt} width={1200} height={630} />
+<PriorityImage src={post.data.ogImage} alt="…" width={1200} height={630} />
 ```
 
 Defaults:
@@ -54,20 +54,18 @@ Defaults:
 
 ## Hero preload via BaseLayout
 
-Components can't reach into `<head>`, so pages with a hero pass it explicitly:
+`ArticleLayout` and `ProjectLayout` don't render a `<PriorityImage>` hero — posts and projects render a token-resolved CSS gradient cover instead (see [`docs/OG.md`](./OG.md) — there is no `heroImage` field in the schema). They do automatically preload the entry's `ogImage`, passing it to `BaseLayout` as `preloadImages={entry.data.ogImage ? [entry.data.ogImage] : []}`:
 
 ```astro
-<BaseLayout title="…" description="…" preloadImages={[heroImage]}>
-  <PriorityImage src={heroImage} alt="…" width={1200} height={630} />
-</BaseLayout>
+<BaseLayout title="…" description="…" preloadImages={entry.data.ogImage ? [entry.data.ogImage] : []}>
 ```
 
-`BaseLayout` renders `<link rel="preload" as="image">` tags for each — the browser starts the request during HTML parse, before component code runs. `ArticleLayout` and `ProjectLayout` do this automatically from the entry's `heroImage`.
+`BaseLayout` renders `<link rel="preload" as="image">` tags for each — the browser starts the request during HTML parse, before component code runs. Use the same `preloadImages` prop on a custom page if you add your own `<PriorityImage>` hero outside these layouts.
 
 ## What's automatic
 
 - **3-format `<picture>`:** AVIF + WebP + original. Modern browsers get AVIF (~50-70% smaller than JPEG); older ones get WebP; ancient ones get JPEG/PNG.
-- **Responsive `srcset`:** Astro auto-generates across `[640, 750, 828, 1080, 1200, 1920, 2048, 3840]` widths when `sizes` is set.
+- **Responsive `srcset`:** Astro auto-generates across its default breakpoint list (`640, 750, 828, 960, 1080, 1280, 1668, 1920, 2048, 2560, 3200, 3840, 4480, 5120, 6016`) when `sizes` is set — override via `image.breakpoints` in `astro.config.mjs`.
 - **`width` + `height` attrs:** prevent layout shift even before CSS loads.
 - **Format-specific quality:** uniform across formats (q=80 content, q=85 hero). Per-format tuning is possible but rarely worth the complexity.
 
@@ -96,8 +94,7 @@ The `<Image>` component will skip the blur layer when the data URL is empty.
 
 ```js
 image: {
-  responsiveStyles: true,
-  experimentalLayout: 'responsive',  // optional
+  breakpoints: [640, 828, 1080, 1920],
 }
 ```
 
