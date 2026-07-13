@@ -23,7 +23,7 @@ Open the URL printed in your terminal. The site has working docs navigation, ful
 - **3-column docs layout** — sidebar nav, MDX content, on-this-page TOC
 - **Prev / Next navigation** with ordering via frontmatter `order`
 - **Breadcrumbs** derived from folder structure
-- **MDX component kit** — Callout, Steps, Step, CodeBlock, CodeGroup, Frame, CardGroup, AiActions
+- **MDX component kit** — Callout, Steps, Step, CodeBlock, CodeGroup, Frame, CardGroup, Expandable, ParamField, ResponseField, Icon, Tree, Update, Mermaid, Columns, Banner, Tiles, AiActions
 - **Tri-state dark mode** (light / dark / system; defaults to light)
 - **Cookie banner + legal templates** (privacy, terms, cookies)
 - **Plausible analytics** (env-gated, consent-gated)

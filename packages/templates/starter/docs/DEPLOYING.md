@@ -15,7 +15,7 @@ pnpm build
 node ./dist/server/entry.mjs
 ```
 
-Put it behind a reverse proxy (Caddy, nginx) or in a container. Set the email env vars (see [`CONTACT_FORM.md`](./CONTACT_FORM.md)) in the runtime environment.
+Put it behind a reverse proxy (Caddy, nginx) or in a container. Set the email env vars (see [`CONTACT-FORM.md`](./CONTACT-FORM.md)) in the runtime environment.
 
 ## Netlify / Vercel
 
