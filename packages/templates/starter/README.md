@@ -96,13 +96,15 @@ Drop an MDX file at `src/content/blog/{locale}/{slug}.mdx`:
 ```yaml
 ---
 title: My first post
-description: A short summary shown in the blog index and used as the page's meta description — keep it between 70 and 160 characters.
+description: A short summary shown in the blog index, RSS feed, and used as the page's meta description — keep it between 70 and 160 characters.
 datePublished: 2025-01-01
-ogImage: ./_assets/hero-my-post.png   # optional; generate with scripts/banners/
+ogImage: ./_assets/og-my-post.png   # optional social/OG preview; generate with scripts/banners/
 author: jordi                             # matches a key in src/content/authors/
 tags: [astro, tailwind]
 ---
 ```
+
+There is no `heroImage` field — post cards and detail pages render a token-resolved CSS gradient cover instead. `ogImage` only controls the social preview.
 
 The blog index at `/blog` and the RSS feed pick it up automatically.
 
@@ -116,7 +118,7 @@ title: My project
 description: One-line summary shown in the projects grid and used as the page's meta description — 70 to 160 characters.
 summary: A short pitch for the project shown on the projects index card — up to 280 characters.
 datePublished: 2025-01-01
-ogImage: ./hero.png   # relative to the folder
+ogImage: ./og.png   # optional social/OG preview, relative to the folder
 techStack: [Astro, TypeScript]
 ---
 ```
@@ -128,10 +130,14 @@ Add a JSON file at `src/content/authors/{handle}.json`:
 ```json
 {
   "name": "Your Name",
-  "bio": { "en": "Short bio shown below each post." },
-  "image": "./your-avatar.jpg"
+  "image": "./your-avatar.jpg",
+  "bio": {
+    "en": "Short bio shown below each post."
+  }
 }
 ```
+
+`image` is resolved as a real Astro asset (not a public-path string), and `bio` is locale-keyed — add one entry per locale you ship.
 
 Reference the handle in blog post frontmatter via `author: your-handle`.
 
@@ -168,7 +174,7 @@ Then update `adapter:` in `astro.config.mjs`. Static-only deployments (no contac
 
 ## Performance
 
-The scaffold is tuned for Lighthouse 100s on mobile. Key principles encoded in the code:
+The scaffold is tuned to hit Lighthouse 100s on mobile wherever possible; the enforced CI floor is ≥95, mobile only (no desktop gate). Key principles encoded in the code:
 
 - `inlineStylesheets: 'always'` puts the full stylesheet in the HTML on first paint — no render-blocking CSS file
 - System font stack only; zero external font fetches

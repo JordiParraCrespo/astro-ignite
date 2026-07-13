@@ -20,12 +20,13 @@ A shadcn-style CLI for production-grade Astro sites. Pick a template, answer a f
 
 ```bash
 npx astro-ignite bootstrap [project-dir] [options]   # scaffold a new project
+npx astro-ignite init [project-dir] [options]        # alias for bootstrap
 npx astro-ignite --help                              # list commands
 ```
 
 ## What you get (bootstrap)
 
-- **Lighthouse 100s** on mobile and desktop, CI-enforced
+- **Lighthouse ≥95 on mobile, CI-enforced** (templates are tuned to hit 100s wherever possible — 95 is the enforced floor, not the target; there is no separate desktop gate)
 - **Astro 7** with native i18n, content collections, and Astro Actions
 - **Tailwind v4** with `inlineStylesheets: 'always'` — full stylesheet inlined in the HTML on first paint, no render-blocking CSS request
 - **Typed Schema.org JSON-LD** via `schema-dts`, composed per-page into one `@graph`

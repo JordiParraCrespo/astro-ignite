@@ -48,12 +48,12 @@ See [`AGENTS.md`](./AGENTS.md) for the full set of rules that fall out of these 
 
 ## What you get
 
-- **Lighthouse 100s** on mobile and desktop, CI-enforced (the build fails before a regression ships)
+- **Lighthouse ≥95 on mobile, CI-enforced** (the build fails before a regression ships) — templates are tuned to hit 100s wherever possible; there is no separate desktop gate
 - **Astro 7** with native i18n, content collections, and Astro Actions
 - **Tailwind v4** with `inlineStylesheets: 'always'` — full stylesheet inlined in the HTML on first paint, no render-blocking CSS request
 - **Typed Schema.org JSON-LD** via `schema-dts`, composed per-page into one `@graph`
 - **Image components** with AVIF + WebP, responsive `srcset`, and LQIP placeholders
-- **Geist Sans + Geist Mono self-hosted** via `astro:fonts` — no external font fetches, zero CLS; swap or remove via a single CSS token
+- **System font stack** — zero external font fetches, zero CLS by default; Geist Sans + Mono isn't currently wired (see each template's `docs/FONTS.md` for how to enable it)
 - **Tri-state dark mode** (light / dark / system) with an anti-flash inline script
 - **Working contact form** built on Astro Actions, Zod-validated, with Resend or SMTP
 - **Cookie banner + legal pages** (privacy, terms, cookies) — i18n-aware templates you adapt

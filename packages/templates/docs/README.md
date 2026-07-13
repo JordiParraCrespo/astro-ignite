@@ -119,7 +119,7 @@ pnpm astro add vercel   # or netlify, cloudflare, node
 
 ## Performance
 
-The scaffold is tuned for Lighthouse 100s on mobile. Key principles:
+The scaffold is tuned to hit Lighthouse 100s on mobile wherever possible; the enforced CI floor is ≥95, mobile only (no desktop gate). Key principles:
 
 - `inlineStylesheets: 'always'` puts the full stylesheet in the HTML on first paint — no render-blocking CSS file
 - System font stack by default — zero external font fetches, zero font-swap CLS
