@@ -183,6 +183,7 @@ See [`BENCHMARKS.md`](./docs/BENCHMARKS.md) for measurement methodology.
 
 | Topic                                            | Read                               |
 | ------------------------------------------------ | ---------------------------------- |
+| Component props, variants, compound families     | [`COMPONENTS.md`](./docs/COMPONENTS.md) |
 | Contact form (providers, env vars, removing)     | [`CONTACT-FORM.md`](./docs/CONTACT-FORM.md) |
 | Custom fonts (swap, add, system-only)            | [`FONTS.md`](./docs/FONTS.md)           |
 | Analytics swap (Plausible ↔ Umami ↔ Fathom ↔ GA) | [`ANALYTICS.md`](./docs/ANALYTICS.md)   |

@@ -65,13 +65,19 @@ Pick one interactively or pass `--template=<kind>`.
 # Interactive — pick a template, answer prompts
 npx astro-ignite bootstrap my-site
 
-# Non-interactive — sane defaults, no prompts
+# Non-interactive — sane defaults, use the default template
 npx astro-ignite bootstrap my-site --yes
+
+# Non-interactive, specific template, force pnpm
+npx astro-ignite bootstrap my-site --yes --template=docs --pm=pnpm
+
+# Scaffold without installing deps or running git init — do that yourself later
+npx astro-ignite bootstrap my-site --yes --no-install --no-git
 ```
 
 ## Requirements
 
-- Node.js `>=22.12.0` (required by `@astrojs/node@^11` in the starter template)
+- Node.js `>=22.12.0` (required by `@astrojs/node@^10` in the starter template)
 - One of: npm, pnpm, yarn, bun
 
 ## Source & docs
