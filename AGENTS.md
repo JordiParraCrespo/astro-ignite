@@ -44,7 +44,7 @@ The technical foundations that drive the project. The sections below (`Workspace
 - **`schema-dts` typed JSON-LD** composed via `@graph`. Each page contributes its node; the layout assembles the graph.
 - **Astro Actions + Zod** for the contact form, **Resend or SMTP** as the email provider. `scaffold.ts` strips the email/Resend deps from templates that don't need them.
 - **Plausible** for analytics, env-gated and consent-gated. Easy to swap for Umami / Fathom / GA at the `Analytics.astro` boundary.
-- **Self-hosted Geist Sans + Mono** via Astro's font pipeline. System stack as the fallback. No external font fetches on first paint.
+- **System font stack** (`ui-sans-serif` / `ui-monospace`) — zero font fetches, zero CLS. Geist Sans + Mono is not currently wired: the `--font-display`/`--font-mono` tokens in `global.css` were pointed at the plain family names instead of the hashed ones Astro's font integration emits, so no `@font-face` ever matched (see the comment in each template's `BaseLayout.astro`). Re-enable by aligning the tokens with the emitted family, or by dropping in a self-hosted `@font-face` block.
 - **pnpm@9.15.0 workspaces** (pinned via `packageManager`). **tsup** builds the CLI. **vitest** for tests. **changesets** for the release flow.
 - **Banner pipeline** = claude-design HTML → headless Chrome (Chrome for Testing) → PNG. No satori, no resvg, no hand-rolled SVG. See `## Banner & hero images`.
 - **Lighthouse 100s gate.** Local advisory + CI authoritative. See `## Performance gates`.
