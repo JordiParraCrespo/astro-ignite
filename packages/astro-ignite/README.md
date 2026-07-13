@@ -67,9 +67,6 @@ npx astro-ignite bootstrap my-site
 
 # Non-interactive — sane defaults, no prompts
 npx astro-ignite bootstrap my-site --yes
-
-# Try the beta channel
-npx astro-ignite@beta bootstrap my-site
 ```
 
 ## Requirements
