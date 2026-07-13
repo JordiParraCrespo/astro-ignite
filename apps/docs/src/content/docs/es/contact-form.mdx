@@ -42,7 +42,7 @@ Qué ocurre al enviar:
 4. La entrada válida se pasa a `sendContactEmail` — la costura del proveedor en `src/lib/email/`.
 5. La página lee el resultado con `Astro.getActionResult(actions.contact)` y muestra éxito o error.
 
-<Callout variant="warn" title="Las acciones necesitan un servidor">
+<Callout variant="warning" title="Las acciones necesitan un servidor">
   La acción se ejecuta en el servidor, así que la starter fija el adaptador
   `@astrojs/node`. En Cloudflare / Netlify / Vercel, cambia el adaptador para que
   se despliegue como una función — mira [Despliegue](/es/deploying).

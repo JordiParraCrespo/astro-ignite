@@ -41,7 +41,7 @@ What happens on submit:
 4. Valid input is handed to `sendContactEmail` — the provider seam in `src/lib/email/`.
 5. The page reads the outcome with `Astro.getActionResult(actions.contact)` and shows success or error.
 
-<Callout variant="warn" title="Actions need a server">
+<Callout variant="warning" title="Actions need a server">
   The action runs server-side, so the starter pins the `@astrojs/node` adapter.
   On Cloudflare / Netlify / Vercel, swap the adapter so it deploys as a function
   — see [Deploying](/deploying).

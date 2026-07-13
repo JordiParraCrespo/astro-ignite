@@ -62,7 +62,7 @@ build time. The static pages still deploy to the CDN; the function handles the
 form POST. The same applies to **Cloudflare Workers** with
 `@astrojs/cloudflare` — but not to Cloudflare Pages; see below.
 
-<Callout variant="warn" title="One adapter at a time">
+<Callout variant="warning" title="One adapter at a time">
   Keep exactly one adapter in `astro.config.mjs`. Removing it entirely breaks the
   contact form (the action has nowhere to run); see the fallback below.
 </Callout>
