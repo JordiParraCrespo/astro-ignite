@@ -1,9 +1,5 @@
 # AGENTS.md
 
-> **DO NOT HAND-EDIT THIS DIRECTORY.**
->
-> `packages/astro-ignite/templates/docs/` is a generated copy created by the `copy-templates` prepack step. Edit `packages/templates/docs/` instead; the prepack will propagate changes here.
-
 Orientation for AI agents working in this codebase. Subject-specific deep dives are under [`docs/`](./docs/).
 
 `CLAUDE.md` in this repo is a symlink to this file.

@@ -24,6 +24,6 @@ level up in `src/content.config.ts`** — this folder holds the entries.
   hand-maintained array in `src/config/sidebar.ts`. Adding an MDX file
   here makes it renderable at its route, but it won't appear in the
   sidebar, breadcrumbs, or prev/next until you also add it to
-  `sidebar.ts`.
+  `sidebar.ts` (see `docs/SIDEBAR.md`).
 - Body is MDX; prose styling comes from `DocsLayout`, not per-file
   `<style>`.

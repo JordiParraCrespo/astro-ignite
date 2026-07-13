@@ -52,17 +52,14 @@ Defaults:
 
 `width` and `height` are **required** on `<PriorityImage>` so the layout reserves the slot before any CSS loads (zero CLS).
 
-## Hero preload via BaseLayout
+## Hero preload
 
-Components can't reach into `<head>`, so pages with a hero pass it explicitly:
+`BaseLayout`'s Props (`title`, `description`, `image`, `imageAlt`, `noindex`, `type`, `alternates`, `schemas`) don't include a `preloadImages` option today, so there's no built-in `<link rel="preload">` for a priority image. To preload a hero image ahead of the LCP paint, add the tag directly in the page's `<head>`:
 
 ```astro
-<BaseLayout title="…" description="…" preloadImages={[heroImage]}>
-  <PriorityImage src={heroImage} alt="…" width={1200} height={630} />
-</BaseLayout>
+<link rel="preload" as="image" href={heroImage.src} />
+<PriorityImage src={heroImage} alt="…" width={1200} height={630} />
 ```
-
-`BaseLayout` renders `<link rel="preload" as="image">` tags for each — the browser starts the request during HTML parse, before component code runs. `ArticleLayout` and `ProjectLayout` do this automatically from the entry's `heroImage`.
 
 ## What's automatic
 
@@ -96,8 +93,7 @@ The `<Image>` component will skip the blur layer when the data URL is empty.
 
 ```js
 image: {
-  responsiveStyles: true,
-  experimentalLayout: 'responsive',  // optional
+  breakpoints: [640, 768, 1024, 1280, 1536], // controls generated srcset widths
 }
 ```
 
