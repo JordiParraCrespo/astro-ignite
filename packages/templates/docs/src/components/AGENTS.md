@@ -10,8 +10,9 @@ UI for the docs site. Organized by intent, not by page.
   `dropdown-menu/`, `radio-group/`), one file per part.
 - `docs/` — the documentation chrome (`SidebarNav`, `OnThisPage`,
   `Breadcrumbs`, `PrevNext`, `SearchBox` — the `<dialog>`-based command
-  palette, `ComponentShowcase`) plus the MDX content primitives
-  registered in `mdx-components.ts`: `Callout`, `CodeBlock`, `CodeGroup`,
+  palette, `ComponentShowcase`, `AiActions`) plus the MDX content
+  primitives registered in `mdx-components.ts`: `Callout`, `CodeBlock`,
+  `CodeGroup`,
   `CardGroup`, `Frame`, `Steps`/`Step`, `Expandable`,
   `ParamField`/`ResponseField`, `Icon` (+ `icons.ts`), `Tree`, `Update`,
   `Mermaid`, `Columns`, `Banner`, `Tiles`/`Tile`, `Accordion`/
