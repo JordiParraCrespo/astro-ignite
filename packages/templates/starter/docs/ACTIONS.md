@@ -45,7 +45,7 @@ handler: async (input) => {
 },
 ```
 
-**3. Add the field to the email template in `src/lib/email/`** (update `ContactEmailPayload` in `index.ts`, add to the email body).
+**3. Add the field to the email template in `src/lib/email/`** (update `ContactEmailInput` in `index.ts`, add to the email body).
 
 **4. Add the input to `src/pages/contact.astro` and `src/pages/[lang]/contact.astro`** — both must stay in sync.
 
@@ -108,7 +108,7 @@ Actions that send email call the `sendContactEmail()` function from `src/lib/ema
 
 ```
 src/lib/email/
-├── index.ts       # ContactEmailPayload type + sendContactEmail() — detection point for CLI
+├── index.ts       # ContactEmailInput type + sendContactEmail() — detection point for CLI
 ├── resend.ts      # Resend transport
 └── smtp.ts        # Nodemailer SMTP transport
 ```
