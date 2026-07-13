@@ -13,7 +13,7 @@ Point Cloudflare Pages, Netlify, Vercel, or GitHub Pages at `dist/`. Typical set
 
 - **Build command:** `pnpm build`
 - **Output directory:** `dist`
-- **Node version:** ≥ 22.12 (required by Astro 6)
+- **Node version:** ≥ 22.12 (required by Astro 7)
 
 That's it. No environment variables are required for a static docs site.
 

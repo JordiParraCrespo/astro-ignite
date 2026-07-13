@@ -1,8 +1,8 @@
 # Scripts Lib Boundary
 
-Shared helpers imported by the scripts in `scripts/audit/`,
-`scripts/perf/`, and `scripts/doctor/`. Not shipped; not a published
-package.
+Shared helpers imported by scripts under `scripts/` — including
+`scripts/audit/`, `scripts/perf/`, `scripts/doctor/`, and top-level
+scripts like `scripts/queue.mjs`. Not shipped; not a published package.
 
 ## Rules
 

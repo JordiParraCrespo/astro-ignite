@@ -4,7 +4,7 @@ Where you deploy depends on one question: **does the site need server compute?**
 
 The starter ships a contact form built on **Astro Actions**, which run server-side. It pins the `@astrojs/node` adapter so that endpoint has somewhere to run. To deploy elsewhere, swap the adapter to match the host.
 
-> **Static pages either way.** Even with an adapter, `output: 'static'` means every page is pre-rendered HTML. Only the action endpoint is server-rendered — so you keep the Lighthouse 100 profile and just need a place to run that one function.
+> **Static pages either way.** Even with an adapter, `output: 'static'` means every page is pre-rendered HTML. Only the action endpoint is server-rendered — so you keep the same Lighthouse profile (≥95 mobile, CI-enforced) and just need a place to run that one function.
 
 ## Node (default)
 
@@ -15,7 +15,7 @@ pnpm build
 node ./dist/server/entry.mjs
 ```
 
-Put it behind a reverse proxy (Caddy, nginx) or in a container. Set the email env vars (see [`CONTACT_FORM.md`](./CONTACT_FORM.md)) in the runtime environment.
+Put it behind a reverse proxy (Caddy, nginx) or in a container. Set the email env vars (see [`CONTACT-FORM.md`](./CONTACT-FORM.md)) in the runtime environment.
 
 ## Netlify / Vercel
 

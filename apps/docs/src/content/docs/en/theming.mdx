@@ -145,9 +145,10 @@ touching a single component.
 </Steps>
 
 <Callout variant="tip" title="Swap the typeface">
-  Fonts are tokens too. Repoint `--font-display` / `--font-mono` and update the
-  self-hosted font pipeline (`astro:fonts`) — see the FONTS deep dive in the
-  template's `docs/` folder.
+  Fonts are tokens too. The default is the system font stack (no self-hosted
+  files) — repoint `--font-display` / `--font-mono`, or wire up Astro's
+  `astro:fonts` integration for a custom typeface — see the FONTS deep dive
+  in the template's `docs/` folder.
 </Callout>
 
 ## Rules that keep it clean

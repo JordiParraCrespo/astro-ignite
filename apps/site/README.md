@@ -13,13 +13,13 @@ Open the URL printed in your terminal. The site has a working blog, projects sho
 
 ## What ships
 
-- **Astro 7** with native i18n, content collections, and Astro Actions
-- **Tailwind v4** with a layered CSS strategy (above-the-fold scoped, below-the-fold Tailwind)
+- **Astro 7** with native i18n and content collections, `output: 'static'` (no Astro Actions, no adapter — see "Build" below)
+- **Tailwind v4** with `inlineStylesheets: 'always'` — full stylesheet inlined in the HTML, no render-blocking CSS request
 - **Geist Sans + Geist Mono** via `astro:fonts` (self-hosted, zero CLS)
 - **Typed Schema.org JSON-LD** built from `schema-dts`
 - **Image components** with AVIF + WebP, responsive `srcset`, blur placeholder
 - **Tri-state dark mode** (light / dark / system)
-- **Working contact form** with Astro Actions, Zod validation, honeypot
+- **Working contact form** via a Cloudflare Pages Function (`functions/api/contact.ts`) — honeypot + manual validation, delivered through Resend
 - **Cookie banner + legal templates** (privacy, terms, cookies)
 - **Plausible analytics** (env-gated, consent-gated)
 - **Sitemap, RSS, robots, manifest** all wired and i18n-aware
@@ -28,20 +28,22 @@ Open the URL printed in your terminal. The site has a working blog, projects sho
 
 ```
 src/
-├── actions/              # Astro Actions (server-side form handlers)
-├── components/           # UI components
-│   ├── image/            # Image + PriorityImage wrappers
-│   └── seo/              # SEO + JsonLd
+├── components/
+│   ├── blocks/            # Larger compositions (e.g. terminal/ for the CLI demo)
+│   ├── common/             # Site chrome (Header, Footer, LocaleSwitcher, ThemeToggle, Analytics, Brand)
+│   ├── image/               # Image + PriorityImage wrappers
+│   ├── landing/             # Landing-page sections (Hero, Features, Templates, CTA…)
+│   ├── legal/                # Cookie banner
+│   ├── seo/                    # SEO + JsonLd
+│   └── ui/                       # shadcn-style atoms (Button, Badge, Card, Tabs, Dialog…)
 ├── config/site.ts        # Site-wide configuration — edit this first
 ├── content/              # Content collections
 │   ├── blog/{locale}/    # Blog posts (MDX)
-│   ├── projects/{locale}/{slug}/  # Project case studies
 │   ├── authors/          # Author profiles (JSON)
 │   └── legal/{locale}/   # Legal page templates
 ├── i18n/                 # UI string dictionaries + t() helper
 ├── layouts/              # Base, Article, Project, Legal layouts
 ├── lib/
-│   ├── email/            # Email transport (Resend or SMTP)
 │   ├── image/            # LQIP (blur placeholder) generator
 │   └── jsonld/           # Schema.org builders
 ├── pages/                # Routes
@@ -69,12 +71,18 @@ cp .env.example .env
 
 Required for production:
 
-- `RESEND_API_KEY` (or SMTP\_\* if you chose SMTP)
+- `RESEND_API_KEY`
 - `CONTACT_TO_EMAIL`
 
 Optional:
 
+- `RESEND_FROM` (defaults to Resend's sandbox sender)
 - `PUBLIC_PLAUSIBLE_DOMAIN` (enables analytics)
+
+These are read by the Cloudflare Pages Function at `functions/api/contact.ts`
+(set as encrypted runtime vars on the Pages project, or `.dev.vars` locally) —
+unlike the `starter` template's pluggable Resend/SMTP email lib, this site's
+contact handler only supports Resend.
 
 In dev, missing env vars fall back to console-logging — `pnpm dev` produces a working flow without any account signup.
 
@@ -107,25 +115,14 @@ pnpm build       # production build → dist/
 pnpm preview     # preview the production build
 ```
 
-The default deployment target is **Node** (via `@astrojs/node` standalone). Swap adapters:
-
-```bash
-# For Vercel
-pnpm astro add vercel
-# For Netlify
-pnpm astro add netlify
-# For Cloudflare Pages
-pnpm astro add cloudflare
-```
-
-Then update `adapter:` in `astro.config.mjs`. Static-only deployments (no contact form): remove the adapter and set `output: 'static'`.
+The site builds with `output: 'static'` and ships **no Astro adapter** — unlike the `starter` template, which pins `@astrojs/node`. The contact form is the one server-side piece, handled outside of Astro entirely by the Cloudflare Pages Function at `functions/api/contact.ts` (deployed alongside the static `dist/` output on Cloudflare Pages).
 
 ## Performance
 
 The scaffold is tuned for Lighthouse 100s on mobile. Key principles encoded in the code:
 
-- Above-the-fold components (Hero, Nav, BaseLayout) use scoped `<style>` blocks — no Tailwind render-blocking
-- Display font (Geist) preloaded; mono font deferred
+- `inlineStylesheets: 'always'` puts the full stylesheet in the HTML on first paint — no render-blocking CSS file
+- Geist fonts are self-hosted and preloaded; zero external font fetches
 - Hero images preloaded via `<link rel="preload">`
 - AVIF + WebP with JPEG fallback, multiple `srcset` widths
 - Anti-flash inline theme script

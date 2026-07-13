@@ -6,9 +6,11 @@ this folder holds the entries.
 
 ## Layout
 
-- `blog/{locale}/{slug}.mdx`, `projects/{locale}/{slug}.mdx` — the
+- `blog/{locale}/{slug}.mdx`, `projects/{locale}/{slug}/index.mdx` — the
   locale-folder layout is mandatory (it's how i18n parallel routes find
-  the right entry). Default locale is `en`.
+  the right entry); projects nest under a per-slug directory (the
+  `projects` collection loader globs `*/*/index.mdx`), blog does not.
+  Default locale is `en`.
 - `legal/{locale}/{privacy,terms,cookies}.mdx`
 - `authors/<id>.json` — author records referenced by blog posts.
 

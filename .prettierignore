@@ -89,6 +89,7 @@ packages/templates/*/src/components/common/Header.astro
 packages/templates/*/src/components/common/LocaleSwitcher.astro
 packages/templates/*/src/components/common/ThemeToggle.astro
 packages/templates/*/src/components/legal/CookieBanner.astro
+packages/templates/*/src/components/ui/text.astro
 packages/templates/*/src/layouts/BaseLayout.astro
 # Same files bundled inside the astro-ignite CLI package.
 packages/astro-ignite/templates/*/src/components/Analytics.astro
@@ -101,6 +102,7 @@ packages/astro-ignite/templates/*/src/components/common/Header.astro
 packages/astro-ignite/templates/*/src/components/common/LocaleSwitcher.astro
 packages/astro-ignite/templates/*/src/components/common/ThemeToggle.astro
 packages/astro-ignite/templates/*/src/components/legal/CookieBanner.astro
+packages/astro-ignite/templates/*/src/components/ui/text.astro
 packages/astro-ignite/templates/*/src/layouts/BaseLayout.astro
 apps/*/src/components/Analytics.astro
 apps/*/src/components/CookieBanner.astro

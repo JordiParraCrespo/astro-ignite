@@ -45,13 +45,13 @@ handler: async (input) => {
 },
 ```
 
-**3. Add the field to the email template in `src/lib/email/`** (update `ContactEmailPayload` in `index.ts`, add to the email body).
+**3. Add the field to the email template in `src/lib/email/`** (update `ContactEmailInput` in `index.ts`, add to the email body).
 
 **4. Add the input to `src/pages/contact.astro` and `src/pages/[lang]/contact.astro`** — both must stay in sync.
 
 ## Adding a new action
 
-Actions require a server adapter (`@astrojs/node@^10` is pinned). Each action is an entry in the `server` map:
+Actions require a server adapter (`@astrojs/node@^11` is pinned). Each action is an entry in the `server` map:
 
 ```ts
 // src/actions/index.ts
@@ -108,12 +108,12 @@ Actions that send email call the `sendContactEmail()` function from `src/lib/ema
 
 ```
 src/lib/email/
-├── index.ts       # ContactEmailPayload type + sendContactEmail() — detection point for CLI
+├── index.ts       # ContactEmailInput type + sendContactEmail() — detection point for CLI
 ├── resend.ts      # Resend transport
 └── smtp.ts        # Nodemailer SMTP transport
 ```
 
-`index.ts` inspects `import.meta.env.RESEND_API_KEY` at runtime and routes to the appropriate transport. To switch providers, add a new transport file and update the routing condition in `index.ts`. The action handler doesn't change.
+`index.ts` doesn't inspect anything at runtime — it statically imports and re-exports the transport the CLI wired up at scaffold time (based on the email-provider prompt), so there's no per-request branching. To switch providers, edit the `import` in `index.ts` to point at a different transport file (see [`CONTACT-FORM.md`](./CONTACT-FORM.md) for the exact edit). The action handler doesn't change.
 
 The CLI detects the presence of `src/lib/email/index.ts` to decide whether to keep the Resend and Nodemailer deps when scaffolding. Don't rename or remove that file.
 
@@ -127,7 +127,7 @@ The CLI detects the presence of `src/lib/email/index.ts` to decide whether to ke
 
 ## Static deployments
 
-Actions require a running server. If you want a fully static output (`output: 'static'` in `astro.config.mjs`), remove the adapter and remove the contact form action — replace with a third-party form provider (Formspree, Basin, etc.) or a mailto link.
+Actions require a running server, so a fully static deployment can't keep them. The template already ships `output: 'static'` in `astro.config.mjs` — the adapter is only there to serve the Actions endpoint on request, not to switch the site to SSR. To go fully static, remove the adapter and remove the contact form action — replace with a third-party form provider (Formspree, Basin, etc.) or a mailto link.
 
 ## Error handling on the page
 

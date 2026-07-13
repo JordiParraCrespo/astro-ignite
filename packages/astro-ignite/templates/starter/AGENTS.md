@@ -12,7 +12,7 @@ The site ships with: blog + projects content collections, contact form via Astro
 
 - **Astro 7** — static-first, server output via `@astrojs/node@^11` (required for Actions)
 - **Tailwind v4** — single styling layer; component colors resolve through `--color-*` tokens via arbitrary-value utilities (`bg-[var(--color-fg)]`). `inlineStylesheets: 'always'` inlines the full stylesheet on first paint.
-- **Geist Sans + Geist Mono** — self-hosted via `astro:fonts`, zero CLS
+- **System font stack** (`ui-sans-serif` / `ui-monospace`) — zero font fetches, zero CLS. Geist Sans + Mono isn't wired: `global.css` points `--font-display`/`--font-mono` at the plain family names, not the hashed ones Astro's font integration emits, so no `@font-face` matches — see the comment in `BaseLayout.astro` for how to re-enable it.
 - **schema-dts** typed JSON-LD composed via `@graph`
 - **No client framework** — interactive primitives are Astro + vanilla JS / native HTML (`<details>`, `<dialog>`, popover API, custom elements)
 
@@ -36,20 +36,24 @@ src/pages/
 ├── about.astro                       # /about
 ├── contact.astro                     # /contact
 ├── 404.astro                         # /404 (single emit, no locale parallel)
+├── 500.astro                         # /500 (single emit, no locale parallel)
 ├── blog/
 │   ├── index.astro                   # /blog
-│   └── [...slug].astro               # /blog/<slug>
+│   ├── [...slug].astro               # /blog/<slug>
+│   ├── page/[page].astro             # /blog/page/<n> (pagination)
+│   └── tags/[tag].astro              # /blog/tags/<tag>
 ├── projects/
 │   ├── index.astro                   # /projects
 │   └── [...slug].astro               # /projects/<slug>
 ├── legal/[...slug].astro             # /legal/<privacy|terms|cookies>
 ├── rss.xml.ts                        # /rss.xml (default locale)
 ├── robots.txt.ts                     # /robots.txt
+├── llms.txt.ts                       # /llms.txt (AI-discoverability index)
 └── [lang]/                           # mirror of above for non-default locales
     ├── index.astro
     ├── about.astro
     ├── contact.astro
-    ├── blog/{index,[...slug]}.astro
+    ├── blog/{index,[...slug],page/[page],tags/[tag]}.astro
     ├── projects/{index,[...slug]}.astro
     ├── legal/[...slug].astro
     └── rss.xml.ts                    # /<lang>/rss.xml
@@ -64,18 +68,20 @@ Atoms live in `src/components/ui/` (shadcn-style — copied from the astro-ignit
 - All atoms are Astro + vanilla JS — no React, no Radix, no framework runtime
 - Interactive primitives use native HTML: `<details name>` for accordion, `<dialog>` for dialog, popover API for dropdown, CSS for tooltip, custom elements (`ai-tabs`, `ai-toaster`) for tabs/toasts
 - Class-merge helper at `src/lib/cn.ts`; toast helper at `src/lib/toast.ts` dispatches a window event consumed by `<Toaster />`
-- Card-style families (`card`, `tabs`, `accordion`, `dialog`, `dropdown-menu`) are grouped by family directory
+- Card-style families (`card`, `tabs`, `accordion`, `dialog`, `dropdown-menu`, `radio-group`) are grouped by family directory
 
-## Banner & hero images
+## Banner & OG images
 
-Banners and blog hero images are **generated from HTML sources**, not hand-rolled SVG. The starter ships a small set of PNGs in `src/content/blog/_assets/`; reference them from MDX frontmatter `heroImage` (the Zod schema validates dimensions via Astro's `image()` helper).
+Blog and project detail pages render a **token-resolved CSS gradient cover** — there is no `heroImage` field in the content schema. To give a post a social/OG preview, set the optional `ogImage` in MDX frontmatter; otherwise OG falls back to the site-wide default banner via `SEO.astro`.
+
+OG images must be **generated from HTML sources**, not hand-rolled SVG — see [`docs/IMAGES.md`](./docs/IMAGES.md).
 
 Do not:
 
 - Inline hand-drawn SVG banners in MDX
 - Generate banners via satori / @vercel/og / resvg — type rendering drifts from the design tokens
 
-If you need a new banner, copy an existing HTML source and re-render with your renderer of choice (Puppeteer / Playwright + Chrome are the typical path).
+If you need a new OG image, copy an existing HTML source and re-render with your renderer of choice (Puppeteer / Playwright + Chrome are the typical path).
 
 ## Common commands
 

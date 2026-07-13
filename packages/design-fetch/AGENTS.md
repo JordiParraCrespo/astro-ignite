@@ -9,7 +9,13 @@ in sync with the design system.
 - **Spec:** `openspec/specs/banner-pipeline/spec.md` (the banner pipeline
   is the only consumer of design-fetch today)
 - **CLI entry:** `node packages/design-fetch/dist/index.js <design-url>
---out <dir>`
+--out <dir>` (default `--out` is `./design` if omitted). Alternate form:
+  `--file <path>` extracts an already-downloaded `.tar.gz` instead of
+  fetching. `--force` overwrites a non-empty output directory.
+- **Auth:** the Claude Design API is gated — set `ANTHROPIC_API_KEY` in
+  the environment or pass `--api-key <key>`. Without one of these, the
+  fetch fails with a 401/403/404 hint pointing at `--file` as the
+  fallback.
 - **Output shape:** the extracted bundle contains `tokens.css`,
   `astro-ignite/project/Banners.html` (the authoritative banner
   prototype), and Geist woff2 files.
@@ -32,5 +38,7 @@ in sync with the design system.
   fetch model; if not, introduce a new package rather than overload
   this one.
 - Drift: when Astro re-hashes Geist after a build, the banner pipeline
-  needs the new woff2. `pnpm doctor` (geist-fonts check) detects
-  this and surfaces a copy-pasteable fix.
+  needs the new woff2. There is no automated doctor check for this —
+  recopy the hashed files from `apps/site/dist/_astro/fonts/` into
+  `apps/site/scripts/banners/fonts/` and re-run the generator (see the
+  root `AGENTS.md`'s "Banner & hero images" section).

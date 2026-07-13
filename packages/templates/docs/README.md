@@ -17,13 +17,13 @@ Open the URL printed in your terminal. The site has working docs navigation, ful
 
 - **Astro 7** with native i18n, content collections, and static output
 - **Tailwind v4** with `inlineStylesheets: 'always'` — full stylesheet inlined in the HTML on first paint, no render-blocking CSS request
-- **Geist Sans + Geist Mono** via `astro:fonts` (self-hosted, zero CLS)
+- **System font stack** — zero font requests, zero font-swap CLS (swap in Geist or any font via `astro:fonts`, see `FONTS.md`)
 - **Typed Schema.org JSON-LD** built from `schema-dts`
 - **Full-text search** via Pagefind (post-build index, no server needed)
 - **3-column docs layout** — sidebar nav, MDX content, on-this-page TOC
-- **Prev / Next navigation** with ordering via frontmatter `order`
-- **Breadcrumbs** derived from folder structure
-- **MDX component kit** — Callout, Steps, Step, CodeBlock, CodeGroup, Frame, CardGroup, AiActions
+- **Prev / Next navigation** ordered by `src/config/sidebar.ts`, not frontmatter
+- **Breadcrumbs** derived from the page's owning sidebar group
+- **MDX component kit** — Callout, Steps/Step, CodeBlock, CodeGroup, Frame, CardGroup, Columns, Tile/Tiles, Tree, Update, Expandable, ParamField/ResponseField, Icon, Mermaid, Banner, Accordion/AccordionItem, Tabs family, Tooltip
 - **Tri-state dark mode** (light / dark / system; defaults to light)
 - **Cookie banner + legal templates** (privacy, terms, cookies)
 - **Plausible analytics** (env-gated, consent-gated)
@@ -84,10 +84,9 @@ In dev, missing env vars are silently skipped — `pnpm dev` works without any a
    ---
    title: Getting started
    description: Install and run the CLI.
-   order: 1
    ---
    ```
-2. To group pages in the sidebar, use sub-folders: `src/content/docs/en/guide/install.mdx` → appears under the "Guide" section heading.
+2. Add it to a group in `src/config/sidebar.ts` — that's what drives sidebar placement, ordering, and breadcrumbs; folder structure under `src/content/docs/` has no effect on any of them.
 3. To translate a page, copy it into the target locale folder and translate the body and frontmatter.
 
 The route file enumerates entries via `getCollection('docs', ...)` — no manual route registration needed.
@@ -120,10 +119,10 @@ pnpm astro add vercel   # or netlify, cloudflare, node
 
 ## Performance
 
-The scaffold is tuned for Lighthouse 100s on mobile. Key principles:
+The scaffold is tuned to hit Lighthouse 100s on mobile wherever possible; the enforced CI floor is ≥95, mobile only (no desktop gate). Key principles:
 
 - `inlineStylesheets: 'always'` puts the full stylesheet in the HTML on first paint — no render-blocking CSS file
-- Geist fonts are self-hosted and preloaded; zero external font fetches
+- System font stack by default — zero external font fetches, zero font-swap CLS
 - No client-side framework runtime
 - Anti-flash inline theme script (prevents light flash on dark preference)
 - AVIF + WebP with JPEG fallback, multiple `srcset` widths
@@ -134,12 +133,14 @@ See [`BENCHMARKS.md`](./docs/BENCHMARKS.md) for measurement methodology.
 
 | Topic                                             | Read                                     |
 | ------------------------------------------------- | ---------------------------------------- |
+| Component props, variants, compound families      | [`COMPONENTS.md`](./docs/COMPONENTS.md)  |
 | Search (Pagefind, indexing, i18n, removing)       | [`SEARCH.md`](./docs/SEARCH.md)          |
 | Sidebar, TOC, prev/next, breadcrumbs              | [`NAVIGATION.md`](./docs/NAVIGATION.md)  |
 | Custom fonts (swap, add, system-only)             | [`FONTS.md`](./docs/FONTS.md)            |
 | Analytics swap (Plausible ↔ Umami ↔ Fathom ↔ GA) | [`ANALYTICS.md`](./docs/ANALYTICS.md)    |
 | OG images (per-locale, dynamic generation)        | [`OG.md`](./docs/OG.md)                  |
 | Image component conventions                       | [`IMAGES.md`](./docs/IMAGES.md)          |
+| JSON-LD / Schema.org authoring                     | [`JSONLD.md`](./docs/JSONLD.md)          |
 | Legal templates (review with counsel!)            | [`LEGAL.md`](./docs/LEGAL.md)            |
 | Performance benchmarks + reproducing them         | [`BENCHMARKS.md`](./docs/BENCHMARKS.md)  |
 | Sidebar navigation — groups, ordering, badges     | [`SIDEBAR.md`](./docs/SIDEBAR.md)        |

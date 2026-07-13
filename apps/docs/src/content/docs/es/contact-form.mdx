@@ -23,12 +23,13 @@ El formulario es una **Astro Action**, definida en `src/actions/index.ts`:
     input: z.object({
       name: z.string().min(1).max(100),
       email: z.email().max(254),
+      subject: z.enum(['general', 'support', 'feedback']).default('general'),
       message: z.string().min(10).max(5000),
       _website: z.string().max(0).optional(), // honeypot
     }),
     handler: async (input) => {
-      if (input._website) return { ok: true }; // bot — silently drop
-      await sendContactEmail(input);
+      if (input._website && input._website.length > 0) return { ok: true }; // bot — silently drop
+      await sendContactEmail({ name: input.name, email: input.email, subject: input.subject, message: input.message });
       return { ok: true };
     },
   }),
@@ -37,12 +38,12 @@ El formulario es una **Astro Action**, definida en `src/actions/index.ts`:
 Qué ocurre al enviar:
 
 1. La página publica directamente a la acción: `<form method="post" action={actions.contact}>`. Astro maneja la mejora progresiva.
-2. **Zod valida** nombre / correo / mensaje; una entrada inválida devuelve un error tipado que la página renderiza en línea.
+2. **Zod valida** nombre / correo / asunto / mensaje; una entrada inválida devuelve un error tipado que la página renderiza en línea.
 3. El campo **honeypot** `_website` (oculto para humanos, irresistible para bots) cortocircuita con un éxito silencioso.
 4. La entrada válida se pasa a `sendContactEmail` — la costura del proveedor en `src/lib/email/`.
 5. La página lee el resultado con `Astro.getActionResult(actions.contact)` y muestra éxito o error.
 
-<Callout variant="warn" title="Las acciones necesitan un servidor">
+<Callout variant="warning" title="Las acciones necesitan un servidor">
   La acción se ejecuta en el servidor, así que la starter fija el adaptador
   `@astrojs/node`. En Cloudflare / Netlify / Vercel, cambia el adaptador para que
   se despliegue como una función — mira [Despliegue](/es/deploying).

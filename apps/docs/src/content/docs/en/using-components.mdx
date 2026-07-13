@@ -21,8 +21,9 @@ import Button from '@/components/ui/button.astro';
 <Button variant="outline" size="sm" href="/contact">Get in touch</Button>
 ```
 
-Browse every atom rendered live, with props and source, under
-[Components](/components).
+Browse most atoms rendered live, with props and source, under
+[Components](/components) (the newer form atoms — checkbox, switch, select,
+radio-group — are pre-installed but don't yet have a live demo page there).
 
 ## Props & variants
 
@@ -99,8 +100,8 @@ element for tabs. No React, no Radix, no framework runtime.
 
 ## Toasts
 
-Toasts are imperative. Render `<Toaster />` once (the layouts already do), then
-fire one from anywhere with the helper:
+Toasts are imperative. Add `<Toaster />` once near the root of your layout,
+then fire one from anywhere with the helper:
 
 <CodeBlock filename="example.ts">{`import { toast } from '@/lib/toast';
 

@@ -4,7 +4,7 @@ The default analytics provider is **Plausible** — privacy-friendly, no cookies
 
 ## Default behavior
 
-`src/components/Analytics.astro`:
+`src/components/common/Analytics.astro`:
 
 - Reads `PUBLIC_PLAUSIBLE_DOMAIN` from `.env`. If unset → renders nothing (zero perf cost).
 - Reads `localStorage['cookie-consent']` (set by `<CookieBanner>`). Only injects the Plausible script when it equals `'accepted'`.
@@ -27,7 +27,7 @@ The default analytics provider is **Plausible** — privacy-friendly, no cookies
 
 ### Switch to Umami
 
-Replace the body of `src/components/Analytics.astro`:
+Replace the body of `src/components/common/Analytics.astro`:
 
 ```astro
 ---
@@ -182,7 +182,7 @@ For Umami: `window.umami.track('Signup clicked')`. For Fathom: `window.fathom.tr
 ## Removing analytics entirely
 
 1. Delete `<Analytics />` from `src/layouts/BaseLayout.astro`.
-2. Delete `src/components/Analytics.astro`.
+2. Delete `src/components/common/Analytics.astro`.
 3. Remove `PUBLIC_PLAUSIBLE_*` from `.env.example`.
 4. Update `src/content/legal/{locale}/cookies.mdx` to remove the analytics section.
 

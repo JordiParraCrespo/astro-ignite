@@ -29,7 +29,7 @@ Call `siteSchemas(locale)` to get the Organization + WebSite pair that every pag
 
 ```astro
 ---
-import { JsonLd } from '@/components/seo/JsonLd.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
 import {
   siteSchemas,
   blogPostingSchema,

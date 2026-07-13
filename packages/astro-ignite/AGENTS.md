@@ -13,12 +13,15 @@ thin `npx` shim that calls into this package — see its AGENTS.md.
 - **Source files** (`src/`):
 - `index.ts` — entrypoint; parses the `bootstrap`/`init` subcommand
   and flags, orchestrates prompts → scaffold → install → git
-- `prompts.ts` — the `@clack/prompts` flow (name, package manager,
-  git init, install, **template**); `TEMPLATE_KINDS` is the source of
-  the template list
+- `prompts.ts` — the `@clack/prompts` flow (**template**, project
+  directory, site name, site URL, default locale, additional locales,
+  email provider, package manager); `TEMPLATE_KINDS` is the source of
+  the template list. Git init and install are CLI flags only
+  (`--no-git`/`--no-install`), never prompted for.
 - `scaffold.ts` — `ensureEmptyTarget` + `scaffoldProject`: copy the
-  chosen `templates/<kind>/`, rewrite `package.json`, restore dotfiles
-  (`_gitignore` → `.gitignore`), preserve symlinks verbatim
+  chosen `templates/<kind>/`, rewrite `package.json` and
+  `src/config/site.ts`, restore dotfiles (`_gitignore` → `.gitignore`),
+  preserve symlinks verbatim
 - `pm.ts`, `git.ts` — package-manager detection + git init helpers
 - `types.ts` — shared types (`CliFlags`, `PackageManager`,
   `TemplateKind`, `TEMPLATE_KINDS`)
@@ -38,10 +41,15 @@ thin `npx` shim that calls into this package — see its AGENTS.md.
 - The generated project SHALL NOT import anything from `astro-ignite/*`
   or `create-astro-ignite/*`. No plugin, no shared config, no
   auto-update, no telemetry.
-- `rewritePackageJson` strips deps the target template doesn't need
-  (current rule: email/Resend deps are removed when
-  `<template>/src/lib/email/index.ts` is absent). Apply the same
-  `fileExists`-gated pattern for any new template-specific dep.
+- `rewritePackageJson` only **adds** deps the target template needs — it
+  never removes any (base template `package.json`s never list
+  `resend`/`nodemailer` to begin with). The current rule: the matching
+  email-transport dep is added only when `<template>/src/lib/email/index.ts`
+  exists post-copy. Separately, `CONDITIONAL_FILES` in `scaffold.ts`
+  excludes `src/lib/email/{index,resend,smtp}.ts` from the copy itself
+  based on the chosen email provider — that's the actual "stripping"
+  step; `rewritePackageJson` only reacts to what's left on disk. Apply
+  the same `fileExists`-gated pattern for any new template-specific dep.
 - Templates that use Astro Actions pin `@astrojs/node@^11` (the adapter major that
   pairs with Astro 7).
 - Package-manager detection covers pnpm, npm, yarn, bun via

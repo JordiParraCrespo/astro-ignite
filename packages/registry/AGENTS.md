@@ -28,7 +28,8 @@ ships compositions. The starter template gets atoms copied into
   `build-registry.test.mjs` (run by `pnpm test`) asserts every manifest
   item has a corresponding schema-shaped payload.
 - **Helpers:** `lib/cn.ts` (class merge), `lib/toast.ts` (window event
-  bus consumed by `<Toaster />`).
+  bus consumed by `<Toaster />`), `lib/clipboard.ts` (copy-to-clipboard
+  helper backing `copy-button`).
 
 ## Boundary Rules
 
@@ -45,7 +46,8 @@ ships compositions. The starter template gets atoms copied into
   forbidden in atom source `.ts` files; `.astro` default exports are the
   component itself and are fine).
 - **Compound families** live in `base/<family>/`: `card/`, `tabs/`,
-  `accordion/`, `dialog/`, `dropdown-menu/`. No flat `card.astro`.
+  `accordion/`, `dialog/`, `dropdown-menu/`, `radio-group/`. No flat
+  `card.astro`.
 - Every atom in `registry.json` depends on `cn` (transitively).
 - Blocks **compose atoms** from `base/*`; never redeclare card / button
   markup inline inside a block.

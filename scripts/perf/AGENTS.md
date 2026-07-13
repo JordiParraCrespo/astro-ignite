@@ -11,8 +11,10 @@ gate (runs against `apps/playground/`).
   `npx lighthouse <url> --preset=mobile --output=json`, parses the LHR,
   and compares each score + metric against `budget.json`. Per-page
   numbers to stdout; exit 0 on pass, 1 on bust.
-- `budget.json` — the score/metric thresholds. The product target is
-  **Lighthouse 100s** (mobile + desktop).
+- `budget.json` — the score/metric thresholds. The enforced floor is
+  **Lighthouse ≥95, mobile only** — there is no desktop gate. Templates
+  are expected to ship at 100s wherever possible; see
+  `openspec/specs/templates-perf/spec.md`.
 
 ## Rules
 

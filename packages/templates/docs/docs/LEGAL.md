@@ -70,8 +70,8 @@ Update the `lastUpdated` date in each page's frontmatter when you do.
 If you really don't want them (internal tools, prototypes):
 
 1. Delete `src/content/legal/` entirely (or just specific MDX files).
-2. Remove the legal section from `src/components/Footer.astro`.
-3. Remove the policy link from `src/components/CookieBanner.astro`.
+2. Remove the legal section from `src/components/common/Footer.astro`.
+3. Remove the policy link from `src/components/legal/CookieBanner.astro`.
 4. Remove `<CookieBanner />` from `src/layouts/BaseLayout.astro` if you don't want any tracking gate at all.
 
 ⚠️ For any **public-facing site** that uses analytics or processes personal data (even just IP addresses via server logs), you almost certainly need at least a privacy policy. Don't remove without thinking about it.
@@ -81,7 +81,7 @@ If you really don't want them (internal tools, prototypes):
 For any extra (e.g., "Acceptable Use", "DMCA"):
 
 1. Add `src/content/legal/<locale>/<slug>.mdx` with the same frontmatter shape (title, description, lastUpdated, version).
-2. Add the link to `legalLinks` array in `src/components/Footer.astro`.
+2. Add the link to `legalLinks` array in `src/components/common/Footer.astro`.
 
 The route renderer (`src/pages/legal/[...slug].astro`) handles the rest automatically.
 
@@ -93,7 +93,7 @@ For each new locale:
 2. The `[...slug]` page renderer auto-handles the routes.
 3. **Translate the placeholders too** (`[YOUR COMPANY NAME]` etc. — different idiom per language).
 
-For non-default locales, also create `src/pages/[lang]/legal/[...slug].astro` mirroring the default-locale renderer (or use a single catch-all if you prefer).
+The `[lang]` renderer at `src/pages/[lang]/legal/[...slug].astro` is already generic — its `getStaticPaths` scans the `legal` collection and emits routes for every locale in `siteConfig.locales`. You don't need to create or edit that file; adding a locale here only means adding the translated MDX content.
 
 ## Liability disclaimer
 
