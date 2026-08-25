@@ -14,6 +14,9 @@ jobs:
   lighthouse:
     name: Lighthouse CI (mobile)
     runs-on: gha-vm
+    container:
+      image: mcr.microsoft.com/playwright@sha256:9bd26ad900bb5e0f4dee75839e957a89ae89c2b7ab1e76050e559790e946b948 # v1.60.0-noble
+      options: --ipc=host
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         id: checkout
@@ -51,6 +54,8 @@ jobs:
 
       - name: Run Lighthouse CI
         run: |
+          export CHROME_PATH="$(find /ms-playwright -type f -name chrome -print -quit)"
+          test -x "$CHROME_PATH"
           npm install -g @lhci/cli@0.14.x
           cd apps/playground
           lhci autorun --config=../../.lighthouserc.json
