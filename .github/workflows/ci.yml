@@ -13,15 +13,15 @@ concurrency:
 jobs:
   lint-typecheck:
     name: Lint + typecheck
-    runs-on: ubuntu-latest
+    runs-on: gha-vm
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         id: checkout
         continue-on-error: true
       - if: steps.checkout.outcome == 'failure'
-        uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: 22
           cache: pnpm
@@ -40,18 +40,18 @@ jobs:
 
   test:
     name: Unit tests
-    runs-on: ubuntu-latest
+    runs-on: gha-vm
     strategy:
       matrix:
         node: [22, 24]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         id: checkout
         continue-on-error: true
       - if: steps.checkout.outcome == 'failure'
-        uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: ${{ matrix.node }}
           cache: pnpm
@@ -60,19 +60,19 @@ jobs:
 
   template-build:
     name: Template build (${{ matrix.template }})
-    runs-on: ubuntu-latest
+    runs-on: gha-vm
     strategy:
       fail-fast: false
       matrix:
         template: [starter, docs]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         id: checkout
         continue-on-error: true
       - if: steps.checkout.outcome == 'failure'
-        uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: 22
           cache: pnpm
@@ -92,7 +92,7 @@ jobs:
             sleep 5
           done
           exit 1
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: template-${{ matrix.template }}-dist
           path: packages/templates/${{ matrix.template }}/dist
@@ -100,7 +100,7 @@ jobs:
 
   e2e-scaffold:
     name: E2E scaffold (${{ matrix.pm }})
-    runs-on: ubuntu-latest
+    runs-on: gha-vm
     strategy:
       fail-fast: false
       matrix:
@@ -111,25 +111,25 @@ jobs:
       # is being installed by a different package manager on purpose.
       COREPACK_ENABLE_STRICT: '0'
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         id: checkout
         continue-on-error: true
       - if: steps.checkout.outcome == 'failure'
-        uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: 22
           cache: pnpm
       - if: matrix.pm == 'bun'
-        uses: oven-sh/setup-bun@v2
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
       - if: matrix.pm == 'yarn'
         run: corepack enable && corepack prepare yarn@1.22.22 --activate
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter astro-ignite build
       - run: node ./scripts/scaffold-test.mjs --full --pm=${{ matrix.pm }}
       - if: failure() && matrix.pm == 'pnpm'
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: playwright-report-playground
           path: tests/e2e/playwright-report
@@ -137,22 +137,22 @@ jobs:
 
   e2e:
     name: E2E (templates + apps)
-    runs-on: ubuntu-latest
+    runs-on: gha-vm
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         id: checkout
         continue-on-error: true
       - if: steps.checkout.outcome == 'failure'
-        uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Cache Playwright browsers
         id: playwright-cache
-        uses: actions/cache@v5
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
           path: ~/.cache/ms-playwright
           key: playwright-1.49.0-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
@@ -165,7 +165,7 @@ jobs:
       - name: Run e2e (starter, docs-template, site, docs-app, docs-template-built)
         run: pnpm test:e2e --project=starter --project=docs-template --project=docs-template-built --project=site --project=docs-app
       - if: failure()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: playwright-report
           path: tests/e2e/playwright-report
@@ -173,19 +173,19 @@ jobs:
 
   apps-build:
     name: App build (${{ matrix.app }})
-    runs-on: ubuntu-latest
+    runs-on: gha-vm
     strategy:
       fail-fast: false
       matrix:
         app: [site, docs]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         id: checkout
         continue-on-error: true
       - if: steps.checkout.outcome == 'failure'
-        uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: 22
           cache: pnpm
