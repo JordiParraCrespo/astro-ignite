@@ -9,8 +9,8 @@
         "http://localhost/projects/example/index.html"
       ],
       "numberOfRuns": 3,
-      "chromeFlags": "--headless=new --no-sandbox --disable-gpu",
       "settings": {
+        "chromeFlags": "--no-sandbox --disable-dev-shm-usage",
         "preset": "desktop",
         "throttlingMethod": "simulate",
         "formFactor": "mobile",
