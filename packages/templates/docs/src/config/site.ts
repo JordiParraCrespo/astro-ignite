@@ -29,6 +29,12 @@ export interface SiteConfig {
   defaultTheme: 'light' | 'dark' | 'system';
   /** Path that "/" redirects to — usually the first doc page. */
   homePath: string;
+  /**
+   * Source repository for the "Edit this page" link. `docsDir` is the path of
+   * the docs content folder inside the repo; the link is built as
+   * `<url>/edit/<branch>/<docsDir>/<locale>/<slug>.mdx`. Omit to hide the link.
+   */
+  repo?: { url: string; branch?: string; docsDir: string };
 }
 
 export const siteConfig: SiteConfig = {
@@ -69,4 +75,5 @@ export const siteConfig: SiteConfig = {
   // Docs sites read better in light by default — but the toggle still works.
   defaultTheme: 'light',
   homePath: '/introduction',
+  // repo: { url: 'https://github.com/you/your-docs', branch: 'main', docsDir: 'src/content/docs' },
 };

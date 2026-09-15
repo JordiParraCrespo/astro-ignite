@@ -29,6 +29,7 @@ import LocaleSwitcher from '@/components/common/LocaleSwitcher.astro';
 import Text from '@/components/ui/text.astro';
 import { breadcrumbListSchema, webPageSchema } from '@/lib/jsonld';
 import { mdHref } from '@/lib/docs-md';
+import { useTranslations } from '@/i18n';
 import { siteConfig } from '@/config/site';
 
 interface Props {
@@ -40,6 +41,7 @@ const { entry, headings } = Astro.props;
 const { title, description, tags, lastUpdated, noindex, landing } = entry.data;
 
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = useTranslations(locale);
 
 // entry.id format: `<locale>/<slug>`. Strip the locale to get the bare slug.
 const slug = entry.id.split('/').slice(1).join('/');
@@ -74,6 +76,32 @@ const dateFmt = new Intl.DateTimeFormat(Astro.currentLocale ?? 'en', {
       <div class="docs-toolbar">
         <Breadcrumbs currentSlug={slug} currentTitle={title} />
         <div class="docs-toolbar-actions">
+          {
+            siteConfig.repo && (
+              <a
+                href={`${siteConfig.repo.url}/edit/${siteConfig.repo.branch ?? 'main'}/${siteConfig.repo.docsDir}/${entry.id}.mdx`}
+                rel="noopener noreferrer"
+                target="_blank"
+                aria-label={t('nav.editPage')}
+                title={t('nav.editPage')}
+                class="inline-flex items-center gap-1.5 rounded-lg p-2 text-sm text-fg-muted no-underline transition-colors duration-150 hover:bg-surface-2 hover:text-fg"
+              >
+                <svg
+                  class="size-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M12 20h9" />
+                  <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
+                </svg>
+              </a>
+            )
+          }
           <AiActions markdownPath={mdHref(entry.id)} />
           <LocaleSwitcher />
           <ThemeToggle />
@@ -378,6 +406,29 @@ const dateFmt = new Intl.DateTimeFormat(Astro.currentLocale ?? 'en', {
     background: color-mix(in oklch, var(--color-danger) 16%, transparent);
     box-shadow: inset 2px 0 var(--color-danger);
     opacity: 0.65;
+  }
+  /* `// [!code focus]`: dim everything else until the block is hovered. */
+  .docs-prose .astro-code.has-focused .line:not(.focused) {
+    opacity: 0.4;
+    transition: opacity 0.2s;
+  }
+  .docs-prose .astro-code.has-focused:hover .line:not(.focused) {
+    opacity: 1;
+  }
+  /* `// [!code word:token]` or `/token/` in the fence meta. */
+  .docs-prose .astro-code .highlighted-word {
+    background: color-mix(in oklch, var(--color-accent) 16%, transparent);
+    box-shadow: 0 0 0 1px color-mix(in oklch, var(--color-accent) 35%, transparent);
+    border-radius: 3px;
+    padding: 1px 3px;
+  }
+  /* Fence meta flags (astro.config transformerMetaFlags). */
+  .docs-prose .astro-code.wrap .line {
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .docs-prose .astro-code.no-lines code .line::before {
+    content: none;
   }
   .docs-prose hr {
     border: 0;

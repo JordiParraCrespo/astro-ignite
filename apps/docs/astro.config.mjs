@@ -5,9 +5,26 @@ import mdx from '@astrojs/mdx';
 import tailwindcss from '@tailwindcss/vite';
 import {
   transformerMetaHighlight,
+  transformerMetaWordHighlight,
   transformerNotationHighlight,
   transformerNotationDiff,
+  transformerNotationFocus,
+  transformerNotationWordHighlight,
 } from '@shikijs/transformers';
+
+// Meta flags on the fence line — ```ts wrap no-lines — become classes on the
+// <pre> so DocsLayout can soft-wrap long lines or drop the line-number gutter.
+const META_FLAGS = ['wrap', 'no-lines'];
+/** @returns {NonNullable<import('astro').ShikiConfig['transformers']>[number]} */
+const transformerMetaFlags = () => ({
+  name: 'astro-ignite:meta-flags',
+  pre(node) {
+    const raw = this.options.meta?.__raw ?? '';
+    for (const flag of META_FLAGS) {
+      if (new RegExp(`(^|\\s)${flag}(\\s|$)`).test(raw)) this.addClassToHast(node, flag);
+    }
+  },
+});
 
 import { siteConfig } from './src/config/site.ts';
 
@@ -27,8 +44,12 @@ export default defineConfig({
       defaultColor: false,
       transformers: [
         transformerMetaHighlight(),
+        transformerMetaWordHighlight(),
         transformerNotationHighlight(),
         transformerNotationDiff(),
+        transformerNotationFocus(),
+        transformerNotationWordHighlight(),
+        transformerMetaFlags(),
       ],
     },
   },

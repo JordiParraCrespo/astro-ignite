@@ -1,0 +1,91 @@
+---
+/**
+ * TypeTable — a props / options reference table, one row per key.
+ *
+ * Usage in MDX:
+ *   <TypeTable
+ *     type={{
+ *       variant: { type: "'note' | 'tip'", default: "'note'", description: 'Tint and icon.' },
+ *       title: { type: 'string', description: 'Heading; each variant has a default.' },
+ *       open: { type: 'boolean', default: 'false', required: true },
+ *     }}
+ *   />
+ *
+ * `description` accepts inline Markdown-ish backticks only as literal text;
+ * put rich content in prose above the table.
+ */
+
+import { cn } from '@/lib/cn';
+
+export interface TypeRow {
+  type: string;
+  description?: string;
+  default?: string;
+  required?: boolean;
+  deprecated?: boolean;
+}
+
+interface Props {
+  type: Record<string, TypeRow>;
+  class?: string;
+}
+
+const { type, class: className } = Astro.props;
+const rows = Object.entries(type);
+const hasDefault = rows.some(([, r]) => r.default !== undefined);
+const chip =
+  'mono inline-block rounded-(--radius-sm) border border-border bg-surface-2 px-1.5 py-px text-[12px] leading-[1.6] break-words';
+---
+
+<div class={cn('type-table my-6 overflow-x-auto rounded-lg border border-border', className)}>
+  <table class="m-0 w-full border-collapse text-[13.5px]">
+    <thead>
+      <tr class="bg-surface-2 text-left text-[12px] text-fg-muted">
+        <th class="border-b border-border px-3.5 py-2 font-medium">Prop</th>
+        <th class="min-w-[10rem] border-b border-border px-3.5 py-2 font-medium">Type</th>
+        {hasDefault && <th class="border-b border-border px-3.5 py-2 font-medium">Default</th>}
+        <th class="w-full min-w-[12rem] border-b border-border px-3.5 py-2 font-medium"
+          >Description</th
+        >
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map(([name, row]) => (
+          <tr class="align-top [&:not(:last-child)>td]:border-b [&>td]:border-border">
+            <td class="px-3.5 py-2.5 whitespace-nowrap">
+              <span class={cn('mono font-medium text-fg', row.deprecated && 'line-through')}>
+                {name}
+              </span>
+              {row.required && (
+                <span class="ml-1 text-danger" title="required" aria-label="required">
+                  *
+                </span>
+              )}
+            </td>
+            <td class="px-3.5 py-2.5">
+              <span class={cn(chip, 'text-accent')}>{row.type}</span>
+            </td>
+            {hasDefault && (
+              <td class="px-3.5 py-2.5">
+                {row.default !== undefined ? (
+                  <span class={cn(chip, 'text-fg-muted')}>{row.default}</span>
+                ) : (
+                  <span class="text-fg-subtle">—</span>
+                )}
+              </td>
+            )}
+            <td class="px-3.5 py-2.5 leading-relaxed text-fg-muted">
+              {row.deprecated && (
+                <span class="mono mr-1.5 rounded-(--radius-sm) border border-warning px-1 text-[10px] tracking-wide text-warning uppercase">
+                  deprecated
+                </span>
+              )}
+              {row.description}
+            </td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>

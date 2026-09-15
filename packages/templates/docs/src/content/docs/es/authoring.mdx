@@ -10,6 +10,7 @@ import CodeBlock from '@/components/docs/CodeBlock.astro';
 import CodeGroup from '@/components/docs/CodeGroup.astro';
 import CardGroup from '@/components/docs/CardGroup.astro';
 import Frame from '@/components/docs/Frame.astro';
+import TypeTable from '@/components/docs/TypeTable.astro';
 import Steps from '@/components/docs/Steps.astro';
 import Step from '@/components/docs/Step.astro';
 import Card from '@/components/ui/card/card.astro';
@@ -90,6 +91,27 @@ const before = 1; // [!code --]
 const after = 2; // [!code ++]
 ```
 
+Enfoca unas líneas con `// [!code focus]` — el resto se atenúa hasta pasar el
+ratón por el bloque — y resalta un token con `// [!code word:token]` (o `/token/`
+en la meta del fence). Dos flags completan el set: `wrap` ajusta las líneas
+largas y `no-lines` quita la numeración.
+
+```ts
+export default defineConfig({
+  site: 'https://example.com', // [!code focus]
+  i18n: { defaultLocale: 'en', locales: ['en', 'es'] }, // [!code focus]
+  integrations: [mdx(), sitemap()],
+});
+```
+
+```ts /accent/
+const tokens = { accent: 'oklch(50% 0.23 270)', border: 'var(--color-border)' };
+```
+
+```bash wrap no-lines
+npm create astro-ignite@latest mis-docs -- --template docs --package-manager pnpm --no-git --no-install
+```
+
 ## Marcos
 
 `<Frame caption="…">` centra y enmarca contenido multimedia para que las
@@ -104,3 +126,36 @@ capturas y diagramas se vean intencionales. Coloca dentro un átomo `Image` o un
   Estos componentes viven en `src/components/docs/`. Copia uno como plantilla para un
   componente nuevo y regístralo en `mdx-components.ts` para usarlo en todas las páginas.
 </Callout>
+
+## Tabla de tipos
+
+`<TypeTable type={…}>` muestra una referencia de props — una fila por clave, con
+tipo, valor por defecto y descripción, además de marcadores `required` /
+`deprecated`. Úsala en las páginas de referencia de componentes.
+
+<TypeTable
+  type={{
+    variant: {
+      type: "'note' | 'info' | 'tip' | 'check' | 'warning' | 'danger'",
+      default: "'note'",
+      description: 'Tinte, borde e icono del callout.',
+    },
+    title: { type: 'string', description: 'Texto del título; cada variante tiene uno por defecto.' },
+    class: { type: 'string', description: 'Clases extra fusionadas en la raíz.' },
+    dismissible: {
+      type: 'boolean',
+      default: 'true',
+      deprecated: true,
+      description: 'Los callouts son estáticos; usa Banner para avisos descartables.',
+    },
+  }}
+/>
+
+```mdx
+<TypeTable
+  type={{
+    variant: { type: "'note' | 'tip'", default: "'note'", description: 'Tinte e icono.' },
+    title: { type: 'string', required: true },
+  }}
+/>
+```

@@ -22,6 +22,7 @@ import Step from '@/components/docs/Step.astro';
 import Tile from '@/components/docs/Tile.astro';
 import Tiles from '@/components/docs/Tiles.astro';
 import Tree from '@/components/docs/Tree.astro';
+import TypeTable from '@/components/docs/TypeTable.astro';
 import Update from '@/components/docs/Update.astro';
 import Card from '@/components/ui/card/card.astro';
 import CardHeader from '@/components/ui/card/card-header.astro';
@@ -148,6 +149,27 @@ const before = 1; // [!code --]
 const after = 2; // [!code ++]
 ```
 
+Focus a few lines with `// [!code focus]` — the rest dims until the block is
+hovered — and highlight a token with `// [!code word:token]` (or `/token/` in
+the fence meta). Two fence flags round it out: `wrap` soft-wraps long lines,
+`no-lines` drops the gutter.
+
+```ts
+export default defineConfig({
+  site: 'https://example.com', // [!code focus]
+  i18n: { defaultLocale: 'en', locales: ['en', 'es'] }, // [!code focus]
+  integrations: [mdx(), sitemap()],
+});
+```
+
+```ts /accent/
+const tokens = { accent: 'oklch(50% 0.23 270)', border: 'var(--color-border)' };
+```
+
+```bash wrap no-lines
+npm create astro-ignite@latest my-docs -- --template docs --package-manager pnpm --no-git --no-install
+```
+
 ## Frames
 
 `<Frame caption="…">` centers and frames media so screenshots and diagrams look
@@ -235,6 +257,39 @@ response fields. Both take `type`, `required`, `default`, and `deprecated`;
 <ResponseField name="status" type="'queued' | 'building' | 'ready'">
   Current lifecycle stage. Poll until `ready`.
 </ResponseField>
+
+## Type table
+
+`<TypeTable type={…}>` renders a props reference — one row per key, with type,
+default, and description, plus `required` / `deprecated` markers. Use it on
+component reference pages.
+
+<TypeTable
+  type={{
+    variant: {
+      type: "'note' | 'info' | 'tip' | 'check' | 'warning' | 'danger'",
+      default: "'note'",
+      description: 'Tint, border, and icon of the callout.',
+    },
+    title: { type: 'string', description: 'Heading text; each variant has a default.' },
+    class: { type: 'string', description: 'Extra classes merged onto the root.' },
+    dismissible: {
+      type: 'boolean',
+      default: 'true',
+      deprecated: true,
+      description: 'Callouts are static; use Banner for dismissable notices.',
+    },
+  }}
+/>
+
+```mdx
+<TypeTable
+  type={{
+    variant: { type: "'note' | 'tip'", default: "'note'", description: 'Tint and icon.' },
+    title: { type: 'string', required: true },
+  }}
+/>
+```
 
 ## Icon
 

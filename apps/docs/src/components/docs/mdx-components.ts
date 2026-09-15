@@ -24,6 +24,7 @@ import Steps from '@/components/docs/Steps.astro';
 import Tile from '@/components/docs/Tile.astro';
 import Tiles from '@/components/docs/Tiles.astro';
 import Tree from '@/components/docs/Tree.astro';
+import TypeTable from '@/components/docs/TypeTable.astro';
 import Update from '@/components/docs/Update.astro';
 import Button from '@/components/ui/button.astro';
 import Accordion from '@/components/ui/accordion/accordion.astro';
@@ -61,5 +62,6 @@ export const mdxComponents = {
   Tiles,
   Tooltip,
   Tree,
+  TypeTable,
   Update,
 };
