@@ -104,6 +104,12 @@ export function webServerForTarget(
     env: {
       SITE_E2E: '1',
       NODE_ENV: process.env.NODE_ENV ?? 'development',
+      // Astro 7 daemonizes `astro dev` when it detects an AI-agent environment
+      // (am-i-vibing: CLAUDECODE, CURSOR_*, …), so the CLI process exits as
+      // soon as the server is up and Playwright reports "exited early". This
+      // is the guard Astro's own background child uses to skip that detection;
+      // with it set the server runs in the foreground. Preview commands ignore it.
+      ASTRO_DEV_BACKGROUND: '1',
     },
   };
 }
