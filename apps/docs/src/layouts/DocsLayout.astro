@@ -201,7 +201,9 @@ const dateFmt = new Intl.DateTimeFormat(Astro.currentLocale ?? 'en', {
 
 <style is:global>
   /* Prose styles for MDX content. Scoped is:global so they apply to elements
-     rendered by the MDX compiler. */
+     rendered by the MDX compiler. Layered under `components` so atoms rendered
+     inside prose (Card, Callout, Steps) keep their own utility margins/type. */
+  @layer components {
   .docs-prose h2 {
     font-size: 22px;
     font-weight: 500;
@@ -334,5 +336,6 @@ const dateFmt = new Intl.DateTimeFormat(Astro.currentLocale ?? 'en', {
   }
   .docs-prose th {
     font-weight: 500;
+  }
   }
 </style>

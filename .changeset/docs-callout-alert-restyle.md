@@ -3,4 +3,12 @@
 'create-astro-ignite': patch
 ---
 
-**Callout + alert restyle.** The docs template's `Callout` and the registry `alert` atom now share the shadcn alert layout: a two-column grid with a fixed icon column, a 14px title tinted to the variant's status color, a muted body with relaxed leading, and 16px×12px padding on a 10px radius. Callout drops its scoped `<style>` block for token-resolved Tailwind utilities. Mirrored into `packages/templates/{starter,docs}` and `apps/docs`.
+**Docs template visual refresh (components).**
+
+- `Callout` and the registry `alert` atom share the shadcn alert layout: a two-column grid with a fixed icon column, a 14px title tinted to the variant's status color, a muted body with relaxed leading, and 16px×12px padding on a 10px radius. `Callout` drops its scoped `<style>` block for token-resolved utilities.
+- The docs prose rules in `DocsLayout` now live in Tailwind's `components` layer, so atoms rendered inside MDX (`Card`, `Callout`, `Steps`, `Banner`) keep their own margins and type instead of inheriting the prose `h3`/`p` spacing. This fixes the empty band above card titles in `CardGroup` and `Columns`.
+- `card` family follows shadcn v4 spacing: the card owns vertical padding and a `gap-5` column, header/content/footer own horizontal padding only; title is 16px semibold, description has relaxed leading.
+- `Steps`/`Step` move from scoped CSS to utilities (counter, badge and rail via `before:`/`after:`), with a lighter number badge and medium-weight title.
+- `accordion-item` trigger tightened to 15px with 14px vertical padding.
+
+Mirrored into `packages/templates/{starter,docs}` and `apps/docs`.

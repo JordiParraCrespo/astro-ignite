@@ -12,6 +12,8 @@
  *   </Steps>
  */
 
+import { cn } from '@/lib/cn';
+
 interface Props {
   class?: string;
 }
@@ -19,16 +21,6 @@ interface Props {
 const { class: className } = Astro.props;
 ---
 
-<ol class:list={['steps', className]}>
+<ol class={cn('steps my-6 list-none p-0 [counter-reset:step]', className)}>
   <slot />
 </ol>
-
-<!-- tailwind-exception: CSS counter reset that drives the auto-numbered steps in Step.astro — not expressible as a Tailwind utility -->
-<style>
-  .steps {
-    counter-reset: step;
-    list-style: none;
-    margin: 1.5rem 0;
-    padding: 0;
-  }
-</style>

@@ -123,85 +123,90 @@ const dateFmt = new Intl.DateTimeFormat(Astro.currentLocale ?? 'en', {
   @reference "../styles/global.css";
   /* Why kept: MDX-emitted prose elements are not in Tailwind's class-scan path.
      @apply re-uses Tailwind utilities (and the token layer) so the rules
-     stay token-resolved without a parallel design system. */
-  .docs-prose h2 {
-    @apply mb-4 mt-10 scroll-mt-4 text-[22px] font-medium leading-[1.3] tracking-[-0.03em] text-[var(--color-fg)];
-  }
-  .docs-prose h3 {
-    @apply mb-2 mt-8 scroll-mt-4 text-[18px] font-medium leading-[1.4] tracking-[-0.02em] text-[var(--color-fg)];
-  }
-  .docs-prose :is(h2, h3) a {
-    @apply text-[inherit] no-underline;
-  }
-  .docs-prose p {
-    @apply mb-4 mt-0;
-  }
-  .docs-prose a {
-    @apply text-[var(--color-fg)] underline decoration-[var(--color-border-strong)] decoration-[1px] underline-offset-[3px];
-  }
-  .docs-prose a:hover {
-    @apply decoration-[var(--color-fg)];
-  }
-  .docs-prose :is(ul, ol) {
-    @apply mb-4 mt-0 pl-5;
-  }
-  .docs-prose li {
-    @apply mb-1;
-  }
-  .docs-prose code {
-    @apply rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-surface-2)] px-[5px] py-px font-mono text-[0.875em];
-  }
-  .docs-prose pre {
-    @apply my-5 overflow-x-auto rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface-2)] px-4 py-[14px] text-[13px] leading-[1.65];
-  }
-  .docs-prose pre code {
-    @apply border-0 bg-transparent p-0 text-[length:inherit];
-  }
-  /* Shiki transformers: full-width line bands for `{1,3}` / `[!code highlight]`
+     stay token-resolved without a parallel design system.
+     Why layered: in `components` these rules sit below `utilities`, so an atom
+     rendered inside prose (Card, Callout, Steps) keeps its own margins and
+     type instead of inheriting the prose h3/p spacing. */
+  @layer components {
+    .docs-prose h2 {
+      @apply mb-4 mt-10 scroll-mt-4 text-[22px] font-medium leading-[1.3] tracking-[-0.03em] text-[var(--color-fg)];
+    }
+    .docs-prose h3 {
+      @apply mb-2 mt-8 scroll-mt-4 text-[18px] font-medium leading-[1.4] tracking-[-0.02em] text-[var(--color-fg)];
+    }
+    .docs-prose :is(h2, h3) a {
+      @apply text-[inherit] no-underline;
+    }
+    .docs-prose p {
+      @apply mb-4 mt-0;
+    }
+    .docs-prose a {
+      @apply text-[var(--color-fg)] underline decoration-[var(--color-border-strong)] decoration-[1px] underline-offset-[3px];
+    }
+    .docs-prose a:hover {
+      @apply decoration-[var(--color-fg)];
+    }
+    .docs-prose :is(ul, ol) {
+      @apply mb-4 mt-0 pl-5;
+    }
+    .docs-prose li {
+      @apply mb-1;
+    }
+    .docs-prose code {
+      @apply rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-surface-2)] px-[5px] py-px font-mono text-[0.875em];
+    }
+    .docs-prose pre {
+      @apply my-5 overflow-x-auto rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface-2)] px-4 py-[14px] text-[13px] leading-[1.65];
+    }
+    .docs-prose pre code {
+      @apply border-0 bg-transparent p-0 text-[length:inherit];
+    }
+    /* Shiki transformers: full-width line bands for `{1,3}` / `[!code highlight]`
      and `[!code ++]` / `[!code --]`, plus a line-number gutter on multi-line
      blocks. Token-resolved, build-time only. */
-  .docs-prose .astro-code code {
-    @apply inline-block min-w-full;
-  }
-  .docs-prose .astro-code .line {
-    @apply inline-block w-full;
-  }
-  .docs-prose .astro-code code:has(.line:nth-child(2)) {
-    counter-reset: docs-ln;
-  }
-  .docs-prose .astro-code code:has(.line:nth-child(2)) .line {
-    counter-increment: docs-ln;
-  }
-  .docs-prose .astro-code code:has(.line:nth-child(2)) .line::before {
-    content: counter(docs-ln);
-    @apply mr-5 inline-block w-6 text-right text-[var(--color-fg-subtle)] select-none;
-  }
-  .docs-prose .astro-code .line.highlighted {
-    background: color-mix(in oklch, var(--color-fg) 7%, transparent);
-    box-shadow: inset 2px 0 var(--color-fg);
-  }
-  .docs-prose .astro-code .line.diff.add {
-    background: color-mix(in oklch, var(--color-success) 16%, transparent);
-    box-shadow: inset 2px 0 var(--color-success);
-  }
-  .docs-prose .astro-code .line.diff.remove {
-    background: color-mix(in oklch, var(--color-danger) 16%, transparent);
-    box-shadow: inset 2px 0 var(--color-danger);
-    opacity: 0.65;
-  }
-  .docs-prose hr {
-    @apply my-8 border-0 border-t border-[var(--color-border)];
-  }
-  .docs-prose blockquote {
-    @apply my-5 border-l-2 border-[var(--color-border-strong)] pl-4 text-[var(--color-fg-muted)];
-  }
-  .docs-prose table {
-    @apply my-5 w-full border-collapse text-[14px];
-  }
-  .docs-prose :is(th, td) {
-    @apply border-b border-[var(--color-border)] px-3 py-2 text-left;
-  }
-  .docs-prose th {
-    @apply font-medium;
+    .docs-prose .astro-code code {
+      @apply inline-block min-w-full;
+    }
+    .docs-prose .astro-code .line {
+      @apply inline-block w-full;
+    }
+    .docs-prose .astro-code code:has(.line:nth-child(2)) {
+      counter-reset: docs-ln;
+    }
+    .docs-prose .astro-code code:has(.line:nth-child(2)) .line {
+      counter-increment: docs-ln;
+    }
+    .docs-prose .astro-code code:has(.line:nth-child(2)) .line::before {
+      content: counter(docs-ln);
+      @apply mr-5 inline-block w-6 text-right text-[var(--color-fg-subtle)] select-none;
+    }
+    .docs-prose .astro-code .line.highlighted {
+      background: color-mix(in oklch, var(--color-fg) 7%, transparent);
+      box-shadow: inset 2px 0 var(--color-fg);
+    }
+    .docs-prose .astro-code .line.diff.add {
+      background: color-mix(in oklch, var(--color-success) 16%, transparent);
+      box-shadow: inset 2px 0 var(--color-success);
+    }
+    .docs-prose .astro-code .line.diff.remove {
+      background: color-mix(in oklch, var(--color-danger) 16%, transparent);
+      box-shadow: inset 2px 0 var(--color-danger);
+      opacity: 0.65;
+    }
+    .docs-prose hr {
+      @apply my-8 border-0 border-t border-[var(--color-border)];
+    }
+    .docs-prose blockquote {
+      @apply my-5 border-l-2 border-[var(--color-border-strong)] pl-4 text-[var(--color-fg-muted)];
+    }
+    .docs-prose table {
+      @apply my-5 w-full border-collapse text-[14px];
+    }
+    .docs-prose :is(th, td) {
+      @apply border-b border-[var(--color-border)] px-3 py-2 text-left;
+    }
+    .docs-prose th {
+      @apply font-medium;
+    }
   }
 </style>
