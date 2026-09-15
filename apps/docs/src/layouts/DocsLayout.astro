@@ -37,7 +37,7 @@ interface Props {
 }
 
 const { entry, headings } = Astro.props;
-const { title, description, tags, lastUpdated, noindex } = entry.data;
+const { title, description, tags, lastUpdated, noindex, landing } = entry.data;
 
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 
@@ -67,7 +67,7 @@ const dateFmt = new Intl.DateTimeFormat(Astro.currentLocale ?? 'en', {
 ---
 
 <BaseLayout title={title} description={description} schemas={schemas} noindex={noindex}>
-  <div class="docs-shell">
+  <div class="docs-shell" data-landing={landing || undefined}>
     <SidebarNav currentPath={Astro.url.pathname} />
 
     <main id="main" class="docs-main">
@@ -81,7 +81,9 @@ const dateFmt = new Intl.DateTimeFormat(Astro.currentLocale ?? 'en', {
       </div>
 
       <article class="docs-article" data-pagefind-body>
-        <header class="docs-header">
+        {
+          !landing && (
+            <header class="docs-header">
           {
             tags.length > 0 && (
               <div class="docs-tags">
@@ -101,7 +103,9 @@ const dateFmt = new Intl.DateTimeFormat(Astro.currentLocale ?? 'en', {
               </div>
             )
           }
-        </header>
+            </header>
+          )
+        }
 
         <div class="docs-prose">
           <slot />
@@ -121,6 +125,19 @@ const dateFmt = new Intl.DateTimeFormat(Astro.currentLocale ?? 'en', {
     grid-template-columns: 240px 1fr 220px;
     min-height: 100vh;
     align-items: start;
+  }
+  /* Landing docs own their hero and run full width without the TOC column. */
+  .docs-shell[data-landing] {
+    grid-template-columns: 240px 1fr;
+  }
+  .docs-shell[data-landing] :global(.on-this-page) {
+    display: none;
+  }
+  .docs-shell[data-landing] .docs-prose {
+    max-width: none;
+  }
+  .docs-shell[data-landing] .docs-prose > p {
+    max-width: 64ch;
   }
   @media (max-width: 1024px) {
     .docs-shell {

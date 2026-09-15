@@ -37,7 +37,7 @@ interface Props {
 }
 
 const { entry, headings } = Astro.props;
-const { title, description, tags, lastUpdated, noindex } = entry.data;
+const { title, description, tags, lastUpdated, noindex, landing } = entry.data;
 
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 
@@ -68,7 +68,10 @@ const dateFmt = new Intl.DateTimeFormat(Astro.currentLocale ?? 'en', {
 
 <BaseLayout title={title} description={description} schemas={schemas} noindex={noindex}>
   <div
-    class="grid min-h-screen grid-cols-1 items-start md:grid-cols-[240px_1fr] lg:grid-cols-[240px_1fr_220px]"
+    class:list={[
+      'grid min-h-screen grid-cols-1 items-start md:grid-cols-[240px_1fr]',
+      !landing && 'lg:grid-cols-[240px_1fr_220px]',
+    ]}
   >
     <SidebarNav currentPath={Astro.url.pathname} />
 
@@ -83,31 +86,38 @@ const dateFmt = new Intl.DateTimeFormat(Astro.currentLocale ?? 'en', {
       </div>
 
       <article data-pagefind-body>
-        <header class="mb-7">
-          {
-            tags.length > 0 && (
-              <div class="mb-3 flex gap-1.5">
-                {tags.map((t: string) => (
-                  <span class="mono rounded-(--radius-sm) border border-(--color-border) bg-(--color-surface-2) px-[7px] py-[3px] text-[11px] text-(--color-fg-muted)">
-                    {t}
-                  </span>
-                ))}
-              </div>
-            )
-          }
-          <Text variant="h1">{title}</Text>
-          <Text variant="lead" class="m-0 mb-4 max-w-[60ch]">{description}</Text>
-          {
-            lastUpdated && (
-              <div class="mono flex items-center gap-1.5 text-[11px] tracking-[-0.005em] text-(--color-fg-muted)">
-                <span>Last updated</span>
-                <time datetime={lastUpdated.toISOString()}>{dateFmt.format(lastUpdated)}</time>
-              </div>
-            )
-          }
-        </header>
+        {
+          !landing && (
+            <header class="mb-7">
+              {tags.length > 0 && (
+                <div class="mb-3 flex gap-1.5">
+                  {tags.map((t: string) => (
+                    <span class="mono rounded-(--radius-sm) border border-(--color-border) bg-(--color-surface-2) px-[7px] py-[3px] text-[11px] text-(--color-fg-muted)">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              )}
+              <Text variant="h1">{title}</Text>
+              <Text variant="lead" class="m-0 mb-4 max-w-[60ch]">
+                {description}
+              </Text>
+              {lastUpdated && (
+                <div class="mono flex items-center gap-1.5 text-[11px] tracking-[-0.005em] text-(--color-fg-muted)">
+                  <span>Last updated</span>
+                  <time datetime={lastUpdated.toISOString()}>{dateFmt.format(lastUpdated)}</time>
+                </div>
+              )}
+            </header>
+          )
+        }
 
-        <div class="docs-prose max-w-[64ch] text-[15px] leading-[1.65] text-(--color-fg)">
+        <div
+          class:list={[
+            'docs-prose text-[15px] leading-[1.65] text-(--color-fg)',
+            landing ? 'max-w-none [&>p]:max-w-[64ch]' : 'max-w-[64ch]',
+          ]}
+        >
           <slot />
         </div>
 
@@ -115,7 +125,7 @@ const dateFmt = new Intl.DateTimeFormat(Astro.currentLocale ?? 'en', {
       </article>
     </main>
 
-    <OnThisPage headings={headings} />
+    {!landing && <OnThisPage headings={headings} />}
   </div>
 </BaseLayout>
 

@@ -32,6 +32,12 @@ const docs = defineCollection({
     readingTime: z.number().optional(),
     /** Optional in-line tags rendered above the title. */
     tags: z.array(z.string()).default([]),
+    /**
+     * Landing mode: the page supplies its own `<Hero>` (title + lede), so the
+     * layout skips the standard header, drops the on-this-page column, and
+     * lets the content run full width.
+     */
+    landing: z.boolean().default(false),
   }),
 });
 

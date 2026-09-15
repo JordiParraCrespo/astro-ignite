@@ -14,6 +14,7 @@ import CodeGroup from '@/components/docs/CodeGroup.astro';
 import Columns from '@/components/docs/Columns.astro';
 import Expandable from '@/components/docs/Expandable.astro';
 import Frame from '@/components/docs/Frame.astro';
+import Hero from '@/components/docs/Hero.astro';
 import Icon from '@/components/docs/Icon.astro';
 import Mermaid from '@/components/docs/Mermaid.astro';
 import ParamField from '@/components/docs/ParamField.astro';
@@ -24,6 +25,7 @@ import Tile from '@/components/docs/Tile.astro';
 import Tiles from '@/components/docs/Tiles.astro';
 import Tree from '@/components/docs/Tree.astro';
 import Update from '@/components/docs/Update.astro';
+import Button from '@/components/ui/button.astro';
 import Accordion from '@/components/ui/accordion/accordion.astro';
 import AccordionItem from '@/components/ui/accordion/accordion-item.astro';
 import Tabs from '@/components/ui/tabs/tabs.astro';
@@ -36,6 +38,7 @@ export const mdxComponents = {
   Accordion,
   AccordionItem,
   Banner,
+  Button,
   Callout,
   CardGroup,
   CodeBlock,
@@ -43,6 +46,7 @@ export const mdxComponents = {
   Columns,
   Expandable,
   Frame,
+  Hero,
   Icon,
   Mermaid,
   ParamField,
