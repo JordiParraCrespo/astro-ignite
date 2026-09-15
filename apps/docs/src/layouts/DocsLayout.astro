@@ -272,6 +272,51 @@ const dateFmt = new Intl.DateTimeFormat(Astro.currentLocale ?? 'en', {
     padding: 0;
     font-size: inherit;
   }
+  /* Shiki emits `--shiki-light` / `--shiki-dark` per token (defaultColor:
+     false in astro.config); pick the pair that matches the theme class so
+     fenced blocks share the token surface with CodeBlock in both themes. */
+  .docs-prose .astro-code,
+  .docs-prose .astro-code span {
+    color: var(--shiki-dark);
+  }
+  :root.light .docs-prose .astro-code,
+  :root.light .docs-prose .astro-code span {
+    color: var(--shiki-light);
+  }
+  .docs-prose pre.astro-code {
+    position: relative;
+  }
+  .docs-prose .code-copy {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 6px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+    color: var(--color-fg-muted);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.4;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.1s;
+  }
+  .docs-prose .code-copy:hover {
+    color: var(--color-fg);
+  }
+  .docs-prose pre:hover .code-copy,
+  .docs-prose .code-copy:focus-visible,
+  .docs-prose .code-copy[data-copied] {
+    opacity: 1;
+  }
+  .docs-prose .code-copy svg {
+    width: 12px;
+    height: 12px;
+  }
   /* Shiki transformers: full-width line bands for `{1,3}` / `[!code highlight]`
      and `[!code ++]` / `[!code --]`, plus a line-number gutter on multi-line
      blocks. Token-resolved, build-time only. */
@@ -339,3 +384,32 @@ const dateFmt = new Intl.DateTimeFormat(Astro.currentLocale ?? 'en', {
   }
   }
 </style>
+
+<script>
+  // Copy button on fenced code blocks (CodeBlock.astro ships its own).
+  const copyIcon =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
+  document.querySelectorAll<HTMLPreElement>('.docs-prose pre.astro-code').forEach((pre) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'code-copy';
+    btn.setAttribute('aria-label', 'Copy code');
+    btn.innerHTML = `${copyIcon}<span>copy</span>`;
+    btn.addEventListener('click', async () => {
+      const text = pre.querySelector('code')?.textContent ?? '';
+      if (!navigator.clipboard) return;
+      try {
+        await navigator.clipboard.writeText(text);
+        btn.dataset.copied = '';
+        btn.lastElementChild!.textContent = 'copied';
+        setTimeout(() => {
+          delete btn.dataset.copied;
+          btn.lastElementChild!.textContent = 'copy';
+        }, 1200);
+      } catch {
+        // Clipboard permission denied — leave the button as is.
+      }
+    });
+    pre.appendChild(btn);
+  });
+</script>
