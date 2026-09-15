@@ -1,10 +1,14 @@
 ---
 /**
- * Right-column "On this page" TOC.
+ * Right-column "On this page" TOC, clerk-style.
  *
  * Receives Astro's `headings` array (from `entry.render()`) and builds an
- * outline of H2 + H3 anchors. Active heading is tracked via IntersectionObserver
- * so the highlight follows the reader's scroll position.
+ * outline of H2 + H3 anchors. A continuous rail runs down the left edge and
+ * bends where the depth changes; the segment beside the active heading is
+ * drawn in the foreground color with a dot at its end. The rail is an SVG
+ * path measured from the rendered links (so it survives wrapped labels and
+ * font changes); without JS a plain 1px rail plus the active text style
+ * remain. Active heading tracks the scroll position via IntersectionObserver.
  */
 
 import type { MarkdownHeading } from 'astro';
@@ -23,12 +27,40 @@ const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
 {
   items.length > 0 && (
-    <aside class="on-this-page" aria-label={title}>
-      <div class="on-this-page-title mono">{title}</div>
-      <ul>
+    <aside
+      class="on-this-page sticky top-8 hidden max-h-[calc(100vh-64px)] flex-col gap-3 self-start overflow-y-auto px-4 lg:flex"
+      aria-label={title}
+    >
+      <div class="flex items-center gap-2 text-[13px] font-medium text-fg">
+        <svg
+          class="size-4 text-fg-muted"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M4 6h16" />
+          <path d="M4 12h10" />
+          <path d="M4 18h13" />
+        </svg>
+        {title}
+      </div>
+      <ul
+        class="toc-list relative m-0 flex list-none flex-col gap-0.5 p-0 before:absolute before:top-0 before:bottom-0 before:left-0 before:w-px before:bg-border data-[rail]:before:hidden"
+        data-toc
+      >
         {items.map((h) => (
-          <li class:list={[`depth-${h.depth}`]}>
-            <a href={`#${h.slug}`} data-heading={h.slug}>
+          <li>
+            <a
+              class="block py-1 text-[13px] leading-[1.45] text-fg-muted no-underline transition-colors duration-100 hover:text-fg data-[active]:font-medium data-[active]:text-fg"
+              class:list={[h.depth === 3 ? 'pl-7' : 'pl-4']}
+              href={`#${h.slug}`}
+              data-heading={h.slug}
+              data-depth={h.depth}
+            >
               {h.text}
             </a>
           </li>
@@ -39,17 +71,95 @@ const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
 }
 
 <script>
-  // Highlight the heading currently in view.
-  const links = document.querySelectorAll<HTMLAnchorElement>('.on-this-page a[data-heading]');
-  if (links.length > 0) {
+  // Rail geometry: depth-2 links run at x=0.5, depth-3 links at x=12.5 (half
+  // the extra indent), joined by a short curve wherever the depth changes.
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+  const X: Record<string, number> = { '2': 0.5, '3': 12.5 };
+
+  document.querySelectorAll<HTMLUListElement>('[data-toc]').forEach((list) => {
+    const links = [...list.querySelectorAll<HTMLAnchorElement>('a[data-heading]')];
+    if (links.length === 0) return;
+
+    const svg = document.createElementNS(SVG_NS, 'svg');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('class', 'pointer-events-none absolute top-0 left-0 overflow-visible');
+    const rail = document.createElementNS(SVG_NS, 'path');
+    rail.setAttribute('class', 'fill-none stroke-border');
+    rail.setAttribute('stroke-width', '1');
+    const thumb = document.createElementNS(SVG_NS, 'path');
+    thumb.setAttribute('class', 'fill-none stroke-fg transition-[stroke-dashoffset] duration-200');
+    thumb.setAttribute('stroke-width', '1.5');
+    thumb.setAttribute('stroke-linecap', 'round');
+    const dot = document.createElementNS(SVG_NS, 'circle');
+    dot.setAttribute('class', 'fill-fg transition-[cy,cx] duration-200');
+    dot.setAttribute('r', '2.5');
+    svg.append(rail, thumb, dot);
+    list.append(svg);
+    list.dataset.rail = '';
+
+    // Per-link [start, end] length along the path, so the thumb can be a dash.
+    let bounds: [number, number][] = [];
+    let total = 0;
+
+    // R = vertical room on each side of a depth change that the bend consumes.
+    const R = 8;
+    const draw = () => {
+      const top = list.getBoundingClientRect().top;
+      const len = (d: string) => {
+        rail.setAttribute('d', d);
+        return rail.getTotalLength();
+      };
+      let d = '';
+      bounds = [];
+      links.forEach((a, i) => {
+        const r = a.getBoundingClientRect();
+        const x = X[a.dataset.depth ?? '2'] ?? 0.5;
+        const y0 = r.top - top;
+        const y1 = r.bottom - top;
+        const prev = links[i - 1];
+        const next = links[i + 1];
+        const px = prev ? (X[prev.dataset.depth ?? '2'] ?? 0.5) : x;
+        const nx = next ? (X[next.dataset.depth ?? '2'] ?? 0.5) : x;
+        const start = len(d);
+        if (!prev) d += `M${x} ${y0}`;
+        else if (px !== x) d += `C${px} ${y0} ${x} ${y0} ${x} ${y0 + R}`;
+        else d += `L${x} ${y0}`;
+        d += `L${x} ${nx !== x ? y1 - R : y1}`;
+        bounds.push([start, len(d)]);
+      });
+      total = len(d);
+      thumb.setAttribute('d', d);
+      svg.setAttribute('width', '16');
+      svg.setAttribute('height', String(list.getBoundingClientRect().height));
+      paint();
+    };
+
+    const paint = () => {
+      const i = links.findIndex((a) => a.hasAttribute('data-active'));
+      if (i < 0 || !bounds[i]) {
+        thumb.setAttribute('stroke-dasharray', `0 ${total}`);
+        dot.setAttribute('r', '0');
+        return;
+      }
+      const [start, end] = bounds[i];
+      thumb.setAttribute('stroke-dasharray', `${end - start} ${total}`);
+      thumb.setAttribute('stroke-dashoffset', String(-start));
+      const p = thumb.getPointAtLength(end);
+      dot.setAttribute('cx', String(p.x));
+      dot.setAttribute('cy', String(p.y));
+      dot.setAttribute('r', '2.5');
+    };
+
+    const setActive = (id: string) => {
+      links.forEach((a) => a.toggleAttribute('data-active', a.dataset.heading === id));
+      paint();
+    };
+
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (!entry.isIntersecting) continue;
-          const id = entry.target.id;
-          links.forEach((a) => {
-            a.toggleAttribute('data-active', a.dataset.heading === id);
-          });
+          setActive(entry.target.id);
           break;
         }
       },
@@ -59,57 +169,8 @@ const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
       const target = document.getElementById(a.dataset.heading!);
       if (target) observer.observe(target);
     });
-  }
-</script>
 
-<style>
-  .on-this-page {
-    position: sticky;
-    top: 32px;
-    align-self: start;
-    padding: 0 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    max-height: calc(100vh - 64px);
-    overflow-y: auto;
-  }
-  .on-this-page-title {
-    font-size: 10px;
-    color: var(--color-fg-muted);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-  .on-this-page ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .on-this-page li.depth-3 {
-    padding-left: 12px;
-  }
-  .on-this-page a {
-    display: block;
-    padding: 4px 10px;
-    border-left: 2px solid transparent;
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-    color: var(--color-fg-muted);
-    font-size: 12px;
-    line-height: 1.45;
-    text-decoration: none;
-    transition:
-      color 0.1s,
-      border-color 0.1s;
-  }
-  .on-this-page a:hover {
-    color: var(--color-fg);
-  }
-  .on-this-page a[data-active] {
-    color: var(--color-fg);
-    font-weight: 500;
-    border-left-color: var(--color-fg);
-  }
-</style>
+    draw();
+    new ResizeObserver(draw).observe(list);
+  });
+</script>
