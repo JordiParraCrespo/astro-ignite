@@ -18,26 +18,26 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,astro,md,mdx,json,yaml,yml}\""
   },
   "dependencies": {
-    "@astrojs/mdx": "^7.0.0",
-    "@astrojs/rss": "^4.0.18",
-    "@astrojs/sitemap": "^3.7.3",
-    "@tailwindcss/vite": "^4.3.0",
-    "astro": "^7.0.2",
-    "markdown-it": "^14.1.1",
-    "sanitize-html": "^2.17.4",
+    "@astrojs/mdx": "^7.0.8",
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.4",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.3.2",
+    "markdown-it": "^14.3.2",
+    "sanitize-html": "^2.17.7",
     "schema-dts": "^2.0.0",
     "sharp": "^0.34.5",
-    "tailwindcss": "^4.3.0",
-    "zod": "^4.4.3"
+    "tailwindcss": "^4.3.3",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.9",
-    "@types/markdown-it": "^14.1.2",
-    "@types/node": "^25.9.1",
+    "@astrojs/check": "^0.9.10",
+    "@types/markdown-it": "^14.2.0",
+    "@types/node": "^25.9.6",
     "@types/sanitize-html": "^2.16.1",
-    "prettier": "^3.4.2",
+    "prettier": "^3.9.6",
     "prettier-plugin-astro": "^0.14.1",
     "typescript": "^6.0.3",
-    "vite": "^8.0.13"
+    "vite": "^8.3.0"
   }
 }
