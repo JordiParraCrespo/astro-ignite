@@ -38,7 +38,7 @@ const { title, eyebrow, class: className } = Astro.props;
   </div>
   {
     Astro.slots.has('actions') && (
-      <div class="flex flex-wrap items-center gap-2.5 pt-1">
+      <div class="flex flex-wrap items-center gap-2.5 pt-1 [&_p]:m-0">
         <slot name="actions" />
       </div>
     )
