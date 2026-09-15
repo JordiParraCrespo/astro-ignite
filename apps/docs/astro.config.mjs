@@ -20,6 +20,11 @@ export default defineConfig({
     // code blocks: line highlighting via `{1,3-5}` meta or `// [!code highlight]`,
     // and diff markers via `// [!code ++]` / `// [!code --]`. Styled in global.css.
     shikiConfig: {
+      // One light + one dark theme; `defaultColor: false` emits per-token
+      // `--shiki-light` / `--shiki-dark` vars instead of inline colors, and
+      // DocsLayout picks the pair that matches the `.light` theme class.
+      themes: { light: 'github-light', dark: 'github-dark' },
+      defaultColor: false,
       transformers: [
         transformerMetaHighlight(),
         transformerNotationHighlight(),

@@ -3,36 +3,109 @@ title: Introduction
 description: What astro-ignite is, why it exists, and what it gives you out of the box.
 lastUpdated: 2026-05-10
 tags: [getting-started]
+landing: true
 ---
 
+import Hero from '@/components/docs/Hero.astro';
+import Button from '@/components/ui/button.astro';
+import Tiles from '@/components/docs/Tiles.astro';
+import Tile from '@/components/docs/Tile.astro';
+import CardGroup from '@/components/docs/CardGroup.astro';
+import Card from '@/components/ui/card/card.astro';
+import CardHeader from '@/components/ui/card/card-header.astro';
+import CardTitle from '@/components/ui/card/card-title.astro';
+import CardDescription from '@/components/ui/card/card-description.astro';
+import Steps from '@/components/docs/Steps.astro';
+import Step from '@/components/docs/Step.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
 import Callout from '@/components/docs/Callout.astro';
 
-**astro-ignite** is a shadcn-style CLI for bootstrapping production-grade Astro sites built for AI agents. You get a finished site with SEO, i18n, performance, legal, and email pre-wired.
+<Hero title="Production-grade Astro sites, in five prompts." eyebrow="astro-ignite">
+  A shadcn-style CLI that scaffolds a finished Astro site with SEO, i18n, performance, legal pages,
+  and email pre-wired. You own every line — there is nothing to eject.
+  <Fragment slot="actions">
+    <Button href="/quick-start" size="lg">Quick start</Button>
+    <Button href="https://github.com/JordiParraCrespo/astro-ignite" variant="outline" size="lg">
+      GitHub
+    </Button>
+  </Fragment>
+</Hero>
 
-## Why bother
+<Tiles cols={3}>
+  <Tile icon="rocket" title="Quick start" href="/quick-start">
+    Scaffold, run, and deploy a site in under five minutes.
+  </Tile>
+  <Tile icon="book" title="Writing content" href="/authoring">
+    Every MDX component you can drop into a page.
+  </Tile>
+  <Tile icon="git-branch" title="Roadmap" href="/roadmap">
+    What is stable, what is next, and what is out of scope.
+  </Tile>
+</Tiles>
 
-Most Astro starters land at one of two extremes: a minimal `hello world` you assemble yourself, or an opinionated framework that hides decisions behind abstractions. astro-ignite picks a different point — opinionated defaults you fully own.
+## What you get
 
-You get:
+<CardGroup cols={3}>
+  <Card>
+    <CardHeader>
+      <CardTitle>Lighthouse 100s</CardTitle>
+      <CardDescription>Mobile scores enforced in CI, not aspired to.</CardDescription>
+    </CardHeader>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Native i18n</CardTitle>
+      <CardDescription>One code path for monolingual and multilingual sites.</CardDescription>
+    </CardHeader>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Typed JSON-LD</CardTitle>
+      <CardDescription>Schema.org graphs built from `schema-dts`, per page.</CardDescription>
+    </CardHeader>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Working contact form</CardTitle>
+      <CardDescription>Astro Actions, Zod, and Resend or SMTP.</CardDescription>
+    </CardHeader>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Legal, handled</CardTitle>
+      <CardDescription>Cookie banner plus privacy, terms, and cookie templates.</CardDescription>
+    </CardHeader>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Pure Astro</CardTitle>
+      <CardDescription>No React, Vue, or Svelte runtime on the page.</CardDescription>
+    </CardHeader>
+  </Card>
+</CardGroup>
 
-- **Lighthouse 100s on mobile** out of the box, CI-enforced
-- **Native i18n** with one code path for monolingual and multilingual sites
-- **Typed Schema.org JSON-LD** built from `schema-dts`
-- **A working contact form** with Astro Actions, Zod, and your choice of Resend or SMTP
-- **Cookie banner + legal templates** that don't pretend to be legal advice
-- **System font stack** — zero font requests, zero CLS (swap in Geist or any font via `astro:fonts`)
-- **Pure-Astro components** — no React/Vue/Svelte runtime weighing down the page
+## Three commands
 
-<Callout variant="note" title="Pre-1.0">
-  The API and template shape may shift between minor versions. See the ROADMAP for what's stable and
-  what's not.
-</Callout>
+<Steps>
+  <Step title="Scaffold">
+    <CodeBlock filename="terminal" language="bash" prompt>{`npm create astro-ignite@latest my-docs`}</CodeBlock>
+  </Step>
+  <Step title="Run it">
+    <CodeBlock filename="terminal" language="bash" prompt>{`cd my-docs && pnpm dev`}</CodeBlock>
+  </Step>
+  <Step title="Ship it">
+    Build with `pnpm build` and deploy the `dist/` folder to any static host.
+  </Step>
+</Steps>
 
 ## What it isn't
 
-astro-ignite is not a framework. There is no runtime npm package called `astro-ignite`. After scaffolding, you own the code and can edit anything. Eject is free because there's nothing to eject.
+astro-ignite is not a framework. There is no runtime npm package called `astro-ignite`. After
+scaffolding, you own the code and can edit anything. Eject is free because there's nothing to eject.
 
 It's also not a CMS, an auth system, or an e-commerce starter. It's a site bootstrap.
 
-## Where to next
-
+<Callout variant="note" title="Pre-1.0">
+  The API and template shape may shift between minor versions. See the roadmap for what's stable and
+  what's not.
+</Callout>

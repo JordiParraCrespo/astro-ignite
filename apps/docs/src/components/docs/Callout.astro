@@ -2,10 +2,11 @@
 /**
  * Callout / admonition block — used inside MDX content.
  *
- * Variants: note, info, tip, check, warning, danger. Each is a full-border tinted box with
- * a leading icon, a title, and body copy. Status colors resolve through the
- * design tokens (success / warning / danger); the tint + border are derived
- * from them via color-mix so the block adapts to light and dark themes.
+ * Variants: note, info, tip, check, warning, danger. Layout follows the
+ * shadcn alert: a two-column grid with a fixed icon column, the title tinted
+ * to the variant's status color, and the body in muted foreground. Tint +
+ * border derive from the status tokens via color-mix so the block adapts to
+ * light and dark themes without extra tokens.
  *
  * Usage in MDX:
  *   <Callout variant="warning" title="Heads up">
@@ -13,14 +14,17 @@
  *   </Callout>
  */
 
+import { cn } from '@/lib/cn';
+
 type Variant = 'note' | 'info' | 'tip' | 'check' | 'warning' | 'danger';
 
 interface Props {
   variant?: Variant;
   title?: string;
+  class?: string;
 }
 
-const { variant = 'note', title } = Astro.props;
+const { variant = 'note', title, class: className } = Astro.props;
 
 const defaultTitles: Record<Variant, string> = {
   note: 'Note',
@@ -31,24 +35,57 @@ const defaultTitles: Record<Variant, string> = {
   danger: 'Warning',
 };
 
+// [container, title + icon]
+const styles: Record<Variant, [string, string]> = {
+  note: ['border-border bg-surface-2', 'text-fg'],
+  info: [
+    'border-[color-mix(in_oklch,var(--color-info)_35%,transparent)] bg-[color-mix(in_oklch,var(--color-info)_8%,transparent)]',
+    'text-info',
+  ],
+  tip: [
+    'border-[color-mix(in_oklch,var(--color-success)_32%,transparent)] bg-[color-mix(in_oklch,var(--color-success)_8%,transparent)]',
+    'text-success',
+  ],
+  check: [
+    'border-[color-mix(in_oklch,var(--color-success)_32%,transparent)] bg-[color-mix(in_oklch,var(--color-success)_8%,transparent)]',
+    'text-success',
+  ],
+  warning: [
+    'border-[color-mix(in_oklch,var(--color-warning)_38%,transparent)] bg-[color-mix(in_oklch,var(--color-warning)_9%,transparent)]',
+    'text-warning',
+  ],
+  danger: [
+    'border-[color-mix(in_oklch,var(--color-danger)_35%,transparent)] bg-[color-mix(in_oklch,var(--color-danger)_7%,transparent)]',
+    'text-danger',
+  ],
+};
+
+const [box, accent] = styles[variant];
 const heading = title ?? defaultTitles[variant];
+const svgAttrs = {
+  viewBox: '0 0 24 24',
+  fill: 'none',
+  stroke: 'currentColor',
+  'stroke-width': '2',
+  'stroke-linecap': 'round',
+  'stroke-linejoin': 'round',
+  'aria-hidden': 'true',
+  class: 'size-4 translate-y-px',
+} as const;
 ---
 
 <aside
-  class:list={['callout', `callout-${variant}`]}
+  class={cn(
+    'callout my-6 grid grid-cols-[1rem_1fr] items-start gap-x-3 gap-y-1 rounded-lg border px-4 py-3 text-sm',
+    box,
+    className
+  )}
   role={variant === 'danger' || variant === 'warning' ? 'alert' : undefined}
 >
-  <span class="callout-icon" aria-hidden="true">
+  <span class={cn('flex', accent)}>
     {
       variant === 'note' && (
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
+        <svg {...svgAttrs}>
           <circle cx="12" cy="12" r="10" />
           <line x1="12" y1="16" x2="12" y2="12" />
           <line x1="12" y1="8" x2="12.01" y2="8" />
@@ -57,14 +94,7 @@ const heading = title ?? defaultTitles[variant];
     }
     {
       variant === 'info' && (
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
+        <svg {...svgAttrs}>
           <circle cx="12" cy="12" r="10" />
           <path d="M12 16v-4" />
           <path d="M12 8h.01" />
@@ -73,14 +103,7 @@ const heading = title ?? defaultTitles[variant];
     }
     {
       variant === 'check' && (
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
+        <svg {...svgAttrs}>
           <circle cx="12" cy="12" r="10" />
           <path d="m9 12 2 2 4-4" />
         </svg>
@@ -88,138 +111,34 @@ const heading = title ?? defaultTitles[variant];
     }
     {
       variant === 'tip' && (
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M12 2v4" />
-          <path d="m4.93 4.93 2.83 2.83" />
-          <path d="m16.24 7.76 2.83-2.83" />
-          <circle cx="12" cy="14" r="6" />
-          <path d="M9 20h6" />
+        <svg {...svgAttrs}>
+          <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
+          <path d="M9 18h6" />
+          <path d="M10 22h4" />
         </svg>
       )
     }
     {
       variant === 'warning' && (
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="m10.29 3.86-8.06 14a2 2 0 0 0 1.71 3h16.12a2 2 0 0 0 1.71-3l-8.06-14a2 2 0 0 0-3.42 0z" />
-          <line x1="12" y1="9" x2="12" y2="13" />
-          <line x1="12" y1="17" x2="12.01" y2="17" />
+        <svg {...svgAttrs}>
+          <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+          <path d="M12 9v4" />
+          <path d="M12 17h.01" />
         </svg>
       )
     }
     {
       variant === 'danger' && (
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
+        <svg {...svgAttrs}>
           <circle cx="12" cy="12" r="10" />
-          <line x1="15" y1="9" x2="9" y2="15" />
-          <line x1="9" y1="9" x2="15" y2="15" />
+          <path d="m15 9-6 6" />
+          <path d="m9 9 6 6" />
         </svg>
       )
     }
   </span>
-  <div class="callout-content">
-    <div class="callout-title">{heading}</div>
-    <div class="callout-body"><slot /></div>
+  <div class={cn('min-h-4 leading-tight font-medium tracking-tight', accent)}>{heading}</div>
+  <div class="callout-body col-start-2 text-fg-muted [&_p]:leading-relaxed [&_p:last-child]:mb-0!">
+    <slot />
   </div>
 </aside>
-
-<!-- tailwind-exception: per-variant tint + border are derived from the status tokens via color-mix(), and the icon column is a prop-driven layout — clearer as one scoped block than arbitrary-value utilities -->
-<style>
-  .callout {
-    display: flex;
-    gap: 12px;
-    margin: 1.5rem 0;
-    padding: 12px 14px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    background: var(--color-surface-2);
-  }
-  .callout-icon {
-    display: flex;
-    flex-shrink: 0;
-    margin-top: 1px;
-    color: var(--color-fg);
-  }
-  .callout-icon svg {
-    width: 16px;
-    height: 16px;
-  }
-  .callout-content {
-    min-width: 0;
-  }
-  .callout-title {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--color-fg);
-    letter-spacing: -0.005em;
-  }
-  .callout-body {
-    margin-top: 2px;
-    font-size: 13px;
-    line-height: 1.55;
-    color: var(--color-fg-muted);
-  }
-  .callout-body :global(p:last-child) {
-    margin-bottom: 0;
-  }
-
-  .callout-info {
-    border-color: color-mix(in oklch, var(--color-info) 30%, transparent);
-    background: color-mix(in oklch, var(--color-info) 8%, transparent);
-  }
-  .callout-info .callout-icon {
-    color: var(--color-info);
-  }
-
-  .callout-check {
-    border-color: color-mix(in oklch, var(--color-success) 28%, transparent);
-    background: color-mix(in oklch, var(--color-success) 8%, transparent);
-  }
-  .callout-check .callout-icon {
-    color: var(--color-success);
-  }
-
-  .callout-tip {
-    border-color: color-mix(in oklch, var(--color-success) 28%, transparent);
-    background: color-mix(in oklch, var(--color-success) 8%, transparent);
-  }
-  .callout-tip .callout-icon {
-    color: var(--color-success);
-  }
-
-  .callout-warning {
-    border-color: color-mix(in oklch, var(--color-warning) 30%, transparent);
-    background: color-mix(in oklch, var(--color-warning) 8%, transparent);
-  }
-  .callout-warning .callout-icon {
-    color: var(--color-warning);
-  }
-
-  .callout-danger {
-    border-color: color-mix(in oklch, var(--color-danger) 30%, transparent);
-    background: color-mix(in oklch, var(--color-danger) 7%, transparent);
-  }
-  .callout-danger .callout-icon {
-    color: var(--color-danger);
-  }
-</style>

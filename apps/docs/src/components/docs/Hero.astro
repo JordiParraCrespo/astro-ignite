@@ -1,0 +1,46 @@
+---
+/**
+ * Hero — the opening block of a landing doc (`landing: true` in frontmatter).
+ * Owns the page's <h1>; the layout skips its standard header for landing
+ * pages so the two never double up. The default slot is the lede, the
+ * `actions` slot a row of buttons.
+ *
+ * Usage in MDX:
+ *   <Hero title="Ship a docs site in five prompts." eyebrow="astro-ignite">
+ *     One paragraph on what this is.
+ *     <Fragment slot="actions">
+ *       <Button href="/quick-start" size="lg">Quick start</Button>
+ *     </Fragment>
+ *   </Hero>
+ */
+
+import { cn } from '@/lib/cn';
+import Text from '@/components/ui/text.astro';
+
+interface Props {
+  title: string;
+  eyebrow?: string;
+  class?: string;
+}
+
+const { title, eyebrow, class: className } = Astro.props;
+---
+
+<section class={cn('hero mb-10 flex flex-col gap-5 pt-2', className)}>
+  {
+    eyebrow && (
+      <span class="mono text-[11px] tracking-[0.12em] text-accent uppercase">{eyebrow}</span>
+    )
+  }
+  <Text variant="h1" as="h1" class="m-0 max-w-[22ch]">{title}</Text>
+  <div class="max-w-[60ch] text-[clamp(16px,1.4vw,19px)] leading-[1.55] text-fg-muted [&_p]:m-0">
+    <slot />
+  </div>
+  {
+    Astro.slots.has('actions') && (
+      <div class="flex flex-wrap items-center gap-2.5 pt-1">
+        <slot name="actions" />
+      </div>
+    )
+  }
+</section>

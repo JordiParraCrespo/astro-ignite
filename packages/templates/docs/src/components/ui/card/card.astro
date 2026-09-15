@@ -7,7 +7,10 @@ const { class: className, ...rest } = Astro.props;
 ---
 
 <div
-  class={cn('overflow-hidden rounded-lg border border-border bg-surface text-fg', className)}
+  class={cn(
+    'flex flex-col gap-5 overflow-hidden rounded-lg border border-border bg-surface py-5 text-fg',
+    className
+  )}
   {...rest}
 >
   <slot />

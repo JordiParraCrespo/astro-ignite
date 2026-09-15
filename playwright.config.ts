@@ -33,6 +33,11 @@ export default defineConfig({
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     video: 'off',
+    // Sandboxes that ship a preinstalled Chromium (and block downloads) can
+    // point at it instead of the build this Playwright version pins.
+    launchOptions: process.env.PLAYWRIGHT_CHROMIUM_PATH
+      ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_PATH }
+      : undefined,
   },
   projects: enabledTargets.map((t) =>
     projectForTarget(t, {

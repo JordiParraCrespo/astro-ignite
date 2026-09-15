@@ -50,12 +50,14 @@ Each project's `webServer` boots the right command (`astro dev` or
 
 ## Env-var contract
 
-| Variable                      | Set by                               | Effect                                                                                                                                     |
-| ----------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `SITE_E2E`                    | playwright.config.ts (webServer.env) | Templates can short-circuit prod-only code in `astro.config.mjs`. Templates currently make no use of it; reserved for future feature work. |
-| `SITE_E2E_LOCALES`            | playwright config / per-spec env     | Comma-separated list of locales for the two-locale fixture. Reserved for fixtures that exercise a non-default-locale flow.                 |
-| `PLAYWRIGHT_PLAYGROUND_READY` | CI after scaffold step               | Enables the `playground` Playwright project. Off locally so contributors who haven't run `pnpm scaffold:test --full` are not blocked.      |
-| `CI`                          | GitHub Actions                       | Enables retry, single-worker mode, and forbids `test.only`.                                                                                |
+| Variable                      | Set by                               | Effect                                                                                                                                                                                                                                                        |
+| ----------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `SITE_E2E`                    | playwright.config.ts (webServer.env) | Templates can short-circuit prod-only code in `astro.config.mjs`. Templates currently make no use of it; reserved for future feature work.                                                                                                                    |
+| `SITE_E2E_LOCALES`            | playwright config / per-spec env     | Comma-separated list of locales for the two-locale fixture. Reserved for fixtures that exercise a non-default-locale flow.                                                                                                                                    |
+| `PLAYWRIGHT_PLAYGROUND_READY` | CI after scaffold step               | Enables the `playground` Playwright project. Off locally so contributors who haven't run `pnpm scaffold:test --full` are not blocked.                                                                                                                         |
+| `ASTRO_DEV_BACKGROUND`        | playwright.config.ts (webServer.env) | Astro 7 daemonizes `astro dev` when it detects an AI-agent environment (`am-i-vibing`), so the CLI process exits once the server is up and Playwright reports "exited early". This is Astro's own foreground guard; the factory sets it on every dev command. |
+| `PLAYWRIGHT_CHROMIUM_PATH`    | you, optional                        | Absolute path to a Chromium binary. Sandboxes that ship one and block downloads set it to skip the build this Playwright version pins (`/opt/pw-browsers/chromium-*/chrome-linux/chrome` in Claude Code remote).                                              |
+| `CI`                          | GitHub Actions                       | Enables retry, single-worker mode, and forbids `test.only`.                                                                                                                                                                                                   |
 
 ## Local debug
 

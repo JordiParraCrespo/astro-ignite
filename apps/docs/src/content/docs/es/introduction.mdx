@@ -3,11 +3,37 @@ title: Introducción
 description: Qué es astro-ignite, por qué existe y qué obtienes de fábrica.
 lastUpdated: 2026-05-10
 tags: [empezar]
+landing: true
 ---
 
 import Callout from '@/components/docs/Callout.astro';
+import Hero from '@/components/docs/Hero.astro';
+import Button from '@/components/ui/button.astro';
+import Tiles from '@/components/docs/Tiles.astro';
+import Tile from '@/components/docs/Tile.astro';
 
-**astro-ignite** es un CLI estilo shadcn para crear sitios Astro listos para producción hechos para agentes de IA. Obtienes un sitio completo con SEO, i18n, rendimiento, plantillas legales y email ya cableados.
+<Hero title="Sitios Astro listos para producción, en cinco prompts." eyebrow="astro-ignite">
+  Un CLI estilo shadcn que genera un sitio Astro completo con SEO, i18n, rendimiento, páginas
+  legales y email ya cableados. Cada línea es tuya — no hay nada que expulsar.
+  <Fragment slot="actions">
+    <Button href="/es/quick-start" size="lg">Inicio rápido</Button>
+    <Button href="https://github.com/JordiParraCrespo/astro-ignite" variant="outline" size="lg">
+      GitHub
+    </Button>
+  </Fragment>
+</Hero>
+
+<Tiles cols={3}>
+  <Tile icon="rocket" title="Inicio rápido" href="/es/quick-start">
+    Genera, ejecuta y despliega un sitio en menos de cinco minutos.
+  </Tile>
+  <Tile icon="layers" title="Componentes" href="/es/components">
+    Todos los átomos del registro, con demos en vivo.
+  </Tile>
+  <Tile icon="sparkles" title="Temas y tokens" href="/es/theming">
+    Cambia el aspecto de todo el sitio desde un solo archivo CSS.
+  </Tile>
+</Tiles>
 
 ## Por qué molestarse
 

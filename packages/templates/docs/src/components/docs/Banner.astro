@@ -49,7 +49,12 @@ const {
   <span class={cn('flex', variant === 'solid' ? 'opacity-90' : 'text-fg-muted')} aria-hidden="true">
     <Icon name={icon} size={variant === 'solid' ? 16 : 15} />
   </span>
-  <span class={cn('font-medium', variant === 'solid' ? 'text-[13.5px]' : 'text-[13px]')}>
+  <span
+    class={cn(
+      'min-w-0 flex-1 font-medium [&_p]:m-0',
+      variant === 'solid' ? 'text-[13.5px]' : 'text-[13px]'
+    )}
+  >
     <slot />
   </span>
   {
