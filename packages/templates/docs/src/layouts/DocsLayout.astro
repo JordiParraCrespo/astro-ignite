@@ -114,7 +114,7 @@ const dateFmt = new Intl.DateTimeFormat(Astro.currentLocale ?? 'en', {
 
         <div
           class:list={[
-            'docs-prose text-[15px] leading-[1.65] text-(--color-fg)',
+            'docs-prose text-[16px] leading-[1.7] text-(--color-fg)',
             landing ? 'max-w-none [&>p]:max-w-[64ch]' : 'max-w-[64ch]',
           ]}
         >
@@ -139,10 +139,10 @@ const dateFmt = new Intl.DateTimeFormat(Astro.currentLocale ?? 'en', {
      type instead of inheriting the prose h3/p spacing. */
   @layer components {
     .docs-prose h2 {
-      @apply mb-4 mt-10 scroll-mt-4 text-[22px] font-medium leading-[1.3] tracking-[-0.03em] text-[var(--color-fg)];
+      @apply mb-4 mt-10 scroll-mt-4 text-[24px] font-medium leading-[1.3] tracking-[-0.03em] text-[var(--color-fg)];
     }
     .docs-prose h3 {
-      @apply mb-2 mt-8 scroll-mt-4 text-[18px] font-medium leading-[1.4] tracking-[-0.02em] text-[var(--color-fg)];
+      @apply mb-2 mt-8 scroll-mt-4 text-[19px] font-medium leading-[1.4] tracking-[-0.02em] text-[var(--color-fg)];
     }
     .docs-prose :is(h2, h3) a {
       @apply text-[inherit] no-underline;
@@ -151,13 +151,16 @@ const dateFmt = new Intl.DateTimeFormat(Astro.currentLocale ?? 'en', {
       @apply mb-4 mt-0;
     }
     .docs-prose a {
-      @apply text-[var(--color-fg)] underline decoration-[var(--color-border-strong)] decoration-[1px] underline-offset-[3px];
+      @apply text-[var(--color-accent)] underline decoration-[color-mix(in_oklch,var(--color-accent)_40%,transparent)] decoration-[1px] underline-offset-[3px];
     }
     .docs-prose a:hover {
-      @apply decoration-[var(--color-fg)];
+      @apply decoration-[var(--color-accent)];
     }
-    .docs-prose :is(ul, ol) {
-      @apply mb-4 mt-0 pl-5;
+    .docs-prose ul {
+      @apply mb-4 mt-0 list-disc pl-5;
+    }
+    .docs-prose ol {
+      @apply mb-4 mt-0 list-decimal pl-5;
     }
     .docs-prose li {
       @apply mb-1;

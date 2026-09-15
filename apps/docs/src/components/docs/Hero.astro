@@ -29,7 +29,7 @@ const { title, eyebrow, class: className } = Astro.props;
 <section class={cn('hero mb-10 flex flex-col gap-5 pt-2', className)}>
   {
     eyebrow && (
-      <span class="mono text-[11px] tracking-[0.12em] text-fg-muted uppercase">{eyebrow}</span>
+      <span class="mono text-[11px] tracking-[0.12em] text-accent uppercase">{eyebrow}</span>
     )
   }
   <Text variant="h1" as="h1" class="m-0 max-w-[22ch]">{title}</Text>

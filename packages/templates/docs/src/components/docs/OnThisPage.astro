@@ -55,7 +55,7 @@ const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
         {items.map((h) => (
           <li>
             <a
-              class="block py-1 text-[13px] leading-[1.45] text-fg-muted no-underline transition-colors duration-100 hover:text-fg data-[active]:font-medium data-[active]:text-fg"
+              class="block py-1 text-[13px] leading-[1.45] text-fg-muted no-underline transition-colors duration-100 hover:text-fg data-[active]:font-medium data-[active]:text-accent"
               class:list={[h.depth === 3 ? 'pl-7' : 'pl-4']}
               href={`#${h.slug}`}
               data-heading={h.slug}
@@ -87,11 +87,14 @@ const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
     rail.setAttribute('class', 'fill-none stroke-border');
     rail.setAttribute('stroke-width', '1');
     const thumb = document.createElementNS(SVG_NS, 'path');
-    thumb.setAttribute('class', 'fill-none stroke-fg transition-[stroke-dashoffset] duration-200');
+    thumb.setAttribute(
+      'class',
+      'fill-none stroke-accent transition-[stroke-dashoffset] duration-200'
+    );
     thumb.setAttribute('stroke-width', '1.5');
     thumb.setAttribute('stroke-linecap', 'round');
     const dot = document.createElementNS(SVG_NS, 'circle');
-    dot.setAttribute('class', 'fill-fg transition-[cy,cx] duration-200');
+    dot.setAttribute('class', 'fill-accent transition-[cy,cx] duration-200');
     dot.setAttribute('r', '2.5');
     svg.append(rail, thumb, dot);
     list.append(svg);

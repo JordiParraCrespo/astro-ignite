@@ -88,9 +88,13 @@ const tabHref = (tab: string) => {
 const visibleGroups: SidebarGroup[] =
   tabs.length > 1 ? groups.filter((g) => !g.tab || g.tab === activeTab) : groups;
 
+// `cn` concatenates without merging, so idle and active carry disjoint color
+// classes instead of stacking conflicting ones.
 const linkBase =
-  'flex items-center gap-2 rounded-(--radius-sm) px-2 py-1.5 text-[13px] leading-snug text-fg-muted no-underline transition-colors duration-100 hover:bg-surface-2 hover:text-fg';
-const linkActive = 'bg-surface-2 font-medium text-fg';
+  'flex items-center gap-2 rounded-(--radius-sm) px-2 py-1.5 text-[13px] leading-snug no-underline transition-colors duration-100';
+const linkIdle = 'text-fg-muted hover:bg-surface-2 hover:text-fg';
+const linkActive =
+  'bg-[color-mix(in_oklch,var(--color-accent)_10%,transparent)] font-medium text-accent hover:bg-[color-mix(in_oklch,var(--color-accent)_14%,transparent)]';
 const headingBase = 'm-0 flex items-center gap-2 px-2 py-1 text-[12px] font-medium text-fg';
 ---
 
@@ -127,8 +131,10 @@ const headingBase = 'm-0 flex items-center gap-2 px-2 py-1 text-[12px] font-medi
               href={tabHref(tab)}
               aria-current={tab === activeTab ? 'true' : undefined}
               class={cn(
-                'flex-1 rounded-(--radius-sm) px-2 py-1 text-center text-[12px] font-medium text-fg-muted no-underline transition-colors duration-100 hover:text-fg',
-                tab === activeTab && 'bg-surface text-fg shadow-(--shadow-sm)'
+                'flex-1 rounded-(--radius-sm) px-2 py-1 text-center text-[12px] font-medium no-underline transition-colors duration-100',
+                tab === activeTab
+                  ? 'bg-surface text-accent shadow-(--shadow-sm)'
+                  : 'text-fg-muted hover:text-fg'
               )}
             >
               {tab}
@@ -149,7 +155,7 @@ const headingBase = 'm-0 flex items-center gap-2 px-2 py-1 text-[12px] font-medi
                 <li>
                   <a
                     href={hrefFor(item.slug)}
-                    class={cn(linkBase, isActive(item.slug) && linkActive)}
+                    class={cn(linkBase, isActive(item.slug) ? linkActive : linkIdle)}
                     aria-current={isActive(item.slug) ? 'page' : undefined}
                     rel={isExternal(item.slug) ? 'noopener noreferrer' : undefined}
                     target={isExternal(item.slug) ? '_blank' : undefined}
