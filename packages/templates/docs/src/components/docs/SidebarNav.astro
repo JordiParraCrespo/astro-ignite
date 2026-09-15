@@ -3,8 +3,11 @@
  * Sidebar navigation — left column of the docs layout.
  *
  * Reads the `sidebar` config and renders grouped links. Highlights the
- * current page based on `Astro.url.pathname`. External links (starting with
- * `http`) get an icon + open-in-new-tab.
+ * current page based on `Astro.url.pathname`. Slugs resolve three ways: a
+ * doc-collection id, a direct path (`/components/button`), or an external
+ * URL (icon + open-in-new-tab). Groups can carry an icon, fold via native
+ * `<details>` when `collapsed`, and belong to a top-level `tab`; the tab row
+ * renders only once two or more tabs exist.
  */
 
 import { getCollection } from 'astro:content';
@@ -12,9 +15,11 @@ import type { CollectionEntry } from 'astro:content';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 
 import Brand from '../common/Brand.astro';
+import Icon from './Icon.astro';
 import SearchBox from './SearchBox.astro';
-import Text from '@/components/ui/text.astro';
+import { cn } from '@/lib/cn';
 import { sidebar } from '@/config/sidebar';
+import type { SidebarGroup, SidebarItem } from '@/config/sidebar';
 import { siteConfig } from '@/config/site';
 import { useTranslations } from '@/i18n';
 
@@ -40,12 +45,14 @@ const hasLocalizedEntry = (slug: string): boolean =>
   allDocs.some((e) => e.id === `${locale}/${slug}`);
 
 const isExternal = (slug: string) => slug.startsWith('http');
+// A slug starting with "/" is a direct path to a non-collection Astro page.
+const isPath = (slug: string) => slug.startsWith('/');
 
 // The home doc renders at the locale root (/ or /<lang>/), not at /<slug>.
 const homeSlug = siteConfig.homePath.replace(/^\//, '');
 
 const hrefFor = (slug: string) => {
-  if (isExternal(slug)) return slug;
+  if (isExternal(slug) || isPath(slug)) return slug;
   if (slug === homeSlug) return getRelativeLocaleUrl(locale, '/');
   return getRelativeLocaleUrl(locale, `/${slug}`);
 };
@@ -57,13 +64,38 @@ const isActive = (slug: string) => {
   return path === target;
 };
 
+const labelFor = (item: SidebarItem) =>
+  item.labelKey ? t(item.labelKey) : (item.label ?? titleForSlug(item.slug));
+
+const groups = sidebar
+  .map((group) => ({
+    ...group,
+    items: group.items.filter(
+      (item) => isExternal(item.slug) || isPath(item.slug) || hasLocalizedEntry(item.slug)
+    ),
+  }))
+  .filter((group) => group.items.length > 0);
+
+// Tabs: distinct `tab` values in config order. The active tab is the one
+// holding the current page, else the first. A tab links to its first item.
+const tabs = [...new Set(groups.map((g) => g.tab).filter((v): v is string => !!v))];
+const activeTab =
+  groups.find((g) => g.tab && g.items.some((i) => isActive(i.slug)))?.tab ?? tabs[0];
+const tabHref = (tab: string) => {
+  const first = groups.find((g) => g.tab === tab)?.items[0];
+  return first ? hrefFor(first.slug) : '#';
+};
+const visibleGroups: SidebarGroup[] =
+  tabs.length > 1 ? groups.filter((g) => !g.tab || g.tab === activeTab) : groups;
+
 const linkBase =
-  'flex items-center gap-2 rounded-[var(--radius-sm)] px-2 py-[5px] text-[13px] leading-normal text-[var(--color-fg-muted)] no-underline transition-colors duration-100 hover:bg-[var(--color-surface-2)] hover:text-[var(--color-fg)]';
-const linkActive = 'bg-[var(--color-surface-2)] font-medium text-[var(--color-fg)]';
+  'flex items-center gap-2 rounded-(--radius-sm) px-2 py-1.5 text-[13px] leading-snug text-fg-muted no-underline transition-colors duration-100 hover:bg-surface-2 hover:text-fg';
+const linkActive = 'bg-surface-2 font-medium text-fg';
+const headingBase = 'm-0 flex items-center gap-2 px-2 py-1 text-[12px] font-medium text-fg';
 ---
 
 <aside
-  class="sidebar flex flex-col gap-5 border-b border-(--color-border) bg-(--color-bg) px-4 py-4 md:sticky md:top-0 md:h-screen md:overflow-x-hidden md:overflow-y-auto md:border-r md:border-b-0 md:pt-7 md:pb-8"
+  class="sidebar flex flex-col gap-5 border-b border-border bg-bg px-4 py-4 md:sticky md:top-0 md:h-screen md:overflow-x-hidden md:overflow-y-auto md:border-r md:border-b-0 md:pt-7 md:pb-8"
   aria-label={t('nav.documentation')}
 >
   <header class="flex items-center justify-between gap-2 px-1">
@@ -74,7 +106,7 @@ const linkActive = 'bg-[var(--color-surface-2)] font-medium text-[var(--color-fg
       aria-controls="docs-nav-panel"
       aria-expanded="false"
       aria-label={t('nav.openMenu')}
-      class="inline-flex cursor-pointer appearance-none items-center justify-center rounded-(--radius-sm) border-0 bg-transparent p-2 text-(--color-fg) transition-colors hover:bg-(--color-surface-2) md:hidden"
+      class="inline-flex cursor-pointer appearance-none items-center justify-center rounded-(--radius-sm) border-0 bg-transparent p-2 text-fg transition-colors hover:bg-surface-2 md:hidden"
     >
       <span class="flex w-5 flex-col gap-[4px]" aria-hidden="true">
         <span class="block h-[2px] rounded-[1px] bg-current"></span>
@@ -87,39 +119,96 @@ const linkActive = 'bg-[var(--color-surface-2)] font-medium text-[var(--color-fg
   <div id="docs-nav-panel" data-docs-nav-panel class="hidden flex-col gap-5 md:flex [&.open]:flex">
     <SearchBox />
 
-    <nav class="flex flex-col gap-[22px]" aria-label={t('nav.sidebar')}>
+    {
+      tabs.length > 1 && (
+        <div class="flex gap-1 rounded-(--radius) border border-border bg-surface-2 p-1">
+          {tabs.map((tab) => (
+            <a
+              href={tabHref(tab)}
+              aria-current={tab === activeTab ? 'true' : undefined}
+              class={cn(
+                'flex-1 rounded-(--radius-sm) px-2 py-1 text-center text-[12px] font-medium text-fg-muted no-underline transition-colors duration-100 hover:text-fg',
+                tab === activeTab && 'bg-surface text-fg shadow-(--shadow-sm)'
+              )}
+            >
+              {tab}
+            </a>
+          ))}
+        </div>
+      )
+    }
+
+    <nav class="flex flex-col gap-5" aria-label={t('nav.sidebar')}>
       {
-        sidebar.map((group) => {
-          const visibleItems = group.items.filter(
-            (item) => isExternal(item.slug) || hasLocalizedEntry(item.slug)
+        visibleGroups.map((group) => {
+          const hasActive = group.items.some((i) => isActive(i.slug));
+          const label = group.groupKey ? t(group.groupKey) : group.group;
+          const links = (
+            <ul class="m-0 flex list-none flex-col gap-px p-0">
+              {group.items.map((item) => (
+                <li>
+                  <a
+                    href={hrefFor(item.slug)}
+                    class={cn(linkBase, isActive(item.slug) && linkActive)}
+                    aria-current={isActive(item.slug) ? 'page' : undefined}
+                    rel={isExternal(item.slug) ? 'noopener noreferrer' : undefined}
+                    target={isExternal(item.slug) ? '_blank' : undefined}
+                  >
+                    {item.icon && (
+                      <span class="flex text-fg-subtle" aria-hidden="true">
+                        <Icon name={item.icon} size={14} />
+                      </span>
+                    )}
+                    <span>{labelFor(item)}</span>
+                    {item.badge && (
+                      <span class="mono ml-auto rounded-(--radius-sm) border border-border px-[5px] py-px text-[10px] text-fg-subtle">
+                        {item.badge}
+                      </span>
+                    )}
+                    {isExternal(item.slug) && (
+                      <span class="ml-auto flex text-fg-subtle" aria-hidden="true">
+                        <Icon name="arrow-up-right" size={12} />
+                      </span>
+                    )}
+                  </a>
+                </li>
+              ))}
+            </ul>
           );
-          if (visibleItems.length === 0) return null;
-          return (
+          const heading = (
+            <>
+              {group.icon && (
+                <span class="flex text-fg-muted" aria-hidden="true">
+                  <Icon name={group.icon} size={14} />
+                </span>
+              )}
+              <span>{label}</span>
+            </>
+          );
+          // Collapsible groups fold via native <details>; auto-open when one
+          // of the items is the current page.
+          return group.collapsed ? (
+            <details class="group/nav flex flex-col gap-1" open={hasActive}>
+              <summary
+                class={cn(
+                  headingBase,
+                  'cursor-pointer list-none select-none [&::-webkit-details-marker]:hidden'
+                )}
+              >
+                {heading}
+                <span
+                  class="ml-auto flex text-fg-subtle transition-transform duration-150 group-open/nav:rotate-90"
+                  aria-hidden="true"
+                >
+                  <Icon name="chevron-right" size={12} />
+                </span>
+              </summary>
+              {links}
+            </details>
+          ) : (
             <div class="flex flex-col gap-1">
-              <Text variant="eyebrow" as="h2" class="mono m-0 mb-[2px] px-2 py-1">
-                {group.group}
-              </Text>
-              <ul class="m-0 flex list-none flex-col gap-px p-0">
-                {visibleItems.map((item) => (
-                  <li>
-                    <a
-                      href={hrefFor(item.slug)}
-                      class:list={[linkBase, isActive(item.slug) && linkActive]}
-                      aria-current={isActive(item.slug) ? 'page' : undefined}
-                      rel={isExternal(item.slug) ? 'noopener noreferrer' : undefined}
-                      target={isExternal(item.slug) ? '_blank' : undefined}
-                    >
-                      <span>{item.label ?? titleForSlug(item.slug)}</span>
-                      {item.badge && (
-                        <span class="mono ml-auto rounded-(--radius-sm) border border-(--color-border) px-[5px] py-px text-[10px] text-(--color-fg-subtle)">
-                          {item.badge}
-                        </span>
-                      )}
-                      {isExternal(item.slug) && <span aria-hidden="true">↗</span>}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              <h2 class={headingBase}>{heading}</h2>
+              {links}
             </div>
           );
         })

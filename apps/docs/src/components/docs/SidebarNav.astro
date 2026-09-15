@@ -3,10 +3,11 @@
  * Sidebar navigation — left column of the docs layout.
  *
  * Reads the `sidebar` config and renders grouped links. Highlights the
- * current page based on `Astro.url.pathname`. External links (starting with
- * `http`) get an icon + open-in-new-tab.
- *
- * Above-the-fold component — uses scoped <style> only.
+ * current page based on `Astro.url.pathname`. Slugs resolve three ways: a
+ * doc-collection id, a direct path (`/components/button`), or an external
+ * URL (icon + open-in-new-tab). Groups can carry an icon, fold via native
+ * `<details>` when `collapsed`, and belong to a top-level `tab`; the tab row
+ * renders only once two or more tabs exist.
  */
 
 import { getCollection } from 'astro:content';
@@ -14,9 +15,11 @@ import type { CollectionEntry } from 'astro:content';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 
 import Brand from '../common/Brand.astro';
+import Icon from './Icon.astro';
 import SearchBox from './SearchBox.astro';
-import Text from '@/components/ui/text.astro';
+import { cn } from '@/lib/cn';
 import { sidebar } from '@/config/sidebar';
+import type { SidebarGroup, SidebarItem } from '@/config/sidebar';
 import { siteConfig } from '@/config/site';
 import { useTranslations } from '@/i18n';
 
@@ -42,16 +45,14 @@ const hasLocalizedEntry = (slug: string): boolean =>
   allDocs.some((e) => e.id === `${locale}/${slug}`);
 
 const isExternal = (slug: string) => slug.startsWith('http');
-// A slug starting with "/" is a direct path to a non-collection Astro page
-// (e.g. /components, /components/button). Bypasses the locale lookup.
+// A slug starting with "/" is a direct path to a non-collection Astro page.
 const isPath = (slug: string) => slug.startsWith('/');
 
 // The home doc renders at the locale root (/ or /<lang>/), not at /<slug>.
 const homeSlug = siteConfig.homePath.replace(/^\//, '');
 
 const hrefFor = (slug: string) => {
-  if (isExternal(slug)) return slug;
-  if (isPath(slug)) return slug;
+  if (isExternal(slug) || isPath(slug)) return slug;
   if (slug === homeSlug) return getRelativeLocaleUrl(locale, '/');
   return getRelativeLocaleUrl(locale, `/${slug}`);
 };
@@ -62,83 +63,156 @@ const isActive = (slug: string) => {
   const target = hrefFor(slug).replace(/\/$/, '');
   return path === target;
 };
+
+const labelFor = (item: SidebarItem) =>
+  item.labelKey ? t(item.labelKey) : (item.label ?? titleForSlug(item.slug));
+
+const groups = sidebar
+  .map((group) => ({
+    ...group,
+    items: group.items.filter(
+      (item) => isExternal(item.slug) || isPath(item.slug) || hasLocalizedEntry(item.slug)
+    ),
+  }))
+  .filter((group) => group.items.length > 0);
+
+// Tabs: distinct `tab` values in config order. The active tab is the one
+// holding the current page, else the first. A tab links to its first item.
+const tabs = [...new Set(groups.map((g) => g.tab).filter((v): v is string => !!v))];
+const activeTab =
+  groups.find((g) => g.tab && g.items.some((i) => isActive(i.slug)))?.tab ?? tabs[0];
+const tabHref = (tab: string) => {
+  const first = groups.find((g) => g.tab === tab)?.items[0];
+  return first ? hrefFor(first.slug) : '#';
+};
+const visibleGroups: SidebarGroup[] =
+  tabs.length > 1 ? groups.filter((g) => !g.tab || g.tab === activeTab) : groups;
+
+const linkBase =
+  'flex items-center gap-2 rounded-(--radius-sm) px-2 py-1.5 text-[13px] leading-snug text-fg-muted no-underline transition-colors duration-100 hover:bg-surface-2 hover:text-fg';
+const linkActive = 'bg-surface-2 font-medium text-fg';
+const headingBase = 'm-0 flex items-center gap-2 px-2 py-1 text-[12px] font-medium text-fg';
 ---
 
-<aside class="sidebar" aria-label={t('nav.documentation')}>
-  <header class="sidebar-header">
-    <Brand href="/" variant="lockup" size={0.42} />
+<aside
+  class="sidebar flex flex-col gap-5 border-b border-border bg-bg px-4 py-4 md:sticky md:top-0 md:h-screen md:overflow-x-hidden md:overflow-y-auto md:border-r md:border-b-0 md:pt-7 md:pb-8"
+  aria-label={t('nav.documentation')}
+>
+  <header class="flex items-center justify-between gap-2 px-1">
+    <Brand href={getRelativeLocaleUrl(locale, '/')} variant="lockup" size={0.42} />
     <button
       type="button"
-      class="sidebar-toggle"
       data-docs-nav-toggle
       aria-controls="docs-nav-panel"
       aria-expanded="false"
       aria-label={t('nav.openMenu')}
+      class="inline-flex cursor-pointer appearance-none items-center justify-center rounded-(--radius-sm) border-0 bg-transparent p-2 text-fg transition-colors hover:bg-surface-2 md:hidden"
     >
-      <span class="sidebar-toggle-bars" aria-hidden="true">
-        <span></span>
-        <span></span>
-        <span></span>
+      <span class="flex w-5 flex-col gap-[4px]" aria-hidden="true">
+        <span class="block h-[2px] rounded-[1px] bg-current"></span>
+        <span class="block h-[2px] rounded-[1px] bg-current"></span>
+        <span class="block h-[2px] rounded-[1px] bg-current"></span>
       </span>
     </button>
   </header>
 
-  <div id="docs-nav-panel" class="sidebar-panel" data-docs-nav-panel>
+  <div id="docs-nav-panel" data-docs-nav-panel class="hidden flex-col gap-5 md:flex [&.open]:flex">
     <SearchBox />
 
-    <nav class="sidebar-nav" aria-label={t('nav.sidebar')}>
     {
-      sidebar.map((group) => {
-        // Render external links, direct paths, and doc-collection entries that
-        // exist in the current locale. Direct paths bypass the collection check.
-        const visibleItems = group.items.filter(
-          (item) => isExternal(item.slug) || isPath(item.slug) || hasLocalizedEntry(item.slug)
-        );
-        if (visibleItems.length === 0) return null;
-
-        const hasActive = visibleItems.some((i) => isActive(i.slug));
-        // Render a <details> group when `collapsed` is set, so the user can
-        // fold large nav groups. Auto-open when one of the items is active.
-        const isCollapsible = group.collapsed === true;
-        const open = isCollapsible ? hasActive : undefined;
-
-        const links = visibleItems.map((item) => {
-          const label = item.labelKey ? t(item.labelKey) : (item.label ?? titleForSlug(item.slug));
-          return (
-            <li>
-              <a
-                href={hrefFor(item.slug)}
-                class:list={['sidebar-link', isActive(item.slug) && 'is-active']}
-                aria-current={isActive(item.slug) ? 'page' : undefined}
-                rel={isExternal(item.slug) ? 'noopener noreferrer' : undefined}
-                target={isExternal(item.slug) ? '_blank' : undefined}
-              >
-                <span>{label}</span>
-                {item.badge && <span class="sidebar-badge mono">{item.badge}</span>}
-                {isExternal(item.slug) && <span aria-hidden="true">↗</span>}
-              </a>
-            </li>
-          );
-        });
-
-        const groupLabel = group.groupKey ? t(group.groupKey) : group.group;
-
-        return isCollapsible ? (
-          <details class="sidebar-group sidebar-group--collapsible" open={open}>
-            <Text variant="eyebrow" as="summary" class="sidebar-group-title mono">
-              <span>{groupLabel}</span>
-              <span class="sidebar-group-caret" aria-hidden="true">▸</span>
-            </Text>
-            <ul>{links}</ul>
-          </details>
-        ) : (
-          <div class="sidebar-group">
-            <Text variant="eyebrow" as="h2" class="sidebar-group-title mono">{groupLabel}</Text>
-            <ul>{links}</ul>
-          </div>
-        );
-      })
+      tabs.length > 1 && (
+        <div class="flex gap-1 rounded-(--radius) border border-border bg-surface-2 p-1">
+          {tabs.map((tab) => (
+            <a
+              href={tabHref(tab)}
+              aria-current={tab === activeTab ? 'true' : undefined}
+              class={cn(
+                'flex-1 rounded-(--radius-sm) px-2 py-1 text-center text-[12px] font-medium text-fg-muted no-underline transition-colors duration-100 hover:text-fg',
+                tab === activeTab && 'bg-surface text-fg shadow-(--shadow-sm)'
+              )}
+            >
+              {tab}
+            </a>
+          ))}
+        </div>
+      )
     }
+
+    <nav class="flex flex-col gap-5" aria-label={t('nav.sidebar')}>
+      {
+        visibleGroups.map((group) => {
+          const hasActive = group.items.some((i) => isActive(i.slug));
+          const label = group.groupKey ? t(group.groupKey) : group.group;
+          const links = (
+            <ul class="m-0 flex list-none flex-col gap-px p-0">
+              {group.items.map((item) => (
+                <li>
+                  <a
+                    href={hrefFor(item.slug)}
+                    class={cn(linkBase, isActive(item.slug) && linkActive)}
+                    aria-current={isActive(item.slug) ? 'page' : undefined}
+                    rel={isExternal(item.slug) ? 'noopener noreferrer' : undefined}
+                    target={isExternal(item.slug) ? '_blank' : undefined}
+                  >
+                    {item.icon && (
+                      <span class="flex text-fg-subtle" aria-hidden="true">
+                        <Icon name={item.icon} size={14} />
+                      </span>
+                    )}
+                    <span>{labelFor(item)}</span>
+                    {item.badge && (
+                      <span class="mono ml-auto rounded-(--radius-sm) border border-border px-[5px] py-px text-[10px] text-fg-subtle">
+                        {item.badge}
+                      </span>
+                    )}
+                    {isExternal(item.slug) && (
+                      <span class="ml-auto flex text-fg-subtle" aria-hidden="true">
+                        <Icon name="arrow-up-right" size={12} />
+                      </span>
+                    )}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          );
+          const heading = (
+            <>
+              {group.icon && (
+                <span class="flex text-fg-muted" aria-hidden="true">
+                  <Icon name={group.icon} size={14} />
+                </span>
+              )}
+              <span>{label}</span>
+            </>
+          );
+          // Collapsible groups fold via native <details>; auto-open when one
+          // of the items is the current page.
+          return group.collapsed ? (
+            <details class="group/nav flex flex-col gap-1" open={hasActive}>
+              <summary
+                class={cn(
+                  headingBase,
+                  'cursor-pointer list-none select-none [&::-webkit-details-marker]:hidden'
+                )}
+              >
+                {heading}
+                <span
+                  class="ml-auto flex text-fg-subtle transition-transform duration-150 group-open/nav:rotate-90"
+                  aria-hidden="true"
+                >
+                  <Icon name="chevron-right" size={12} />
+                </span>
+              </summary>
+              {links}
+            </details>
+          ) : (
+            <div class="flex flex-col gap-1">
+              <h2 class={headingBase}>{heading}</h2>
+              {links}
+            </div>
+          );
+        })
+      }
     </nav>
   </div>
 </aside>
@@ -152,166 +226,14 @@ const isActive = (slug: string) => {
       toggle.setAttribute('aria-expanded', String(open));
     };
     toggle.addEventListener('click', () => setOpen(!panel.classList.contains('open')));
+    // Navigating closes the drawer; collapse on in-page anchor clicks too.
     panel.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') setOpen(false);
     });
+    // Reset state when the viewport grows past the mobile breakpoint.
     window.matchMedia('(min-width: 768px)').addEventListener('change', (e) => {
       if (e.matches) setOpen(false);
     });
   }
 </script>
-
-<style>
-  .sidebar {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    overflow-y: auto;
-    overflow-x: hidden;
-    border-right: 1px solid var(--color-border);
-    padding: 28px 16px 32px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    background: var(--color-bg);
-  }
-  .sidebar-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 0 4px;
-  }
-  .sidebar-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  /* The hamburger toggle is mobile-only; the panel is always open on desktop. */
-  .sidebar-toggle {
-    display: none;
-    cursor: pointer;
-    appearance: none;
-    border: 0;
-    background: transparent;
-    border-radius: var(--radius-sm);
-    padding: 8px;
-    color: var(--color-fg);
-    transition: background 0.12s var(--ease-out-soft);
-  }
-  .sidebar-toggle:hover {
-    background: var(--color-surface-2);
-  }
-  .sidebar-toggle-bars {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    width: 20px;
-  }
-  .sidebar-toggle-bars span {
-    display: block;
-    height: 2px;
-    border-radius: 1px;
-    background: currentColor;
-  }
-  @media (max-width: 767.98px) {
-    .sidebar {
-      position: static;
-      height: auto;
-      overflow: visible;
-      border-right: none;
-      border-bottom: 1px solid var(--color-border);
-      padding: 12px 16px;
-      gap: 12px;
-    }
-    .sidebar-toggle {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .sidebar-panel {
-      display: none;
-    }
-    .sidebar-panel.open {
-      display: flex;
-    }
-  }
-  .sidebar-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
-  }
-  .sidebar-group {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .sidebar-group-title {
-    padding: 4px 8px;
-    margin: 0 0 2px;
-  }
-
-  .sidebar-group--collapsible > summary {
-    list-style: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    user-select: none;
-    border-radius: var(--radius-sm);
-  }
-  .sidebar-group--collapsible > summary::-webkit-details-marker {
-    display: none;
-  }
-  .sidebar-group--collapsible > summary:hover {
-    color: var(--color-fg);
-  }
-  .sidebar-group-caret {
-    transition: transform 120ms ease;
-    font-size: 10px;
-    line-height: 1;
-  }
-  .sidebar-group--collapsible[open] > summary .sidebar-group-caret {
-    transform: rotate(90deg);
-  }
-  .sidebar-group ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-  }
-  .sidebar-link {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 5px 8px;
-    border-radius: var(--radius-sm);
-    color: var(--color-fg-muted);
-    font-size: 13px;
-    text-decoration: none;
-    line-height: 1.5;
-    transition:
-      background 0.12s var(--ease-out-soft),
-      color 0.12s var(--ease-out-soft);
-  }
-  .sidebar-link:hover {
-    color: var(--color-fg);
-    background: var(--color-surface-2);
-  }
-  .sidebar-link.is-active {
-    color: var(--color-fg);
-    font-weight: 500;
-    background: var(--color-surface-2);
-  }
-  .sidebar-badge {
-    font-size: 10px;
-    color: var(--color-fg-subtle);
-    padding: 1px 5px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-sm);
-    margin-left: auto;
-  }
-</style>

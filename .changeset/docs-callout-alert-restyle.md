@@ -12,5 +12,6 @@
 - `accordion-item` trigger tightened to 15px with 14px vertical padding.
 - Fenced code blocks use a light/dark Shiki theme pair (`github-light` / `github-dark`, `defaultColor: false`) switched by the theme class, so they share the token surface and border with `CodeBlock` in both themes instead of rendering dark in light mode. Every fenced block gets a hover-revealed copy button.
 - `OnThisPage` is clerk-style: a continuous rail drawn as an SVG path measured from the rendered links, bending where the heading depth changes, with the active segment in the foreground color and a dot at its end. No-JS fallback keeps a plain 1px rail and the active text style. Labels are 13px with a titled header.
+- `SidebarNav` is rebuilt on utilities and gains group icons (`icon` on groups and items), native `<details>` folding for `collapsed` groups, direct-path slugs, translated `groupKey`/`labelKey`, and optional top-level tabs (`tab` on a group) rendered as a segmented row once two or more tabs exist. Group headings drop the mono eyebrow for a 12px medium label. The template config no longer lists the apps/docs-only Components and Blocks groups.
 
 Mirrored into `packages/templates/{starter,docs}` and `apps/docs`.
