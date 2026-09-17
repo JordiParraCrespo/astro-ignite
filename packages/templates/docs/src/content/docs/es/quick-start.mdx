@@ -1,7 +1,7 @@
 ---
 title: Inicio rápido
 description: Crea un sitio nuevo con astro-ignite en menos de un minuto.
-lastUpdated: 2026-05-10
+lastUpdated: 2026-09-17
 tags: [empezar]
 ---
 
@@ -13,7 +13,7 @@ import Step from '@/components/docs/Step.astro';
 
 ## Requisitos
 
-- Node 22.12+
+- Node 22.12+ (requerido por Astro 7)
 - Un gestor de paquetes — pnpm (recomendado), npm, yarn o bun
 
 <Steps>
@@ -27,7 +27,25 @@ import Step from '@/components/docs/Step.astro';
       <CodeBlock filename="bun" prompt>{`bun create astro-ignite mi-sitio`}</CodeBlock>
     </CodeGroup>
 
-    Se te harán seis preguntas. Acepta los valores por defecto o cámbialos; el flujo dura unos quince segundos.
+    Se te harán ocho preguntas — tipo de plantilla, directorio del proyecto, nombre del sitio, URL del sitio, locale por defecto, locales adicionales, proveedor de email y gestor de paquetes — y después verás un resumen y una confirmación final **Proceed?**. Acepta los valores por defecto o cámbialos; el flujo dura unos quince segundos.
+
+  </Step>
+
+  <Step title="Saltarse las preguntas (opcional)">
+    Cada pregunta tiene su flag, así que todo puede ejecutarse sin interacción — útil en CI o cuando ya sabes lo que quieres:
+
+    <CodeBlock filename="terminal" language="bash" prompt>{`npx astro-ignite bootstrap mis-docs --yes --template=docs --pm=pnpm`}</CodeBlock>
+
+    | Flag | Qué hace |
+    | --- | --- |
+    | `-y`, `--yes` | Omite todas las preguntas (y la confirmación **Proceed?**) y usa los valores por defecto: plantilla `starter`, `https://example.com`, locale `en`, email con Resend |
+    | `--template=<starter\|docs>` | Elige la plantilla sin preguntar |
+    | `--pm=<pnpm\|npm\|yarn\|bun>` | Fuerza un gestor de paquetes en lugar de detectarlo |
+    | `--no-install` | Solo genera el proyecto; ejecuta la instalación tú después |
+    | `--no-git` | Omite `git init` |
+
+    `npm create astro-ignite@latest` es un shim sobre `npx astro-ignite bootstrap` (`init` es un alias), así que los flags funcionan con ambos. `npx astro-ignite bootstrap --help` muestra la misma lista.
+
   </Step>
 
   <Step title="Ejecutarlo">
@@ -37,7 +55,8 @@ pnpm install
 pnpm dev`}
     </CodeBlock>
 
-    Abre la URL que aparece en tu terminal. Verás un sitio funcional con un hero estilizado, un blog con dos entradas de ejemplo, una sección de proyectos, una página "acerca de", un formulario de contacto operativo (registra en consola en dev), páginas legales, un banner de cookies y un selector de modo oscuro.
+    Abre la URL que aparece en tu terminal. Con la plantilla `starter` verás un sitio funcional con un hero estilizado, un blog con entradas de ejemplo, una sección de proyectos, una página "acerca de", un formulario de contacto operativo (registra en consola en dev), páginas legales, un banner de cookies y un selector de modo oscuro. La plantilla `docs` te da en su lugar un sitio de documentación con barra lateral — no incluye formulario de contacto.
+
   </Step>
 
   <Step title="Hazlo tuyo">
@@ -47,14 +66,15 @@ pnpm dev`}
     2. **Identidad del sitio** en `src/config/site.ts` — nombre, URL, organización, redes
     3. **Imagen OG** en `public/og/og-default.png` (se incluye un placeholder)
     4. **Páginas legales** en `src/content/legal/{locale}/*.mdx` — los placeholders necesitan ser revisados, luego **revísalos con un abogado antes de publicar**
-    5. **Bio de autor** en `src/content/authors/jordi.json`
+    5. **Bio de autor** en `src/content/authors/jordi.json` (solo starter)
+
   </Step>
 </Steps>
 
 <Callout variant="tip" title="Sin necesidad de registrarse">
-  En desarrollo, las variables de entorno faltantes muestran logs en consola — `pnpm dev` produce un
-  flujo completo sin necesidad de crear cuentas. Configura `RESEND_API_KEY` y
-  `PUBLIC_PLAUSIBLE_DOMAIN` solo cuando vayas a producción.
+  En desarrollo, las variables de entorno faltantes muestran logs en consola — `pnpm dev` produce
+  un flujo completo sin necesidad de crear cuentas. Configura `RESEND_API_KEY` (formulario de
+  contacto del starter) y `PUBLIC_PLAUSIBLE_DOMAIN` solo cuando vayas a producción.
 </Callout>
 
 A continuación, consulta [Escribir contenido](/es/authoring) para ver los componentes que puedes usar en cualquier página MDX.

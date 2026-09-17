@@ -1,7 +1,7 @@
 ---
 title: Introducción
 description: Qué es astro-ignite, por qué existe y qué obtienes de fábrica.
-lastUpdated: 2026-05-10
+lastUpdated: 2026-09-17
 tags: [empezar]
 landing: true
 ---
@@ -48,8 +48,8 @@ import Callout from '@/components/docs/Callout.astro';
 <CardGroup cols={3}>
   <Card>
     <CardHeader>
-      <CardTitle>Lighthouse 100</CardTitle>
-      <CardDescription>Puntuaciones móviles verificadas en CI, no deseadas.</CardDescription>
+      <CardTitle>Lighthouse ≥95</CardTitle>
+      <CardDescription>Un mínimo móvil verificado en CI; los 100 son la meta, 95 es el gate.</CardDescription>
     </CardHeader>
   </Card>
   <Card>
@@ -67,7 +67,7 @@ import Callout from '@/components/docs/Callout.astro';
   <Card>
     <CardHeader>
       <CardTitle>Formulario de contacto</CardTitle>
-      <CardDescription>Astro Actions, Zod y Resend o SMTP.</CardDescription>
+      <CardDescription>Astro Actions, Zod y Resend o SMTP — en la plantilla starter.</CardDescription>
     </CardHeader>
   </Card>
   <Card>
@@ -98,15 +98,21 @@ import Callout from '@/components/docs/Callout.astro';
   </Step>
 </Steps>
 
+## Hecho también para agentes
+
+- Cada proyecto generado incluye un `AGENTS.md` (con un enlace simbólico `CLAUDE.md`) para que los agentes sigan las prácticas fijadas cuando editen tu sitio.
+- Cada página de docs también se sirve como Markdown en `<ruta>.md`; `/llms.txt` indexa el sitio y `/llms-full.txt` contiene todo el corpus. Un menú "Usa esta página con IA" en cada página copia el Markdown o lo abre en un asistente.
+- El registro de componentes sigue el esquema de registro de shadcn, así que cualquier átomo se instala en cualquier proyecto con `npx shadcn@latest add @astro-ignite/<nombre>`. No existe un comando `astro-ignite add` — el CLI solo hace bootstrap.
+
 ## Qué no es
 
-astro-ignite no es un framework. No existe un paquete npm en tiempo de ejecución llamado
-`astro-ignite`. Tras generar el proyecto, el código es tuyo y puedes editar cualquier cosa. Expulsar
-es gratis porque no hay nada que expulsar.
+astro-ignite no es un framework. El paquete `astro-ignite` en npm es un CLI para crear tu proyecto —
+nunca acaba siendo una dependencia en runtime del sitio generado. Tras generar el proyecto, el código
+es tuyo y puedes editar cualquier cosa. Expulsar es gratis porque no hay nada que expulsar.
 
 Tampoco es un CMS, un sistema de autenticación ni un starter de e-commerce. Es un bootstrap de sitio.
 
 <Callout variant="note" title="Pre-1.0">
-  La API y la forma de la plantilla pueden cambiar entre versiones menores. Consulta la hoja de ruta
-  para saber qué es estable y qué no lo es.
+  La API y la forma de la plantilla pueden cambiar entre versiones menores. Consulta la
+  [hoja de ruta](/es/roadmap) para saber qué es estable y qué no lo es.
 </Callout>

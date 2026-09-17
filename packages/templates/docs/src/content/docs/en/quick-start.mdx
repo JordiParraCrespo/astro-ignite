@@ -1,7 +1,7 @@
 ---
 title: Quick start
 description: Bootstrap a new astro-ignite site in under a minute.
-lastUpdated: 2026-05-10
+lastUpdated: 2026-09-17
 tags: [getting-started]
 ---
 
@@ -13,7 +13,7 @@ import Step from '@/components/docs/Step.astro';
 
 ## Prerequisites
 
-- Node 22.12+
+- Node 22.12+ (required by Astro 7)
 - A package manager — pnpm (recommended), npm, yarn, or bun
 
 <Steps>
@@ -27,7 +27,25 @@ import Step from '@/components/docs/Step.astro';
       <CodeBlock filename="bun" prompt>{`bun create astro-ignite my-site`}</CodeBlock>
     </CodeGroup>
 
-    You'll be asked six questions. Pick or accept defaults; the whole flow takes around fifteen seconds.
+    You'll be asked eight questions — template kind, project directory, site name, site URL, default locale, additional locales, email provider, and package manager — then shown a summary and a final **Proceed?** confirm. Pick or accept defaults; the whole flow takes around fifteen seconds.
+
+  </Step>
+
+  <Step title="Skip the prompts (optional)">
+    Every prompt has a flag, so the whole thing can run non-interactively — handy in CI or when you already know what you want:
+
+    <CodeBlock filename="terminal" language="bash" prompt>{`npx astro-ignite bootstrap my-docs --yes --template=docs --pm=pnpm`}</CodeBlock>
+
+    | Flag | What it does |
+    | --- | --- |
+    | `-y`, `--yes` | Skip every prompt (and the **Proceed?** confirm) and use defaults: `starter` template, `https://example.com`, locale `en`, Resend email |
+    | `--template=<starter\|docs>` | Pick the template without being asked |
+    | `--pm=<pnpm\|npm\|yarn\|bun>` | Force a package manager instead of detecting one |
+    | `--no-install` | Scaffold only; run the install yourself afterwards |
+    | `--no-git` | Skip `git init` |
+
+    `npm create astro-ignite@latest` is a shim over `npx astro-ignite bootstrap` (`init` is an alias), so the flags work with either. `npx astro-ignite bootstrap --help` prints the same list.
+
   </Step>
 
   <Step title="Run it">
@@ -37,7 +55,8 @@ pnpm install
 pnpm dev`}
     </CodeBlock>
 
-    Open the URL printed in your terminal. You should see a working site with a styled hero, a blog with two example posts, a projects showcase, an about page, a working contact form (logs to console in dev), legal pages, a cookie banner, and a dark-mode toggle.
+    Open the URL printed in your terminal. With the `starter` template you should see a working site with a styled hero, a blog with example posts, a projects showcase, an about page, a working contact form (logs to console in dev), legal pages, a cookie banner, and a dark-mode toggle. The `docs` template gives you a sidebar-driven documentation site instead — it ships no contact form.
+
   </Step>
 
   <Step title="Make it yours">
@@ -47,13 +66,15 @@ pnpm dev`}
     2. **Site identity** in `src/config/site.ts` — name, URL, organization, social
     3. **OG image** at `public/og/og-default.png` (placeholder ships)
     4. **Legal pages** in `src/content/legal/{locale}/*.mdx` — placeholders need filling, then **review with counsel before publishing**
-    5. **Author bio** in `src/content/authors/jordi.json`
+    5. **Author bio** in `src/content/authors/jordi.json` (starter only)
+
   </Step>
 </Steps>
 
 <Callout variant="tip" title="No account signups required">
-  In dev, missing env vars fall back to console logs — `pnpm dev` produces a complete working flow
-  without any account signup. Set `RESEND_API_KEY` and `PUBLIC_PLAUSIBLE_DOMAIN` only when you go to
+  In dev, missing env vars fall back to console logs — `pnpm dev` produces a
+  complete working flow without any account signup. Set `RESEND_API_KEY`
+  (starter contact form) and `PUBLIC_PLAUSIBLE_DOMAIN` only when you go to
   production.
 </Callout>
 
