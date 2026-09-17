@@ -98,7 +98,7 @@ const year = new Date().getFullYear();
     <div
       class="mx-auto flex max-w-[80rem] flex-col gap-2 px-5 py-5 sm:flex-row sm:items-center sm:justify-between"
     >
-      <Text variant="small" tone="muted">© {year} {orgName}. {t('footer.rights')}</Text>
+      <Text variant="small" tone="muted">{`© ${year} ${orgName}. `}{t('footer.rights')}</Text>
       <Text variant="small" tone="muted">{t('footer.builtWith')}</Text>
     </div>
   </div>

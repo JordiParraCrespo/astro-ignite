@@ -12,7 +12,7 @@ export type Props = {
 
 const { name, description, kind = 'component', file, anno } = Astro.props;
 const t = useTranslations(Astro.currentLocale);
-const install = `npx astro-ignite add ${name}`;
+const install = `npx shadcn@latest add @astro-ignite/${name}`;
 const root = kind === 'block' ? '/blocks' : '/components';
 const backKey = (kind === 'block' ? 'blocks.back' : 'components.back') as TranslationKey;
 const installKey = (kind === 'block' ? 'blocks.install' : 'components.install') as TranslationKey;
