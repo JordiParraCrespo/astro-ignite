@@ -1,7 +1,7 @@
 ---
 title: Introduction
 description: What astro-ignite is, why it exists, and what it gives you out of the box.
-lastUpdated: 2026-05-10
+lastUpdated: 2026-09-17
 tags: [getting-started]
 landing: true
 ---
@@ -41,39 +41,49 @@ Most Astro starters land at one of two extremes: a minimal `hello world` you ass
 
 You get:
 
-- **Lighthouse 100s on mobile** out of the box, CI-enforced
+- **Lighthouse ≥95 on mobile**, CI-enforced — 95 is the floor, 100s are the aim
 - **Native i18n** with one code path for monolingual and multilingual sites
 - **Typed Schema.org JSON-LD** built from `schema-dts`
-- **A working contact form** with Astro Actions, Zod, and your choice of Resend or SMTP
+- **A working contact form** (starter template) with Astro Actions, Zod, and your choice of Resend or SMTP
 - **Cookie banner + legal templates** that don't pretend to be legal advice
-- **Self-hosted Geist Sans + Mono** with zero CLS on swap
+- **System font stack** — zero font fetches, zero layout shift
 - **Pure-Astro components** — no React/Vue/Svelte runtime weighing down the page
+- **AI-ready output** — every scaffold ships an `AGENTS.md` (with a `CLAUDE.md` symlink) so agents follow the locked practices when they edit your site
 
 <Callout variant="note" title="Pre-1.0">
   The API and template shape may shift between minor versions. See the
-  ROADMAP for what's stable and what's not.
+  [roadmap](/roadmap) for what's stable and what's not.
 </Callout>
 
 ## Architecture
 
-- **Shadcn-style CLI, not a framework.** `create-astro-ignite` is a one-shot scaffolder. Once installed it's gone from your `node_modules` — no imports, no plugin, no auto-update, no telemetry.
-- **Three concerns, three packages.** The CLI lives in `packages/create-astro-ignite/`. The real Astro projects live in `packages/templates/<kind>/` (`starter`, `docs`, …). A shadcn-style component registry lives in `packages/registry/`. The CLI assembles a template; the registry's atoms ship pre-installed.
+- **Shadcn-style CLI, not a framework.** `create-astro-ignite` is a one-shot scaffolder. Once it has run it's gone from your `node_modules` — no imports, no plugin, no auto-update, no telemetry.
+- **Three concerns, four packages.** The CLI is split in two: `packages/create-astro-ignite/` is a thin `npm create` shim, and `packages/astro-ignite/` is the real CLI core (prompts, scaffold, types). The real Astro projects live in `packages/templates/<kind>/` (`starter`, `docs`). A shadcn-style component registry lives in `packages/registry/`. The CLI assembles a template; the registry's atoms ship pre-installed.
 - **Apps are canonical scaffolded outputs.** `apps/site` and `apps/docs` are mirrors generated from the templates, not sources.
+- **The registry is shadcn-consumable.** `registry.json` follows the shadcn registry schema, so any atom installs into any project with `npx shadcn@latest add @astro-ignite/<name>`; the payloads are served from `https://astroignite.dev/r/<name>.json`. There is no `astro-ignite add` command — the CLI only bootstraps.
 
 ## Tech stack
 
-- **Astro 7** with native i18n, content collections, and Astro Actions (`@astrojs/node@^11` adapter)
-- **Tailwind v4** utilities resolving the `--color-*` design tokens; scoped `<style>` only where Tailwind can't reach (keyframes, view-transition selectors); `inlineStylesheets: 'always'` puts the full stylesheet in the HTML on first paint — no separate critical-CSS step
+- **Astro 7** with native i18n, content collections, and Astro Actions (`@astrojs/node@^11` adapter in the starter)
+- **Tailwind v4** utilities resolving the `--color-*` design tokens; scoped `<style>` only where Tailwind can't reach (keyframes, view-transition selectors, runtime-dynamic CSS computed from props, MDX prose under `<slot/>`), each flagged with a `<!-- tailwind-exception: -->` comment; `inlineStylesheets: 'always'` puts the full stylesheet in the HTML on first paint — no separate critical-CSS step
 - **CSS variables for design tokens**; tri-state dark mode via class flip
 - **Astro + vanilla JS for every component** — no React/Vue/Svelte/Radix anywhere. Native HTML primitives first (`<details>`, `<dialog>`, popover API); custom elements when native won't do
 - **`schema-dts`** typed JSON-LD composed via `@graph`
-- **Astro Actions + Zod** + Resend or SMTP for the contact form
-- **Plausible**, env- and consent-gated; **self-hosted Geist Sans + Mono**
-- **pnpm@9.15.0** workspaces, **tsup** for the CLI, **vitest**, **changesets**, **Lighthouse CI** (mobile + desktop, hard gate)
+- **Astro Actions + Zod** + Resend or SMTP for the contact form (starter only)
+- **Plausible**, env- and consent-gated; **system font stack** (`ui-sans-serif` / `ui-monospace`)
+- **pnpm@9.15.0** workspaces, **tsup** for the CLI, **vitest**, **changesets**, **Lighthouse CI** (mobile only, ≥95 hard gate; `pnpm perf:budget` runs the same budget locally as an advisory)
+
+## AI-native docs
+
+The docs template is built to be read by agents as well as people:
+
+- Every page is also served as Markdown at `<path>.md`
+- `/llms.txt` indexes the site; `/llms-full.txt` is the whole corpus in one file
+- A "Use this page with AI" menu on each page copies the Markdown or opens it in an assistant
 
 ## What it isn't
 
-astro-ignite is not a framework. The `astro-ignite` package on npm is a CLI for bootstrapping and maintaining your project — it never becomes a runtime dependency of the scaffolded site. After scaffolding, you own every line and can edit anything. Eject is free because there's nothing to eject.
+astro-ignite is not a framework. The `astro-ignite` package on npm is a CLI for bootstrapping your project — it never becomes a runtime dependency of the scaffolded site. After scaffolding, you own every line and can edit anything. Eject is free because there's nothing to eject.
 
 It's also not a CMS, an auth system, or an e-commerce starter. It's a site bootstrap.
 
