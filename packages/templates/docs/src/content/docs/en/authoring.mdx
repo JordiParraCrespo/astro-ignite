@@ -1,50 +1,79 @@
 ---
 title: Writing content
-description: The MDX components you can drop into any documentation page — steps, cards, tabbed code, callouts, API fields, trees, changelogs, diagrams, and more.
-lastUpdated: 2026-06-13
+description: The MDX components you can drop into any documentation page — hero, steps, cards, tabbed code, callouts, API fields, trees, changelogs, diagrams, and more.
+lastUpdated: 2026-09-17
 tags: [guide]
 ---
 
-import Banner from '@/components/docs/Banner.astro';
-import Callout from '@/components/docs/Callout.astro';
-import CodeBlock from '@/components/docs/CodeBlock.astro';
-import CodeGroup from '@/components/docs/CodeGroup.astro';
-import CardGroup from '@/components/docs/CardGroup.astro';
-import Columns from '@/components/docs/Columns.astro';
-import Expandable from '@/components/docs/Expandable.astro';
-import Frame from '@/components/docs/Frame.astro';
-import Icon from '@/components/docs/Icon.astro';
-import Mermaid from '@/components/docs/Mermaid.astro';
-import ParamField from '@/components/docs/ParamField.astro';
-import ResponseField from '@/components/docs/ResponseField.astro';
-import Steps from '@/components/docs/Steps.astro';
-import Step from '@/components/docs/Step.astro';
-import Tile from '@/components/docs/Tile.astro';
-import Tiles from '@/components/docs/Tiles.astro';
-import Tree from '@/components/docs/Tree.astro';
-import Update from '@/components/docs/Update.astro';
 import Card from '@/components/ui/card/card.astro';
 import CardHeader from '@/components/ui/card/card-header.astro';
 import CardTitle from '@/components/ui/card/card-title.astro';
 import CardDescription from '@/components/ui/card/card-description.astro';
-import Accordion from '@/components/ui/accordion/accordion.astro';
-import AccordionItem from '@/components/ui/accordion/accordion-item.astro';
-import Tabs from '@/components/ui/tabs/tabs.astro';
-import TabsContent from '@/components/ui/tabs/tabs-content.astro';
-import TabsList from '@/components/ui/tabs/tabs-list.astro';
-import TabsTrigger from '@/components/ui/tabs/tabs-trigger.astro';
-import Tooltip from '@/components/ui/tooltip.astro';
 
-Every component below is wired into the docs renderer in
-`src/components/docs/mdx-components.ts` — import it at the top of any `.mdx`
-file and use it inline. They are plain Astro + vanilla JS, token-resolved, and
-yours to edit.
+Every component below is registered in `src/components/docs/mdx-components.ts`,
+the component map handed to every rendered doc. Inside the `docs` collection you
+use them directly — no `import` line needed. They are plain Astro + vanilla JS,
+token-resolved, and yours to edit.
+
+<Callout variant="info" title="When you do need an import">
+  Only atoms that are *not* in the map need one. The `Card` family is the usual
+  case — this page imports `Card`, `CardHeader`, `CardTitle`, and `CardDescription`
+  from `@/components/ui/card/` at the top. Outside the docs collection (a plain
+  `.astro` page, a blog post), import every component you use.
+</Callout>
+
+## Hero
+
+`<Hero>` is the opening block of a landing page. It owns the page's `<h1>`, so
+pair it with `landing: true` in the frontmatter — the layout then skips its
+standard header, drops the on-this-page column, and lets the content run full
+width. The default slot is the lede; the `actions` slot is a row of buttons.
+
+```mdx
+---
+title: Introduction
+description: What this project is and what it gives you out of the box.
+landing: true
+---
+
+<Hero title="Ship a docs site in five prompts." eyebrow="astro-ignite">
+  One paragraph on what this is.
+  <Fragment slot="actions">
+    <Button href="/quick-start" size="lg">Quick start</Button>
+    <Button href="https://github.com/…" variant="outline" size="lg">GitHub</Button>
+  </Fragment>
+</Hero>
+```
+
+Props: `title` (required), `eyebrow` (small label above the title), `class`.
+The introduction page of this site is built exactly this way.
+
+## Buttons
+
+The `Button` atom is registered for MDX, so you can use it in a hero's
+`actions` slot or anywhere inline. With `href` it renders an anchor; without it,
+a `<button>`. Variants: `default` · `secondary` · `outline` · `ghost` ·
+`destructive` · `link`. Sizes: `sm` · `md` · `lg` · `icon`.
+
+<div class="flex flex-wrap gap-2">
+  <Button href="/quick-start">Default</Button>
+  <Button href="/quick-start" variant="secondary">Secondary</Button>
+  <Button href="/quick-start" variant="outline">Outline</Button>
+  <Button href="/quick-start" variant="ghost">Ghost</Button>
+  <Button href="/quick-start" variant="link">Link</Button>
+</div>
+
+```mdx
+<Button href="/quick-start" size="lg">Quick start</Button>
+<Button href="/quick-start" variant="outline">Secondary action</Button>
+```
 
 ## Callouts
 
-`<Callout>` highlights important content with a tinted border block. Six
-variants cover the common intents — neutral, informational, positive, confirmatory,
-cautionary, and destructive.
+`<Callout>` highlights important content. The layout follows the shadcn alert:
+a two-column grid with a fixed icon column, the title tinted to the variant's
+status color, and the body in muted foreground. Tint and border derive from the
+status tokens, so the block adapts to light and dark themes without extra tokens.
 
 <Callout variant="note" title="Note (default)">
   An informational aside or context the reader should know.
@@ -81,27 +110,28 @@ cautionary, and destructive.
 
 ## Steps
 
-Use `<Steps>` with nested `<Step title="…">` for ordered walkthroughs. Numbers
-and the connecting rail are drawn with a CSS counter, so reordering renumbers
-automatically.
+Use `<Steps>` with nested `<Step title="…">` for ordered walkthroughs. The
+number badge and the connecting rail are CSS counters drawn by `Step.astro`
+through Tailwind `before:` / `after:` utilities — no client JS, and reordering
+renumbers automatically.
 
 <Steps>
-  <Step title="Add the import">Import `Steps` and `Step` at the top of your MDX file.</Step>
-  <Step title="Wrap your actions">Each `<Step>` becomes a numbered item.</Step>
+  <Step title="Open the wrapper">Start a `<Steps>` block anywhere in your MDX.</Step>
+  <Step title="Add the items">Each `<Step>` becomes a numbered item; the rail joins them.</Step>
   <Step title="Ship">No client JS, no configuration.</Step>
 </Steps>
 
 ```mdx
 <Steps>
-  <Step title="Add the import">…</Step>
-  <Step title="Wrap your actions">…</Step>
+  <Step title="Open the wrapper">…</Step>
+  <Step title="Add the items">…</Step>
 </Steps>
 ```
 
 ## Card groups
 
 `<CardGroup cols={2|3|4}>` lays cards out in a responsive grid that collapses to
-one column on mobile. Pair it with the `Card` atom.
+one column on mobile. Pair it with the `Card` atom (imported — see the note at the top).
 
 <CardGroup cols={2}>
   <Card>
@@ -122,19 +152,30 @@ one column on mobile. Pair it with the `Card` atom.
 
 `<CodeGroup>` combines several `<CodeBlock>` children into one tabbed panel.
 Each child's `filename` becomes a tab — the npm/pnpm/yarn pattern, or
-curl/python/node for an API.
+curl/python/node for an API. The active tab persists in `localStorage` and syncs
+every group on the page, so picking `pnpm` once holds across snippets and visits.
 
 <CodeGroup>
-  <CodeBlock filename="npm" prompt>{`npm i astro-ignite`}</CodeBlock>
-  <CodeBlock filename="pnpm" prompt>{`pnpm add astro-ignite`}</CodeBlock>
-  <CodeBlock filename="yarn" prompt>{`yarn add astro-ignite`}</CodeBlock>
+  <CodeBlock filename="npm" prompt>{`npm create astro-ignite@latest my-docs`}</CodeBlock>
+  <CodeBlock filename="pnpm" prompt>{`pnpm create astro-ignite my-docs`}</CodeBlock>
+  <CodeBlock filename="yarn" prompt>{`yarn create astro-ignite my-docs`}</CodeBlock>
 </CodeGroup>
 
-## Highlighted code
+`<CodeBlock>` on its own takes `filename`, `language`, and `prompt`. `prompt`
+renders a muted `$ ` shell prefix as a pseudo-element, so it is never part of the
+copied text.
 
-Fenced code blocks support line highlighting and diff markers at build time
-(Shiki transformers — zero client cost). Add `{1,3-5}` after the language, or
-annotate lines inline.
+## Fenced code
+
+Plain fenced blocks are highlighted at build time by Shiki with a light/dark
+theme pair — `github-light` and `github-dark` — and the page picks the one
+matching the site theme, so code follows the toggle with no flash. Every fenced
+block gets a copy button that appears on hover (or focus), and multi-line blocks
+get a line-number gutter.
+
+Two Shiki transformers add line highlighting and diff markers — zero client
+cost. Add `{1,3-5}` after the language, or annotate lines inline with
+`// [!code highlight]`, `// [!code ++]`, and `// [!code --]`.
 
 ```js {2}
 const config = {
@@ -196,7 +237,8 @@ Wrap any inline element with `<Tooltip content="…">` to add a
 ## Expandable
 
 `<Expandable>` is an inline disclosure for nested object shapes — distinct from
-Accordion. Nest `<ParamField>` rows inside to document properties.
+Accordion. Nest `<ParamField>` rows inside to document properties. Props:
+`title` (required), `hint`, `open`.
 
 <Expandable title="author" hint="object · 3 properties" open>
   <ParamField name="name" type="string">
@@ -212,7 +254,8 @@ Accordion. Nest `<ParamField>` rows inside to document properties.
 
 `<ParamField>` documents request parameters; `<ResponseField>` documents
 response fields. Both take `type`, `required`, `default`, and `deprecated`;
-`ParamField` adds a `location` pill (`body`, `query`, `path`, `header`).
+`ParamField` adds a `location` pill (`body`, `query`, `path`, `header`). The
+rows below document a made-up deploy endpoint to show the anatomy.
 
 #### Request parameters
 
@@ -226,7 +269,7 @@ response fields. Both take `type`, `required`, `default`, and `deprecated`;
   Transactional email config. Expand to see `provider` and `from`.
 </ParamField>
 <ParamField name="legacySlug" type="string" location="body" deprecated>
-  Removed in `>=0.6`. Use the `redirects` map instead.
+  Kept for older clients. Use the `redirects` map instead.
 </ParamField>
 
 #### Response fields
@@ -239,13 +282,14 @@ response fields. Both take `type`, `required`, `default`, and `deprecated`;
 ## Icon
 
 `<Icon name="…" size={…} />` renders an inline lucide-style stroke icon in
-`currentColor`. Run <Icon name="terminal" size={15} /> `ignite dev` to start,
-then deploy with <Icon name="rocket" size={15} /> one command.
+`currentColor`. Run <Icon name="terminal" size={15} /> `pnpm dev` to start,
+then deploy with <Icon name="rocket" size={15} /> one command. Props: `name`
+(required), `size` (px, default 16), `stroke` (default 1.6).
 
 Sizes: <Icon name="zap" size={14} /> <Icon name="zap" size={18} /> <Icon name="zap" size={24} /> <Icon name="zap" size={32} />
 
 ```mdx
-Run <Icon name="terminal" size={15} /> `ignite dev` to start.
+Run <Icon name="terminal" size={15} /> `pnpm dev` to start.
 ```
 
 ## Tree
@@ -253,7 +297,7 @@ Run <Icon name="terminal" size={15} /> `ignite dev` to start.
 `<Tree items={…}>` renders a file/folder tree. Connectors are box-drawing
 glyphs — copy/paste safe, no images. Icons derive from the structure
 (`folder` when an item has children, `file-code` for code extensions) and can
-be overridden per item.
+be overridden per item with `icon`; `tag` adds a label and `muted` dims a row.
 
 <Tree
   items={[
@@ -271,7 +315,7 @@ be overridden per item.
             { name: 'lib/', icon: 'folder', muted: true, tag: 'empty' },
           ],
         },
-        { name: 'astro.config.ts' },
+        { name: 'astro.config.mjs' },
         { name: 'plan.md', tag: 'generated' },
         { name: 'package.json' },
       ],
@@ -283,24 +327,26 @@ be overridden per item.
 
 `<Update>` renders dated changelog entries on a timeline. The rail connecting
 consecutive entries draws itself — no `last` prop. Tags `minor`, `patch`, and
-`breaking`/`major` are color-coded.
+`breaking`/`major` are color-coded. The entries below are sample content for a
+fictional project, not a real changelog.
 
-<Update date="May 22" version="0.5.0" tag="minor" title="Planning & budgets">
-  Added `ignite plan` for previewing the route graph, and per-route bundle budgets via
-  frontmatter.
+<Update date="Sep 12" version="1.2.0" tag="minor" title="Search across locales">
+  The search index now covers every locale, and results open in the language you are
+  reading.
 </Update>
-<Update date="May 04" version="0.4.2" tag="patch" title="AVIF by default">
-  Image pipeline now emits AVIF with a WebP fallback. No config change needed.
+<Update date="Aug 30" version="1.1.3" tag="patch" title="Sidebar overflow">
+  Long group labels wrap instead of clipping on narrow viewports.
 </Update>
-<Update date="Apr 18" version="0.4.0" tag="breaking" title="Email is explicit">
-  `config.email.from` is now required. Add the field or remove the email block.
+<Update date="Aug 02" version="1.0.0" tag="breaking" title="Node 22 minimum">
+  Node 20 is no longer supported. Update your CI image before upgrading.
 </Update>
 
 ## Mermaid
 
 `<Mermaid code={…}>` renders a diagram from mermaid source, themed by the
 design tokens. The library loads lazily — only when a diagram scrolls into
-view — so pages without diagrams ship zero extra JS.
+view — so pages without diagrams ship zero extra JS. Diagrams re-render when
+the theme toggles.
 
 <Mermaid
   code={`graph TD
@@ -319,7 +365,7 @@ takes any content. Columns collapse to one per row below the `md` breakpoint.
   <Card>
     <CardHeader>
       <CardTitle>Fast by default</CardTitle>
-      <CardDescription>Zero-JS islands, AVIF images, enforced bundle budgets.</CardDescription>
+      <CardDescription>Inlined CSS, no framework runtime, Lighthouse gated in CI.</CardDescription>
     </CardHeader>
   </Card>
   <Card>
@@ -330,8 +376,8 @@ takes any content. Columns collapse to one per row below the `md` breakpoint.
   </Card>
   <Card>
     <CardHeader>
-      <CardTitle>Typed config</CardTitle>
-      <CardDescription>Schema-validated at build — typos fail the build.</CardDescription>
+      <CardTitle>Typed frontmatter</CardTitle>
+      <CardDescription>Zod-validated at build — a bad field fails the build.</CardDescription>
     </CardHeader>
   </Card>
 </Columns>
@@ -340,11 +386,12 @@ takes any content. Columns collapse to one per row below the `md` breakpoint.
 
 `<Banner>` is a site-wide announcement strip. Drop the `solid` variant into a
 layout above the header, or use `subtle` inline. Dismissal persists per `id` in
-localStorage — bump the id to resurface a new announcement.
+localStorage — bump the id to resurface a new announcement. Props: `id`
+(required), `variant`, `icon`, `href`, `linkText`, `dismissible`.
 
 <div class="overflow-hidden rounded-md border border-border">
-  <Banner id="demo-solid" href="#banner" linkText="Read the post">
-    astro-ignite 0.5 is out — planning, budgets, and AVIF by default.
+  <Banner id="demo-solid" href="#banner" linkText="Read more">
+    A demo banner — dismiss it and reload; it stays hidden until the id changes.
   </Banner>
 </div>
 
@@ -355,30 +402,23 @@ localStorage — bump the id to resurface a new announcement.
 ## Tiles
 
 `<Tiles>` + `<Tile>` build a compact navigation grid — lighter than cards. Each
-tile lifts on hover, the border darkens, and the arrow nudges right.
+tile lifts on hover, the border darkens, and the arrow nudges right. `Tile`
+takes `title`, `href`, and an optional `icon`.
 
 <Tiles cols={3}>
-  <Tile icon="rocket" title="Quickstart" href="/quick-start">
-    Five prompts to a deployed, audited site.
+  <Tile icon="rocket" title="Quick start" href="/quick-start">
+    Scaffold, run, and deploy a site in under five minutes.
   </Tile>
-  <Tile icon="terminal" title="CLI reference" href="/quick-start">
-    Every flag, command, and exit code.
+  <Tile icon="book" title="Writing content" href="/authoring">
+    Every MDX component you can drop into a page.
   </Tile>
-  <Tile icon="book" title="Guides" href="/authoring">
-    i18n, email, analytics, and SEO walkthroughs.
-  </Tile>
-  <Tile icon="package" title="Config schema" href="/quick-start">
-    The typed shape of astro.config.ts.
-  </Tile>
-  <Tile icon="git-branch" title="Deploy API" href="/quick-start">
-    Trigger and poll builds over REST.
-  </Tile>
-  <Tile icon="shield" title="Security" href="/quick-start">
-    CSP, headers, and consent defaults.
+  <Tile icon="git-branch" title="Roadmap" href="/roadmap">
+    What is stable, what is next, and what is out of scope.
   </Tile>
 </Tiles>
 
 <Callout variant="note" title="Add your own">
   These components live in `src/components/docs/`. Copy one as a template for a new
-  component, then register it in `mdx-components.ts` to use it across every doc page.
+  component, then register it in `mdx-components.ts` to use it across every doc page
+  without an import.
 </Callout>

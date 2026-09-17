@@ -1,49 +1,142 @@
 ---
 title: Escribir contenido
-description: Los componentes MDX que puedes usar en cualquier página de documentación — pasos, tarjetas, código en pestañas, marcos y bloques de código resaltados.
-lastUpdated: 2026-06-06
+description: Los componentes MDX que puedes usar en cualquier página de documentación — hero, pasos, tarjetas, código en pestañas, avisos, campos de API y diagramas.
+lastUpdated: 2026-09-17
 tags: [guía]
 ---
 
-import Callout from '@/components/docs/Callout.astro';
-import CodeBlock from '@/components/docs/CodeBlock.astro';
-import CodeGroup from '@/components/docs/CodeGroup.astro';
-import CardGroup from '@/components/docs/CardGroup.astro';
-import Frame from '@/components/docs/Frame.astro';
-import Steps from '@/components/docs/Steps.astro';
-import Step from '@/components/docs/Step.astro';
 import Card from '@/components/ui/card/card.astro';
 import CardHeader from '@/components/ui/card/card-header.astro';
 import CardTitle from '@/components/ui/card/card-title.astro';
 import CardDescription from '@/components/ui/card/card-description.astro';
 
-Cada componente de abajo está registrado en el renderizador de documentación en
-`src/components/docs/mdx-components.ts` — impórtalo al inicio de cualquier archivo
-`.mdx` y úsalo en línea. Son Astro + JS puro, resueltos por tokens, y tuyos para editar.
+Todos los componentes de abajo están registrados en
+`src/components/docs/mdx-components.ts`, el mapa de componentes que recibe cada
+documento renderizado. Dentro de la colección `docs` los usas directamente — sin
+ninguna línea de `import`. Son Astro + JS puro, resueltos por tokens, y tuyos
+para editar.
+
+<Callout variant="info" title="Cuándo sí necesitas un import">
+  Solo los átomos que *no* están en el mapa lo necesitan. La familia `Card` es el
+  caso habitual — esta página importa `Card`, `CardHeader`, `CardTitle` y
+  `CardDescription` desde `@/components/ui/card/` al inicio. Fuera de la colección
+  de documentación (una página `.astro` normal, una entrada del blog), importa
+  cada componente que uses.
+</Callout>
+
+## Hero
+
+`<Hero>` es el bloque de apertura de una página de portada. Es el dueño del
+`<h1>` de la página, así que combínalo con `landing: true` en el frontmatter — el
+layout omite entonces su cabecera estándar, quita la columna «en esta página» y
+deja que el contenido ocupe todo el ancho. El slot por defecto es la entradilla;
+el slot `actions` es una fila de botones.
+
+```mdx
+---
+title: Introducción
+description: Qué es este proyecto y qué obtienes de fábrica.
+landing: true
+---
+
+<Hero title="Publica un sitio de documentación en cinco prompts." eyebrow="astro-ignite">
+  Un párrafo sobre qué es esto.
+  <Fragment slot="actions">
+    <Button href="/es/quick-start" size="lg">Inicio rápido</Button>
+    <Button href="https://github.com/…" variant="outline" size="lg">GitHub</Button>
+  </Fragment>
+</Hero>
+```
+
+Props: `title` (obligatorio), `eyebrow` (etiqueta pequeña sobre el título), `class`.
+La página de introducción de este sitio está construida exactamente así.
+
+## Botones
+
+El átomo `Button` está registrado para MDX, así que puedes usarlo en el slot
+`actions` de un hero o en cualquier parte en línea. Con `href` renderiza un
+enlace; sin él, un `<button>`. Variantes: `default` · `secondary` · `outline` ·
+`ghost` · `destructive` · `link`. Tamaños: `sm` · `md` · `lg` · `icon`.
+
+<div class="flex flex-wrap gap-2">
+  <Button href="/es/quick-start">Default</Button>
+  <Button href="/es/quick-start" variant="secondary">Secondary</Button>
+  <Button href="/es/quick-start" variant="outline">Outline</Button>
+  <Button href="/es/quick-start" variant="ghost">Ghost</Button>
+  <Button href="/es/quick-start" variant="link">Link</Button>
+</div>
+
+```mdx
+<Button href="/es/quick-start" size="lg">Inicio rápido</Button>
+<Button href="/es/quick-start" variant="outline">Acción secundaria</Button>
+```
+
+## Avisos
+
+`<Callout>` destaca contenido importante. El diseño sigue el alert de shadcn:
+una cuadrícula de dos columnas con una columna fija para el icono, el título
+teñido con el color de estado de la variante y el cuerpo en tono atenuado. El
+tinte y el borde derivan de los tokens de estado, así que el bloque se adapta a
+los temas claro y oscuro sin tokens adicionales.
+
+<Callout variant="note" title="Nota (por defecto)">
+  Un apunte informativo o contexto que el lector debería conocer.
+</Callout>
+
+<Callout variant="info" title="Info">
+  Contexto de fondo que conviene saber antes de empezar.
+</Callout>
+
+<Callout variant="tip" title="Consejo">
+  Una sugerencia que hace algo más rápido o más fácil.
+</Callout>
+
+<Callout variant="check" title="Comprobación">
+  Confirma que un paso funcionó — qué aspecto tiene el éxito.
+</Callout>
+
+<Callout variant="warning" title="Atención">
+  Algo que el lector debería revisar antes de continuar.
+</Callout>
+
+<Callout variant="danger" title="Advertencia">
+  Una acción que podría causar pérdida de datos o roturas.
+</Callout>
+
+```mdx
+<Callout variant="tip" title="Título personalizado">
+  El cuerpo va en el slot por defecto — cualquier MDX vale.
+</Callout>
+```
+
+`variant` acepta `note` · `info` · `tip` · `check` · `warning` · `danger` (por defecto: `note`).
+`title` es opcional — cada variante tiene un título predeterminado.
 
 ## Pasos
 
-Usa `<Steps>` con `<Step title="…">` anidados para guías ordenadas. Los números
-y la línea conectora se dibujan con un contador CSS, así que reordenar renumera
-automáticamente.
+Usa `<Steps>` con `<Step title="…">` anidados para guías ordenadas. La insignia
+numérica y la línea conectora son contadores CSS que `Step.astro` dibuja con
+utilidades `before:` / `after:` de Tailwind — sin JS de cliente, y reordenar
+renumera automáticamente.
 
 <Steps>
-  <Step title="Añade el import">Importa `Steps` y `Step` al inicio de tu archivo MDX.</Step>
-  <Step title="Envuelve tus acciones">Cada `<Step>` se convierte en un elemento numerado.</Step>
+  <Step title="Abre el contenedor">Empieza un bloque `<Steps>` en cualquier punto de tu MDX.</Step>
+  <Step title="Añade los elementos">Cada `<Step>` se convierte en un elemento numerado; la línea los une.</Step>
   <Step title="Publica">Sin JS de cliente, sin configuración.</Step>
 </Steps>
 
 ```mdx
 <Steps>
-  <Step title="Añade el import">…</Step>
-  <Step title="Envuelve tus acciones">…</Step>
+  <Step title="Abre el contenedor">…</Step>
+  <Step title="Añade los elementos">…</Step>
 </Steps>
 ```
 
 ## Grupos de tarjetas
 
 `<CardGroup cols={2|3|4}>` coloca las tarjetas en una cuadrícula responsiva que
-colapsa a una columna en móvil. Combínalo con el átomo `Card`.
+colapsa a una columna en móvil. Combínalo con el átomo `Card` (importado — mira
+la nota del principio).
 
 <CardGroup cols={2}>
   <Card>
@@ -64,19 +157,32 @@ colapsa a una columna en móvil. Combínalo con el átomo `Card`.
 
 `<CodeGroup>` combina varios `<CodeBlock>` en un panel con pestañas. El
 `filename` de cada hijo se convierte en una pestaña — el patrón npm/pnpm/yarn,
-o curl/python/node para una API.
+o curl/python/node para una API. La pestaña activa se guarda en `localStorage`
+y se sincroniza con todos los grupos de la página, así que elegir `pnpm` una vez
+se mantiene entre fragmentos y visitas.
 
 <CodeGroup>
-  <CodeBlock filename="npm" prompt>{`npm i astro-ignite`}</CodeBlock>
-  <CodeBlock filename="pnpm" prompt>{`pnpm add astro-ignite`}</CodeBlock>
-  <CodeBlock filename="yarn" prompt>{`yarn add astro-ignite`}</CodeBlock>
+  <CodeBlock filename="npm" prompt>{`npm create astro-ignite@latest my-docs`}</CodeBlock>
+  <CodeBlock filename="pnpm" prompt>{`pnpm create astro-ignite my-docs`}</CodeBlock>
+  <CodeBlock filename="yarn" prompt>{`yarn create astro-ignite my-docs`}</CodeBlock>
 </CodeGroup>
 
-## Código resaltado
+`<CodeBlock>` por sí solo acepta `filename`, `language` y `prompt`. `prompt`
+renderiza un prefijo de shell `$ ` atenuado como pseudoelemento, de modo que
+nunca forma parte del texto copiado.
 
-Los bloques de código admiten resaltado de líneas y marcadores de diff en tiempo
-de compilación (transformadores de Shiki — coste cero en cliente). Añade
-`{1,3-5}` tras el lenguaje, o anota las líneas en línea.
+## Bloques de código
+
+Los bloques de código normales se resaltan en tiempo de compilación con Shiki y
+un par de temas claro/oscuro — `github-light` y `github-dark` — y la página
+elige el que coincide con el tema del sitio, así que el código sigue al
+interruptor sin parpadeos. Todo bloque de código recibe un botón de copiar que
+aparece al pasar el cursor (o al enfocarlo), y los bloques de varias líneas
+muestran una columna con números de línea.
+
+Dos transformadores de Shiki añaden resaltado de líneas y marcadores de diff —
+coste cero en cliente. Añade `{1,3-5}` tras el lenguaje, o anota las líneas con
+`// [!code highlight]`, `// [!code ++]` y `// [!code --]`.
 
 ```js {2}
 const config = {
@@ -100,7 +206,234 @@ capturas y diagramas se vean intencionales. Coloca dentro un átomo `Image` o un
   <img src="/og/og-default.png" alt="Tarjeta de previsualización Open Graph" width="600" height="315" />
 </Frame>
 
+## Pestañas
+
+La familia de átomos `Tabs` está registrada para MDX, así que los selectores
+funcionan sin imports. Las flechas del teclado mueven entre disparadores.
+
+<Tabs defaultValue="npm">
+  <TabsList>
+    <TabsTrigger value="npm">npm</TabsTrigger>
+    <TabsTrigger value="pnpm">pnpm</TabsTrigger>
+    <TabsTrigger value="yarn">yarn</TabsTrigger>
+  </TabsList>
+  <TabsContent value="npm">Ejecuta `npm create astro-ignite my-site`.</TabsContent>
+  <TabsContent value="pnpm">Ejecuta `pnpm create astro-ignite my-site`.</TabsContent>
+  <TabsContent value="yarn">Ejecuta `yarn create astro-ignite my-site`.</TabsContent>
+</Tabs>
+
+## Acordeón
+
+`<Accordion>` + `<AccordionItem>` — `<details name>` nativo, así que la
+agrupación de «solo uno abierto» no necesita estado en JS.
+
+<Accordion>
+  <AccordionItem title="¿Esta plantilla usa Starlight?">
+    No — las primitivas de documentación se componen a partir de los componentes base de
+    astro-ignite y son propiedad de este repositorio.
+  </AccordionItem>
+  <AccordionItem title="¿Puedo añadir un segundo idioma?">
+    Sí. Añádelo a `siteConfig.locales` y las rutas paralelas se activan.
+  </AccordionItem>
+</Accordion>
+
+## Tooltip
+
+Envuelve cualquier elemento en línea con `<Tooltip content="…">` para añadir
+una <Tooltip content="Como esta."><span>pista al pasar el cursor o enfocar</span></Tooltip>.
+
+## Expandable
+
+`<Expandable>` es un desplegable en línea para formas de objetos anidados —
+distinto del acordeón. Anida filas `<ParamField>` dentro para documentar
+propiedades. Props: `title` (obligatorio), `hint`, `open`.
+
+<Expandable title="author" hint="object · 3 properties" open>
+  <ParamField name="name" type="string">
+    Nombre visible renderizado en la firma y en el JSON-LD.
+  </ParamField>
+  <ParamField name="handle" type="string">Se usa para construir la URL canónica del autor.</ParamField>
+  <ParamField name="avatar" type="ImageMetadata">Import local, optimizado en tiempo de compilación.</ParamField>
+</Expandable>
+<Expandable title="metadata" hint="object · 6 properties" />
+<Expandable title="redirects" hint="Record<string, string>" />
+
+## Campos
+
+`<ParamField>` documenta parámetros de petición; `<ResponseField>` documenta
+campos de respuesta. Ambos aceptan `type`, `required`, `default` y `deprecated`;
+`ParamField` añade una píldora `location` (`body`, `query`, `path`, `header`).
+Las filas de abajo documentan un endpoint de despliegue inventado para mostrar
+la anatomía.
+
+#### Parámetros de petición
+
+<ParamField name="site" type="string" location="body" required>
+  Slug del sitio de destino. Minúsculas y guiones — coincide con el nombre del directorio.
+</ParamField>
+<ParamField name="locales" type="string[]" location="body" default="['en']">
+  Idiomas a generar. Cada uno añade un subárbol de rutas y un bloque en el sitemap.
+</ParamField>
+<ParamField name="email" type="object" location="body">
+  Configuración del email transaccional. Despliega para ver `provider` y `from`.
+</ParamField>
+<ParamField name="legacySlug" type="string" location="body" deprecated>
+  Se mantiene para clientes antiguos. Usa el mapa `redirects` en su lugar.
+</ParamField>
+
+#### Campos de respuesta
+
+<ResponseField name="id" type="string">Id único del despliegue, con formato `dep_xxxxxxxx`.</ResponseField>
+<ResponseField name="status" type="'queued' | 'building' | 'ready'">
+  Etapa actual del ciclo de vida. Consulta hasta que sea `ready`.
+</ResponseField>
+
+## Icono
+
+`<Icon name="…" size={…} />` renderiza un icono de trazo estilo lucide en línea
+con `currentColor`. Ejecuta <Icon name="terminal" size={15} /> `pnpm dev` para
+arrancar y despliega con <Icon name="rocket" size={15} /> un solo comando.
+Props: `name` (obligatorio), `size` (px, por defecto 16), `stroke` (por defecto 1.6).
+
+Tamaños: <Icon name="zap" size={14} /> <Icon name="zap" size={18} /> <Icon name="zap" size={24} /> <Icon name="zap" size={32} />
+
+```mdx
+Ejecuta <Icon name="terminal" size={15} /> `pnpm dev` para arrancar.
+```
+
+## Árbol
+
+`<Tree items={…}>` renderiza un árbol de archivos y carpetas. Los conectores
+son glifos de dibujo de cajas — seguros para copiar y pegar, sin imágenes. Los
+iconos se derivan de la estructura (`folder` cuando un elemento tiene hijos,
+`file-code` para extensiones de código) y se pueden sobrescribir por elemento
+con `icon`; `tag` añade una etiqueta y `muted` atenúa una fila.
+
+<Tree
+  items={[
+    {
+      name: 'my-site/',
+      children: [
+        {
+          name: 'src/',
+          children: [
+            {
+              name: 'pages/',
+              children: [{ name: 'index.astro' }, { name: 'blog/[slug].astro' }],
+            },
+            { name: 'content/', children: [{ name: 'config.ts', icon: 'file' }] },
+            { name: 'lib/', icon: 'folder', muted: true, tag: 'empty' },
+          ],
+        },
+        { name: 'astro.config.mjs' },
+        { name: 'plan.md', tag: 'generated' },
+        { name: 'package.json' },
+      ],
+    },
+  ]}
+/>
+
+## Update
+
+`<Update>` renderiza entradas de changelog con fecha sobre una línea de tiempo.
+La línea que conecta entradas consecutivas se dibuja sola — sin prop `last`. Las
+etiquetas `minor`, `patch` y `breaking`/`major` tienen colores propios. Las
+entradas de abajo son contenido de ejemplo de un proyecto ficticio, no un
+changelog real.
+
+<Update date="12 sep" version="1.2.0" tag="minor" title="Búsqueda en todos los idiomas">
+  El índice de búsqueda ahora cubre todos los idiomas, y los resultados se abren en el
+  idioma que estás leyendo.
+</Update>
+<Update date="30 ago" version="1.1.3" tag="patch" title="Desbordamiento de la barra lateral">
+  Las etiquetas de grupo largas ahora se parten en varias líneas en lugar de recortarse en
+  pantallas estrechas.
+</Update>
+<Update date="02 ago" version="1.0.0" tag="breaking" title="Node 22 como mínimo">
+  Node 20 ya no está soportado. Actualiza tu imagen de CI antes de actualizar.
+</Update>
+
+## Mermaid
+
+`<Mermaid code={…}>` renderiza un diagrama a partir de código mermaid, con el
+tema de los tokens de diseño. La librería se carga de forma perezosa — solo
+cuando un diagrama entra en el viewport — así que las páginas sin diagramas no
+envían JS adicional. Los diagramas se vuelven a renderizar al cambiar de tema.
+
+<Mermaid
+  code={`graph TD
+  A[src/] --> B[parsear MDX]
+  B --> C{¿presupuesto ok?}
+  C -->|sí| D[emitir estático]
+  C -->|no| E[fallar CI]`}
+/>
+
+## Columnas
+
+`<Columns cols={2|3|4}>` es el contenedor de cuadrícula genérico — a diferencia
+de `CardGroup` acepta cualquier contenido. Las columnas colapsan a una por fila
+por debajo del punto de ruptura `md`.
+
+<Columns cols={3}>
+  <Card>
+    <CardHeader>
+      <CardTitle>Rápido por defecto</CardTitle>
+      <CardDescription>CSS en línea, sin runtime de framework, Lighthouse verificado en CI.</CardDescription>
+    </CardHeader>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>i18n integrado</CardTitle>
+      <CardDescription>Rutas por idioma, sitemaps y etiquetas hreflang.</CardDescription>
+    </CardHeader>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Frontmatter tipado</CardTitle>
+      <CardDescription>Validado con Zod al compilar — un campo incorrecto rompe la build.</CardDescription>
+    </CardHeader>
+  </Card>
+</Columns>
+
+## Banner
+
+`<Banner>` es una franja de anuncio para todo el sitio. Coloca la variante
+`solid` en un layout por encima de la cabecera, o usa `subtle` en línea. El
+descarte se guarda por `id` en localStorage — cambia el id para volver a
+mostrar un anuncio nuevo. Props: `id` (obligatorio), `variant`, `icon`, `href`,
+`linkText`, `dismissible`.
+
+<div class="overflow-hidden rounded-md border border-border">
+  <Banner id="demo-solid" href="#banner" linkText="Leer más">
+    Un banner de demostración — descártalo y recarga; sigue oculto hasta que cambie el id.
+  </Banner>
+</div>
+
+<Banner id="demo-subtle" variant="subtle">
+  Mantenimiento programado el sábado de 02:00 a 03:00 UTC. Las builds pueden encolarse.
+</Banner>
+
+## Tiles
+
+`<Tiles>` + `<Tile>` construyen una cuadrícula de navegación compacta — más
+ligera que las tarjetas. Cada tile se eleva al pasar el cursor, el borde se
+oscurece y la flecha se desplaza a la derecha. `Tile` acepta `title`, `href` y
+un `icon` opcional.
+
+<Tiles cols={3}>
+  <Tile icon="rocket" title="Inicio rápido" href="/es/quick-start">
+    Genera, ejecuta y despliega un sitio en menos de cinco minutos.
+  </Tile>
+  <Tile icon="book" title="Escribir contenido" href="/es/authoring">
+    Todos los componentes MDX que puedes usar en una página.
+  </Tile>
+  <Tile icon="git-branch" title="Hoja de ruta" href="/es/roadmap">
+    Qué es estable, qué viene después y qué queda fuera.
+  </Tile>
+</Tiles>
+
 <Callout variant="note" title="Crea el tuyo">
   Estos componentes viven en `src/components/docs/`. Copia uno como plantilla para un
-  componente nuevo y regístralo en `mdx-components.ts` para usarlo en todas las páginas.
+  componente nuevo y regístralo en `mdx-components.ts` para usarlo en todas las páginas
+  sin necesidad de import.
 </Callout>
