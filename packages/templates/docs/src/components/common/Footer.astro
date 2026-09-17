@@ -1,6 +1,7 @@
 ---
 import { getRelativeLocaleUrl } from 'astro:i18n';
 
+import Brand from '@/components/common/Brand.astro';
 import Text from '@/components/ui/text.astro';
 import { siteConfig } from '@/config/site';
 import { useTranslations } from '@/i18n';
@@ -8,6 +9,9 @@ import { useTranslations } from '@/i18n';
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const t = useTranslations(locale);
 const siteName = siteConfig.name[locale] ?? siteConfig.name[siteConfig.defaultLocale]!;
+const orgName =
+  (siteConfig.organization[locale] ?? siteConfig.organization[siteConfig.defaultLocale])?.name ??
+  siteName;
 const description =
   siteConfig.description[locale] ?? siteConfig.description[siteConfig.defaultLocale]!;
 
@@ -18,6 +22,7 @@ const legalLinks = [
 ];
 
 const githubUrl = typeof siteConfig.social.github === 'string' ? siteConfig.social.github : null;
+const siteUrl = siteConfig.urls?.site ?? null;
 const docsHomeHref = getRelativeLocaleUrl(locale, '/');
 
 const year = new Date().getFullYear();
@@ -26,8 +31,8 @@ const year = new Date().getFullYear();
 <footer class="mt-16 border-t border-(--color-border)">
   <div class="mx-auto grid max-w-[80rem] gap-8 px-5 py-10 md:grid-cols-4">
     <div class="md:col-span-2">
-      <Text variant="body" weight="semibold">{siteName}</Text>
-      <Text variant="muted" class="mt-2 max-w-md">{description}</Text>
+      <Brand variant="lockup" size={0.32} label={siteName} />
+      <Text variant="muted" class="mt-3 max-w-md">{description}</Text>
     </div>
 
     <div>
@@ -46,7 +51,7 @@ const year = new Date().getFullYear();
     </div>
 
     {
-      githubUrl && (
+      (githubUrl || siteUrl) && (
         <div>
           <Text variant="h4" as="h3" class="mb-3">
             {t('footer.social')}
@@ -60,16 +65,29 @@ const year = new Date().getFullYear();
                 {t('nav.documentation')}
               </a>
             </li>
-            <li>
-              <a
-                href={githubUrl}
-                rel="noopener noreferrer me"
-                target="_blank"
-                class="text-sm text-(--color-fg-muted) hover:text-(--color-fg)"
-              >
-                GitHub
-              </a>
-            </li>
+            {siteUrl && (
+              <li>
+                <a
+                  href={siteUrl}
+                  rel="noopener"
+                  class="text-sm text-(--color-fg-muted) hover:text-(--color-fg)"
+                >
+                  {t('footer.website')}
+                </a>
+              </li>
+            )}
+            {githubUrl && (
+              <li>
+                <a
+                  href={githubUrl}
+                  rel="noopener noreferrer me"
+                  target="_blank"
+                  class="text-sm text-(--color-fg-muted) hover:text-(--color-fg)"
+                >
+                  GitHub
+                </a>
+              </li>
+            )}
           </ul>
         </div>
       )
@@ -80,7 +98,7 @@ const year = new Date().getFullYear();
     <div
       class="mx-auto flex max-w-[80rem] flex-col gap-2 px-5 py-5 sm:flex-row sm:items-center sm:justify-between"
     >
-      <Text variant="small" tone="muted">© {year} {siteName}. {t('footer.rights')}</Text>
+      <Text variant="small" tone="muted">© {year} {orgName}. {t('footer.rights')}</Text>
       <Text variant="small" tone="muted">{t('footer.builtWith')}</Text>
     </div>
   </div>

@@ -13,7 +13,8 @@
     "primary": "Primary",
     "pageNavigation": "Page navigation",
     "documentation": "Documentation",
-    "sidebar": "Sidebar"
+    "sidebar": "Sidebar",
+    "github": "GitHub repository"
   },
   "footer": {
     "rights": "All rights reserved.",
@@ -23,7 +24,8 @@
     "social": "Social",
     "privacy": "Privacy",
     "terms": "Terms",
-    "cookies": "Cookies"
+    "cookies": "Cookies",
+    "website": "Website"
   },
   "theme": {
     "label": "Theme",

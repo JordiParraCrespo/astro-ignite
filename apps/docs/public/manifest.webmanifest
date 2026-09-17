@@ -1,11 +1,11 @@
 {
-  "name": "astro-ignite",
-  "short_name": "astro-ignite",
-  "description": "A site bootstrapped with astro-ignite — built for SEO, performance, and i18n.",
+  "name": "astro-ignite docs",
+  "short_name": "astro-ignite docs",
+  "description": "Documentation for astro-ignite — a shadcn-style CLI for Astro.",
   "start_url": "/",
   "scope": "/",
   "display": "browser",
-  "theme_color": "#0a0a0a",
+  "theme_color": "#fafafa",
   "background_color": "#ffffff",
   "icons": [
     {
