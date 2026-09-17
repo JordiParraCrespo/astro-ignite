@@ -1,17 +1,19 @@
 ---
 title: Using components
 description: How the pre-installed atoms work — props and variants, the cn class helper, compound families, and reusing them in another project.
-lastUpdated: 2026-06-09
+lastUpdated: 2026-09-17
 tags: [guide]
 ---
 
 import Callout from '@/components/docs/Callout.astro';
 import CodeBlock from '@/components/docs/CodeBlock.astro';
 
-Both templates ship the full set of base components **pre-installed** in
+Both templates ship the base components **pre-installed** in
 `src/components/ui/` — copied from the astro-ignite registry, owned by your repo.
-There's no install step and no runtime dependency; you import them like any local
-file and edit them freely.
+23 of the registry's 24 items are there; the one exception is `copy-button`,
+which is registry-only (see [Reusing a component elsewhere](#reusing-a-component-elsewhere)
+for how to add it). There's no install step and no runtime dependency; you
+import them like any local file and edit them freely.
 
 ```astro
 ---
@@ -65,7 +67,7 @@ cn('px-3', 'py-2', isActive && 'bg-surface-2', { 'opacity-50': disabled });
 
 ## Compound families
 
-Five families ship as multiple parts — one file per part — so you compose the
+Six families ship as multiple parts — one file per part — so you compose the
 structure yourself. Import the parts you need:
 
 <CodeBlock filename="card-example.astro">{`---
@@ -93,10 +95,28 @@ The families and their parts:
 | `accordion` | accordion, accordion-item |
 | `dialog` | dialog, dialog-title, dialog-description |
 | `dropdown-menu` | dropdown-menu, dropdown-menu-item |
+| `radio-group` | radio-group, radio-group-item |
 
 Interactive ones use native primitives — `<dialog>` for dialog, the popover API
 for dropdown-menu, `<details name>` for accordion, and the `<ai-tabs>` custom
 element for tabs. No React, no Radix, no framework runtime.
+
+## Form atoms
+
+The form atoms are thin, styled wrappers over native elements — they take the
+element's own HTML attributes plus a `class` passthrough, and nothing else:
+
+| Atom | Renders | Props |
+| --- | --- | --- |
+| `select` | `<select>` | `HTMLAttributes<'select'>` + `class`; pass `<option>`s as children |
+| `checkbox` | `<input type="checkbox">` | `HTMLAttributes<'input'>` + `class` |
+| `switch` | `<input type="checkbox">` styled as a toggle | `HTMLAttributes<'input'>` + `class` |
+| `radio-group` | `<fieldset>` | `HTMLAttributes<'fieldset'>` + `class` |
+| `radio-group-item` | `<input type="radio">` | required `name` and `value`, plus `HTMLAttributes<'input'>` + `class` |
+
+So `name`, `value`, `checked`, `disabled`, `required`, `aria-*` all work as they
+would on the bare element. These four don't have a live demo page under
+[Components](/components) yet — read the source in `src/components/ui/`.
 
 ## Toasts
 
@@ -112,7 +132,17 @@ It dispatches a `window` event the `<Toaster />` listens for.
 ## Reusing a component elsewhere
 
 These atoms aren't published as an importable library — you own the copies in
-your project. To use one in a **different** project, copy the file (and its `cn`
-dependency) from the registry source at
+your project. To use one in a **different** project (or to add the registry-only
+`copy-button`), the registry is shadcn-consumable:
+
+<CodeBlock filename="terminal" language="bash">{`npx shadcn@latest add @astro-ignite/button
+npx shadcn@latest add @astro-ignite/copy-button`}</CodeBlock>
+
+Each item resolves to a payload at `https://astroignite.dev/r/<name>.json`, and
+`registryDependencies` pulls `cn` (and a family's sibling parts) in with it.
+There is no `npx astro-ignite add` — the shadcn CLI is the on-ramp.
+
+The manual route still works: copy the file (and its `cn` dependency) from the
+registry source at
 [`packages/registry/base/`](https://github.com/JordiParraCrespo/astro-ignite/tree/main/packages/registry/base).
 Compound families bring their whole folder.

@@ -1,7 +1,7 @@
 ---
 title: Templates
 description: The starting points astro-ignite ships — what each one is for, and live previews of the scaffolded output.
-lastUpdated: 2026-06-19
+lastUpdated: 2026-09-17
 tags: [getting-started]
 ---
 
@@ -22,7 +22,7 @@ Use it when you're building a product site, a personal site, a launch page, or a
 
 ## docs
 
-A documentation site built from primitives — sidebar nav, search via Pagefind, on-this-page TOC, code blocks with copy buttons, callouts, breadcrumbs. No Starlight; the whole UI is owned code you can edit.
+A documentation site built from primitives — a sidebar with group icons, collapsible groups, and top-level tabs; search via Pagefind; a clerk-style on-this-page TOC rail; theme-aware code blocks (a light + dark Shiki pair) with copy buttons; breadcrumbs; and `landing: true` pages with a `Hero`. It ships an MDX component kit (Callout, Steps, Tabs, CardGroup, Mermaid diagrams, and more) and an AI-readable surface: every page as `<path>.md`, `/llms.txt`, `/llms-full.txt`, and a "use this page with AI" menu. No Starlight; the whole UI is owned code you can edit.
 
 - **Live preview**: [`docs-starter.astroignite.dev`](https://docs-starter.astroignite.dev)
 - **Source**: [`packages/templates/docs/`](https://github.com/JordiParraCrespo/astro-ignite/tree/main/packages/templates/docs)
@@ -58,11 +58,13 @@ npm create astro-ignite@latest my-site -- --yes --template=docs`}
 | Blog + projects collections | ✓ | — |
 | Contact form (Astro Actions) | ✓ | — |
 | Email integration (Resend / SMTP) | ✓ | — |
-| Node adapter (`@astrojs/node`) | ✓ (requires Node 22.12+) | — (static output) |
+| Node adapter (`@astrojs/node`) | ✓ (`output: 'static'` + the adapter for Actions; requires Node 22.12+) | — (static output) |
 | Full-text search (Pagefind) | — | ✓ |
 | Sidebar navigation | — | ✓ |
 | On-page table of contents | — | ✓ |
-| Component registry (23 atoms) | ✓ | ✓ |
+| Component registry (23 pre-installed atoms; 24 in the registry) | ✓ | ✓ |
+| MDX component kit (Callout, Steps, Tabs, Mermaid, …) | — | ✓ |
+| AI-readable Markdown surface (`.md` routes, `llms.txt`) | — | ✓ |
 | i18n with parallel routes | ✓ | ✓ |
 | Legal pages + cookie banner | ✓ | ✓ |
 | Dark mode | ✓ | ✓ |

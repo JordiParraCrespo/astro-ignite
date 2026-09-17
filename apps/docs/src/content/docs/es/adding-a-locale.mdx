@@ -1,7 +1,7 @@
 ---
 title: Añadir un idioma
 description: Activa un segundo idioma — el array locales, el contenido y las cadenas de UI paralelas que espera, y qué hace el LocaleSwitcher con las brechas.
-lastUpdated: 2026-06-09
+lastUpdated: 2026-09-17
 tags: [guía]
 ---
 
@@ -86,6 +86,23 @@ elegancia:
   página localizada enlaza a sus hermanas — los buscadores ven las relaciones sin
   trabajo extra.
 </Callout>
+
+## Qué más depende de `siteConfig.locales`
+
+El array de idiomas es el único interruptor de cada superficie por idioma, no
+solo de las rutas:
+
+- **RSS por idioma.** `/rss.xml` sirve el idioma por defecto; cada idioma no
+  predeterminado obtiene `/<lang>/rss.xml` desde `src/pages/[lang]/rss.xml.ts`.
+- **Rutas Markdown** _(plantilla docs)_. Una página de docs obtiene su gemela
+  `<ruta>.md` solo cuando su idioma está en `siteConfig.locales` — un archivo
+  traducido en una carpeta no configurada no renderiza nada, ni en HTML ni en
+  Markdown.
+- **`/llms.txt` y `/llms-full.txt`** _(plantilla docs)_. Ambos incluyen todos
+  los idiomas configurados (el predeterminado primero); los encabezados de
+  sección de `llms.txt` ganan un sufijo de idioma en cuanto hay más de un idioma
+  activo.
+
 
 <Callout variant="tip" title="El contenido sin traducir queda invisible, no roto">
   Entrega un idioma solo con las páginas que has traducido. Añade el resto con el

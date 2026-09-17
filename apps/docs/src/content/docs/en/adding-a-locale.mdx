@@ -1,7 +1,7 @@
 ---
 title: Adding a locale
 description: Turn on a second language — the locales array, the parallel content and UI strings it expects, and what the LocaleSwitcher does with gaps.
-lastUpdated: 2026-06-09
+lastUpdated: 2026-09-17
 tags: [guide]
 ---
 
@@ -84,6 +84,21 @@ gracefully:
   each localized page links its siblings — search engines see the relationships
   without extra work.
 </Callout>
+
+## What else keys off `siteConfig.locales`
+
+The locales array is the single switch for every locale-scoped surface, not just
+the routes:
+
+- **Per-locale RSS.** `/rss.xml` serves the default locale; each non-default
+  locale gets `/<lang>/rss.xml` from `src/pages/[lang]/rss.xml.ts`.
+- **Markdown routes** _(docs template)_. A doc page gets its `<path>.md` twin
+  only when its locale is in `siteConfig.locales` — a translated file in a
+  folder that isn't configured renders nothing, in HTML or Markdown.
+- **`/llms.txt` and `/llms-full.txt`** _(docs template)_. Both include every
+  configured locale (default first); `llms.txt` section headings gain a
+  language suffix once more than one locale is active.
+
 
 <Callout variant="tip" title="Untranslated content stays invisible, not broken">
   Ship a locale with only the pages you've translated. Add the rest over time;

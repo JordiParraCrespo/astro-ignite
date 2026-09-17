@@ -1,7 +1,7 @@
 ---
 title: Plantillas
 description: Los puntos de partida que ofrece astro-ignite — para qué sirve cada uno, con previsualizaciones en vivo del proyecto generado.
-lastUpdated: 2026-06-19
+lastUpdated: 2026-09-17
 tags: [empezar]
 ---
 
@@ -22,7 +22,7 @@ La opción por defecto. Un sitio de marketing con colecciones de blog y proyecto
 
 ## docs
 
-Un sitio de documentación construido desde primitivas — barra lateral, buscador con Pagefind, índice "en esta página", bloques de código con botón de copiar, callouts, breadcrumbs. Sin Starlight; toda la UI es código tuyo que puedes editar.
+Un sitio de documentación construido desde primitivas — una barra lateral con iconos de grupo, grupos plegables y pestañas de nivel superior; buscador con Pagefind; un carril de índice "en esta página" estilo clerk; bloques de código conscientes del tema (un par Shiki claro + oscuro) con botón de copiar; breadcrumbs; y páginas `landing: true` con un `Hero`. Incluye un kit de componentes MDX (Callout, Steps, Tabs, CardGroup, diagramas Mermaid y más) y una superficie legible por IA: cada página como `<ruta>.md`, `/llms.txt`, `/llms-full.txt` y un menú "usa esta página con IA". Sin Starlight; toda la UI es código tuyo que puedes editar.
 
 - **Previsualización en vivo**: [`docs-starter.astroignite.dev`](https://docs-starter.astroignite.dev)
 - **Código**: [`packages/templates/docs/`](https://github.com/JordiParraCrespo/astro-ignite/tree/main/packages/templates/docs)
@@ -59,11 +59,13 @@ npm create astro-ignite@latest mi-sitio -- --yes --template=docs`}
 | Colecciones blog + proyectos | ✓ | — |
 | Formulario de contacto (Astro Actions) | ✓ | — |
 | Integración de email (Resend / SMTP) | ✓ | — |
-| Adaptador Node (`@astrojs/node`) | ✓ (requiere Node 22.12+) | — (salida estática) |
+| Adaptador Node (`@astrojs/node`) | ✓ (`output: 'static'` + el adaptador para Actions; requiere Node 22.12+) | — (salida estática) |
 | Búsqueda de texto completo (Pagefind) | — | ✓ |
 | Navegación lateral | — | ✓ |
 | Índice de contenido en página | — | ✓ |
-| Registro de componentes (23 átomos) | ✓ | ✓ |
+| Registro de componentes (23 átomos preinstalados; 24 en el registro) | ✓ | ✓ |
+| Kit de componentes MDX (Callout, Steps, Tabs, Mermaid, …) | — | ✓ |
+| Superficie Markdown legible por IA (rutas `.md`, `llms.txt`) | — | ✓ |
 | i18n con rutas paralelas | ✓ | ✓ |
 | Páginas legales + banner de cookies | ✓ | ✓ |
 | Modo oscuro | ✓ | ✓ |

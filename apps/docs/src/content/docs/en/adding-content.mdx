@@ -1,7 +1,7 @@
 ---
 title: Adding content
 description: Write a blog post, a project case study, or a docs page — the per-locale folder layout, frontmatter schemas, and the parallel-route rule.
-lastUpdated: 2026-06-09
+lastUpdated: 2026-09-17
 tags: [guide]
 ---
 
@@ -86,8 +86,11 @@ Lives at `/projects/acme-redesign`.
 ## Docs page
 
 In the **docs** template, the `docs` collection loads `<locale>/<slug>.mdx`.
-Frontmatter is `title` + `description` (40–160), with optional `tags`,
-`lastUpdated`, and `draft`:
+Frontmatter is `title` (≤70) + `description` (40–160), with optional `tags`,
+`lastUpdated`, `draft`, `canonical` (a URL, for republished content), `noindex`
+(hide from search engines, `llms.txt`, and `llms-full.txt`), `readingTime` (a
+minutes override; auto-computed from word count if omitted), and `landing` (see
+below):
 
 ```mdx
 ---
@@ -102,7 +105,39 @@ Sidebar, breadcrumbs, on-this-page, and prev/next all derive from the
 collection — add this file and it slots into the nav.
 ```
 
-Reshape the sidebar order/grouping in `src/config/sidebar.ts`.
+Reshape the sidebar in `src/config/sidebar.ts`. Each group takes an `icon`,
+`collapsed: true` to fold it into a native `<details>` by default, and a `tab`
+that sorts groups into top-level sections — the segmented tab row only renders
+once two or more distinct tabs exist. Items reference a doc slug, an absolute
+path, or an external URL, and can carry their own `icon`; `groupKey` /
+`labelKey` point at i18n dictionary keys for translatable labels.
+
+### Landing pages
+
+Set `landing: true` and open the body with the `Hero` component — the layout
+then skips its standard title header, drops the on-this-page column, and lets
+the content run full width:
+
+```mdx
+---
+title: Introduction
+description: What this project is, who it's for, and the fastest way to a first successful build.
+landing: true
+---
+
+import Hero from '@/components/docs/Hero.astro';
+import Button from '@/components/ui/button.astro';
+
+<Hero title="Ship a docs site in five prompts." eyebrow="astro-ignite">
+  One paragraph on what this is.
+  <Fragment slot="actions">
+    <Button href="/quick-start" size="lg">Quick start</Button>
+  </Fragment>
+</Hero>
+```
+
+`Hero` owns the page's `<h1>`; the default slot is the lede and the `actions`
+slot a row of buttons.
 
 ## The parallel-route rule
 
