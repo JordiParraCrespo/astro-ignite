@@ -1,7 +1,12 @@
 @import 'tailwindcss';
 
 /* =============================================================================
- * Design tokens — Zinc-scale, dark-first, no accent.
+ * Design tokens — Zinc-scale, dark-first, plus one warm accent.
+ *
+ * `--color-accent` (coral) marks links, the active sidebar item and the
+ * on-this-page marker. Buttons stay monochrome on `--color-primary`, so the
+ * accent reads as a signal rather than paint. The marketing site is strictly
+ * monochrome; the accent is a docs-surface decision.
  *
  * Sourced from the Claude Design handoff (`/tmp/claude-design/.../tokens.css`).
  * Naming follows shadcn convention: --bg, --fg, --primary, --ring, etc.

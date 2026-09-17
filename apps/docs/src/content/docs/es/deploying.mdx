@@ -1,7 +1,7 @@
 ---
 title: Despliegue
 description: Publica en Node, Cloudflare Pages, Netlify o Vercel — y cómo funciona la acción de servidor del formulario de contacto en hosts por lo demás estáticos.
-lastUpdated: 2026-06-09
+lastUpdated: 2026-09-17
 tags: [guía]
 ---
 
@@ -19,6 +19,13 @@ servidor?**
   para que ese endpoint tenga dónde correr. Para desplegar en otro sitio,
   cambias el adaptador para que coincida con el host.
 
+<Callout variant="warning" title="Node ≥ 22.12 en la máquina de compilación">
+  Ambas plantillas corren sobre Astro 7, que requiere **Node 22.12 o más
+  reciente**. Establece la versión de Node en los ajustes de compilación de tu
+  host (o en `.nvmrc` / `engines`) antes del primer despliegue — una imagen por
+  defecto más antigua falla en la instalación.
+</Callout>
+
 <Callout variant="note" title="Páginas estáticas en cualquier caso">
   Incluso con un adaptador, `output: 'static'` significa que cada página es HTML
   pre-renderizado. Solo el endpoint de la acción se renderiza en el servidor — así
@@ -34,6 +41,14 @@ Si no hay código de servidor, la compilación es portable:
 
 Apunta Cloudflare Pages, Netlify, GitHub Pages o cualquier CDN a `dist/`. Comando
 de compilación `pnpm build`, directorio de salida `dist`. Listo.
+
+<Callout variant="warning" title="Plantilla docs: ejecuta el script build del paquete">
+  La plantilla docs indexa la búsqueda en un hook `postbuild` —
+  `"postbuild": "pagefind --site dist"` en su `package.json`. Configura el
+  comando de compilación del host como `pnpm build` (o `npm run build`), **no**
+  `astro build` a secas: el binario pelado se salta el hook y el sitio se
+  publica sin índice de búsqueda.
+</Callout>
 
 ## Node
 

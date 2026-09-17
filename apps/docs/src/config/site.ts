@@ -20,6 +20,11 @@ export interface SiteConfig {
     mastodon?: string;
     bluesky?: string;
   };
+  /** Optional external URLs the docs chrome links to (e.g. the marketing site). */
+  urls?: {
+    /** Marketing / product site, when the docs live on a subdomain. */
+    site?: string;
+  };
   logo: string;
   defaultOgImage: string | Record<string, string>;
   /** Optional Twitter card handle (e.g. `@you`). */
@@ -56,11 +61,17 @@ export const siteConfig: SiteConfig = {
   },
 
   organization: {
-    en: { name: 'Docs' },
-    es: { name: 'Docs' },
+    en: { name: 'astro-ignite' },
+    es: { name: 'astro-ignite' },
   },
 
-  social: {},
+  social: {
+    github: 'https://github.com/JordiParraCrespo/astro-ignite',
+  },
+
+  urls: {
+    site: 'https://astroignite.dev',
+  },
 
   logo: '/favicon.svg',
   defaultOgImage: '/og/og-default.png',

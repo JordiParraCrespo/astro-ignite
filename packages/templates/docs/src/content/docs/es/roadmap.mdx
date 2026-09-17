@@ -1,7 +1,7 @@
 ---
 title: Roadmap
 description: Cómo evoluciona astro-ignite hacia el lanzamiento 0.2.0 y más allá.
-lastUpdated: 2026-06-09
+lastUpdated: 2026-09-17
 tags: [filosofía]
 ---
 
@@ -11,17 +11,17 @@ El roadmap completo vive en [`ROADMAP.md`](https://github.com/JordiParraCrespo/a
 
 ## Lanzamiento (0.2.0)
 
-La primera versión pública. Dos plantillas de nivel de producción — `starter` y `docs` — bien diseñadas, listas para IA, documentadas de principio a fin y publicadas a través de un pipeline de releases estable.
+La primera versión pública — npm todavía lleva la `0.1.0`, y el changelog de la 0.2.0 se va acumulando como changesets pendientes en `.changeset/`. Dos plantillas de nivel de producción — `starter` y `docs` — bien diseñadas, listas para IA, documentadas de principio a fin y publicadas a través de un pipeline de releases estable.
 
-- **Dos plantillas**, ambas diseñadas con Claude, con i18n, SEO, JSON-LD, páginas legales, fuentes, tema y Lighthouse 100s.
-- **Listas para IA**: el scaffold incluye `.claude/skills/` para que los agentes sigan las prácticas fijadas cuando editen tu sitio.
-- **Documentadas**: guías de personalización más una referencia en vivo de cada componente base.
+- **Dos plantillas**, ambas diseñadas con Claude, con i18n, SEO, JSON-LD, páginas legales, tema y un gate de Lighthouse ≥95 en móvil verificado en CI (los 100 son la meta, no el mínimo).
+- **Listas para IA**: cada proyecto generado incluye un `AGENTS.md` (con un enlace simbólico `CLAUDE.md`) para que los agentes sigan las prácticas fijadas cuando editen tu sitio.
+- **Documentadas**: guías de personalización más una referencia en vivo de los componentes base — 19 de los 24 átomos por ahora; los átomos de formulario (`select`, `checkbox`, `switch`, `radio-group`) y `copy-button` aún no tienen página.
 - **Consumibles desde shadcn**: el registro cumple el esquema de shadcn, así que cualquier átomo se instala en cualquier proyecto vía `npx shadcn@latest add @astro-ignite/<nombre>`.
-- **Docs nativas para IA**: Markdown por página (`<ruta>.md`), un corpus `/llms-full.txt` y un menú "usa esta página con IA" — la parte estática de la historia de docs agent-first.
+- **Docs nativas para IA**: Markdown por página (`<ruta>.md`), `/llms.txt` y `/llms-full.txt`, y un menú "usa esta página con IA" — la parte estática de la historia de docs agent-first.
 
 ## La escalera de versiones
 
-- **0.3.0** — más plantillas (una variante `blog`); un comando nativo `astro-ignite add <componente>` + un servidor MCP del registro; un nivel de _blocks_ en el registro (PricingCard primero); la capa agéntica de las docs (un servidor MCP generado a partir de las docs, búsqueda Ask-AI en la página).
+- **0.3.0** — más plantillas (una variante `blog`); un comando nativo `astro-ignite add <componente>` + un servidor MCP del registro; un nivel de _blocks_ en el registro (el sitio de docs ya muestra un primer block; PricingCard es el siguiente); la capa agéntica de las docs (un servidor MCP generado a partir de las docs, búsqueda Ask-AI en la página).
 - **0.4.0** — selección del destino de despliegue al hacer scaffold (Cloudflare Pages / Netlify / Vercel / Node) y prompts de personalización más profundos.
 - **Más adelante** — View Transitions, más blocks, una galería de ejemplos.
 

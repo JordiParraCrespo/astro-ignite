@@ -1,7 +1,7 @@
 ---
 title: Features
 description: Everything astro-ignite ships with — what each feature does and how it works.
-lastUpdated: 2026-06-13
+lastUpdated: 2026-09-17
 tags: [getting-started, features]
 ---
 
@@ -11,7 +11,7 @@ Every feature here is wired end-to-end on first run. Nothing is mocked, stubbed,
 
 ## Internationalization
 
-Native i18n with one code path for monolingual and multilingual sites. Pick locales at scaffold time; the CLI generates locale-scoped routes, content collections, sitemap entries, and `hreflang` tags.
+Native i18n with one code path for monolingual and multilingual sites. Pick locales at scaffold time; the CLI writes them into `src/config/site.ts`, and the locale-scoped routes, content collections, sitemap entries, and `hreflang` tags already shipped in the template light up from there. The `[lang]/` parallel routes stay dormant until `siteConfig.locales` has more than one entry.
 
 - `astro.config.mjs` → `i18n.locales` drives everything else
 - `src/i18n/<locale>.json` for typed UI strings via `useTranslations()`
@@ -37,14 +37,15 @@ Privacy policy, cookie policy, and terms of service templates as content-collect
 </Callout>
 
 - `src/content/legal/<locale>/*.mdx` for the documents themselves
-- `CookieBanner.astro` defers analytics until accept/decline
+- `legal/CookieBanner.astro` defers analytics until accept/decline
 - Last-updated and version fields surface automatically in the layout
 
 ## Component registry
 
-A shadcn-style registry of pure-Astro primitives. They ship **pre-installed** in `src/components/ui/` in both templates — you own every line. To reuse one in another project, copy it from the registry source.
+A shadcn-style registry of pure-Astro primitives. 23 of them ship **pre-installed** in `src/components/ui/` in both templates — you own every line. To reuse one in another project, run `npx shadcn@latest add @astro-ignite/<name>` (or copy it from the registry source).
 
-- 24 primitives: button, link, text, badge, card, input, textarea, label, separator, alert, avatar, skeleton, kbd, tabs, accordion, dialog, dropdown-menu, tooltip, toaster, checkbox, switch, select, copy-button, radio-group
+- 24 items in the registry: button, link, text, badge, card, input, textarea, label, separator, alert, avatar, skeleton, kbd, tabs, accordion, dialog, dropdown-menu, tooltip, toast, checkbox, switch, select, radio-group, copy-button
+- `copy-button` is registry-only — it isn't pre-installed in either template; add it with the shadcn command above
 - Zero React/Vue/Svelte runtime — behaviour is custom elements + the native popover/dialog APIs
 - Browse every primitive live under [Components](/components)
 
@@ -54,11 +55,11 @@ A Zinc-based design system in CSS variables, dark by default, with a no-flash th
 
 - `src/styles/global.css` defines the design tokens
 - `ThemeToggle.astro` flips `--color-*` variables; the anti-flash script runs before paint
-- Self-hosted Geist Sans + Mono via `astro:fonts` (zero CLS on swap)
+- System font stack (`ui-sans-serif` / `ui-monospace`) — zero font fetches, zero CLS. Geist isn't self-hosted; `docs/FONTS.md` covers wiring a custom font
 
 ## Performance
 
-Lighthouse 100s on mobile, CI-enforced. Pure-Astro output, image optimization, font preloading, and zero client JS on most pages.
+Lighthouse mobile ≥95 is the floor CI enforces; the templates aim for 100s. Pure-Astro output, image optimization, and zero client JS on most pages.
 
 - `Image` from `astro:assets` for responsive `srcset` + AVIF/WebP
 - `inlineStylesheets: 'always'` ships the full stylesheet in the HTML on first paint — no render-blocking CSS round-trip
@@ -72,6 +73,22 @@ Typed content for blog posts, case-study projects, legal documents, and docs the
 - One folder per locale (e.g. `src/content/blog/en/`, `src/content/blog/es/`)
 - Cross-locale links resolved by collection id
 
+## Blog _(starter only)_
+
+The starter's blog is a full feature set, not a listing page: reading time, previous/next navigation, related posts, an on-page table of contents, per-tag archives, and paginated indexes.
+
+- `src/lib/reading-time.ts` computes minutes; `ArticleLayout` renders it
+- `src/components/blog/` holds `TableOfContents`, `PostNav`, `RelatedPosts`, `Pagination`, `PostCard`
+- `src/pages/blog/tags/[tag].astro` and `src/pages/blog/page/[page].astro` (with `[lang]/` parallels) serve archives and pagination
+
+## Docs site extras _(docs only)_
+
+The docs template ships the same production chrome as the starter — 404 and 500 pages, a footer, RSS at `/rss.xml` plus a per-locale `/<lang>/rss.xml`, and sitemap priorities (home 1.0, legal 0.3) — plus an AI-readable Markdown surface.
+
+- Every page is also served as raw Markdown at `<path>.md` (the home page at `/index.md`), built by `src/lib/docs-md.ts`
+- `/llms.txt` is a link index and `/llms-full.txt` the whole corpus in one fetch; only locales in `siteConfig.locales` are included
+- `AiActions.astro` adds a "use this page with AI" menu to the doc header: copy as Markdown, view the `.md`, or open in ChatGPT / Claude
+
 ## Forms & email _(starter only)_
 
 A working contact form built on Astro Actions, Zod validation, and your choice of Resend or SMTP at scaffold time. The `docs` template ships no contact form and no email deps.
@@ -79,6 +96,14 @@ A working contact form built on Astro Actions, Zod validation, and your choice o
 - `src/actions/index.ts` for the server action
 - `src/lib/email/` for the provider adapter
 - Spam protection is intentionally out of scope — add Turnstile or hCaptcha to taste
+
+## Tooling & agent context
+
+Both templates scaffold ready for a code agent and a formatter.
+
+- `AGENTS.md` at the project root (with a `CLAUDE.md` symlink) describes the layout, invariants, and conventions; nested `AGENTS.md` files sit in `src/components/` and `src/lib/`
+- Prettier pinned at `3.8.3` with `prettier-plugin-astro`, exposed as `pnpm format` / `pnpm format:check`
+- ESLint 9 flat config with `eslint-plugin-astro`, `eslint-plugin-jsx-a11y`, and `eslint-plugin-better-tailwindcss`, exposed as `pnpm lint` / `pnpm lint:fix`
 
 ## Where to next
 

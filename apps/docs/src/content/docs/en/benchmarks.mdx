@@ -1,7 +1,7 @@
 ---
 title: Benchmarks
 description: Lighthouse scores, methodology, and how to reproduce them.
-lastUpdated: 2026-05-10
+lastUpdated: 2026-09-17
 tags: [reference]
 ---
 
@@ -23,31 +23,44 @@ Every release of astro-ignite is gated by Lighthouse CI on the scaffolded playgr
 | Best Practices | 95         | 100         |
 | SEO            | 95         | 100         |
 
-A PR that drops any median below 95 fails CI. A PR that drops below 100 prints a warning but does not block.
+A PR that drops any category below 95 fails CI. 100 is the aspiration, not an enforced threshold — there is no warning tier between 95 and 100. (The metric assertions in `.lighthouserc.json` are separate: CLS above 0.1 errors; FCP, LCP, and TBT over budget only warn.)
 
 ## Methodology
 
-- **Build the production site** with the standard `astro build`.
-- **Serve it statically** via Lighthouse CI's bundled server (no caching tricks beyond what a normal CDN would do).
-- **Run Lighthouse 3 times per URL**, take the median to absorb single-run variance.
-- **Mobile config** with simulated 4G throttling and 4× CPU slowdown (Lighthouse defaults).
-- Run on Ubuntu in GitHub Actions on the `ubuntu-latest` image.
+- **Build the production site** with the template's standard build script.
+- **Serve it as static files.** CI points Lighthouse CI at `dist/client` (`staticDistDir`, its built-in static server — no caching tricks beyond what a normal CDN would do); the local gate boots an Astro preview server instead.
+- **Run Lighthouse 3 times per URL** (`numberOfRuns: 3`) to absorb single-run variance.
+- **Mobile config**: simulated throttling with a 412×823 mobile screen emulation (`formFactor: mobile`).
+- Run in GitHub Actions on `gha-vm` ephemeral runners, inside the pinned Playwright container image, driving the Chrome it bundles.
 
-The full Lighthouse JSON for each run is uploaded as an artifact on every CI run, so anyone can audit the numbers.
+Lighthouse CI uploads the full report of every run to its temporary public storage and links it from the job log, so anyone can audit the numbers.
 
-## Reproducing locally
+## Run it locally
+
+The local advisory gate is `pnpm perf:budget`:
+
+```bash
+pnpm perf:budget                        # home page of the starter template
+pnpm perf:budget --target @astro-ignite/template-docs --page /quick-start   # a docs-template route
+```
+
+`scripts/perf/run.mjs` builds the resolved template (starter by default; `--target` picks another package), boots an Astro preview server on a free port, runs `npx lighthouse --preset=mobile`, and compares every score and metric against `scripts/perf/budget.json`. It prints per-page numbers and exits 0 on pass, 1 on any bust. It measures one route per run, so pass `--page` for each route you care about.
+
+It needs a Chrome binary. When none is on `PATH`, the Lighthouse step records a single `skipped — chrome not installed` finding and exits 0; run `scripts/doctor/install-chrome.mjs` (idempotent, pins a Chrome for Testing build) to make it real. The CI gate never skips.
+
+To reproduce exactly what CI measures — the scaffolded playground, all four routes — run:
 
 ```bash
 pnpm scaffold:test
 ```
 
-This wipes `apps/playground/`, scaffolds it from the CLI with `--yes`, installs deps, runs `astro build`, and runs Lighthouse against the static output. You'll see the same numbers CI sees.
+This wipes `apps/playground/`, scaffolds it from the CLI with `--yes`, installs deps, builds it, and runs Lighthouse against the static output.
 
 ## What's tracked
 
-- Lighthouse mobile scores (4 categories × 4 routes)
-- Total bundle size (JS + CSS + fonts) for the homepage cold load
-- LCP, FCP, TBT, CLS individual numbers
+- Lighthouse mobile scores (4 categories × 4 routes in CI; 1 route per local run)
+- Total compressed transfer for the homepage cold load — the local budget is 150 KB
+- LCP, INP, TBT, CLS against the local budget (2000 ms / 200 ms / 200 ms / 0.05); FCP, LCP, CLS, TBT in CI
 - Build time
 
 Trends published per release in the GitHub Releases page once we have a baseline.

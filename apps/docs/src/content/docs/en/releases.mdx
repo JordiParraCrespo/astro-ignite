@@ -1,7 +1,7 @@
 ---
 title: Releases
-description: How astro-ignite is versioned and shipped to npm — the two-package CLI, stable releases, and per-PR betas.
-lastUpdated: 2026-05-12
+description: How astro-ignite is versioned and shipped to npm — the two-package CLI, changesets, and the release workflow.
+lastUpdated: 2026-09-17
 tags: [project]
 ---
 
@@ -14,7 +14,7 @@ astro-ignite ships as two npm packages that always publish together at the same 
 
 | Package | What it is |
 | --- | --- |
-| [`astro-ignite`](https://www.npmjs.com/package/astro-ignite) | The primary CLI. Subcommand-based: `bootstrap` today, `add` / `upgrade` planned. |
+| [`astro-ignite`](https://www.npmjs.com/package/astro-ignite) | The primary CLI. Subcommand-based: `bootstrap` is the only subcommand shipped today; `add` / `upgrade` are planned, not published. |
 | [`create-astro-ignite`](https://www.npmjs.com/package/create-astro-ignite) | A thin shim that exists so `npm create astro-ignite@latest` works. Delegates to `astro-ignite bootstrap`. |
 
 Both invocations reach the same code:
@@ -40,6 +40,15 @@ The two-package split exists because the `create-*` convention is the discoverab
 
 Maintained via [Changesets](https://github.com/changesets/changesets), published through `.github/workflows/release.yml`.
 
+<Callout variant="note" title="Unreleased">
+  The published version is **0.1.0**. Everything since — Astro 7, Tailwind-first
+  templates, the shadcn-consumable registry, the docs template parity work, and
+  more — sits as pending changesets in `.changeset/` (over twenty at the time
+  of writing) waiting to roll up into **0.2.0**. What has shipped is recorded
+  in `packages/astro-ignite/CHANGELOG.md`; what will ship is the sum of those
+  pending files.
+</Callout>
+
 ## How a release runs
 
 ```text
@@ -60,7 +69,9 @@ write changes  →  pnpm changeset  →  commit + push  →  PR + merge to main
                              bump commit and its tags
 ```
 
-Implementation detail: step 1 calls `.github/changeset-version.js` (a thin wrapper) which runs `changeset version` and then `pnpm install --lockfile-only`. The version-bump commit is created *before* publish (so the published tag points at it) but pushed only *after* a successful publish — a failed publish leaves nothing pushed, so a re-run starts clean instead of from an orphaned "bumped but not published" state. A `dry_run` input runs steps 1–3 and stops before publishing, committing, or pushing, for a sanity check.
+Implementation detail: step 1 calls `.github/changeset-version.js` (a thin wrapper) which runs `changeset version` and then `pnpm install --lockfile-only`. The version-bump commit is created *before* publish (so the published tag points at it) but pushed only *after* a successful publish — a failed publish leaves nothing pushed, so a re-run starts clean instead of from an orphaned "bumped but not published" state. A `dry_run` input applies the changesets and builds the packages (steps 1 and 3) but skips the commit, the publish, and the push, for a sanity check.
+
+The job runs on a `gha-vm` ephemeral runner under the `Prod` environment, with `contents: write` (to push the bump) and `id-token: write` (for the OIDC exchange) as its only permissions. It pins a newer pnpm (11.x) than the repo's `packageManager` field because OIDC trusted publishing needs it.
 
 ## Writing a changeset
 

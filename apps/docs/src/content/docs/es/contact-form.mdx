@@ -1,7 +1,7 @@
 ---
 title: Formulario de contacto y correo
 description: Cómo funciona el flujo de contacto con Astro Actions, y las variables de entorno de Resend o SMTP que lo hacen entregar correo en producción.
-lastUpdated: 2026-06-09
+lastUpdated: 2026-09-17
 tags: [guía]
 ---
 
@@ -9,7 +9,7 @@ import Callout from '@/components/docs/Callout.astro';
 import CodeBlock from '@/components/docs/CodeBlock.astro';
 
 La starter entrega un formulario de contacto funcional — validado, filtrado
-contra spam y conectado a un proveedor de correo. En desarrollo registra en la
+por honeypot y conectado a un proveedor de correo. En desarrollo registra en la
 consola; en producción envía correo real una vez que estableces unas pocas
 variables de entorno. Nada está simulado.
 
@@ -37,7 +37,7 @@ El formulario es una **Astro Action**, definida en `src/actions/index.ts`:
 
 Qué ocurre al enviar:
 
-1. La página publica directamente a la acción: `<form method="post" action={actions.contact}>`. Astro maneja la mejora progresiva.
+1. El formulario vive en el componente `ContactSection` (`src/components/contact/ContactSection.astro`), compuesto con los átomos del registry `Label`, `Input`, `Select` y `Textarea`, y publica directamente a la acción: `<form method="post" action={actions.contact}>`. Astro maneja la mejora progresiva.
 2. **Zod valida** nombre / correo / asunto / mensaje; una entrada inválida devuelve un error tipado que la página renderiza en línea.
 3. El campo **honeypot** `_website` (oculto para humanos, irresistible para bots) cortocircuita con un éxito silencioso.
 4. La entrada válida se pasa a `sendContactEmail` — la costura del proveedor en `src/lib/email/`.
@@ -93,9 +93,13 @@ CONTACT_TO_EMAIL=you@example.com`}</CodeBlock>
 
 ## Personalización
 
-- **Añadir un campo** → extiende el esquema `input` de Zod y añade el `<input>`
-  correspondiente a `src/pages/contact.astro`. El tipo fluye automáticamente.
-- **La protección anti-spam más fuerte** se deja fuera a propósito — el honeypot
-  cubre lo básico; añade Turnstile o hCaptcha si necesitas más.
+- **Añadir un campo** → extiende el esquema `input` de Zod en
+  `src/actions/index.ts`, luego añade el par `Label` + `Input` (o `Select` /
+  `Textarea`) correspondiente en `src/components/contact/ContactSection.astro`,
+  y pasa el nuevo valor a `sendContactEmail` en el handler. El tipo fluye
+  automáticamente.
+- **La protección anti-spam** es solo el honeypot. Cubre bots de bajo esfuerzo;
+  un CAPTCHA o desafío (Turnstile, hCaptcha) no se incluye a propósito — añade
+  uno si tu bandeja de entrada lo necesita.
 - **Cambiar el cuerpo del correo** → edita `src/lib/email/resend.ts` (o
   `smtp.ts`).

@@ -1,7 +1,7 @@
 ---
 title: Añadir contenido
 description: Escribe una entrada de blog, un caso de estudio o una página de docs — carpetas por idioma, esquemas de frontmatter y la regla de rutas paralelas.
-lastUpdated: 2026-06-09
+lastUpdated: 2026-09-17
 tags: [guía]
 ---
 
@@ -89,8 +89,11 @@ Vive en `/projects/acme-redesign`.
 ## Página de docs
 
 En la plantilla **docs**, la colección `docs` carga `<idioma>/<slug>.mdx`. El
-frontmatter es `title` + `description` (40–160), con `tags`, `lastUpdated` y
-`draft` opcionales:
+frontmatter es `title` (≤70) + `description` (40–160), con `tags`, `lastUpdated`,
+`draft`, `canonical` (una URL, para contenido republicado), `noindex` (oculta de
+los buscadores, de `llms.txt` y de `llms-full.txt`), `readingTime` (minutos, para
+sobrescribir el cálculo automático por palabras) y `landing` (mira abajo)
+opcionales:
 
 ```mdx
 ---
@@ -105,7 +108,40 @@ Sidebar, breadcrumbs, on-this-page, and prev/next all derive from the
 collection — add this file and it slots into the nav.
 ```
 
-Reorganiza el orden / agrupación de la barra lateral en `src/config/sidebar.ts`.
+Reorganiza la barra lateral en `src/config/sidebar.ts`. Cada grupo acepta un
+`icon`, `collapsed: true` para plegarlo por defecto en un `<details>` nativo, y un
+`tab` que reparte los grupos en secciones de nivel superior — la fila de pestañas
+solo se renderiza cuando existen dos o más pestañas distintas. Los elementos
+referencian un slug de doc, una ruta absoluta o una URL externa, y pueden llevar
+su propio `icon`; `groupKey` / `labelKey` apuntan a claves del diccionario i18n
+para etiquetas traducibles.
+
+### Páginas landing
+
+Pon `landing: true` y abre el cuerpo con el componente `Hero` — el layout entonces
+omite su cabecera de título estándar, quita la columna "en esta página" y deja
+que el contenido ocupe todo el ancho:
+
+```mdx
+---
+title: Introduction
+description: What this project is, who it's for, and the fastest way to a first successful build.
+landing: true
+---
+
+import Hero from '@/components/docs/Hero.astro';
+import Button from '@/components/ui/button.astro';
+
+<Hero title="Ship a docs site in five prompts." eyebrow="astro-ignite">
+  One paragraph on what this is.
+  <Fragment slot="actions">
+    <Button href="/quick-start" size="lg">Quick start</Button>
+  </Fragment>
+</Hero>
+```
+
+`Hero` es dueño del `<h1>` de la página; el slot por defecto es la entradilla y
+el slot `actions` una fila de botones.
 
 ## La regla de rutas paralelas
 

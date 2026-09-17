@@ -1,16 +1,19 @@
 ---
 title: Usar componentes
 description: Cómo funcionan los átomos preinstalados — props y variantes, el helper de clases cn, las familias compuestas y cómo reutilizarlos en otro proyecto.
-lastUpdated: 2026-06-09
+lastUpdated: 2026-09-17
 tags: [guía]
 ---
 
 import Callout from '@/components/docs/Callout.astro';
 import CodeBlock from '@/components/docs/CodeBlock.astro';
 
-Ambas plantillas entregan el conjunto completo de componentes base
-**preinstalado** en `src/components/ui/` — copiado del registro de astro-ignite,
-propiedad de tu repo. No hay paso de instalación ni dependencia en tiempo de
+Ambas plantillas entregan los componentes base **preinstalados** en
+`src/components/ui/` — copiados del registro de astro-ignite, propiedad de tu
+repo. Están 23 de los 24 elementos del registro; la única excepción es
+`copy-button`, que solo existe en el registro (mira
+[Reutilizar un componente en otro sitio](#reutilizar-un-componente-en-otro-sitio)
+para añadirlo). No hay paso de instalación ni dependencia en tiempo de
 ejecución; los importas como cualquier archivo local y los editas libremente.
 
 ```astro
@@ -67,7 +70,7 @@ cn('px-3', 'py-2', isActive && 'bg-surface-2', { 'opacity-50': disabled });
 
 ## Familias compuestas
 
-Cinco familias se entregan como múltiples partes — un archivo por parte — para
+Seis familias se entregan como múltiples partes — un archivo por parte — para
 que compongas la estructura tú mismo. Importa las partes que necesites:
 
 <CodeBlock filename="card-example.astro">{`---
@@ -95,11 +98,30 @@ Las familias y sus partes:
 | `accordion` | accordion, accordion-item |
 | `dialog` | dialog, dialog-title, dialog-description |
 | `dropdown-menu` | dropdown-menu, dropdown-menu-item |
+| `radio-group` | radio-group, radio-group-item |
 
 Las interactivas usan primitivos nativos — `<dialog>` para el diálogo, la API de
 popover para dropdown-menu, `<details name>` para el acordeón y el elemento
 personalizado `<ai-tabs>` para las pestañas. Sin React, sin Radix, sin runtime de
 framework.
+
+## Átomos de formulario
+
+Los átomos de formulario son envoltorios finos y estilizados sobre elementos
+nativos — aceptan los atributos HTML del propio elemento más un paso a través de
+`class`, y nada más:
+
+| Átomo | Renderiza | Props |
+| --- | --- | --- |
+| `select` | `<select>` | `HTMLAttributes<'select'>` + `class`; pasa los `<option>` como hijos |
+| `checkbox` | `<input type="checkbox">` | `HTMLAttributes<'input'>` + `class` |
+| `switch` | `<input type="checkbox">` estilizado como interruptor | `HTMLAttributes<'input'>` + `class` |
+| `radio-group` | `<fieldset>` | `HTMLAttributes<'fieldset'>` + `class` |
+| `radio-group-item` | `<input type="radio">` | `name` y `value` obligatorios, más `HTMLAttributes<'input'>` + `class` |
+
+Así que `name`, `value`, `checked`, `disabled`, `required`, `aria-*` funcionan
+igual que en el elemento desnudo. Estos cuatro aún no tienen página de demo en
+vivo en [Componentes](/es/components) — lee el código en `src/components/ui/`.
 
 ## Toasts
 
@@ -115,7 +137,18 @@ Despacha un evento de `window` que el `<Toaster />` escucha.
 ## Reutilizar un componente en otro sitio
 
 Estos átomos no se publican como una biblioteca importable — tú eres dueño de las
-copias en tu proyecto. Para usar uno en un proyecto **diferente**, copia el
-archivo (y su dependencia `cn`) desde la fuente del registro en
+copias en tu proyecto. Para usar uno en un proyecto **diferente** (o para añadir
+el `copy-button`, que solo existe en el registro), el registro es consumible con
+shadcn:
+
+<CodeBlock filename="terminal" language="bash">{`npx shadcn@latest add @astro-ignite/button
+npx shadcn@latest add @astro-ignite/copy-button`}</CodeBlock>
+
+Cada elemento resuelve a un payload en `https://astroignite.dev/r/<nombre>.json`,
+y `registryDependencies` arrastra `cn` (y las partes hermanas de una familia)
+con él. No existe `npx astro-ignite add` — el CLI de shadcn es la vía de entrada.
+
+La vía manual sigue funcionando: copia el archivo (y su dependencia `cn`) desde
+la fuente del registro en
 [`packages/registry/base/`](https://github.com/JordiParraCrespo/astro-ignite/tree/main/packages/registry/base).
 Las familias compuestas traen su carpeta entera.

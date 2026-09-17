@@ -1,7 +1,7 @@
 ---
 title: Deploying
 description: Ship to Node, Cloudflare Pages, Netlify, or Vercel — and how the contact form's server action works on otherwise-static hosts.
-lastUpdated: 2026-06-09
+lastUpdated: 2026-09-17
 tags: [guide]
 ---
 
@@ -15,6 +15,12 @@ Where you deploy depends on one question: **does the site need server compute?**
 - The **starter** ships a contact form built on **Astro Actions**, which run
   server-side. It pins the `@astrojs/node` adapter so that endpoint has somewhere
   to run. To deploy elsewhere, you swap the adapter to match the host.
+
+<Callout variant="warning" title="Node ≥ 22.12 on the build machine">
+  Both templates run on Astro 7, which requires **Node 22.12 or newer**. Set
+  the Node version in your host's build settings (or `.nvmrc` / `engines`)
+  before the first deploy — an older default image fails at install time.
+</Callout>
 
 <Callout variant="note" title="Static pages either way">
   Even with an adapter, `output: 'static'` means every page is pre-rendered HTML.
@@ -30,6 +36,14 @@ If there's no server code, the build is portable:
 
 Point Cloudflare Pages, Netlify, GitHub Pages, or any CDN at `dist/`. Build
 command `pnpm build`, output directory `dist`. Done.
+
+<Callout variant="warning" title="Docs template: run the package build script">
+  The docs template indexes search in a `postbuild` hook —
+  `"postbuild": "pagefind --site dist"` in its `package.json`. Configure the
+  host's build command as `pnpm build` (or `npm run build`), **not** bare
+  `astro build`: the bare binary skips the hook and the site ships without a
+  search index.
+</Callout>
 
 ## Node
 

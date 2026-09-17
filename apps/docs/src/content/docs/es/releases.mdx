@@ -1,7 +1,7 @@
 ---
 title: Publicaciones
-description: Cómo astro-ignite se versiona y publica en npm — los dos paquetes del CLI, releases estables y betas por PR.
-lastUpdated: 2026-05-12
+description: Cómo astro-ignite se versiona y publica en npm — los dos paquetes del CLI, los changesets y el flujo de release.
+lastUpdated: 2026-09-17
 tags: [proyecto]
 ---
 
@@ -14,7 +14,7 @@ astro-ignite se publica como dos paquetes de npm que siempre se publican juntos,
 
 | Paquete | Qué es |
 | --- | --- |
-| [`astro-ignite`](https://www.npmjs.com/package/astro-ignite) | El CLI principal. Con subcomandos: `bootstrap` hoy, `add` / `upgrade` previstos. |
+| [`astro-ignite`](https://www.npmjs.com/package/astro-ignite) | El CLI principal. Con subcomandos: `bootstrap` es el único subcomando publicado hoy; `add` / `upgrade` están previstos, no publicados. |
 | [`create-astro-ignite`](https://www.npmjs.com/package/create-astro-ignite) | Un shim fino que existe para que funcione `npm create astro-ignite@latest`. Delega en `astro-ignite bootstrap`. |
 
 Ambas invocaciones acaban en el mismo código:
@@ -40,6 +40,15 @@ La separación en dos paquetes existe porque la convención `create-*` es la ins
 
 Mantenidas con [Changesets](https://github.com/changesets/changesets), publicadas mediante `.github/workflows/release.yml`.
 
+<Callout variant="note" title="Sin publicar">
+  La versión publicada es la **0.1.0**. Todo lo posterior — Astro 7, plantillas
+  Tailwind-first, el registry consumible desde shadcn, el trabajo de paridad de
+  la plantilla docs y más — está como changesets pendientes en `.changeset/`
+  (más de veinte al escribir esto) esperando a agruparse en la **0.2.0**. Lo
+  que ya se publicó queda registrado en `packages/astro-ignite/CHANGELOG.md`;
+  lo que se publicará es la suma de esos archivos pendientes.
+</Callout>
+
 ## Cómo corre una release
 
 ```text
@@ -61,7 +70,9 @@ escribe cambios  →  pnpm changeset  →  commit + push  →  PR + merge a main
                              commit del bump y sus tags
 ```
 
-Detalle de implementación: el paso 1 llama a `.github/changeset-version.js` (un envoltorio fino) que ejecuta `changeset version` y luego `pnpm install --lockfile-only`. El commit del cambio de versión se crea *antes* de publicar (para que el tag publicado apunte a él) pero se empuja solo *después* de una publicación exitosa — si la publicación falla, no se empuja nada, así que una re-ejecución parte de un estado limpio en vez de uno huérfano ("versión subida pero no publicada"). Una entrada `dry_run` ejecuta los pasos 1–3 y se detiene antes de publicar, commitear o empujar, como comprobación rápida.
+Detalle de implementación: el paso 1 llama a `.github/changeset-version.js` (un envoltorio fino) que ejecuta `changeset version` y luego `pnpm install --lockfile-only`. El commit del cambio de versión se crea *antes* de publicar (para que el tag publicado apunte a él) pero se empuja solo *después* de una publicación exitosa — si la publicación falla, no se empuja nada, así que una re-ejecución parte de un estado limpio en vez de uno huérfano ("versión subida pero no publicada"). Una entrada `dry_run` aplica los changesets y construye los paquetes (pasos 1 y 3) pero se salta el commit, la publicación y el push, como comprobación rápida.
+
+El job corre en un runner efímero `gha-vm` bajo el environment `Prod`, con `contents: write` (para empujar el bump) e `id-token: write` (para el intercambio OIDC) como únicos permisos. Fija un pnpm más nuevo (11.x) que el campo `packageManager` del repo porque el trusted publishing por OIDC lo necesita.
 
 ## Escribir un changeset
 

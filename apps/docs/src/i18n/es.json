@@ -13,7 +13,8 @@
     "primary": "Principal",
     "pageNavigation": "Navegación de página",
     "documentation": "Documentación",
-    "sidebar": "Barra lateral"
+    "sidebar": "Barra lateral",
+    "github": "Repositorio de GitHub"
   },
   "footer": {
     "rights": "Todos los derechos reservados.",
@@ -23,7 +24,8 @@
     "social": "Redes",
     "privacy": "Privacidad",
     "terms": "Términos",
-    "cookies": "Cookies"
+    "cookies": "Cookies",
+    "website": "Sitio web"
   },
   "theme": {
     "label": "Tema",
@@ -367,7 +369,8 @@
         "messageWarning": "El almacenamiento se está agotando.",
         "messageDestructive": "No se pudo alcanzar el servidor remoto."
       }
-    }
+    },
+    "previewAria": "Vista previa"
   },
   "blocks": {
     "group": "Bloques",
@@ -440,6 +443,7 @@
       "notice-banner": {
         "description": "Aviso en línea con icono y cuatro variantes: info, warning, success, danger. El slot acepta el mensaje."
       }
-    }
+    },
+    "previewAria": "Vista previa"
   }
 }

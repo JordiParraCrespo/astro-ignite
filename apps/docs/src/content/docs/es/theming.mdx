@@ -1,7 +1,7 @@
 ---
 title: Temas y tokens
 description: Reviste todo el sitio editando variables CSS en global.css — los tokens de diseño, el modo oscuro de tres estados y cómo los componentes los resuelven.
-lastUpdated: 2026-06-09
+lastUpdated: 2026-09-17
 tags: [guía]
 ---
 
@@ -36,15 +36,24 @@ Los tokens viven en un bloque `@theme` de Tailwind v4 al principio de
 | `--color-primary`, `--color-primary-fg` | Relleno interactivo + su texto |
 | `--color-ring` | Anillo de foco |
 | `--color-success` / `--color-warning` / `--color-danger` | Solo estados funcionales |
+| `--color-accent`, `--color-accent-fg` | Acento de marca — **solo plantilla docs** (enlaces, nav activa, marcador del TOC) |
+| `--color-info`, `--color-accent-purple`, `--color-accent-rose` | Acentos de docs de API — **solo plantilla docs** (callouts de info, etiquetas de tipo / ubicación de campos) |
 
 Más allá del color, el mismo bloque define `--font-display` / `--font-mono`,
 `--radius`(`-sm`/`-md`/`-lg`), `--shadow`(`-sm`), los anchos de contenedor y la
 curva de movimiento `--ease-out-soft`.
 
-<Callout variant="note" title="Sin acento por defecto">
-  El diseño que se entrega no tiene color de acento — el color interactivo es
-  simplemente el neutro invertido (casi blanco sobre casi negro). Introducir un
-  acento de marca es el rediseño más común; el recorrido de abajo hace
+<Callout variant="note" title="Acento: starter frente a docs">
+  La **starter** es estrictamente monocroma — no tiene token de acento, y el
+  color interactivo es simplemente el neutro invertido (casi blanco sobre casi
+  negro). La plantilla **docs** entrega un acento coral cálido,
+  `--color-accent` (con `--color-accent-fg`), usado como señal y no como
+  pintura: enlaces en la prosa, el elemento activo de la barra lateral y de las
+  pestañas, el marcador de "en esta página" y el eyebrow del hero. Los botones
+  siguen siendo monocromos sobre `--color-primary`. El bloque `.light` reajusta
+  el acento (y los acentos info / púrpura / rosa de docs de API) a tonos más
+  profundos para que mantengan contraste AA sobre blanco. Introducir un acento
+  de marca en la starter es el rediseño más común; el recorrido de abajo hace
   exactamente eso.
 </Callout>
 
@@ -60,6 +69,20 @@ mueven con él.
 No hay una hoja de estilos aparte que mantener sincronizada:
 `inlineStylesheets: 'always'` envía la hoja de estilos completa en el HTML en el
 primer renderizado, así que editar un token es todo el cambio.
+
+### La escala de la prosa
+
+El contenido renderizado desde MDX no está en la ruta de escaneo de clases de
+Tailwind, así que cada plantilla declara sus reglas de prosa una sola vez,
+resueltas por tokens. En la plantilla **docs** viven en un bloque
+`@layer components` en `DocsLayout.astro` (`.docs-prose`): cuerpo de 16px /
+1.7, `h2` de 24px, `h3` de 19px, enlaces sobre `--color-accent` y los
+marcadores de lista restaurados. Al estar en la capa `components` quedan por
+debajo de las utilidades, así que un átomo renderizado dentro de la prosa
+(Card, Callout, Steps) conserva su propio espaciado. La **starter** declara la
+misma idea como un `@utility prose` en `global.css`, de modo que
+`class="prose"` se compone con variantes. Reajusta la tipografía ahí, no
+página por página.
 
 ## Modo oscuro de tres estados
 
@@ -152,10 +175,13 @@ tocar ni un solo componente.
 </Steps>
 
 <Callout variant="tip" title="Cambia la tipografía">
-  Las fuentes también son tokens. El valor por defecto es la pila de fuentes
-  del sistema (sin ficheros autoalojados) — reapunta `--font-display` /
-  `--font-mono`, o configura la integración `astro:fonts` de Astro para una
-  tipografía personalizada — mira el análisis a fondo de FONTS en la carpeta
+  Las fuentes también son tokens. `--font-display` / `--font-mono` nombran
+  primero Geist y Geist Mono, pero de serie ningún `@font-face` coincide con
+  esos nombres, así que lo que realmente se renderiza es la **pila de fuentes
+  del sistema** — cero descargas de fuentes, cero CLS. Para usar una tipografía
+  personalizada, añade un `@font-face` autoalojado cuya familia coincida con el
+  token (o configura la integración de fuentes de Astro y alinea el token con
+  la familia que emite) — mira el análisis a fondo de FONTS en la carpeta
   `docs/` de la plantilla.
 </Callout>
 
@@ -168,5 +194,5 @@ tocar ni un solo componente.
 - Mantén el bloque `.light` al paso con `@theme`: cada token funcional que
   añadas necesita un valor claro.
 
-Esta es también la superficie que una futura skill `customize-theme` manejará —
-apunta un agente a "haz el sitio violeta" y editará estos mismos tokens.
+Como todo pasa por estos tokens, "haz el sitio violeta" es una edición en un
+solo archivo — ya lo haga una persona o un agente.
