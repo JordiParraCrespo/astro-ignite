@@ -1,7 +1,7 @@
 ---
 title: Benchmarks
 description: Puntuaciones de Lighthouse, metodología y cómo reproducirlas.
-lastUpdated: 2026-05-10
+lastUpdated: 2026-09-17
 tags: [referencia]
 ---
 
@@ -23,31 +23,44 @@ Cada release de astro-ignite se valida con Lighthouse CI sobre el playground gen
 | Best Practices | 95         | 100             |
 | SEO            | 95         | 100             |
 
-Una PR que baje cualquier mediana por debajo de 95 falla el CI. Una PR que baje por debajo de 100 imprime un warning pero no bloquea.
+Una PR que baje cualquier categoría por debajo de 95 falla el CI. 100 es la aspiración, no un umbral impuesto — no hay un nivel de warning entre 95 y 100. (Las aserciones de métricas en `.lighthouserc.json` van aparte: un CLS por encima de 0.1 da error; FCP, LCP y TBT fuera de presupuesto solo avisan.)
 
 ## Metodología
 
-- **Construir el sitio en producción** con `astro build` estándar.
-- **Servirlo estáticamente** vía el servidor de Lighthouse CI (sin trucos de caché más allá de lo que haría una CDN normal).
-- **Ejecutar Lighthouse 3 veces por URL**, tomar la mediana para absorber la variabilidad.
-- **Config móvil** con throttling 4G simulado y CPU 4× más lenta (defaults de Lighthouse).
-- Ejecutar en Ubuntu en GitHub Actions sobre la imagen `ubuntu-latest`.
+- **Construir el sitio en producción** con el script de build estándar de la plantilla.
+- **Servirlo como archivos estáticos.** CI apunta Lighthouse CI a `dist/client` (`staticDistDir`, su servidor estático integrado — sin trucos de caché más allá de lo que haría una CDN normal); el gate local arranca en su lugar un servidor de preview de Astro.
+- **Ejecutar Lighthouse 3 veces por URL** (`numberOfRuns: 3`) para absorber la variabilidad.
+- **Config móvil**: throttling simulado con una emulación de pantalla móvil de 412×823 (`formFactor: mobile`).
+- Ejecutar en GitHub Actions sobre runners efímeros `gha-vm`, dentro de la imagen de contenedor de Playwright fijada, usando el Chrome que esta incluye.
 
-El JSON completo de Lighthouse se sube como artifact en cada CI run, así cualquiera puede auditar los números.
+Lighthouse CI sube el reporte completo de cada run a su almacenamiento público temporal y lo enlaza desde el log del job, así cualquiera puede auditar los números.
 
-## Reproducir localmente
+## Ejecútalo localmente
+
+El gate local consultivo es `pnpm perf:budget`:
+
+```bash
+pnpm perf:budget                        # página de inicio de la plantilla starter
+pnpm perf:budget --target @astro-ignite/template-docs --page /quick-start   # una ruta de la plantilla docs
+```
+
+`scripts/perf/run.mjs` construye la plantilla resuelta (starter por defecto; `--target` elige otro paquete), arranca un servidor de preview de Astro en un puerto libre, ejecuta `npx lighthouse --preset=mobile` y compara cada puntuación y métrica con `scripts/perf/budget.json`. Imprime los números por página y sale con 0 si pasa, 1 si algo se sale del presupuesto. Mide una ruta por ejecución, así que pasa `--page` por cada ruta que te importe.
+
+Necesita un binario de Chrome. Si no hay ninguno en el `PATH`, el paso de Lighthouse registra un único hallazgo `skipped — chrome not installed` y sale con 0; ejecuta `scripts/doctor/install-chrome.mjs` (idempotente, fija una build de Chrome for Testing) para que sea real. El gate de CI nunca se salta.
+
+Para reproducir exactamente lo que mide CI — el playground generado, las cuatro rutas — ejecuta:
 
 ```bash
 pnpm scaffold:test
 ```
 
-Esto borra `apps/playground/`, genera el scaffold con `--yes`, instala deps, ejecuta `astro build` y corre Lighthouse contra la salida estática. Verás los mismos números que CI.
+Esto borra `apps/playground/`, genera el scaffold con `--yes`, instala deps, lo construye y corre Lighthouse contra la salida estática.
 
 ## Qué se rastrea
 
-- Puntuaciones de Lighthouse móvil (4 categorías × 4 rutas)
-- Tamaño total del bundle (JS + CSS + fuentes) para la carga fría del home
-- Números individuales de LCP, FCP, TBT, CLS
+- Puntuaciones de Lighthouse móvil (4 categorías × 4 rutas en CI; 1 ruta por ejecución local)
+- Transferencia total comprimida para la carga fría del home — el presupuesto local es 150 KB
+- LCP, INP, TBT, CLS contra el presupuesto local (2000 ms / 200 ms / 200 ms / 0.05); FCP, LCP, CLS, TBT en CI
 - Tiempo de build
 
 Las tendencias se publican por release en la página de GitHub Releases una vez tengamos baseline.

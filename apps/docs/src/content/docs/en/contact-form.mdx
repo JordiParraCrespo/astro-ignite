@@ -1,15 +1,15 @@
 ---
 title: Contact form & email
 description: How the Astro Actions contact flow works, and the Resend or SMTP env vars that make it deliver mail in production.
-lastUpdated: 2026-06-09
+lastUpdated: 2026-09-17
 tags: [guide]
 ---
 
 import Callout from '@/components/docs/Callout.astro';
 import CodeBlock from '@/components/docs/CodeBlock.astro';
 
-The starter ships a working contact form — validated, spam-screened, and wired
-to an email provider. In dev it logs to the console; in production it sends real
+The starter ships a working contact form — validated, honeypot-screened, and
+wired to an email provider. In dev it logs to the console; in production it sends real
 mail once you set a few env vars. Nothing is mocked.
 
 ## The flow
@@ -36,7 +36,7 @@ The form is an **Astro Action**, defined in `src/actions/index.ts`:
 
 What happens on submit:
 
-1. The page posts straight to the action: `<form method="post" action={actions.contact}>`. Astro handles progressive enhancement.
+1. The form lives in the `ContactSection` component (`src/components/contact/ContactSection.astro`), composed from the registry atoms `Label`, `Input`, `Select`, and `Textarea`, and posts straight to the action: `<form method="post" action={actions.contact}>`. Astro handles progressive enhancement.
 2. **Zod validates** name / email / subject / message; invalid input returns a typed error the page renders inline.
 3. The **honeypot** `_website` field (hidden from humans, irresistible to bots) short-circuits with a silent success.
 4. Valid input is handed to `sendContactEmail` — the provider seam in `src/lib/email/`.
@@ -90,8 +90,12 @@ CONTACT_TO_EMAIL=you@example.com`}</CodeBlock>
 
 ## Customizing
 
-- **Add a field** → extend the Zod `input` schema and add the matching
-  `<input>` to `src/pages/contact.astro`. The type flows through automatically.
-- **Stronger spam protection** is intentionally left out — the honeypot covers
-  the basics; add Turnstile or hCaptcha if you need more.
+- **Add a field** → extend the Zod `input` schema in `src/actions/index.ts`,
+  then add a matching `Label` + `Input` (or `Select` / `Textarea`) pair to
+  `src/components/contact/ContactSection.astro`, and pass the new value
+  through to `sendContactEmail` in the handler. The type flows through
+  automatically.
+- **Spam protection** is the honeypot only. That covers low-effort bots; a
+  CAPTCHA or challenge (Turnstile, hCaptcha) is intentionally not bundled —
+  add one if your inbox needs it.
 - **Change the email body** → edit `src/lib/email/resend.ts` (or `smtp.ts`).

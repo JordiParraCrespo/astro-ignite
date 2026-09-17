@@ -1,7 +1,7 @@
 ---
 title: Theming & tokens
 description: Reskin the whole site by editing CSS variables in global.css — the design tokens, the tri-state dark mode, and how components resolve them.
-lastUpdated: 2026-06-09
+lastUpdated: 2026-09-17
 tags: [guide]
 ---
 
@@ -34,14 +34,22 @@ two tiers:
 | `--color-primary`, `--color-primary-fg` | Interactive fill + its text |
 | `--color-ring` | Focus ring |
 | `--color-success` / `--color-warning` / `--color-danger` | Functional status only |
+| `--color-accent`, `--color-accent-fg` | Brand accent — **docs template only** (links, active nav, TOC marker) |
+| `--color-info`, `--color-accent-purple`, `--color-accent-rose` | API-doc accents — **docs template only** (info callouts, field type / location labels) |
 
 Beyond color, the same block defines `--font-display` / `--font-mono`,
 `--radius`(`-sm`/`-md`/`-lg`), `--shadow`(`-sm`), container widths, and the
 `--ease-out-soft` motion curve.
 
-<Callout variant="note" title="No accent by default">
-  The shipped design has no accent color — the interactive color is just the
-  inverted neutral (near-white on near-black). Introducing a brand accent is the
+<Callout variant="note" title="Accent: starter vs docs">
+  The **starter** is strictly monochrome — it has no accent token, and the
+  interactive color is just the inverted neutral (near-white on near-black).
+  The **docs** template ships one warm coral accent, `--color-accent` (with
+  `--color-accent-fg`), used as a signal rather than paint: prose links, the
+  active sidebar item and tab, the on-this-page marker, and the hero eyebrow.
+  Buttons stay monochrome on `--color-primary`. The `.light` block retunes the
+  accent (and the info / purple / rose API-doc accents) to deeper hues so they
+  hold AA contrast on white. Introducing a brand accent to the starter is the
   most common reskin; the walkthrough below does exactly that.
 </Callout>
 
@@ -56,6 +64,18 @@ and every button, link, and focus state moves with it.
 There is no separate stylesheet to keep in sync: `inlineStylesheets: 'always'`
 ships the full stylesheet in the HTML on first paint, so a token edit is the
 whole change.
+
+### The prose scale
+
+MDX-rendered content isn't in Tailwind's class-scan path, so each template
+declares its prose rules once, token-resolved. In the **docs** template they
+live in a `@layer components` block in `DocsLayout.astro` (`.docs-prose`): a
+16px / 1.7 body, 24px `h2`, 19px `h3`, links on `--color-accent`, and list
+markers restored. Sitting in the `components` layer keeps them below
+utilities, so an atom rendered inside prose (Card, Callout, Steps) keeps its
+own spacing. The **starter** declares the same idea as an `@utility prose` in
+`global.css`, so `class="prose"` composes with variants. Retune type there,
+not per page.
 
 ## Tri-state dark mode
 
@@ -145,10 +165,13 @@ touching a single component.
 </Steps>
 
 <Callout variant="tip" title="Swap the typeface">
-  Fonts are tokens too. The default is the system font stack (no self-hosted
-  files) — repoint `--font-display` / `--font-mono`, or wire up Astro's
-  `astro:fonts` integration for a custom typeface — see the FONTS deep dive
-  in the template's `docs/` folder.
+  Fonts are tokens too. `--font-display` / `--font-mono` name Geist and Geist
+  Mono first, but no `@font-face` matches those names out of the box, so the
+  **system font stack** is what actually renders — zero font fetches, zero
+  CLS. To use a custom typeface, add a self-hosted `@font-face` whose family
+  matches the token (or wire up Astro's fonts integration and align the token
+  with the family it emits) — see the FONTS deep dive in the template's
+  `docs/` folder.
 </Callout>
 
 ## Rules that keep it clean
@@ -160,5 +183,5 @@ touching a single component.
 - Keep the `.light` block in lock-step with `@theme`: every functional token
   you add needs a light value.
 
-This is also the surface a planned `customize-theme` skill will drive — point
-an agent at "make the site violet" and it edits these same tokens.
+Because everything funnels through these tokens, "make the site violet" is a
+one-file edit — whether a person or an agent is doing it.
